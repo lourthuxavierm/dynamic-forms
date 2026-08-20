@@ -41,31 +41,31 @@ Bring `@dynamic-forms/core` to a stable, testable baseline that can support the 
 
 ## Phase 3 — Expand the Native Schema Contract
 
-- [ ] Add declarative condition properties: `visibleWhen`, `disabledWhen`, `requiredWhen`, and `readonlyWhen`.
-- [ ] Add `dependsOn` and dependency behavior configuration to field schemas.
-- [ ] Add a renderer-neutral `dataSource` configuration model.
-- [ ] Add typed field configuration/metadata for specialized controls without coupling Core to MUI.
-- [ ] Support readonly schema declarations throughout nested object and array fields.
-- [ ] Validate field references, malformed definitions, invalid nested layouts, and duplicate names.
+- [x] Add declarative condition properties: `visibleWhen`, `disabledWhen`, `requiredWhen`, and `readonlyWhen`.
+- [x] Add `dependsOn` and dependency behavior configuration to field schemas.
+- [x] Add a renderer-neutral `dataSource` configuration model.
+- [x] Add typed field configuration/metadata for specialized controls without coupling Core to MUI.
+- [x] Support readonly schema declarations throughout nested object and array fields.
+- [x] Validate field references, malformed definitions, invalid nested layouts, and duplicate names.
 
 ## Phase 4 — Integrate Conditions and Dependencies
 
-- [ ] Support nested paths when evaluating conditions.
-- [ ] Add compound conditions: `and`, `or`, and `not`.
-- [ ] Re-evaluate relevant conditions when a referenced field changes.
-- [ ] Add dependency-cycle detection with actionable error messages.
-- [ ] Resolve transitive dependents in deterministic order.
-- [ ] Define dependent-field invalidation/reset behavior.
-- [ ] Trigger dependent data-source refreshes after upstream changes.
+- [x] Support nested paths when evaluating conditions.
+- [x] Add compound conditions: `and`, `or`, and `not`.
+- [x] Re-evaluate relevant conditions when a referenced field changes.
+- [x] Add dependency-cycle detection with actionable error messages.
+- [x] Resolve transitive dependents in deterministic order.
+- [x] Define dependent-field invalidation/reset behavior.
+- [x] Trigger dependent data-source refreshes after upstream changes.
 
 ## Phase 5 — Complete Data Sources and Events
 
-- [ ] Associate a data source with a schema field.
-- [ ] Surface loading, success, and error state through Core.
-- [ ] Support static, function, URL/REST, searchable, paginated, and dependent data sources.
-- [ ] Add caching and cancellation policies.
-- [ ] Emit lifecycle events for value changes, field changes, validation, reset, and submission.
-- [ ] Ensure event payloads contain field path, previous value, next value, and relevant context.
+- [x] Associate a data source with a schema field.
+- [x] Surface loading, success, and error state through Core.
+- [x] Support static, function, URL/REST, searchable, paginated, and dependent data sources.
+- [x] Add caching and cancellation policies.
+- [x] Emit lifecycle events for value changes, field changes, validation, reset, and submission.
+- [x] Ensure event payloads contain field path, previous value, next value, and relevant context.
 
 ## Phase 6 — Verification and API Readiness
 

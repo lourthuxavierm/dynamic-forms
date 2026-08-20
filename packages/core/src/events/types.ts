@@ -1,9 +1,4 @@
-export type FormEventType =
-  | "valueChange"
-  | "fieldChange"
-  | "submit"
-  | "reset"
-  | "validate";
+export type FormEventType = 'valueChange' | 'fieldChange' | 'submit' | 'reset' | 'validate';
 
 export interface FormEvent<T = unknown> {
   type: FormEventType;
@@ -13,6 +8,4 @@ export interface FormEvent<T = unknown> {
   payload?: unknown;
 }
 
-export type FormEventListener = (
-  event: FormEvent
-) => void;
+export type FormEventListener = (event: FormEvent) => void;

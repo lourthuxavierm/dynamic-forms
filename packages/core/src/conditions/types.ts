@@ -13,4 +13,10 @@ export interface Condition {
   value?: unknown;
 }
 
-export type FieldCondition = Condition;
+export interface ConditionGroup {
+  and?: readonly FieldCondition[];
+  or?: readonly FieldCondition[];
+  not?: FieldCondition;
+}
+
+export type FieldCondition = Condition | ConditionGroup;

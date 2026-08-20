@@ -8,12 +8,14 @@ import type {
   ResetOptions,
   SetValueOptions,
 } from './types';
+import { FormEventEmitter, type FormEventListener, type FormEventType } from '../events';
 import { deleteByPath, getByPath, setByPath } from './paths';
 
 export class FormStore<T extends FormValues = FormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
+  private readonly events = new FormEventEmitter();
   private initialValues: T;
 
   constructor(initialValues: T = {} as T) {
@@ -34,7 +36,8 @@ export class FormStore<T extends FormValues = FormValues> {
   }
 
   setValue(path: string, value: unknown, options: SetValueOptions = {}): void {
-    if (Object.is(this.getValue(path), value)) {
+    const previousValue = this.getValue(path);
+    if (Object.is(previousValue, value)) {
       return;
     }
 
@@ -51,6 +54,8 @@ export class FormStore<T extends FormValues = FormValues> {
       : this.state.touched;
 
     this.updateState({ values, dirty, touched });
+    this.events.emit({ type: 'valueChange', field: path, value, previousValue, payload: { values: this.state.values } });
+    this.events.emit({ type: 'fieldChange', field: path, value, previousValue });
     this.notifyPaths([path]);
   }
 
@@ -60,7 +65,8 @@ export class FormStore<T extends FormValues = FormValues> {
       return;
     }
 
-    let nextValues = this.state.values;
+    const previousValues = this.state.values;
+    let nextValues = previousValues;
     let nextDirty = this.state.dirty;
     let nextTouched = this.state.touched;
     const changedPaths: string[] = [];
@@ -93,6 +99,10 @@ export class FormStore<T extends FormValues = FormValues> {
       dirty: nextDirty,
       touched: nextTouched,
     });
+    for (const path of changedPaths) {
+      this.events.emit({ type: 'valueChange', field: path, value: getByPath(nextValues, path), previousValue: getByPath(previousValues, path), payload: { values: this.state.values } });
+      this.events.emit({ type: 'fieldChange', field: path, value: getByPath(nextValues, path) });
+    }
     this.notifyPaths(changedPaths);
   }
 
@@ -145,6 +155,7 @@ export class FormStore<T extends FormValues = FormValues> {
   async validate(validator: FormValidator<T>): Promise<boolean> {
     const errors = await validator(this.getValues());
     this.updateState({ errors: { ...errors }, valid: Object.keys(errors).length === 0 });
+    this.events.emit({ type: 'validate', payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values } });
     this.notifyAll();
     return this.state.valid;
   }
@@ -163,7 +174,9 @@ export class FormStore<T extends FormValues = FormValues> {
 
     this.setSubmitting(true);
     try {
-      return await onSubmit(this.getValues());
+      const result = await onSubmit(this.getValues());
+      this.events.emit({ type: 'submit', payload: { values: this.state.values, result } });
+      return result;
     } finally {
       this.setSubmitting(false);
     }
@@ -183,6 +196,7 @@ export class FormStore<T extends FormValues = FormValues> {
       submitting: false,
       loading: false,
     });
+    this.events.emit({ type: 'reset', payload: { values: this.state.values } });
     this.notifyAll();
   }
 
@@ -196,6 +210,10 @@ export class FormStore<T extends FormValues = FormValues> {
       valid: Object.keys(removePath(this.state.errors, path)).length === 0,
     });
     this.notifyPaths([path]);
+  }
+
+  on(type: FormEventType, listener: FormEventListener): () => void {
+    return this.events.on(type, listener);
   }
 
   subscribe(listener: FormListener<T>): () => void {

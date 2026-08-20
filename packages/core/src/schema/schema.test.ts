@@ -158,3 +158,55 @@ describe('Core Schema', () => {
     });
   });
 });
+
+  it('accepts declarative conditions, dependencies, data sources, and configuration', () => {
+    const schema: FormSchema = {
+      id: 'contract',
+      fields: [
+        { name: 'country', type: 'select' },
+        {
+          name: 'state',
+          type: 'autocomplete',
+          visibleWhen: { field: 'country', operator: 'exists' },
+          dependsOn: ['country'],
+          dataSource: { type: 'url', url: '/api/states', params: { country: '$country' } },
+          config: { searchable: true },
+        },
+      ],
+    };
+
+    expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
+  });
+
+  it('rejects invalid structure, references, rule ranges, option values, and data sources', () => {
+    const schema: FormSchema = {
+      id: 'invalid-contract',
+      fields: [
+        { name: 'country', type: 'text', fields: [{ name: 'code', type: 'text' }] },
+        {
+          name: 'state',
+          type: 'object',
+          visibleWhen: { field: 'missing', operator: 'equals', value: true },
+          dependsOn: ['missing', 'state'],
+          validation: { min: 10, max: 1, minItems: 2, maxItems: 1, multipleOf: 0, pattern: '[' },
+          options: [{ label: 'One', value: 'one' }, { label: 'Duplicate', value: 'one' }],
+          dataSource: { type: 'url' },
+        },
+      ],
+    };
+
+    const messages = validateSchema(schema).errors.map((error) => error.message);
+    expect(messages).toEqual(expect.arrayContaining([
+      'Only object and array fields may define child fields',
+      'object fields must define at least one child field',
+      'Unknown condition field: missing',
+      'Unknown dependency field: missing',
+      'A field cannot depend on itself',
+      'min must not exceed max',
+      'minItems must not exceed maxItems',
+      'multipleOf must be greater than zero',
+      'pattern must be a valid regular expression',
+      'Duplicate option value: one',
+      'URL data sources require a URL',
+    ]));
+  });
