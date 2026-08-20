@@ -17,7 +17,7 @@ export function validateSchema(schema: FormSchema): SchemaValidationResult {
   const errors: SchemaValidationError[] = [];
   const names = new Set<string>();
 
-  function validateFields(fields: FieldSchema[], path = ''): void {
+  function validateFields(fields: readonly FieldSchema[], path = ''): void {
     for (const field of fields) {
       const fieldPath = path ? `${path}.${field.name}` : field.name;
 

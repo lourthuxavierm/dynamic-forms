@@ -1,4 +1,4 @@
-import type { ValidationError, ValidationResult, Validator } from './types';
+import type { ValidationError, ValidationResult, Validator, ValidatorResult } from './types';
 
 export async function validateField<T>(
   field: string,
@@ -9,18 +9,15 @@ export async function validateField<T>(
   const errors: ValidationError[] = [];
 
   for (const validator of validators) {
-    const message = await validator(value, values);
-
-    if (message) {
-      errors.push({
-        field,
-        message,
-      });
-    }
+    const result = await validator(value, values);
+    if (result) errors.push(toValidationError(field, result));
   }
 
-  return {
-    valid: errors.length === 0,
-    errors,
-  };
+  return { valid: errors.length === 0, errors };
+}
+
+function toValidationError(field: string, result: Exclude<ValidatorResult, undefined>): ValidationError {
+  return typeof result === 'string'
+    ? { field, code: 'custom', message: result }
+    : { field, code: result.code, message: result.message };
 }

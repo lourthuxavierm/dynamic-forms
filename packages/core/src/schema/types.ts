@@ -1,3 +1,6 @@
+import type { FieldCondition } from '../conditions';
+import type { DataSourceConfig } from '../datasource';
+
 export type FieldType =
   // Core inputs
   | 'text'
@@ -54,7 +57,7 @@ export interface FieldOption {
   label: string;
   value: string | number | boolean;
   disabled?: boolean;
-  children?: FieldOption[];
+  children?: readonly FieldOption[];
 }
 
 export interface FieldValidation {
@@ -71,6 +74,46 @@ export interface FieldValidation {
   uniqueItems?: boolean;
 }
 
+
+export interface TextFieldConfig {
+  multiline?: boolean;
+  rows?: number;
+}
+
+export interface NumericFieldConfig {
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+export interface CurrencyFieldConfig extends NumericFieldConfig {
+  currency?: string;
+  locale?: string;
+}
+
+export interface ChoiceFieldConfig {
+  multiple?: boolean;
+  searchable?: boolean;
+}
+
+export interface DateTimeFieldConfig {
+  minDate?: string;
+  maxDate?: string;
+}
+
+export interface MaskFieldConfig {
+  mask?: string;
+  length?: number;
+}
+
+export type FieldConfig =
+  | TextFieldConfig
+  | NumericFieldConfig
+  | CurrencyFieldConfig
+  | ChoiceFieldConfig
+  | DateTimeFieldConfig
+  | MaskFieldConfig
+  | Record<string, unknown>;
 export interface FieldSchema {
   name: string;
   type: FieldType | string;
@@ -79,12 +122,21 @@ export interface FieldSchema {
   placeholder?: string;
   description?: string;
   disabled?: boolean;
-  options?: FieldOption[];
+  readOnly?: boolean;
+  visibleWhen?: FieldCondition;
+  disabledWhen?: FieldCondition;
+  requiredWhen?: FieldCondition;
+  readOnlyWhen?: FieldCondition;
+  dependsOn?: readonly string[];
+  resetOnDependencyChange?: boolean;
+  dataSource?: DataSourceConfig;
+  options?: readonly FieldOption[];
+  config?: FieldConfig;
   validation?: FieldValidation;
   /**
    * Child fields for 'object' or 'array' types.
    */
-  fields?: FieldSchema[];
+  fields?: readonly FieldSchema[];
   /**
    * Custom metadata for the field.
    */
@@ -93,7 +145,7 @@ export interface FieldSchema {
 
 export interface FormSchema {
   id: string;
-  fields: FieldSchema[];
+  fields: readonly FieldSchema[];
   /**
    * Version of the schema.
    */
@@ -106,22 +158,22 @@ export type FieldValue = any;
  * Helper to infer the TypeScript type of form values from a schema.
  * Note: This is a simplified version and might need refinement for complex schemas.
  */
-export type InferSchemaType<T extends FormSchema | FieldSchema[]> = T extends FormSchema
+export type InferSchemaType<T extends FormSchema | readonly FieldSchema[]> = T extends FormSchema
   ? InferFieldsType<T['fields']>
-  : T extends FieldSchema[]
+  : T extends readonly FieldSchema[]
   ? InferFieldsType<T>
   : never;
 
-type InferFieldsType<T extends FieldSchema[]> = {
+type InferFieldsType<T extends readonly FieldSchema[]> = {
   [K in T[number] as K['name']]: InferFieldType<K>;
 };
 
 type InferFieldType<T extends FieldSchema> = T['type'] extends 'object'
-  ? T['fields'] extends FieldSchema[]
+  ? T['fields'] extends readonly FieldSchema[]
     ? InferFieldsType<T['fields']>
     : Record<string, any>
   : T['type'] extends 'array'
-  ? T['fields'] extends FieldSchema[]
+  ? T['fields'] extends readonly FieldSchema[]
     ? InferFieldsType<T['fields']>[]
     : any[]
   : T['type'] extends 'number' | 'integer' | 'decimal'

@@ -1,7 +1,10 @@
-export interface ValidationError {
-  field: string;
+export interface ValidationIssue {
+  code: string;
   message: string;
-  code?: string;
+}
+
+export interface ValidationError extends ValidationIssue {
+  field: string;
 }
 
 export interface ValidationResult {
@@ -9,7 +12,9 @@ export interface ValidationResult {
   errors: ValidationError[];
 }
 
+export type ValidatorResult = string | ValidationIssue | undefined;
+
 export type Validator<T = unknown> = (
   value: T,
   values: Record<string, unknown>,
-) => string | undefined | Promise<string | undefined>;
+) => ValidatorResult | Promise<ValidatorResult>;

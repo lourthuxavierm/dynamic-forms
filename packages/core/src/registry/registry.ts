@@ -1,18 +1,27 @@
-import type { FieldType } from "../schema";
+import type { FieldDefinition, RegistryOptions } from './types';
 
-export interface FieldDefinition {
-  type: FieldType | string;
-  metadata?: Record<string, unknown>;
-}
+export class FieldRegistry<TComponent = any> {
+  private readonly fields = new Map<string, FieldDefinition<TComponent>>();
+  private readonly options: RegistryOptions;
 
-export class FieldRegistry {
-  private readonly fields = new Map<string, FieldDefinition>();
+  constructor(options: RegistryOptions = { allowOverrides: true }) {
+    this.options = options;
+  }
 
-  register(definition: FieldDefinition): void {
+  register(definition: FieldDefinition<TComponent>): void {
+    if (!this.options.allowOverrides && this.fields.has(definition.type)) {
+      throw new Error(
+        `Field type "${definition.type}" is already registered and overrides are disabled.`
+      );
+    }
     this.fields.set(definition.type, definition);
   }
 
-  get(type: string): FieldDefinition | undefined {
+  registerMany(definitions: FieldDefinition<TComponent>[]): void {
+    definitions.forEach((def) => this.register(def));
+  }
+
+  get(type: string): FieldDefinition<TComponent> | undefined {
     return this.fields.get(type);
   }
 
@@ -24,11 +33,19 @@ export class FieldRegistry {
     this.fields.delete(type);
   }
 
+  override(type: string, definition: FieldDefinition<TComponent>): void {
+    this.fields.set(type, { ...definition, type });
+  }
+
   clear(): void {
     this.fields.clear();
   }
 
   getTypes(): string[] {
     return Array.from(this.fields.keys());
+  }
+
+  getAll(): FieldDefinition<TComponent>[] {
+    return Array.from(this.fields.values());
   }
 }
