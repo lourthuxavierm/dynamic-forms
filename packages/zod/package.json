@@ -1,0 +1,30 @@
+{
+    "name":  "@dynamic-forms/zod",
+    "version":  "0.1.0",
+    "description":  "Zod validation adapter for Dynamic Forms",
+    "license":  "MIT",
+    "main":  "./dist/index.js",
+    "module":  "./dist/index.mjs",
+    "types":  "./dist/index.d.ts",
+    "exports":  {
+                    ".":  {
+                              "types":  "./dist/index.d.ts",
+                              "import":  "./dist/index.mjs",
+                              "require":  "./dist/index.js"
+                          }
+                },
+    "files":  [
+                  "dist"
+              ],
+    "peerDependencies":  {
+                             "zod":  "^3.0.0 || ^4.0.0"
+                         },
+    "dependencies":  {
+                         "@dynamic-forms/core":  "workspace:*"
+                     },
+    "scripts":  {
+                    "build":  "tsup",
+                    "test":  "vitest run",
+                    "typecheck":  "tsc --noEmit"
+                }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "dynamic-forms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Framework-independent dynamic forms monorepo",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "test:e2e": "playwright test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "latest",
+    "@testing-library/react": "latest",
+    "playwright": "latest",
+    "tsup": "latest",
+    "turbo": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vitepress": "latest",
+    "vitest": "latest"
+  }
+}
+

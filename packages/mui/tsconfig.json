@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+, "../core/validation/types.ts", "../core/validation/validator.ts", "../core/validation/schemaValidators.ts"  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
