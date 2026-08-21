@@ -4,6 +4,7 @@ export * from './MuiRadio';
 export * from './MuiTextarea';
 export * from './MuiForm';
 export * from './MuiFieldShell';
+export * from './MuiFieldLoading';
 export * from './MuiFieldError';
 export * from './MuiFieldErrorBoundary';
 export * from './fields/MuiTextField';

@@ -1,4 +1,5 @@
 import type { FieldSchema } from '@dynamic-forms/core';
+import type { Ref } from 'react';
 import { MuiFieldErrorBoundary } from '../components/MuiFieldErrorBoundary';
 import { warnInMuiDevelopment } from '../development';
 import type { MuiFieldRegistry } from '../registry';
@@ -6,10 +7,11 @@ import type { MuiFieldRegistry } from '../registry';
 export interface MuiFieldRendererProps {
   field: FieldSchema;
   registry: MuiFieldRegistry;
+  inputRef?: Ref<HTMLElement>;
 }
 
 /** Renders one Core field through the MUI registry. */
-export function MuiFieldRenderer({ field, registry }: MuiFieldRendererProps) {
+export function MuiFieldRenderer({ field, registry, inputRef }: MuiFieldRendererProps) {
   const Component = registry[field.type];
   if (!Component) {
     const knownTypes = Object.keys(registry).sort();
@@ -33,6 +35,7 @@ export function MuiFieldRenderer({ field, registry }: MuiFieldRendererProps) {
         validation={field.validation}
         fullWidth
         options={field.options}
+        inputRef={inputRef}
       />
     </MuiFieldErrorBoundary>
   );
