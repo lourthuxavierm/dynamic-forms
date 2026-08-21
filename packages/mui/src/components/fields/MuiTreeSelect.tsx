@@ -11,7 +11,7 @@ import { useField } from "@dynamic-forms/react";
 import type { FieldOption } from "@dynamic-forms/core";
 
 export interface MuiTreeOption extends FieldOption {
-  children?: MuiTreeOption[];
+  children?: readonly MuiTreeOption[];
 }
 
 export interface MuiTreeSelectProps {
@@ -20,7 +20,7 @@ export interface MuiTreeSelectProps {
   placeholder?: string;
   disabled?: boolean;
   fullWidth?: boolean;
-  options?: MuiTreeOption[];
+  options?: readonly MuiTreeOption[];
 }
 
 export function MuiTreeSelect({
@@ -34,7 +34,7 @@ export function MuiTreeSelect({
   const field = useField<string | number | boolean>(name);
 
   const flattenOptions = (
-    items: MuiTreeOption[],
+    items: readonly MuiTreeOption[],
   ): MuiTreeOption[] => {
     return items.flatMap((item) => [
       item,

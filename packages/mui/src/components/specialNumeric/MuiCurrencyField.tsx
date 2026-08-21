@@ -28,7 +28,7 @@ export function MuiCurrencyField({
   disabled = false,
   fullWidth = true,
 }: MuiCurrencyFieldProps) {
-  const field = useField<number>(name);
+  const field = useField<number | undefined>(name);
 
   const [inputValue, setInputValue] =
     useState("");

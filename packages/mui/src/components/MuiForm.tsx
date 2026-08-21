@@ -1,105 +1,32 @@
-import type { FormEvent } from "react";
-
-import type {
-  FormSchema
-} from "@dynamic-forms/core";
-
-import {
-  useFormContext
-} from "@dynamic-forms/react";
-
-import {
-  MuiFieldRenderer
-} from "../renderer";
-
-import {
-  createDefaultMuiRegistry
-} from "../registry";
-
-import type {
-  MuiFieldRegistry
-} from "../registry";
+import type { FormEvent } from 'react';
+import { Button } from '@mui/material';
+import type { FormSchema } from '@dynamic-forms/core';
+import { useFormContext } from '@dynamic-forms/react';
+import { createDefaultMuiRegistry, type MuiFieldRegistry, type MuiFieldRegistryOverrides } from '../registry';
+import { MuiFormRenderer, type MuiLayoutNode } from '../renderer';
 
 export interface MuiFormProps {
   schema: FormSchema;
-  registry?: MuiFieldRegistry;
-
-  onSubmit?: (
-    values: Record<string, unknown>
-  ) => void;
+  /** Additional or replacement controls merged over the standard MUI registry. */
+  registry?: MuiFieldRegistryOverrides;
+  layout?: readonly MuiLayoutNode[];
+  submitLabel?: string;
+  onSubmit?: (values: Record<string, unknown>) => void | Promise<void>;
 }
 
-export function MuiForm({
-  schema,
-  registry,
-  onSubmit
-}: MuiFormProps) {
-  const {
-    store,
-    validateField
-  } = useFormContext();
+/** Form element, schema renderer, and default registry integration for MUI forms. */
+export function MuiForm({ schema, registry, layout, submitLabel = 'Submit', onSubmit }: MuiFormProps) {
+  const { store, validateForm } = useFormContext();
+  const fieldRegistry: MuiFieldRegistry = createDefaultMuiRegistry(registry);
 
-  const fieldRegistry =
-    registry ?? createDefaultMuiRegistry();
-
-  console.log(
-    "MUI REGISTRY:",
-    Object.keys(fieldRegistry)
-  );
-
-  console.log(
-    "URL COMPONENT:",
-    fieldRegistry.url
-  );
-
-  const handleSubmit = async (
-    event: FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    /*
-     * Validate every field in the schema.
-     */
-    const results = await Promise.all(
-      schema.fields.map(async (field) => {
-        store.setTouched(field.name, true);
-
-        return validateField(field.name);
-      })
-    );
-
-    /*
-     * Stop submission if at least one field is invalid.
-     */
-    const isValid = results.every(
-      (result) => result
-    );
-
-    if (!isValid) {
-      return;
-    }
-
-    /*
-     * Only submit valid values.
-     */
-    const values = store.getState().values;
-
-    onSubmit?.(values);
+    if (!await validateForm()) return;
+    await onSubmit?.(store.getState().values);
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      {schema.fields.map((field) => (
-        <MuiFieldRenderer
-          key={field.name}
-          field={field}
-          registry={fieldRegistry}
-        />
-      ))}
-
-      <button type="submit">
-        Submit
-      </button>
-    </form>
-  );
+  return <form noValidate onSubmit={handleSubmit}>
+    <MuiFormRenderer schema={schema} registry={fieldRegistry} layout={layout} />
+    <Button type="submit" variant="contained">{submitLabel}</Button>
+  </form>;
 }

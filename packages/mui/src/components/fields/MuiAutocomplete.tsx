@@ -53,7 +53,7 @@ export function MuiAutocomplete({
           String(option.value) === String(value.value)
         }
         onChange={(_, option) => {
-          field.setValue(option?.value);
+          if (option) field.setValue(option.value);
         }}
         onBlur={async () => {
           field.setTouched(true);

@@ -90,7 +90,7 @@ export function MuiOtpField({
 
   const handleKeyDown = (
     index: number,
-    event: React.KeyboardEvent<HTMLInputElement>,
+    event: React.KeyboardEvent,
   ) => {
     if (
       event.key === "Backspace" &&

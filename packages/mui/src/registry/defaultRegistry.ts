@@ -1,4 +1,5 @@
-﻿import type { MuiFieldRegistry } from './types';
+import type { MuiFieldRegistry, MuiFieldRegistryOverrides } from './types';
+import { mergeMuiRegistries } from './registry';
 
 import {
   MuiTextField,
@@ -40,8 +41,8 @@ import {
   MuiMaskField,
 } from '../components';
 
-export function createDefaultMuiRegistry(): MuiFieldRegistry {
-  return {
+export function createDefaultMuiRegistry(overrides: MuiFieldRegistryOverrides = {}): MuiFieldRegistry {
+  const defaults = {
     // Core
     text: MuiTextField,
     textarea: MuiTextarea,
@@ -87,4 +88,6 @@ export function createDefaultMuiRegistry(): MuiFieldRegistry {
     pin: MuiPinField,
     // mask: MuiMaskField,
   };
+
+  return mergeMuiRegistries(defaults, overrides);
 }

@@ -28,7 +28,7 @@ export function MuiRating({
   readOnly = false,
   size = "medium",
 }: MuiRatingProps) {
-  const field = useField<number>(name);
+  const field = useField<number | undefined>(name);
 
   const value =
     typeof field.value === "number"

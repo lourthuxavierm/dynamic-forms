@@ -1,68 +1,29 @@
-import type { FieldOption } from '@dynamic-forms/core';
-import type { ComponentType } from 'react';
+import type { FieldOption, FieldSchema, FieldValidation } from '@dynamic-forms/core';
+import type { ComponentType, Ref } from 'react';
 
-export interface MuiFieldProps {
+/** Shared contract for MUI controls registered with the schema renderer. */
+export interface MuiFieldProps<TField extends FieldSchema = FieldSchema, TValue = unknown> {
   name: string;
+  field?: TField;
+  value?: TValue;
   label?: string;
+  description?: string;
   placeholder?: string;
   disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
   fullWidth?: boolean;
-  options?: FieldOption[];
-}
-
-export interface BaseFormField {
-  name: string;
-  label?: string;
-  placeholder?: string;
-  disabled?: boolean;
-
+  options?: readonly FieldOption[];
   validation?: FieldValidation;
-
-  options?: FieldOption[];
+  inputRef?: Ref<HTMLElement>;
 }
 
-export interface NumericFieldConfig {
-  min?: number;
-  max?: number;
-  step?: number;
-}
+/** A permissive component boundary keeps existing and third-party controls compatible. */
+export type MuiFieldComponent = ComponentType<any>;
+export type MuiFieldRegistry = Readonly<Record<string, MuiFieldComponent>>;
+export type MuiFieldRegistryOverrides = Readonly<Record<string, MuiFieldComponent | undefined>>;
 
-export interface CurrencyFieldConfig {
-  currency?: string;
-  min?: number;
-  max?: number;
-  step?: number;
+export interface MuiFieldRegistration<TField extends FieldSchema = FieldSchema, TValue = unknown> {
+  type: string;
+  component: ComponentType<MuiFieldProps<TField, TValue>>;
 }
-
-export interface CurrencyFieldConfig {
-  currency?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-}
-
-export interface SliderFieldConfig {
-  min?: number;
-  max?: number;
-  step?: number;
-}
-
-export interface RatingFieldConfig {
-  max?: number;
-  precision?: number;
-}
-export interface PhoneFieldConfig {
-  defaultCountryCode?: string;
-}
-export interface OtpFieldConfig {
-  length?: number;
-}
-export interface PinFieldConfig {
-  length?: number;
-}
-export interface PinFieldConfig {
-  length?: number;
-}
-export type MuiFieldComponent = ComponentType<MuiFieldProps>;
-
-export type MuiFieldRegistry = Partial<Record<string, MuiFieldComponent>>;

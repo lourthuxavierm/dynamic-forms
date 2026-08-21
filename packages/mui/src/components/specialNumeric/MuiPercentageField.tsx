@@ -30,7 +30,7 @@ export function MuiPercentageField({
   disabled = false,
   fullWidth = true,
 }: MuiPercentageFieldProps) {
-  const field = useField<number>(name);
+  const field = useField<number | undefined>(name);
 
   const [inputValue, setInputValue] =
     useState("");

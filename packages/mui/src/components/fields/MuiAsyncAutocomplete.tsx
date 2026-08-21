@@ -65,7 +65,7 @@ export function MuiAsyncAutocomplete({
           }
         }}
         onChange={(_, option) => {
-          field.setValue(option?.value);
+          if (option) field.setValue(option.value);
         }}
         onBlur={async () => {
           field.setTouched(true);

@@ -1,43 +1,39 @@
-﻿import type { FormField } from "@dynamic-forms/core";
-
-import type {
-  MuiFieldRegistry
-} from "../registry";
+import type { FieldSchema } from '@dynamic-forms/core';
+import { MuiFieldErrorBoundary } from '../components/MuiFieldErrorBoundary';
+import { warnInMuiDevelopment } from '../development';
+import type { MuiFieldRegistry } from '../registry';
 
 export interface MuiFieldRendererProps {
-  field: FormField;
+  field: FieldSchema;
   registry: MuiFieldRegistry;
 }
-export function MuiFieldRenderer({
-  field,
-  registry,
-}: MuiFieldRendererProps) {
-  console.log(
-    "Field type:",
-    field.type,
-  );
 
-  console.log(
-    "Registered types:",
-    Object.keys(registry),
-  );
-
+/** Renders one Core field through the MUI registry. */
+export function MuiFieldRenderer({ field, registry }: MuiFieldRendererProps) {
   const Component = registry[field.type];
-
   if (!Component) {
-    throw new Error(
-      `No MUI component registered for field type "${field.type}"`
-    );
+    const knownTypes = Object.keys(registry).sort();
+    throw new Error(`No MUI component registered for field type "${field.type}". Registered types: ${knownTypes.join(', ') || 'none'}.`);
+  }
+  if (field.type === 'object' || field.type === 'array') {
+    warnInMuiDevelopment(`Field "${field.name}" uses structural type "${field.type}" before a structural renderer is registered.`);
   }
 
   return (
-    <Component
-      name={field.name}
-      label={field.label}
-      placeholder={field.placeholder}
-      disabled={field.disabled}
-      fullWidth
-      options={field.options}
-    />
+    <MuiFieldErrorBoundary fieldName={field.name}>
+      <Component
+        field={field}
+        name={field.name}
+        label={field.label}
+        description={field.description}
+        placeholder={field.placeholder}
+        disabled={field.disabled}
+        readOnly={field.readOnly}
+        required={field.validation?.required}
+        validation={field.validation}
+        fullWidth
+        options={field.options}
+      />
+    </MuiFieldErrorBoundary>
   );
 }

@@ -1,32 +1,17 @@
-import type { ComponentType } from "react";
+import type { MuiFieldComponent, MuiFieldRegistry, MuiFieldRegistryOverrides } from './types';
 
-export type MuiFieldComponent = ComponentType<any>;
-
-export interface MuiFieldRegistry {
-  register(
-    type: string,
-    component: MuiFieldComponent
-  ): void;
-
-  get(
-    type: string
-  ): MuiFieldComponent | undefined;
+/** Combines registries left-to-right; later entries intentionally override earlier entries. */
+export function mergeMuiRegistries(...registries: ReadonlyArray<MuiFieldRegistryOverrides>): MuiFieldRegistry {
+  const result: Record<string, MuiFieldComponent> = {};
+  for (const registry of registries) {
+    for (const [type, component] of Object.entries(registry)) {
+      if (component) result[type] = component;
+    }
+  }
+  return result;
 }
 
-export function createMuiRegistry(
-  initial: Record<string, MuiFieldComponent> = {}
-): MuiFieldRegistry {
-  const components = new Map<string, MuiFieldComponent>(
-    Object.entries(initial)
-  );
-
-  return {
-    register(type, component) {
-      components.set(type, component);
-    },
-
-    get(type) {
-      return components.get(type);
-    }
-  };
+/** Creates a registry without exposing mutable registry state to renderers. */
+export function createMuiRegistry(initial: MuiFieldRegistryOverrides = {}): MuiFieldRegistry {
+  return mergeMuiRegistries(initial);
 }
