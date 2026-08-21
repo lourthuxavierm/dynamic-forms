@@ -69,14 +69,18 @@ Bring `@dynamic-forms/core` to a stable, testable baseline that can support the 
 
 ## Phase 6 — Verification and API Readiness
 
-- [ ] Add unit tests for all FormStore operations and notification behavior.
-- [ ] Add tests for nested paths, array paths, reset behavior, batching, and unsubscription.
-- [ ] Add validation tests for every constraint, async validation, and cross-field validation.
-- [ ] Add schema validation tests for invalid references and malformed nested schemas.
-- [ ] Add dependency tests for chains, transitive updates, and cycles.
-- [ ] Add data-source and event-emitter tests.
-- [ ] Add public API/type tests for exports and `InferSchemaType`.
-- [ ] Document the finalized Core API and remove obsolete `@dynamic-ui/*` references.
+- [x] Add unit tests for all FormStore operations and notification behavior.
+- [x] Add tests for nested paths, array paths, reset behavior, batching, and unsubscription.
+- [x] Add validation tests for every constraint, async validation, and cross-field validation.
+- [x] Add schema validation tests for invalid references and malformed nested schemas.
+- [x] Add dependency tests for chains, transitive updates, and cycles.
+- [x] Add data-source and event-emitter tests.
+- [x] Add public API/type tests for exports and `InferSchemaType`.
+- [x] Document the finalized Core API and remove obsolete `@dynamic-ui/*` references.
+
+## Verification Note
+
+Core verification is complete: its typecheck, build, and 51-test suite pass. Repository-wide verification remains blocked outside `@dynamic-forms/core` by existing MUI/playground TypeScript errors and placeholder adapter packages (`react`, `rhf`, `zod`, and `json-schema`) with no test files.
 
 ## Definition of Done
 

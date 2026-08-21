@@ -13,6 +13,8 @@ export class ConditionController<T extends FormValues = FormValues> {
   private readonly fields = new Map<string, FieldSchema>();
   private readonly states = new Map<string, FieldConditionState>();
   private readonly unsubscribe: () => void;
+  private readonly listeners = new Set<() => void>();
+  private version = 0;
 
   constructor(store: FormStore<T>, schema: FormSchema, onChange?: (path: string, state: FieldConditionState) => void) {
     collectFields(schema.fields, '', this.fields);
@@ -21,7 +23,9 @@ export class ConditionController<T extends FormValues = FormValues> {
   }
 
   getState(path: string): FieldConditionState | undefined { return this.states.get(path); }
-  dispose(): void { this.unsubscribe(); }
+  getVersion(): number { return this.version; }
+  subscribe(listener: () => void): () => void { this.listeners.add(listener); return () => this.listeners.delete(listener); }
+  dispose(): void { this.unsubscribe(); this.listeners.clear(); }
 
   private recalculate(values: T, onChange?: (path: string, state: FieldConditionState) => void): void {
     for (const [path, field] of this.fields) {
@@ -34,7 +38,9 @@ export class ConditionController<T extends FormValues = FormValues> {
       const previous = this.states.get(path);
       if (!previous || Object.keys(next).some((key) => next[key as keyof FieldConditionState] !== previous[key as keyof FieldConditionState])) {
         this.states.set(path, next);
+        this.version += 1;
         onChange?.(path, next);
+        for (const listener of this.listeners) listener();
       }
     }
   }
