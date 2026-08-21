@@ -19,7 +19,7 @@ export function MuiIntegerField({
   disabled = false,
   fullWidth = true,
 }: MuiIntegerFieldProps) {
-  const field = useField<number>(name);
+  const field = useField<number | undefined>(name);
 
   return (
     <TextField
@@ -41,7 +41,7 @@ export function MuiIntegerField({
         const value = event.target.value;
 
         if (value === "") {
-          field.setValue(0);
+          field.setValue(undefined);
           return;
         }
 

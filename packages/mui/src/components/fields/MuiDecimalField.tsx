@@ -19,7 +19,7 @@ export function MuiDecimalField({
   disabled = false,
   fullWidth = true,
 }: MuiDecimalFieldProps) {
-  const field = useField<number>(name);
+  const field = useField<number | undefined>(name);
 
   return (
     <TextField
@@ -41,7 +41,7 @@ export function MuiDecimalField({
         const value = event.target.value;
 
         if (value === "") {
-          field.setValue(0);
+          field.setValue(undefined);
           return;
         }
 

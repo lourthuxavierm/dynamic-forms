@@ -1,4 +1,4 @@
-﻿import {
+import {
   FormControl,
   FormHelperText,
   InputLabel,
@@ -78,6 +78,7 @@ export function MuiSelect({
           <MenuItem
             key={String(option.value)}
             value={String(option.value)}
+            disabled={option.disabled}
           >
             {option.label}
           </MenuItem>

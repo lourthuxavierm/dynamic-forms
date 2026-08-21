@@ -49,6 +49,7 @@ export function MuiAutocomplete({
         disabled={disabled}
         fullWidth={fullWidth}
         getOptionLabel={(option) => option.label}
+        getOptionDisabled={(option) => Boolean(option.disabled)}
         isOptionEqualToValue={(option, value) =>
           String(option.value) === String(value.value)
         }

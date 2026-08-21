@@ -100,6 +100,7 @@ export function MuiMultiSelect({
           <MenuItem
             key={String(option.value)}
             value={String(option.value)}
+            disabled={option.disabled}
           >
             {option.label}
           </MenuItem>
