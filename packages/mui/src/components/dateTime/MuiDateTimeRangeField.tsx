@@ -1,107 +1,25 @@
-import TextField from "@mui/material/TextField";
-
-import {
-  useField,
-} from "@dynamic-forms/react";
+import type { DateTimeFieldConfig, FieldSchema } from '@dynamic-forms/core';
+import type { Ref } from 'react';
+import { MuiTemporalRangeField } from './MuiTemporalRangeField';
 
 export interface MuiDateTimeRangeFieldProps {
   name: string;
+  field?: FieldSchema;
   label?: string;
   startLabel?: string;
   endLabel?: string;
   disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
   fullWidth?: boolean;
+  min?: string;
+  max?: string;
+  step?: number;
+  startInputRef?: Ref<HTMLElement>;
+  endInputRef?: Ref<HTMLElement>;
 }
 
-export function MuiDateTimeRangeField({
-  name,
-  label,
-  startLabel = "Start Date & Time",
-  endLabel = "End Date & Time",
-  disabled = false,
-  fullWidth = true,
-}: MuiDateTimeRangeFieldProps) {
-  const field = useField<[string, string]>(name);
-
-  const value = field.value ?? ["", ""];
-
-  const [startDateTime, endDateTime] = value;
-
-  const setRange = (
-    start: string,
-    end: string,
-  ) => {
-    field.setValue([
-      start,
-      end,
-    ]);
-  };
-
-  const handleBlur = async () => {
-    field.setTouched(true);
-    await field.validate();
-  };
-
-  return (
-    <div>
-      {label && (
-        <div style={{ marginBottom: 8 }}>
-          {label}
-        </div>
-      )}
-
-      <div
-        style={{
-          display: "flex",
-          gap: 16,
-        }}
-      >
-        <TextField
-          name={`${field.name}.start`}
-          value={startDateTime}
-          label={startLabel}
-          type="datetime-local"
-          disabled={disabled}
-          fullWidth={fullWidth}
-          error={Boolean(field.error)}
-          helperText={field.error ?? " "}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-          }}
-          onChange={(event) => {
-            setRange(
-              event.target.value,
-              endDateTime,
-            );
-          }}
-          onBlur={handleBlur}
-        />
-
-        <TextField
-          name={`${field.name}.end`}
-          value={endDateTime}
-          label={endLabel}
-          type="datetime-local"
-          disabled={disabled}
-          fullWidth={fullWidth}
-          error={Boolean(field.error)}
-          helperText={field.error ?? " "}
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-          }}
-          onChange={(event) => {
-            setRange(
-              startDateTime,
-              event.target.value,
-            );
-          }}
-          onBlur={handleBlur}
-        />
-      </div>
-    </div>
-  );
+export function MuiDateTimeRangeField({ field, min, max, startLabel = 'Start date and time', endLabel = 'End date and time', ...props }: MuiDateTimeRangeFieldProps) {
+  const config = field?.config as DateTimeFieldConfig | undefined;
+  return <MuiTemporalRangeField {...props} type="datetime-local" startLabel={startLabel} endLabel={endLabel} min={min ?? config?.minDate} max={max ?? config?.maxDate} />;
 }

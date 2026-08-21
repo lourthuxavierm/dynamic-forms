@@ -1,47 +1,47 @@
-import TextField from "@mui/material/TextField";
-
-import {
-  useField
-} from "@dynamic-forms/react";
+import type { DateTimeFieldConfig, FieldSchema } from '@dynamic-forms/core';
+import type { Ref } from 'react';
+import { useField } from '@dynamic-forms/react';
+import { MuiTemporalField } from './MuiTemporalField';
 
 export interface MuiDateFieldProps {
   name: string;
+  field?: FieldSchema;
   label?: string;
   disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
   fullWidth?: boolean;
+  min?: string;
+  max?: string;
+  isDateDisabled?: (value: string) => boolean;
+  disabledDateMessage?: string;
+  inputRef?: Ref<HTMLElement>;
 }
 
 export function MuiDateField({
-  name,
-  label,
-  disabled = false,
-  fullWidth = true
+  field: schemaField,
+  min,
+  max,
+  isDateDisabled,
+  disabledDateMessage = 'This date is unavailable',
+  ...props
 }: MuiDateFieldProps) {
-  const field = useField<string>(name);
+  const config = schemaField?.config as DateTimeFieldConfig | undefined;
+  const field = useField<string | undefined>(props.name);
 
   return (
-    <TextField
-      name={field.name}
-      value={field.value ?? ""}
-      label={label}
+    <MuiTemporalField
+      {...props}
       type="date"
-      disabled={disabled}
-      fullWidth={fullWidth}
-      error={Boolean(field.error)}
-      helperText={field.error ?? " "}
-      slotProps={{
-        inputLabel: {
-          shrink: true
+      min={min ?? config?.minDate}
+      max={max ?? config?.maxDate}
+      onValueChange={(value) => {
+        if (value && isDateDisabled?.(value)) {
+          field.setError(disabledDateMessage);
+          return false;
         }
-      }}
-      onChange={(event) => {
-        field.setValue(
-          event.target.value
-        );
-      }}
-      onBlur={async () => {
-        field.setTouched(true);
-        await field.validate();
+        if (field.error === disabledDateMessage) field.clearError();
+        return true;
       }}
     />
   );

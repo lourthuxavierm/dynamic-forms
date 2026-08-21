@@ -1,48 +1,21 @@
-import TextField from "@mui/material/TextField";
-
-import {
-  useField,
-} from "@dynamic-forms/react";
+import type { DateTimeFieldConfig, FieldSchema } from '@dynamic-forms/core';
+import type { Ref } from 'react';
+import { MuiTemporalField } from './MuiTemporalField';
 
 export interface MuiMonthFieldProps {
   name: string;
+  field?: FieldSchema;
   label?: string;
   disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
   fullWidth?: boolean;
+  min?: string;
+  max?: string;
+  inputRef?: Ref<HTMLElement>;
 }
 
-export function MuiMonthField({
-  name,
-  label,
-  disabled = false,
-  fullWidth = true,
-}: MuiMonthFieldProps) {
-  const field = useField<string>(name);
-
-  return (
-    <TextField
-      name={field.name}
-      value={field.value ?? ""}
-      label={label}
-      type="month"
-      disabled={disabled}
-      fullWidth={fullWidth}
-      error={Boolean(field.error)}
-      helperText={field.error ?? " "}
-      slotProps={{
-        inputLabel: {
-          shrink: true,
-        },
-      }}
-      onChange={(event) => {
-        field.setValue(
-          event.target.value,
-        );
-      }}
-      onBlur={async () => {
-        field.setTouched(true);
-        await field.validate();
-      }}
-    />
-  );
+export function MuiMonthField({ field, min, max, ...props }: MuiMonthFieldProps) {
+  const config = field?.config as DateTimeFieldConfig | undefined;
+  return <MuiTemporalField {...props} type="month" min={min ?? config?.minDate} max={max ?? config?.maxDate} />;
 }

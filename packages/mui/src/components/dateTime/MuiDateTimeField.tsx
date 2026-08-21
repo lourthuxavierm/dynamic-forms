@@ -1,48 +1,22 @@
-import TextField from "@mui/material/TextField";
-
-import {
-  useField,
-} from "@dynamic-forms/react";
+import type { DateTimeFieldConfig, FieldSchema } from '@dynamic-forms/core';
+import type { Ref } from 'react';
+import { MuiTemporalField } from './MuiTemporalField';
 
 export interface MuiDateTimeFieldProps {
   name: string;
+  field?: FieldSchema;
   label?: string;
   disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
   fullWidth?: boolean;
+  min?: string;
+  max?: string;
+  step?: number;
+  inputRef?: Ref<HTMLElement>;
 }
 
-export function MuiDateTimeField({
-  name,
-  label,
-  disabled = false,
-  fullWidth = true,
-}: MuiDateTimeFieldProps) {
-  const field = useField<string>(name);
-
-  return (
-    <TextField
-      name={field.name}
-      value={field.value ?? ""}
-      label={label}
-      type="datetime-local"
-      disabled={disabled}
-      fullWidth={fullWidth}
-      error={Boolean(field.error)}
-      helperText={field.error ?? " "}
-      slotProps={{
-        inputLabel: {
-          shrink: true,
-        },
-      }}
-      onChange={(event) => {
-        field.setValue(
-          event.target.value,
-        );
-      }}
-      onBlur={async () => {
-        field.setTouched(true);
-        await field.validate();
-      }}
-    />
-  );
+export function MuiDateTimeField({ field, min, max, ...props }: MuiDateTimeFieldProps) {
+  const config = field?.config as DateTimeFieldConfig | undefined;
+  return <MuiTemporalField {...props} type="datetime-local" min={min ?? config?.minDate} max={max ?? config?.maxDate} />;
 }
