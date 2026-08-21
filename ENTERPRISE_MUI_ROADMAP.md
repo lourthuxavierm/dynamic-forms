@@ -19,8 +19,8 @@
 - [x] **P0** Implement `MuiFieldRenderer` with useful unknown-control errors.
 - [x] **P0** Implement `MuiFormRenderer` for fields, groups and layouts.
 - [x] **P0** Keep React and MUI as peer dependencies; the native v1 date strategy requires no date-library dependency.
-- [ ] **P0** Export ESM, CJS and TypeScript declarations.
-- [ ] **P0** Verify tree-shaking and prevent side effects.
+- [x] **P0** Export ESM, CJS and TypeScript declarations.
+- [~] **P0** Verify tree-shaking and prevent side effects. `sideEffects: false` is configured; consumer-level verification is still pending.
 - [ ] **P0** Define consistent controlled/uncontrolled value behavior.
 - [x] **P0** Add component-level error boundaries and development warnings.
 - [x] **P1** Support registry extension without replacing default controls.
@@ -283,142 +283,42 @@
 - [ ] **P1** Maintain a compatibility matrix for Core/React/MUI packages.
 - [ ] **P1** Establish issue templates and support expectations.
 
-## Senior delivery plan
+## Recommended implementation order
 
-### Delivery principles
+### Milestone A — Stable renderer foundation
 
-- Work in vertical slices: a control is not complete until it is registered, rendered, accessible, tested, and documented.
-- Keep Core schema contracts framework-neutral; MUI-specific props belong in the MUI adapter or registry metadata.
-- Keep the package releasable at the end of every phase: typecheck, tests, and build must pass.
-- Do not expand the stable control set until the shared field infrastructure is in place.
+1. Shared field contract and shell
+2. Registry and renderer
+3. Text, number, textarea, select, checkbox, radio and date
+4. Submit validation and focus-on-error
+5. Accessibility baseline
+6. Unit and integration tests
 
-### Phase 0 - Recover the engineering baseline [x]
+### Milestone B — Enterprise form essentials
 
-**Goal:** Make `@dynamic-forms/mui` safe to change and establish a trustworthy CI signal.
+1. Email, password, integer, decimal and hidden inputs
+2. Multi-select, autocomplete, checkbox group, radio group and switch
+3. Nested objects and arrays
+4. Responsive layouts and sections
+5. Async data-source states and cascading selections
+6. Conditions and permissions
 
-**Deliverables**
+### Milestone C — Production hardening
 
-- Resolve every current TypeScript and build error, including Core imports, registry variance, and strict-null issues.
-- Remove duplicate/dead type declarations and development `console.log` output.
-- Align package metadata with `@dynamic-forms/react`: correct peer dependencies, `sideEffects: false`, and verified exports.
-- Add Vitest plus a DOM environment and baseline tests for package exports, registry lookup, renderer failures, and one rendered field.
+1. Date/time completeness
+2. Currency, percentage, file upload and advanced selections
+3. Dark mode, RTL and localization
+4. Performance benchmarks
+5. Visual regression and accessibility verification
+6. Complete documentation and playground
 
-**Exit gate:** `pnpm --filter @dynamic-forms/mui typecheck`, `test`, and `build` pass from a clean checkout.
+### Milestone D — Advanced controls
 
-**Verified 2026-08-22:** typecheck passed; 3 baseline tests passed; ESM, CJS, and TypeScript declaration build passed.
+1. Tree controls and virtualized datasets
+2. Array grid, rich text, code editor and signature
+3. Advanced layout renderers
+4. Deep DevTools integration
 
-### Phase 1 - Renderer foundation and field contract [x]
-
-**Goal:** Establish the abstraction every MUI control uses.
-
-**Deliverables**
-
-- Define generic `MuiFieldProps<TField, TValue>` and a typed registry API with default-plus-override composition.
-- Build `MuiFieldShell`, error/live-region behavior, label/description IDs, loading state, and ref forwarding.
-- Implement a schema-driven `MuiFormRenderer` supporting fields, groups, and baseline layouts.
-- Add development diagnostics and an error boundary with actionable unknown-control errors.
-
-**Exit gate:** Renderer and registry integration tests pass; a custom control can be registered without replacing defaults.
-
-**Verified 2026-08-22:** typecheck, 9 Phase 1 baseline/renderer/infrastructure tests, and production build pass. The full package suite has 13 passing tests.
-
-### Phase 2 - P0 input and selection controls [x]
-
-**Goal:** Deliver a consistent, production-quality baseline set of common controls.
-
-**Deliverables**
-
-- Complete text, textarea, email, URL, password, number, integer, decimal, and hidden fields.
-- Complete select, multi-select, autocomplete, async autocomplete, checkbox, checkbox group, radio, radio group, and switch.
-- Normalize values, blur/touched behavior, disabled/read-only behavior, error rendering, and focus handling through the shared shell.
-- Implement static options, disabled options, grouped options where supported, and predictable empty values.
-
-**Exit gate:** Each stable control meets the per-control definition of done and has component tests for value, blur, disabled, validation, and reset behavior.
-
-**Verified 2026-08-22:** typecheck, 10 component/renderer tests, and production build pass. Phase 4 owns full Core async-data-source integration and Phase 6 owns the complete accessibility suite.
-
-### Phase 3 - Dates, numeric values, and value adapters [x]
-
-**Goal:** Make value formats explicit and prevent UI formatting from leaking into form state.
-
-**Deliverables**
-
-- Select and document a single MUI date-adapter strategy; move date libraries to appropriate peer/optional-peer dependencies.
-- Complete date, time, and date-time fields with documented ISO storage and min/max/disabled-date support.
-- Complete currency and percentage controls; add slider, range slider, and rating where their Core schema support is stable.
-- Add pure, unit-tested adapters for number parsing, currency formatting, percentages, dates, and null/empty-value normalization.
-
-**Exit gate:** Locale/date adapter tests pass and form state contains the documented canonical values, never display-formatted strings.
-
-**Phase 3 verification 2026-08-22:** Complete: date/time/datetime, all temporal ranges, month/year, currency/percentage, slider/range-slider/rating, disabled-date rules, and pure value adapters. Typecheck, 28 tests, and production build pass.
-
-### Phase 4 - Form behavior: conditions, dependencies, and data sources
-
-**Goal:** Connect MUI rendering to the Core runtime without introducing global rerenders or stale UI.
-
-**Deliverables**
-
-- Map visible, disabled, required, and read-only conditions through the field shell.
-- Implement explicit hidden-value policy and focus handling when active fields disappear.
-- Integrate async data sources with loading, empty, error, retry, cancellation, debounced search, and dependent parameters.
-- Add stale-response protection and per-field subscriptions to preserve render isolation.
-
-**Exit gate:** Integration tests cover conditions, cascading controls, cancellation, retries, and unrelated-field render isolation.
-
-### Phase 5 - Nested forms and layouts
-
-**Goal:** Support real business forms with safe nested structures.
-
-**Deliverables**
-
-- Implement object and array renderers with stable item keys, add/remove/reorder, nested error navigation, and focus-on-error.
-- Deliver semantic sections, fieldsets, responsive grid, stacks, cards, tabs, and accordions.
-- Keep layout schema generic and place MUI layout implementations behind a renderer registry.
-
-**Exit gate:** Nested object/array tests cover validation, reset, reorder, removal confirmation, and accessibility semantics.
-
-### Phase 6 - Submission UX and accessibility baseline
-
-**Goal:** Make P0 forms usable and robust under real submission flows.
-
-**Deliverables**
-
-- Support configured validation modes, async and server errors, submission state, duplicate-submit protection, and first-invalid focus/scroll.
-- Add accessible error summary links, live error announcements, stable ARIA relationships, and keyboard-only navigation.
-- Verify required, invalid, disabled, read-only, and hidden-field semantics against WCAG 2.2 AA expectations.
-- Add automated accessibility checks with Testing Library and axe-core.
-
-**Exit gate:** Empty-submit, valid-submit, server-error, keyboard, and axe tests pass for every stable control.
-
-### Phase 7 - Theming, localization, performance, and developer experience
-
-**Goal:** Make the adapter operable in enterprise applications at scale.
-
-**Deliverables**
-
-- Support MUI theme variants/defaultProps/style overrides, dark mode, density, `sx`/slot overrides, RTL, and translated built-in strings.
-- Add render diagnostics, reproducible 100/500/1,000-field benchmarks, and bundle-size reporting/budgets.
-- Lazy-load advanced controls and virtualize large option sets only after measurements demonstrate need.
-- Build playground examples for all stable controls, validation, conditions, cascading sources, nested forms, and accessibility.
-
-**Exit gate:** Performance budgets are documented and met; playground and API documentation cover every stable public capability.
-
-### Phase 8 - Release hardening and v1 readiness
-
-**Goal:** Ship a supportable package, not just a passing implementation.
-
-**Deliverables**
-
-- Add version-matrix CI, external consumer fixtures, ESM/CJS/type export verification, semantic-release/changelog workflow, and dependency/license scanning.
-- Publish installation, migration, troubleshooting, accessibility, custom-control, theming, and localization documentation.
-- Establish deprecation policy, prerelease channels, provenance/2FA/protected publishing, issue templates, and support expectations.
-- Complete manual screen-reader, high-contrast, zoom, mobile picker, and visual-regression validation.
-
-**Exit gate:** Every P0 checklist item and the v1 release gate are complete; two external consumer applications validate the published package.
-
-### Deferred after v1
-
-Keep P2 controls and features outside the v1 critical path: rich text/code editors, capture/signature/document workflows, transfer lists, virtualized arrays, master-detail layouts, and advanced DevTools traces.
 ## Enterprise definition of done for every control
 
 A control is complete only when all applicable items below pass:
