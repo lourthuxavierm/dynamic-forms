@@ -1,0 +1,30 @@
+{
+  "name": "@dynamic-forms/html",
+  "version": "0.1.0",
+  "description": "Accessible native HTML adapter for Dynamic Forms",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.mjs", "require": "./dist/index.js" } },
+  "sideEffects": false,
+  "files": ["dist", "README.md"],
+  "peerDependencies": {
+    "@dynamic-forms/core": "workspace:*",
+    "@dynamic-forms/react": "workspace:*",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@dynamic-forms/core": "workspace:*",
+    "@dynamic-forms/react": "workspace:*",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "happy-dom": "^20.11.6"
+  }
+}
