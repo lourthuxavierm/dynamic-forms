@@ -1,24 +1,27 @@
 import type { FieldSchema, FormSchema } from '../schema';
+import { evaluateCondition } from '../conditions';
 import type { FormErrors, FormValidator } from '../store';
 import { getByPath } from '../store';
 import { validateField } from './validator';
 import type { ValidationIssue, Validator } from './types';
 
-export function createFieldValidators(field: FieldSchema): Validator[] {
+export interface FieldValidationOverrides { required?: boolean; }
+
+export function createFieldValidators(field: FieldSchema, overrides: FieldValidationOverrides = {}): Validator[] {
   const validation = field.validation;
-  if (!validation) return [];
+  if (!validation && !overrides.required) return [];
 
   const validators: Validator[] = [];
-  if (validation.required) validators.push(requiredValidator(field));
-  if (validation.minLength !== undefined) validators.push(minLengthValidator(field, validation.minLength));
-  if (validation.maxLength !== undefined) validators.push(maxLengthValidator(field, validation.maxLength));
-  if (validation.min !== undefined) validators.push(minValidator(field, validation.min));
-  if (validation.max !== undefined) validators.push(maxValidator(field, validation.max));
-  if (validation.pattern) validators.push(patternValidator(field, validation.pattern));
-  if (validation.multipleOf !== undefined) validators.push(multipleOfValidator(field, validation.multipleOf));
-  if (validation.minItems !== undefined) validators.push(minItemsValidator(field, validation.minItems));
-  if (validation.maxItems !== undefined) validators.push(maxItemsValidator(field, validation.maxItems));
-  if (validation.uniqueItems) validators.push(uniqueItemsValidator(field));
+  if (overrides.required ?? validation?.required) validators.push(requiredValidator(field));
+  if (validation?.minLength !== undefined) validators.push(minLengthValidator(field, validation?.minLength));
+  if (validation?.maxLength !== undefined) validators.push(maxLengthValidator(field, validation?.maxLength));
+  if (validation?.min !== undefined) validators.push(minValidator(field, validation?.min));
+  if (validation?.max !== undefined) validators.push(maxValidator(field, validation?.max));
+  if (validation?.pattern) validators.push(patternValidator(field, validation?.pattern));
+  if (validation?.multipleOf !== undefined) validators.push(multipleOfValidator(field, validation?.multipleOf));
+  if (validation?.minItems !== undefined) validators.push(minItemsValidator(field, validation?.minItems));
+  if (validation?.maxItems !== undefined) validators.push(maxItemsValidator(field, validation?.maxItems));
+  if (validation?.uniqueItems) validators.push(uniqueItemsValidator(field));
   return validators;
 }
 
@@ -33,8 +36,10 @@ export function createFormValidator(schema: FormSchema): FormValidator {
 async function validateFields(fields: readonly FieldSchema[], parentPath: string, values: Record<string, unknown>, errors: FormErrors): Promise<void> {
   for (const field of fields) {
     const path = parentPath ? `${parentPath}.${field.name}` : field.name;
+    if (field.visibleWhen && !evaluateCondition(field.visibleWhen, values)) continue;
     const value = getByPath(values, path);
-    const result = await validateField(path, value, values, createFieldValidators(field));
+    const conditionallyRequired = field.requiredWhen ? evaluateCondition(field.requiredWhen, values) : false;
+    const result = await validateField(path, value, values, createFieldValidators(field, { required: Boolean(field.validation?.required || conditionallyRequired) }));
     if (!result.valid) errors[path] = result.errors[0].message;
 
     if (!field.fields) continue;

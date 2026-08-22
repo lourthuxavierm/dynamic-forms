@@ -25,6 +25,7 @@ import {
   validateField,
 } from '@dynamic-forms/core';
 import { warnInDevelopment } from '../development';
+import { findFieldByPath } from '../schemaPaths';
 
 export type ValidationMode = 'onChange' | 'onBlur' | 'onSubmit' | 'manual';
 
@@ -93,9 +94,9 @@ export function FormProvider<T extends FormValues = FormValues>({
     const run = (validationRuns.current.get(name) ?? 0) + 1;
     validationRuns.current.set(name, run);
     setValidatingFields((current) => new Set(current).add(name));
-    const field = schema ? findField(schema.fields, name) : undefined;
+    const field = schema ? findFieldByPath(schema.fields, name) : undefined;
     if (!field) { setValidatingFields((current) => { const next = new Set(current); next.delete(name); return next; }); return true; }
-    const result = await validateField(name, resolvedStore.getValue(name), resolvedStore.getValues(), createFieldValidators(field));
+    const result = await validateField(name, resolvedStore.getValue(name), resolvedStore.getValues(), createFieldValidators(field, { required: Boolean(field.validation?.required || conditionController?.getState(name)?.required) }));
     const isLatest = validationRuns.current.get(name) === run;
     if (isLatest && result.valid) resolvedStore.clearError(name);
     else if (isLatest) resolvedStore.setError(name, result.errors[0].message);
@@ -178,16 +179,6 @@ export function useFormContext<T extends FormValues = FormValues>(): FormContext
   const context = useContext(FormContext);
   if (!context) throw new Error('useFormContext must be used inside <FormProvider>');
   return context as FormContextValue<T>;
-}
-
-function findField(fields: readonly FieldSchema[], name: string, parent = ''): FieldSchema | undefined {
-  for (const field of fields) {
-    const path = parent ? `${parent}.${field.name}` : field.name;
-    if (path === name) return field;
-    const nested = field.fields ? findField(field.fields, name, path) : undefined;
-    if (nested) return nested;
-  }
-  return undefined;
 }
 
 function focusFirstInvalidField(errors: Readonly<Record<string, string>>): void {

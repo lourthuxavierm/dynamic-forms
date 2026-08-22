@@ -5,6 +5,7 @@ import { useFieldState } from '../hooks/useFieldState';
 import { useFormContext } from '../context';
 import { warnInDevelopment } from '../development';
 import { fieldId } from './FormErrorSummary';
+import { findFieldByPath } from '../schemaPaths';
 
 export interface FieldAccessibilityProps {
   id: string;
@@ -19,6 +20,7 @@ export interface FieldAccessibilityProps {
   validationLiveRegion: { role: 'status'; 'aria-live': 'polite'; 'aria-atomic': true };
 }
 
+/** Stable renderer contract. Additions remain optional until the next major release. */
 export interface FieldComponentProps<T = unknown> {
   field: FieldSchema;
   name: string;
@@ -46,7 +48,7 @@ export interface DynamicFieldProps {
 
 export function DynamicField({ field: explicitField, name, type, render }: DynamicFieldProps) {
   const { registry, schema } = useFormContext();
-  const field = explicitField ?? (schema ? findField(schema.fields, name ?? '') : undefined);
+  const field = explicitField ?? (schema ? findFieldByPath(schema.fields, name ?? '') : undefined);
   if (!field) {
     warnInDevelopment(name ? `Unknown field path "${name}".` : 'DynamicField was rendered without a field or provider schema.');
     throw new Error(`DynamicField requires a field schema or a schema field named "${name}"`);
@@ -112,14 +114,4 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
     throw new Error(`Field type "${field.type}" is not registered`);
   }
   return <Component {...props} />;
-}
-
-function findField(fields: readonly FieldSchema[], name: string, parent = ''): FieldSchema | undefined {
-  for (const field of fields) {
-    const path = parent ? `${parent}.${field.name}` : field.name;
-    if (path === name) return field;
-    const nested = field.fields ? findField(field.fields, name, path) : undefined;
-    if (nested) return nested;
-  }
-  return undefined;
 }

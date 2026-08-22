@@ -5,3 +5,6 @@ export * from './useFormState';
 export * from './useWatch';
 export * from './useDataSource';
 export * from './useFormEvent';
+export * from './useFieldArray';
+export * from './useSection';
+export * from './useWizard';
