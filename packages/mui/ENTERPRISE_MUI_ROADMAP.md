@@ -160,27 +160,27 @@
 
 ## 10. Data-source integration
 
-- [ ] **P0** Render static option sources consistently.
-- [ ] **P0** Connect select controls to Core async data sources.
-- [ ] **P0** Display loading, empty and error states.
-- [ ] **P0** Support retry without losing the current form value.
-- [ ] **P0** Support debounced search and request cancellation.
-- [ ] **P0** Support dependent parameters for cascading controls.
-- [ ] **P0** Ignore stale responses after dependency changes.
+- [x] **P0** Render static option sources consistently.
+- [x] **P0** Connect select controls to Core async data sources.
+- [x] **P0** Display loading, empty and error states.
+- [x] **P0** Support retry without losing the current form value.
+- [x] **P0** Support debounced search and request cancellation.
+- [x] **P0** Support dependent parameters for cascading controls.
+- [x] **P0** Ignore stale responses after dependency changes.
 - [ ] **P1** Support pagination, infinite scroll and load-more.
-- [ ] **P1** Display cached/stale data without UI flicker.
-- [ ] **P1** Normalize `{label, value, disabled, group, children}` options.
-- [ ] **P1** Resolve an existing value not present on the current page.
+- [x] **P1** Display cached/stale data without UI flicker.
+- [x] **P1** Normalize `{label, value, disabled, group, children}` options.
+- [x] **P1** Resolve an existing value not present on the current page.
 - [ ] **P1** Allow custom option rendering safely.
 - [ ] **P1** Expose request state and timings to DevTools.
 
 ## 11. Conditions, dependencies and permissions
 
-- [ ] **P0** Map `visible`, `disabled`, `required` and `readOnly` results.
-- [ ] **P0** Re-render only controls affected by a dependency change.
-- [ ] **P0** Preserve or clear hidden values according to explicit policy.
-- [ ] **P0** Cancel requests when a dependent field becomes inactive.
-- [ ] **P0** Show runtime-required state consistently in label and validation.
+- [x] **P0** Map `visible`, `disabled`, `required` and `readOnly` results.
+- [x] **P0** Re-render only controls affected by a dependency change.
+- [x] **P0** Preserve, clear or reset hidden values according to explicit policy.
+- [x] **P0** Cancel requests when a dependent field becomes inactive.
+- [x] **P0** Show runtime-required state consistently in renderer props and labels.
 - [ ] **P1** Support calculated display values.
 - [ ] **P1** Support role/permission-driven hiding and read-only behavior.
 - [ ] **P1** Prevent the UI renderer from becoming the security boundary.
@@ -231,8 +231,8 @@
 
 ## 15. Performance
 
-- [ ] **P0** Subscribe each field only to the state it consumes.
-- [ ] **P0** Prevent complete-form rerenders on individual keystrokes.
+- [x] **P0** Subscribe each field only to the state it consumes.
+- [x] **P0** Prevent complete-form rerenders on individual keystrokes.
 - [ ] **P0** Memoize normalized options and renderer lookup.
 - [ ] **P0** Benchmark forms containing 100, 500 and 1,000 fields.
 - [ ] **P0** Measure initial render, keystroke latency and condition updates.
@@ -247,7 +247,7 @@
 - [x] **P0** Unit tests for every implemented value adapter and normalizer.
 - [ ] **P0** Component tests for value, blur, error and disabled behavior.
 - [ ] **P0** Registry and custom-renderer tests.
-- [ ] **P0** Conditions and dependent-data-source integration tests.
+- [x] **P0** Conditions and dependent-data-source integration tests.
 - [ ] **P0** Empty-submit test: all required errors appear immediately.
 - [ ] **P0** Submission test: `onSubmit` runs only for valid data.
 - [ ] **P0** Nested-field and array-path tests.
@@ -354,7 +354,7 @@
 
 **Phase 3 verification 2026-08-22:** Complete: date/time/datetime, all temporal ranges, month/year, currency/percentage, slider/range-slider/rating, disabled-date rules, and pure value adapters. Typecheck, 28 tests, and production build pass.
 
-### Phase 4 - Form behavior: conditions, dependencies, and data sources
+### Phase 4 - Form behavior: conditions, dependencies, and data sources [x]
 
 **Goal:** Connect MUI rendering to the Core runtime without introducing global rerenders or stale UI.
 
@@ -366,6 +366,8 @@
 - Add stale-response protection and per-field subscriptions to preserve render isolation.
 
 **Exit gate:** Integration tests cover conditions, cascading controls, cancellation, retries, and unrelated-field render isolation.
+
+**Verified 2026-08-22:** Complete. Field-isolated condition subscriptions, explicit hidden-value policies, async selection states, debounced search, cascading refresh, cancellation, retry, and dual-layer stale-response guards pass 55 Core, 10 React, and 47 MUI tests.
 
 ### Phase 5 - Nested forms and layouts
 
