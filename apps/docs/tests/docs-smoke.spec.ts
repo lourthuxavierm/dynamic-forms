@@ -120,3 +120,21 @@ test('validation laboratory covers schema, custom, async, server, warning, focus
   await page.getByRole('button', { name: 'Measure validation' }).click();
   await expect(page.getByText('Validation completed in', { exact: false })).toBeVisible();
 });
+test('conditions workbench explains compound, nested, role, and calculated rules', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4175/conditions');
+  await expect(page.getByRole('heading', { level: 1, name: 'Conditions and business rules' })).toBeVisible();
+  await expect(page.getByText('Declarative operators only', { exact: false })).toBeVisible();
+  await expect(page.getByLabel('Visual rule graph')).toContainText('FAIL');
+  await page.getByLabel('Profile region').click();
+  await page.getByRole('option', { name: 'European Union' }).click();
+  await expect(page.getByLabel('Visual rule graph')).toContainText('PASS');
+  await expect(page.getByLabel('Manager notes')).toBeVisible();
+  await page.getByRole('combobox').filter({ hasText: 'Editor' }).click();
+  await page.getByRole('option', { name: 'Admin' }).click();
+  await expect(page.getByText('Admin approval code is REQUIRED', { exact: false })).toBeVisible();
+  await page.getByLabel('Base salary').fill('200000');
+  await page.getByLabel('Bonus rate').fill('20');
+  await expect(page.getByLabel('State inspector')).toContainText('240000');
+  await expect(page.getByText('Unknown condition field: missingField')).toBeVisible();
+  await expect(page.getByLabel('Rule unit-test examples')).toContainText("describe('approvalCondition'");
+});

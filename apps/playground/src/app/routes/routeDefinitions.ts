@@ -5,7 +5,7 @@ export const routeDefinitions = [
   { id: 'basic-form', path: '/basic-form', title: 'Basic form', group: 'Start', status: 'available', priority: 'P0', description: 'Minimal validated form workflow.' },
   { id: 'fields', path: '/fields', title: 'Fields catalogue', group: 'Core concepts', status: 'available', priority: 'P0', description: 'Default MUI registry controls.' },
   { id: 'validation', path: '/validation', title: 'Validation', group: 'Core concepts', status: 'available', priority: 'P0', description: 'Validation modes and errors.' },
-  { id: 'conditions', path: '/conditions', title: 'Conditions', group: 'Core concepts', status: 'scaffolded', priority: 'P0', description: 'Visibility and business rules.' },
+  { id: 'conditions', path: '/conditions', title: 'Conditions', group: 'Core concepts', status: 'available', priority: 'P0', description: 'Visibility and business rules.' },
   { id: 'dependencies', path: '/dependencies', title: 'Dependencies', group: 'Core concepts', status: 'scaffolded', priority: 'P0', description: 'Dependent field behavior.' },
   { id: 'data-sources', path: '/data-sources', title: 'Data sources', group: 'Core concepts', status: 'scaffolded', priority: 'P0', description: 'Async loading and cancellation.' },
   { id: 'arrays', path: '/arrays', title: 'Arrays', group: 'Enterprise', status: 'planned', priority: 'P1', description: 'Repeatable field collections.' },
