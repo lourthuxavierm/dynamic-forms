@@ -1,0 +1,27 @@
+﻿name: Architecture
+on:
+  pull_request:
+    paths: ["packages/**", "scripts/check-package-boundaries.mjs", "docs/architecture/**", "package.json", "pnpm-lock.yaml", ".github/workflows/architecture.yml"]
+  push:
+    branches: [main]
+    paths: ["packages/**", "scripts/check-package-boundaries.mjs", "docs/architecture/**", "package.json", "pnpm-lock.yaml", ".github/workflows/architecture.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: architecture-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  boundaries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:boundaries
