@@ -16,3 +16,6 @@ export * from './temporalValues';
 export { createHtmlTemporalField, HtmlDateRangeField, HtmlTimeRangeField, HtmlDateTimeRangeField } from './temporal';
 export type { HtmlTemporalEnhancer, HtmlTemporalEnhancementContext } from './temporal';
 export * from './fileMedia';
+
+export * from './structural';
+export * from './layout';

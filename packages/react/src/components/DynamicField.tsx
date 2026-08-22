@@ -92,9 +92,9 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
     dirty: fieldState.dirty,
     isValidating: fieldState.isValidating,
     visible: fieldState.visible,
-    disabled: fieldState.disabled,
-    required: fieldState.required,
-    readOnly: fieldState.readOnly,
+    disabled: fieldState.disabled || Boolean(field.disabled),
+    required: fieldState.required || Boolean(field.validation?.required),
+    readOnly: fieldState.readOnly || Boolean(field.readOnly),
     accessibility: {
       id,
       labelId,

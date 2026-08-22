@@ -1,6 +1,7 @@
 import { type FormEvent, type ReactNode } from 'react';
 import type { FieldSchema, FormSchema } from '@dynamic-forms/core';
 import { useFormContext } from '../context';
+import { useFieldArray } from '../hooks/useFieldArray';
 import { DynamicField } from './DynamicField';
 import { FormErrorSummary } from './FormErrorSummary';
 
@@ -26,16 +27,31 @@ export function DynamicForm({ schema: explicitSchema, children, submitLabel = 'S
   return (
     <form onSubmit={handleSubmit} noValidate>
       {errorSummary && <FormErrorSummary />}
-      {schema.fields.map((field) => <SchemaField key={field.name} field={field} />)}
+      {schema.fields.map((field) => <SchemaField key={field.name} field={field} path={field.name} />)}
       {children}
       <button type="submit">{submitLabel}</button>
     </form>
   );
 }
 
-function SchemaField({ field }: { field: FieldSchema }) {
-  if ((field.type === 'object' || field.type === 'array') && field.fields) {
-    return <>{field.fields.map((child) => <SchemaField key={child.name} field={{ ...child, name: `${field.name}.${child.name}` }} />)}</>;
+function SchemaField({ field, path }: { field: FieldSchema; path: string }) {
+  if (field.type === 'object' && field.fields) {
+    return <fieldset><legend>{field.label ?? field.name}</legend>{field.fields.map((child) => <SchemaField key={child.name} field={child} path={`${path}.${child.name}`} />)}</fieldset>;
   }
-  return <DynamicField field={field} />;
+  if (field.type === 'array' && field.fields) return <SchemaArray field={field} path={path} />;
+  return <DynamicField field={{ ...field, name: path }} />;
+}
+
+function SchemaArray({ field, path }: { field: FieldSchema; path: string }) {
+  const array = useFieldArray(path);
+  const primitive = field.metadata?.primitiveItems === true || (field.fields?.length === 1 && field.fields[0].name === '$value');
+  return (
+    <fieldset>
+      <legend>{field.label ?? field.name}</legend>
+      {array.fields.map((item, index) => <fieldset key={item.id}><legend>Item {index + 1}</legend>{primitive
+        ? <DynamicField field={{ ...field.fields![0], name: `${path}[${index}]` }} />
+        : field.fields!.map((child) => <SchemaField key={child.name} field={child} path={`${path}[${index}].${child.name}`} />)
+      }</fieldset>)}
+    </fieldset>
+  );
 }

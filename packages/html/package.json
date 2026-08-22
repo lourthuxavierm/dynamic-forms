@@ -6,8 +6,11 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.mjs", "require": "./dist/index.js" } },
-  "sideEffects": false,
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.mjs", "require": "./dist/index.js" },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": ["*.css"],
   "files": ["dist", "README.md", "docs"],
   "peerDependencies": {
     "@dynamic-forms/core": "workspace:*",
@@ -17,7 +20,7 @@
   },
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest run --passWithNoTests && node scripts/verify-styles.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
