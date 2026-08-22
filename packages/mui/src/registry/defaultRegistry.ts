@@ -39,6 +39,11 @@ import {
   MuiOtpField,
   MuiPinField,
   MuiMaskField,
+  MuiFileUpload,
+  MuiMultiFileUpload,
+  MuiCameraCapture,
+  MuiSignaturePad,
+  MuiDocumentPreview,
 } from '../components';
 
 export function createDefaultMuiRegistry(overrides: MuiFieldRegistryOverrides = {}): MuiFieldRegistry {
@@ -87,6 +92,13 @@ export function createDefaultMuiRegistry(overrides: MuiFieldRegistryOverrides = 
     otp: MuiOtpField,
     pin: MuiPinField,
     // mask: MuiMaskField,
+
+    // File / Media
+    file: MuiFileUpload,
+    'multi-file': MuiMultiFileUpload,
+    camera: MuiCameraCapture,
+    signature: MuiSignaturePad,
+    'document-preview': MuiDocumentPreview,
   };
 
   return mergeMuiRegistries(defaults, overrides);

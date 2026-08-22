@@ -40,3 +40,4 @@ export * from './specialNumeric/MuiPhoneField';
 export * from './specialNumeric/MuiOtpField';
 export * from './specialNumeric/MuiPinField';
 export * from './specialNumeric/MuiMaskField';
+export * from './fileMedia';

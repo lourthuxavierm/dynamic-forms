@@ -48,6 +48,11 @@ export type FieldType =
   | 'otp'
   | 'pin'
   | 'mask'
+  | 'file'
+  | 'multi-file'
+  | 'camera'
+  | 'signature'
+  | 'document-preview'
 
   // Structural
   | 'object'
@@ -106,6 +111,14 @@ export interface MaskFieldConfig {
   length?: number;
 }
 
+export interface FileFieldConfig {
+  /** Comma-separated MIME types or extensions, matching the HTML accept attribute. */
+  accept?: string;
+  maxFileSize?: number;
+  maxFiles?: number;
+  imagePreview?: boolean;
+}
+
 export type FieldConfig =
   | TextFieldConfig
   | NumericFieldConfig
@@ -113,6 +126,7 @@ export type FieldConfig =
   | ChoiceFieldConfig
   | DateTimeFieldConfig
   | MaskFieldConfig
+  | FileFieldConfig
   | Record<string, unknown>;
 export interface FieldSchema {
   name: string;
