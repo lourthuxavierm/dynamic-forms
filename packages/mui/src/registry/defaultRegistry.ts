@@ -91,7 +91,7 @@ export function createDefaultMuiRegistry(overrides: MuiFieldRegistryOverrides = 
     phone: MuiPhoneField,
     otp: MuiOtpField,
     pin: MuiPinField,
-    // mask: MuiMaskField,
+    mask: MuiMaskField,
 
     // File / Media
     file: MuiFileUpload,
