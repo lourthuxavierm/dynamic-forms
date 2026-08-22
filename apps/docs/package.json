@@ -1,0 +1,13 @@
+{
+  "name": "@dynamic-forms/docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview .",
+    "verify": "node scripts/verify-docs.mjs",
+    "test:smoke": "playwright test --config playwright.config.ts"
+  }
+}

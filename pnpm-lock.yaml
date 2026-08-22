@@ -36,6 +36,8 @@ importers:
         specifier: latest
         version: 4.1.11(@types/node@26.2.0)(happy-dom@20.11.6)(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7))
 
+  apps/docs: {}
+
   apps/playground:
     dependencies:
       '@dynamic-forms/core':

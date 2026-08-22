@@ -11,7 +11,12 @@
     "test": "turbo run test",
     "test:e2e": "playwright test",
     "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "docs:dev": "pnpm --filter @dynamic-forms/docs dev",
+    "docs:build": "pnpm --filter @dynamic-forms/docs build",
+    "docs:preview": "pnpm --filter @dynamic-forms/docs preview",
+    "docs:verify": "pnpm --filter @dynamic-forms/docs verify",
+    "docs:test": "pnpm --filter @dynamic-forms/docs test:smoke"
   },
   "devDependencies": {
     "@testing-library/dom": "latest",
@@ -25,4 +30,3 @@
     "vitest": "latest"
   }
 }
-

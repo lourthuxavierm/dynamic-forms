@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title">
+  <title id="title">Dynamic Forms</title>
+  <rect width="48" height="48" rx="10" fill="#1976d2"/>
+  <path d="M13 13h22v5H13zm0 9h14v5H13zm0 9h18v5H13z" fill="#fff"/>
+  <circle cx="34" cy="24.5" r="4.5" fill="#90caf9"/>
+</svg>
