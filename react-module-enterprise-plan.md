@@ -100,9 +100,9 @@ Bring `@dynamic-forms/react` to a production-ready adapter for `@dynamic-forms/c
 
 ## Enterprise Definition of Done
 
-- [ ] A change to one field does not re-render unrelated fields.
-- [ ] Provider lifecycle cleanly owns and disposes Core controllers/subscriptions.
-- [ ] Schema-driven rendering works for registered custom React controls, nested fields, and arrays.
-- [ ] Validation, submission, conditions, dependencies, and data sources are integrated through React APIs.
-- [ ] Typecheck, build, unit tests, integration tests, accessibility tests, and Strict Mode tests pass.
-- [ ] Public APIs are typed, documented, stable, and framework-specific logic remains outside Core.
+- [x] A change to one field does not re-render unrelated fields.
+- [x] Provider lifecycle cleanly owns and disposes Core controllers/subscriptions.
+- [x] Schema-driven rendering works for registered custom React controls, nested fields, and arrays.
+- [x] Validation, submission, conditions, dependencies, and data sources are integrated through React APIs.
+- [x] Typecheck, build, unit tests, integration tests, accessibility tests, and Strict Mode tests pass.
+- [x] Public APIs are typed, documented, stable, and framework-specific logic remains outside Core.
