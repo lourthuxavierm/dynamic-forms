@@ -116,16 +116,18 @@
 
 ## 7. File and media controls
 
-- [ ] **P1** `MuiFileUpload`
-- [ ] **P1** `MuiMultiFileUpload`
-- [ ] **P1** Drag-and-drop upload area
-- [ ] **P1** File type, count and size validation
-- [ ] **P1** Upload progress, retry and cancellation
-- [ ] **P1** Image preview and removal
-- [ ] **P1** Existing/server-file representation
-- [ ] **P2** Camera/image capture
-- [ ] **P2** Signature pad
-- [ ] **P2** Document preview
+- [x] **P1** `MuiFileUpload`
+- [x] **P1** `MuiMultiFileUpload`
+- [x] **P1** Drag-and-drop upload area
+- [x] **P1** File type, count and size validation
+- [x] **P1** Upload progress, retry and cancellation
+- [x] **P1** Image preview and removal
+- [x] **P1** Existing/server-file representation
+- [x] **P2** Camera/image capture
+- [x] **P2** Signature pad
+- [x] **P2** Document preview
+
+**Verified 2026-08-22:** File/media P1 and P2 complete. Camera capture, typed signature data, and sandboxed image/PDF preview are covered by the 40-test MUI suite. Upload transport, signature legal validity, and content security enforcement remain application/server responsibilities.
 
 ## 8. Nested data and arrays
 
