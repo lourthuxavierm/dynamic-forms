@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import type { FormState, FormValues } from '@dynamic-forms/core';
 import { useFormContext } from '../context';
 
@@ -11,7 +11,7 @@ export function useFormState<TSelected = FormState>(selector: (state: FormState)
 
 export function useFormActions<T extends FormValues = FormValues>() {
   const context = useFormContext<T>();
-  return {
+  return useMemo(() => ({
     setValue: context.store.setValue.bind(context.store),
     setValues: context.store.setValues.bind(context.store),
     setError: context.store.setError.bind(context.store),
@@ -21,5 +21,5 @@ export function useFormActions<T extends FormValues = FormValues>() {
     submit: context.submit,
     reset: context.reset,
     resetField: context.resetField,
-  };
+  }), [context.reset, context.resetField, context.store, context.submit, context.validateField, context.validateForm]);
 }

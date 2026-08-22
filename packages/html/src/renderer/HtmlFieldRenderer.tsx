@@ -1,4 +1,4 @@
-import type { ErrorInfo, ReactNode } from 'react';
+import { memo, Suspense, type ErrorInfo, type ReactNode } from 'react';
 import type { FieldSchema } from '@dynamic-forms/core';
 import { DynamicField } from '@dynamic-forms/react';
 import { HtmlFieldErrorBoundary } from '../components/HtmlFieldErrorBoundary';
@@ -13,7 +13,7 @@ export interface HtmlFieldRendererProps {
   onError?: (error: Error, info: ErrorInfo, fieldName: string) => void;
 }
 
-export function HtmlFieldRenderer({ field, registry, arrayItemsRenderer, fallback, onError }: HtmlFieldRendererProps) {
+export const HtmlFieldRenderer = memo(function HtmlFieldRenderer({ field, registry, arrayItemsRenderer, fallback, onError }: HtmlFieldRendererProps) {
   const render = (candidate: FieldSchema): ReactNode => (
     <HtmlFieldRenderer field={candidate} registry={registry} arrayItemsRenderer={arrayItemsRenderer} fallback={fallback} onError={onError} />
   );
@@ -31,7 +31,9 @@ export function HtmlFieldRenderer({ field, registry, arrayItemsRenderer, fallbac
   }
   return (
     <HtmlFieldErrorBoundary fieldName={field.name} fallback={fallback} onError={onError}>
-      <DynamicField field={field} render={(props) => <Control {...props} />} />
+      <Suspense fallback={<span role="status" aria-live="polite">Loading field…</span>}>
+        <DynamicField field={field} render={(props) => <Control {...props} />} />
+      </Suspense>
     </HtmlFieldErrorBoundary>
   );
-}
+});

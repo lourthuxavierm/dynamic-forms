@@ -13,7 +13,7 @@ export interface FieldAccessibilityProps {
   descriptionId: string;
   errorId: string;
   ariaInvalid: boolean;
-  ariaDescribedBy: string;
+  ariaDescribedBy?: string;
   ariaLabelledBy: string;
   dataAttributes: { 'data-dynamic-forms-field': '' };
   validationMessage?: string;
@@ -101,7 +101,7 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
       descriptionId,
       errorId,
       ariaInvalid: Boolean(fieldState.error),
-      ariaDescribedBy: fieldState.error ? errorId : descriptionId,
+      ariaDescribedBy: [field.description ? descriptionId : undefined, fieldState.error ? errorId : undefined].filter(Boolean).join(' ') || undefined,
       ariaLabelledBy: labelId,
       dataAttributes: { 'data-dynamic-forms-field': '' },
       validationMessage: fieldState.error ?? (fieldState.isValidating ? 'Validating' : undefined),

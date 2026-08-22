@@ -154,7 +154,7 @@ function UploadStatus({ upload }: { upload: ReturnType<typeof useUploads> }) {
 function FilePreview({ file }: { file: File }) {
   const url = useObjectUrl(file);
   if (!url) return null;
-  return <img src={url} alt={'Preview of ' + file.name} />;
+  return <img src={url} alt={'Preview of ' + file.name} loading="lazy" decoding="async" />;
 }
 
 function FileControl({ props, multiple, camera }: { props: FieldComponentProps; multiple?: boolean; camera?: boolean }) {
@@ -191,8 +191,8 @@ export function HtmlDocumentPreview(props: FieldComponentProps) {
   if (!source) return <HtmlFieldShell props={props}><span>No document selected.</span></HtmlFieldShell>;
   const type = file?.type ?? '';
   return <HtmlFieldShell props={props}>
-    {type.startsWith('image/') ? <img src={source} alt={props.field.label ?? 'Document preview'} /> :
-      <iframe src={source} title={props.field.label ?? 'Document preview'} sandbox="" />}
+    {type.startsWith('image/') ? <img src={source} alt={props.field.label ?? 'Document preview'} loading="lazy" decoding="async" /> :
+      <iframe src={source} title={props.field.label ?? 'Document preview'} sandbox="" loading="lazy" />}
   </HtmlFieldShell>;
 }
 

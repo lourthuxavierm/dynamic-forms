@@ -68,7 +68,7 @@ function HtmlArrayField({ field, name, registry, arrayItemsRenderer, renderLeaf 
           : field.fields?.map((child) => (
             <ConditionalArrayNode key={child.name} field={child} name={`${name}[${index}].${child.name}`} itemValue={item.value} registry={registry} arrayItemsRenderer={arrayItemsRenderer} renderLeaf={renderLeaf} />
           ))}
-        {itemErrors.filter(([path]) => path.startsWith(`${name}[${index}]`)).map(([path, message]) => <p role="alert" key={path}>{message}</p>)}
+        {itemErrors.filter(([path]) => path === `${name}[${index}]`).map(([path, message]) => <p role="alert" key={path}>{message}</p>)}
         <div role="group" aria-label={`Actions for item ${index + 1}`}>
           <button type="button" disabled={immutable || array.fields.length <= minimum} onClick={() => array.remove(index)}>Remove</button>
           <button type="button" disabled={immutable || array.fields.length >= maximum} onClick={() => array.insert(index + 1, cloneValue(item.value))}>Duplicate</button>

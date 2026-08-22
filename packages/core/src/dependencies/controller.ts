@@ -10,22 +10,24 @@ export interface DependencyControllerOptions<T extends FormValues> {
 export class DependencyController<T extends FormValues = FormValues> {
   private readonly fields = new Map<string, FieldSchema>();
   private readonly graph: DependencyGraph;
+  private readonly watchedPaths: readonly string[];
   private readonly unsubscribe: () => void;
   private previousValues: T;
 
   constructor(store: FormStore<T>, schema: FormSchema, options: DependencyControllerOptions<T> = {}) {
     collectFields(schema.fields, '', this.fields);
-    this.graph = new DependencyGraph([...this.fields].flatMap(([path, field]) => field.dependsOn?.length ? [{ field: path, dependsOn: [...field.dependsOn] }] : []));
+    const dependencies = [...this.fields].flatMap(([path, field]) => field.dependsOn?.length ? [{ field: path, dependsOn: [...field.dependsOn] }] : []);
+    this.graph = new DependencyGraph(dependencies);
+    this.watchedPaths = [...new Set(dependencies.flatMap((dependency) => dependency.dependsOn))];
     this.previousValues = store.getValues();
     this.unsubscribe = store.subscribe((state) => {
-      const changedFields = findChangedFields(this.previousValues, state.values, this.fields.keys());
+      const changedFields = findChangedFields(this.previousValues, state.values, this.watchedPaths);
       this.previousValues = state.values;
-      for (const field of changedFields) {
-        for (const dependentPath of this.graph.getTransitiveDependents(field)) {
-          const dependent = this.fields.get(dependentPath)!;
-          if (dependent.resetOnDependencyChange) store.resetField(dependentPath);
-          if (dependent.dataSource) void options.onDataSourceRefresh?.(dependent, dependent.dataSource, store.getValues());
-        }
+      const affected = new Set(changedFields.flatMap((field) => this.graph.getTransitiveDependents(field)));
+      for (const dependentPath of affected) {
+        const dependent = this.fields.get(dependentPath)!;
+        if (dependent.resetOnDependencyChange) store.resetField(dependentPath);
+        if (dependent.dataSource) void options.onDataSourceRefresh?.(dependent, dependent.dataSource, store.getValues());
       }
     });
   }

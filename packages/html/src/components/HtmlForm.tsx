@@ -1,6 +1,6 @@
 import { useMemo, type FormEvent, type ReactNode } from 'react';
 import type { FormSchema } from '@dynamic-forms/core';
-import { useFormContext } from '@dynamic-forms/react';
+import { FormErrorSummary, useFormContext } from '@dynamic-forms/react';
 import { createDefaultHtmlRegistry, type HtmlFieldRegistryOverrides } from '../registry';
 import { HtmlFieldRenderer } from '../renderer';
 import { renderHtmlLayout } from '../renderer/HtmlLayoutRenderer';
@@ -23,9 +23,10 @@ export interface HtmlFormProps {
   colorScheme?: HtmlColorScheme;
   density?: HtmlDensity;
   dir?: 'ltr' | 'rtl' | 'auto';
+  errorSummary?: boolean;
 }
 
-export function HtmlForm({ schema: explicitSchema, registry, submitLabel = 'Submit', onSubmit, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled = false, colorScheme = 'auto', density = 'standard', dir }: HtmlFormProps) {
+export function HtmlForm({ schema: explicitSchema, registry, submitLabel = 'Submit', onSubmit, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled = false, colorScheme = 'auto', density = 'standard', dir, errorSummary = true }: HtmlFormProps) {
   const { schema: providerSchema, store, validateForm } = useFormContext();
   const schema = explicitSchema ?? providerSchema;
   if (!schema) throw new Error('HtmlForm requires a schema prop or a schema supplied to FormProvider.');
@@ -54,6 +55,7 @@ export function HtmlForm({ schema: explicitSchema, registry, submitLabel = 'Subm
       dir={dir}
       onSubmit={handleSubmit}
     >
+      {errorSummary ? <FormErrorSummary focusOnChange={false} /> : null}
       {renderedLayout?.content}
       {remainingFields.map(renderField)}
       {children}

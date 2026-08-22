@@ -1,4 +1,4 @@
-import { Children, useState, useSyncExternalStore, type CSSProperties, type ComponentType, type ReactNode } from 'react';
+import { Children, useState, useSyncExternalStore, type CSSProperties, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
 import type { FieldSchema, FormSchema } from '@dynamic-forms/core';
 import { useFormContext } from '@dynamic-forms/react';
 
@@ -106,9 +106,24 @@ export function HtmlTabs({ node, children, renderer }: HtmlLayoutComponentProps 
   const panels = Children.toArray(children);
   const tabs = panels.map((panel, index) => ({ id: `${node.id ?? 'df-tabs'}-${index}`, label: node.children?.[index]?.title ?? `Tab ${index + 1}`, panel }));
   if (renderer) return <>{renderer({ tabs, selectedIndex, onSelect: setSelectedIndex, labelledBy: node.id })}</>;
+  const selectFromKeyboard = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const rtl = event.currentTarget.closest('[dir]')?.getAttribute('dir') === 'rtl';
+    const previousKey = rtl ? 'ArrowRight' : 'ArrowLeft';
+    const nextKey = rtl ? 'ArrowLeft' : 'ArrowRight';
+    let next = index;
+    if (event.key === previousKey) next = (index - 1 + tabs.length) % tabs.length;
+    else if (event.key === nextKey) next = (index + 1) % tabs.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    setSelectedIndex(next);
+    const buttons = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    buttons?.[next]?.focus();
+  };
   return <div id={node.id} className={node.className} data-df-layout="tabs">
     <div role="tablist" aria-label={typeof node.title === 'string' ? node.title : 'Form sections'}>
-      {tabs.map((tab, index) => <button key={tab.id} id={`${tab.id}-tab`} type="button" role="tab" aria-selected={selectedIndex === index} aria-controls={`${tab.id}-panel`} tabIndex={selectedIndex === index ? 0 : -1} onClick={() => setSelectedIndex(index)}>{tab.label}</button>)}
+      {tabs.map((tab, index) => <button key={tab.id} id={`${tab.id}-tab`} type="button" role="tab" aria-selected={selectedIndex === index} aria-controls={`${tab.id}-panel`} tabIndex={selectedIndex === index ? 0 : -1} onClick={() => setSelectedIndex(index)} onKeyDown={(event) => selectFromKeyboard(event, index)}>{tab.label}</button>)}
     </div>
     {tabs.map((tab, index) => <div key={tab.id} id={`${tab.id}-panel`} role="tabpanel" aria-labelledby={`${tab.id}-tab`} hidden={selectedIndex !== index}>{tab.panel}</div>)}
   </div>;

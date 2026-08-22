@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { useFormState } from '../hooks/useFormState';
 
 export interface FormErrorSummaryProps {
@@ -12,6 +12,8 @@ export function FormErrorSummary({ title = 'Please correct the following errors'
   const errors = useFormState((state) => state.errors);
   const entries = Object.entries(errors);
   const summary = useRef<HTMLDivElement>(null);
+  const reactId = useId();
+  const titleId = `dynamic-forms-error-summary-${reactId.replace(/[^A-Za-z0-9_-]/g, '')}`;
 
   useEffect(() => {
     if (focusOnChange && entries.length) summary.current?.focus();
@@ -19,8 +21,8 @@ export function FormErrorSummary({ title = 'Please correct the following errors'
 
   if (!entries.length) return null;
   return (
-    <div ref={summary} className={className} role="alert" tabIndex={-1} aria-labelledby="dynamic-forms-error-summary-title">
-      <h2 id="dynamic-forms-error-summary-title">{title}</h2>
+    <div ref={summary} className={className} role="alert" aria-live="assertive" aria-atomic="true" tabIndex={-1} aria-labelledby={titleId}>
+      <h2 id={titleId}>{title}</h2>
       <ul>
         {entries.map(([name, message]) => (
           <li key={name}><a href={`#${fieldId(name)}`} onClick={(event) => { event.preventDefault(); focusField(name); }}>{message}</a></li>

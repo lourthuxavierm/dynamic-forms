@@ -10,6 +10,9 @@ function selectedValues(value: unknown): readonly unknown[] {
 function includes(values: readonly unknown[], value: unknown): boolean {
   return values.some((item) => Object.is(item, value));
 }
+function describedBy(props: FieldComponentProps): string | undefined {
+  return props.accessibility.ariaDescribedBy;
+}
 function normalizeOptions(values: readonly unknown[] | undefined): FieldOption[] {
   return (values ?? []).flatMap((item): FieldOption[] => {
     if (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean') return [{ label: String(item), value: item }];
@@ -32,12 +35,12 @@ function flatten(options: readonly FieldOption[], depth = 0): Array<{ option: Fi
 
 export function HtmlCheckboxGroup(props: FieldComponentProps) {
   const values = selectedValues(props.value);
-  return <HtmlFieldShell props={props} hideLabel><fieldset disabled={props.disabled}>
+  return <HtmlFieldShell props={props} hideLabel><fieldset disabled={props.disabled} aria-describedby={describedBy(props)} aria-invalid={props.accessibility.ariaInvalid || undefined} aria-required={props.required || undefined} aria-readonly={props.readOnly || undefined}>
     <legend id={props.accessibility.labelId}>{props.field.label ?? props.name}{props.required ? ' *' : ''}</legend>
     {(props.field.options ?? []).map((option, index) => {
       const id = props.accessibility.id + '-' + index;
       return <label key={id} htmlFor={id}><input id={id} type="checkbox" name={props.name}
-        disabled={option.disabled} checked={includes(values, option.value)}
+        disabled={option.disabled} checked={includes(values, option.value)} aria-readonly={props.readOnly || undefined}
         onBlur={() => props.setTouched(true)}
         onChange={(event) => {
           if (props.readOnly) return;
@@ -52,11 +55,12 @@ export const HtmlRadioGroup = HtmlRadio;
 export function HtmlSwitch(props: FieldComponentProps) {
   return <HtmlFieldShell props={props} hideLabel><label id={props.accessibility.labelId}>
     <input id={props.accessibility.id} name={props.name} type="checkbox" role="switch"
-      checked={Boolean(props.value)} disabled={props.disabled} aria-readonly={props.readOnly || undefined}
-      aria-invalid={props.accessibility.ariaInvalid || undefined}
+      checked={Boolean(props.value)} disabled={props.disabled} required={props.required}
+      aria-required={props.required || undefined} aria-readonly={props.readOnly || undefined}
+      aria-describedby={describedBy(props)} aria-invalid={props.accessibility.ariaInvalid || undefined}
       onBlur={() => props.setTouched(true)}
       onChange={(event) => { if (!props.readOnly) props.setValue(event.target.checked); }} />
-    {props.field.label ?? props.name}
+    {props.field.label ?? props.name}{props.required ? ' *' : ''}
   </label></HtmlFieldShell>;
 }
 
@@ -75,7 +79,7 @@ function HtmlCombobox(props: ComboboxProps) {
   const selected = options.find((option) => Object.is(option.value, props.value));
   const [query, setQuery] = useState(selected?.label ?? '');
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(-1);
   const listId = useId();
   const visible = props.asyncOptions ? options : options.filter((option) => option.label.toLowerCase().includes(query.toLowerCase()));
   const choose = (option: FieldOption | undefined) => {
@@ -83,26 +87,33 @@ function HtmlCombobox(props: ComboboxProps) {
     props.setValue(option.value);
     setQuery(option.label);
     setOpen(false);
+    setActive(-1);
+  };
+  const nextEnabled = (start: number, direction: 1 | -1): number => {
+    if (!visible.length) return -1;
+    let candidate = Math.max(0, Math.min(start, visible.length - 1));
+    while (visible[candidate]?.disabled && candidate + direction >= 0 && candidate + direction < visible.length) candidate += direction;
+    return visible[candidate]?.disabled ? -1 : candidate;
   };
   const keyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'ArrowDown') { event.preventDefault(); setOpen(true); setActive((value) => Math.min(value + 1, Math.max(visible.length - 1, 0))); }
-    else if (event.key === 'ArrowUp') { event.preventDefault(); setOpen(true); setActive((value) => Math.max(value - 1, 0)); }
-    else if (event.key === 'Home') { event.preventDefault(); setActive(0); }
-    else if (event.key === 'End') { event.preventDefault(); setActive(Math.max(visible.length - 1, 0)); }
-    else if (event.key === 'Enter' && open) { event.preventDefault(); choose(visible[active]); }
-    else if (event.key === 'Escape') { event.preventDefault(); setOpen(false); }
+    if (event.key === 'ArrowDown') { event.preventDefault(); setOpen(true); setActive((value) => nextEnabled(value < 0 ? 0 : value + 1, 1)); }
+    else if (event.key === 'ArrowUp') { event.preventDefault(); setOpen(true); setActive((value) => nextEnabled(value < 0 ? visible.length - 1 : value - 1, -1)); }
+    else if (event.key === 'Home') { event.preventDefault(); setOpen(true); setActive(nextEnabled(0, 1)); }
+    else if (event.key === 'End') { event.preventDefault(); setOpen(true); setActive(nextEnabled(visible.length - 1, -1)); }
+    else if (event.key === 'Enter' && open && active >= 0) { event.preventDefault(); choose(visible[active]); }
+    else if (event.key === 'Escape') { event.preventDefault(); setOpen(false); setActive(-1); }
   };
   return <HtmlFieldShell props={props}><div>
     <input id={props.accessibility.id} name={props.name} role="combobox" autoComplete="off"
-      value={query} placeholder={props.field.placeholder} disabled={props.disabled} readOnly={props.readOnly}
-      aria-expanded={open} aria-controls={listId} aria-autocomplete="list"
-      aria-activedescendant={open && visible[active] ? listId + '-option-' + active : undefined}
-      aria-labelledby={props.accessibility.labelId} aria-invalid={props.accessibility.ariaInvalid || undefined}
-      onFocus={() => setOpen(true)} onBlur={() => { props.setTouched(true); setTimeout(() => setOpen(false), 0); }}
-      onKeyDown={keyDown} onChange={(event) => { setQuery(event.target.value); setOpen(true); setActive(0); source.setSearch(event.target.value); }} />
-    {source.loading && <span role="status">Loading options</span>}
+      value={query} placeholder={props.field.placeholder} disabled={props.disabled} readOnly={props.readOnly} required={props.required}
+      aria-required={props.required || undefined} aria-expanded={open} aria-controls={listId} aria-autocomplete="list"
+      aria-activedescendant={open && active >= 0 && visible[active] ? listId + '-option-' + active : undefined}
+      aria-labelledby={props.accessibility.labelId} aria-describedby={describedBy(props)} aria-invalid={props.accessibility.ariaInvalid || undefined}
+      onFocus={() => setOpen(true)} onBlur={() => { props.setTouched(true); setTimeout(() => { setOpen(false); setActive(-1); }, 0); }}
+      onKeyDown={keyDown} onChange={(event) => { if (props.readOnly) return; setQuery(event.target.value); setOpen(true); setActive(-1); source.setSearch(event.target.value); }} />
+    {source.loading && <span role="status" aria-live="polite">Loading options</span>}
     {source.error && <span role="alert">Unable to load options <button type="button" onClick={() => void source.refresh()}>Retry</button></span>}
-    {open && <ul id={listId} role="listbox">
+    {open && <ul id={listId} role="listbox" aria-labelledby={props.accessibility.labelId}>
       {visible.map((option, index) => <li id={listId + '-option-' + index} role="option"
         aria-selected={Object.is(option.value, props.value)} aria-disabled={option.disabled || undefined}
         key={String(option.value)} onMouseDown={(event) => event.preventDefault()} onClick={() => choose(option)}>
@@ -121,12 +132,13 @@ export function HtmlTreeSelect(props: FieldComponentProps) {
   const options = flatten(props.field.options ?? []);
   const selected = options.findIndex(({ option }) => Object.is(option.value, props.value));
   return <HtmlFieldShell props={props}><select id={props.accessibility.id} name={props.name}
-    value={selected < 0 ? '' : String(selected)} disabled={props.disabled} aria-readonly={props.readOnly || undefined}
-    aria-labelledby={props.accessibility.labelId} onBlur={() => props.setTouched(true)}
+    value={selected < 0 ? '' : String(selected)} disabled={props.disabled} required={props.required}
+    aria-required={props.required || undefined} aria-readonly={props.readOnly || undefined} aria-invalid={props.accessibility.ariaInvalid || undefined}
+    aria-describedby={describedBy(props)} aria-labelledby={props.accessibility.labelId} onBlur={() => props.setTouched(true)}
     onChange={(event) => { if (!props.readOnly) props.setValue(options[Number(event.target.value)]?.option.value); }}>
     <option value="">Select an option</option>
     {options.map(({ option, depth }, index) => <option key={index} value={index} disabled={option.disabled}>
-      {'— '.repeat(depth) + option.label}
+      {'-- '.repeat(depth) + option.label}
     </option>)}
   </select></HtmlFieldShell>;
 }
@@ -136,8 +148,8 @@ function TreeChecks({ options, props, parent = '' }: { options: readonly FieldOp
   return <>{options.map((option, index) => {
     const id = props.accessibility.id + '-' + parent + index;
     return <div key={id}><label htmlFor={id}><input id={id} type="checkbox" name={props.name}
-      checked={includes(values, option.value)} disabled={props.disabled || option.disabled}
-      onChange={(event) => {
+      checked={includes(values, option.value)} disabled={props.disabled || option.disabled} aria-readonly={props.readOnly || undefined}
+      onBlur={() => props.setTouched(true)} onChange={(event) => {
         if (props.readOnly) return;
         props.setValue(event.target.checked ? [...values, option.value] : values.filter((value) => !Object.is(value, option.value)));
       }} />{option.label}</label>
@@ -146,7 +158,8 @@ function TreeChecks({ options, props, parent = '' }: { options: readonly FieldOp
   })}</>;
 }
 export function HtmlTreeCheckbox(props: FieldComponentProps) {
-  return <HtmlFieldShell props={props} hideLabel><fieldset><legend id={props.accessibility.labelId}>{props.field.label ?? props.name}</legend>
+  return <HtmlFieldShell props={props} hideLabel><fieldset disabled={props.disabled} aria-describedby={describedBy(props)} aria-invalid={props.accessibility.ariaInvalid || undefined} aria-required={props.required || undefined} aria-readonly={props.readOnly || undefined}>
+    <legend id={props.accessibility.labelId}>{props.field.label ?? props.name}{props.required ? ' *' : ''}</legend>
     <TreeChecks options={props.field.options ?? []} props={props} />
   </fieldset></HtmlFieldShell>;
 }
@@ -154,7 +167,7 @@ export function HtmlTreeCheckbox(props: FieldComponentProps) {
 export function HtmlToggleButtonGroup(props: FieldComponentProps) {
   const multiple = Boolean((props.field.config as { multiple?: boolean } | undefined)?.multiple);
   const values = selectedValues(props.value);
-  return <HtmlFieldShell props={props}><div role="group" aria-labelledby={props.accessibility.labelId}>
+  return <HtmlFieldShell props={props}><div role="group" aria-labelledby={props.accessibility.labelId} aria-describedby={describedBy(props)} aria-required={props.required || undefined} aria-readonly={props.readOnly || undefined}>
     {(props.field.options ?? []).map((option) => {
       const pressed = multiple ? includes(values, option.value) : Object.is(props.value, option.value);
       return <button type="button" key={String(option.value)} aria-pressed={pressed}

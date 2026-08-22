@@ -70,7 +70,7 @@ describe('Phase 9 structural rendering', () => {
       store.setError('rows', 'Add another row');
       store.setError('rows[0].value', 'Value is required');
     });
-    expect(view.getByText('Add another row')).toBeTruthy();
+    expect(view.getAllByText('Add another row').length).toBeGreaterThan(0);
     expect(view.getAllByText('Value is required').length).toBeGreaterThan(0);
   });
 });
