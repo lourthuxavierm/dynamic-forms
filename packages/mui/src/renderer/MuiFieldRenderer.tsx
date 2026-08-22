@@ -1,8 +1,9 @@
 import type { FieldSchema } from '@dynamic-forms/core';
+import { useFieldState } from '@dynamic-forms/react';
 import type { Ref } from 'react';
 import { MuiFieldErrorBoundary } from '../components/MuiFieldErrorBoundary';
 import { warnInMuiDevelopment } from '../development';
-import type { MuiFieldRegistry } from '../registry';
+import type { MuiFieldComponent, MuiFieldRegistry } from '../registry';
 
 export interface MuiFieldRendererProps {
   field: FieldSchema;
@@ -23,20 +24,30 @@ export function MuiFieldRenderer({ field, registry, inputRef }: MuiFieldRenderer
 
   return (
     <MuiFieldErrorBoundary fieldName={field.name}>
-      <Component
-        field={field}
-        name={field.name}
-        label={field.label}
-        description={field.description}
-        placeholder={field.placeholder}
-        disabled={field.disabled}
-        readOnly={field.readOnly}
-        required={field.validation?.required}
-        validation={field.validation}
-        fullWidth
-        options={field.options}
-        inputRef={inputRef}
-      />
+      <MuiRuntimeField Component={Component} field={field} inputRef={inputRef} />
     </MuiFieldErrorBoundary>
+  );
+}
+
+function MuiRuntimeField({ Component, field, inputRef }: { Component: MuiFieldComponent; field: FieldSchema; inputRef?: Ref<HTMLElement> }) {
+  const runtime = useFieldState(field.name);
+  if (!runtime.visible) return null;
+
+  return (
+    <Component
+      field={field}
+      name={field.name}
+      label={field.label}
+      description={field.description}
+      placeholder={field.placeholder}
+      disabled={runtime.disabled}
+      readOnly={runtime.readOnly}
+      required={runtime.required}
+      validating={runtime.isValidating}
+      validation={field.validation}
+      fullWidth
+      options={field.options}
+      inputRef={inputRef}
+    />
   );
 }

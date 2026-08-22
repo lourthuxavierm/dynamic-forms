@@ -62,6 +62,7 @@ export interface FieldOption {
   label: string;
   value: string | number | boolean;
   disabled?: boolean;
+  group?: string;
   children?: readonly FieldOption[];
 }
 
@@ -141,6 +142,8 @@ export interface FieldSchema {
   disabledWhen?: FieldCondition;
   requiredWhen?: FieldCondition;
   readOnlyWhen?: FieldCondition;
+  /** Controls what happens to a value while its field is conditionally hidden. */
+  hiddenValuePolicy?: 'preserve' | 'clear' | 'reset';
   dependsOn?: readonly string[];
   resetOnDependencyChange?: boolean;
   dataSource?: DataSourceConfig;

@@ -41,3 +41,4 @@ export * from './specialNumeric/MuiOtpField';
 export * from './specialNumeric/MuiPinField';
 export * from './specialNumeric/MuiMaskField';
 export * from './fileMedia';
+export * from './optionNormalization';

@@ -15,6 +15,7 @@ export class DataSourceManager {
   private readonly sources = new Map<string, DataSource>();
   private readonly cache = new Map<string, unknown[]>();
   private readonly controllers = new Map<string, AbortController>();
+  private readonly generations = new Map<string, number>();
   private readonly states = new Map<string, DataSourceResult>();
   private readonly fetchImpl: typeof fetch;
 
@@ -35,9 +36,16 @@ export class DataSourceManager {
 
   async loadConfig<T>(name: string, config: DataSourceConfig<T>, context: DataSourceContext, options: DataSourceLoadOptions = {}): Promise<T[]> {
     const cacheKey = config.cacheKey ?? `${name}:${JSON.stringify({ values: context.values, search: options.search, page: options.page, pageSize: options.pageSize })}`;
-    if (config.cache && this.cache.has(cacheKey)) return this.cache.get(cacheKey) as T[];
+    if (config.cache && this.cache.has(cacheKey)) {
+      const cached = this.cache.get(cacheKey) as T[];
+      this.cancel(name);
+      this.states.set(name, { data: cached, loading: false });
+      return cached;
+    }
 
     this.cancel(name);
+    const generation = (this.generations.get(name) ?? 0) + 1;
+    this.generations.set(name, generation);
     const controller = options.signal ? undefined : new AbortController();
     if (controller) this.controllers.set(name, controller);
     const signal = options.signal ?? controller?.signal;
@@ -45,18 +53,24 @@ export class DataSourceManager {
     try {
       const data = await this.resolveConfig(config, { ...context, signal }, options);
       if (config.cache) this.cache.set(cacheKey, data);
-      this.states.set(name, { data, loading: false });
+      if (this.generations.get(name) === generation) this.states.set(name, { data, loading: false });
       return data;
     } catch (error) {
       const normalized = error instanceof Error ? error : new Error(String(error));
-      this.states.set(name, { data: [], loading: false, error: normalized });
+      if (this.generations.get(name) === generation) this.states.set(name, { data: [], loading: false, error: normalized });
       throw normalized;
     } finally {
       if (this.controllers.get(name) === controller) this.controllers.delete(name);
     }
   }
 
-  cancel(name: string): void { this.controllers.get(name)?.abort(); this.controllers.delete(name); }
+  cancel(name: string): void {
+    this.controllers.get(name)?.abort();
+    this.controllers.delete(name);
+    this.generations.set(name, (this.generations.get(name) ?? 0) + 1);
+    const current = this.states.get(name);
+    if (current?.loading) this.states.set(name, { ...current, loading: false });
+  }
   clearCache(): void { this.cache.clear(); }
   clear(): void { for (const name of this.controllers.keys()) this.cancel(name); this.sources.clear(); this.cache.clear(); this.states.clear(); }
 
