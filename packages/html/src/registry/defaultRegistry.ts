@@ -1,4 +1,27 @@
 import {
+  HtmlCameraCapture,
+  HtmlDocumentPreview,
+  HtmlFileUpload,
+  HtmlMultiFileUpload,
+  HtmlSignatureField,
+} from '../components/fileMedia';
+import {
+  HtmlDateRangeField,
+  HtmlDateTimeRangeField,
+  HtmlTimeRangeField,
+} from '../components/temporal';
+import {
+  HtmlCurrencyField,
+  HtmlMaskField,
+  HtmlOtpField,
+  HtmlPercentageField,
+  HtmlPhoneField,
+  HtmlPinField,
+  HtmlRangeSlider,
+  HtmlRating,
+  HtmlSlider,
+} from '../components/specialized';
+import {
   HtmlAsyncAutocomplete,
   HtmlAutocomplete,
   HtmlCheckboxGroup,
@@ -58,8 +81,24 @@ const DEFAULT_HTML_REGISTRY: HtmlFieldRegistry = Object.freeze({
   date: HtmlDateField,
   time: HtmlTimeField,
   datetime: HtmlDateTimeField,
+  'date-range': HtmlDateRangeField,
+  'time-range': HtmlTimeRangeField,
+  'datetime-range': HtmlDateTimeRangeField,
   month: HtmlMonthField,
-  file: HtmlFileField,
+  file: HtmlFileUpload,
+  'multi-file': HtmlMultiFileUpload,
+  camera: HtmlCameraCapture,
+  'document-preview': HtmlDocumentPreview,
+  signature: HtmlSignatureField,
+  currency: HtmlCurrencyField,
+  percentage: HtmlPercentageField,
+  slider: HtmlSlider,
+  'range-slider': HtmlRangeSlider,
+  rating: HtmlRating,
+  phone: HtmlPhoneField,
+  otp: HtmlOtpField,
+  pin: HtmlPinField,
+  mask: HtmlMaskField,
 });
 const defaultRegistryCache = new WeakMap<object, HtmlFieldRegistry>();
 

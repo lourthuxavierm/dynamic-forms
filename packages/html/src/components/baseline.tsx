@@ -54,9 +54,6 @@ export const HtmlUrlField = (props: FieldComponentProps) => HtmlInput(props, 'ur
 export const HtmlNumberField = (props: FieldComponentProps) => HtmlInput(props, 'number', true);
 export const HtmlIntegerField = (props: FieldComponentProps) => HtmlInput(props, 'number', true, true);
 export const HtmlDecimalField = (props: FieldComponentProps) => HtmlInput(props, 'number', true);
-export const HtmlDateField = (props: FieldComponentProps) => HtmlInput(props, 'date');
-export const HtmlTimeField = (props: FieldComponentProps) => HtmlInput(props, 'time');
-export const HtmlDateTimeField = (props: FieldComponentProps) => HtmlInput(props, 'datetime-local');
 export const HtmlMonthField = (props: FieldComponentProps) => HtmlInput(props, 'month');
 
 export function HtmlTextarea(props: FieldComponentProps) {
@@ -137,3 +134,5 @@ export function HtmlFileField(props: FieldComponentProps) {
   return <HtmlFieldShell props={props}><input {...common(props)} type="file" accept={config?.accept}
     onChange={(event) => { if (!props.readOnly) props.setValue(event.target.files?.[0] ?? null); }} /></HtmlFieldShell>;
 }
+
+export { HtmlDateField, HtmlTimeField, HtmlDateTimeField } from './temporal';

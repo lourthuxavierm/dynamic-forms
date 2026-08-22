@@ -26,6 +26,8 @@ export interface FieldComponentProps<T = unknown> {
   name: string;
   value: T;
   setValue: (value: T) => void;
+  setError: (message: string) => void;
+  clearError: () => void;
   error?: string;
   touched: boolean;
   dirty: boolean;
@@ -83,6 +85,8 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
     name: field.name,
     value: fieldValue.value,
     setValue: fieldValue.setValue,
+    setError: fieldValue.setError,
+    clearError: fieldValue.clearError,
     error: fieldState.error,
     touched: fieldState.touched,
     dirty: fieldState.dirty,

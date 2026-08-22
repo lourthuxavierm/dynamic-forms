@@ -10,3 +10,9 @@ export * from './HtmlForm';
 export * from './baseline';
 
 export * from './composites';
+export * from './specialized';
+export * from './numericFormat';
+export * from './temporalValues';
+export { createHtmlTemporalField, HtmlDateRangeField, HtmlTimeRangeField, HtmlDateTimeRangeField } from './temporal';
+export type { HtmlTemporalEnhancer, HtmlTemporalEnhancementContext } from './temporal';
+export * from './fileMedia';
