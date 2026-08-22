@@ -1,0 +1,35 @@
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Alert, Box, Button, Chip, FormControlLabel, Grid, MenuItem, Paper, Select, Stack, Switch, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { validateSchema, type FormEvent, type FormSchema } from '@dynamic-forms/core';
+import { FormProvider, useFormActions, useFormEvent, useFormState } from '@dynamic-forms/react';
+import { MuiForm } from '@dynamic-forms/mui';
+import type { DemoMetadata } from '../../types/playground';
+
+type Values = Record<string, unknown>;
+export interface DemoShellProps { metadata: DemoMetadata; schema: FormSchema; defaultValues: Values; source: string; }
+const sensitiveTypes = new Set(['password', 'file', 'multi-file', 'camera', 'signature']);
+function redact(values: Values, schema: FormSchema) { const result = { ...values }; for (const field of schema.fields) if (sensitiveTypes.has(field.type)) result[field.name] = '[redacted]'; return result; }
+function Inspector({ schema, events, renders }: { schema: FormSchema; events: readonly FormEvent[]; renders: number }) {
+  const state = useFormState(); const actions = useFormActions(); const [tab, setTab] = useState(0);
+  const panels = [
+    ['State', { ...state, values: redact(state.values, schema) }],
+    ['Events', events],
+    ['Rules', schema.fields.filter((field) => field.visibleWhen || field.disabledWhen || field.requiredWhen || field.readOnlyWhen).map((field) => ({ field: field.name, visibleWhen: field.visibleWhen, disabledWhen: field.disabledWhen, requiredWhen: field.requiredWhen, readOnlyWhen: field.readOnlyWhen }))],
+    ['Data sources', schema.fields.filter((field) => field.dataSource).map((field) => ({ field: field.name, config: field.dataSource }))],
+    ['Performance', { demoRenders: renders, note: 'Development StrictMode may render twice.' }],
+  ] as const;
+  return <Paper variant="outlined"><Stack direction="row" spacing={1} sx={{ p: 1 }}><Button onClick={actions.reset}>Reset</Button><Button onClick={() => void actions.validateForm()}>Validate</Button></Stack><Tabs value={tab} onChange={(_, value: number) => setTab(value)} variant="scrollable">{panels.map(([label]) => <Tab key={label} label={label} />)}</Tabs><Box component="pre" aria-label={`${panels[tab][0]} inspector`} sx={{ m: 0, p: 2, maxHeight: 360, overflow: 'auto', fontSize: 12 }}>{JSON.stringify(panels[tab][1], null, 2)}</Box></Paper>;
+}
+function Runtime({ schema, defaultValues, onSubmitted }: { schema: FormSchema; defaultValues: Values; onSubmitted: (values: Values) => void }) {
+  const [events, setEvents] = useState<FormEvent[]>([]); const renders = useRef(0); renders.current += 1;
+  const capture = useCallback((event: FormEvent) => setEvents((current) => [...current.slice(-49), { ...event, value: event.field && sensitiveTypes.has(schema.fields.find((field) => field.name === event.field)?.type ?? '') ? '[redacted]' : event.value }]), [schema]);
+  useFormEvent('valueChange', capture); useFormEvent('submit', capture); useFormEvent('reset', capture); useFormEvent('validate', capture);
+  return <Grid container spacing={2}><Grid size={{ xs: 12, xl: 7 }}><Paper variant="outlined" sx={{ p: 3 }}><MuiForm schema={schema} submitLabel="Submit demo" onSubmit={(values) => onSubmitted(redact(values, schema))} /></Paper></Grid><Grid size={{ xs: 12, xl: 5 }}><Inspector schema={schema} events={events} renders={renders.current} /></Grid></Grid>;
+}
+export default function DemoShell({ metadata, schema: initialSchema, defaultValues, source }: DemoShellProps) {
+  const [schema, setSchema] = useState(initialSchema); const [draft, setDraft] = useState(() => JSON.stringify(initialSchema, null, 2)); const [diagnostic, setDiagnostic] = useState<string>(); const [submitted, setSubmitted] = useState<Values>(); const [density, setDensity] = useState('comfortable'); const [locale, setLocale] = useState('en-IN'); const [rtl, setRtl] = useState(false); const [view, setView] = useState(0);
+  const apply = () => { try { const candidate = JSON.parse(draft) as FormSchema; const result = validateSchema(candidate); if (!result.valid) { setDiagnostic(result.errors.map((item) => `${item.path}: ${item.message}`).join('\n')); return; } setSchema(candidate); setDiagnostic(undefined); } catch (error) { setDiagnostic(error instanceof Error ? error.message : String(error)); } };
+  const copy = async (value: string, label: string) => { await navigator.clipboard.writeText(value); setDiagnostic(`${label} copied.`); };
+  const settings = useMemo(() => ({ p: density === 'compact' ? 1 : 2 }), [density]);
+  return <Stack spacing={3} dir={rtl ? 'rtl' : 'ltr'}><Box><Stack direction="row" spacing={1} flexWrap="wrap">{metadata.packages.map((item) => <Chip key={item} label={item} />)}<Chip label={metadata.difficulty} color="primary" /></Stack><Typography component="h1" variant="h3" sx={{ mt: 1 }}>{metadata.title}</Typography><Typography color="text.secondary">{metadata.purpose}</Typography></Box><Paper variant="outlined" sx={settings}><Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ md: 'center' }}><Select size="small" value={locale} onChange={(event) => setLocale(event.target.value)} inputProps={{ 'aria-label': 'Locale' }}><MenuItem value="en-IN">English (India)</MenuItem><MenuItem value="en-US">English (US)</MenuItem></Select><Select size="small" value={density} onChange={(event) => setDensity(event.target.value)} inputProps={{ 'aria-label': 'Density' }}><MenuItem value="comfortable">Comfortable</MenuItem><MenuItem value="compact">Compact</MenuItem></Select><FormControlLabel control={<Switch checked={rtl} onChange={(_, checked) => setRtl(checked)} />} label="RTL" /><Button onClick={() => void copy(JSON.stringify(schema, null, 2), 'Schema')}>Copy schema</Button><Button onClick={() => void copy(source, 'Example')}>Copy complete example</Button><Button component="a" href="https://stackblitz.com/fork/vite" target="_blank" rel="noreferrer">Open online editor</Button></Stack></Paper><Tabs value={view} onChange={(_, value: number) => setView(value)}><Tab label="Live demo" /><Tab label="Schema editor" /><Tab label="Source" /></Tabs>{view === 0 && <FormProvider key={JSON.stringify(schema)} schema={schema} defaultValues={defaultValues}><Runtime schema={schema} defaultValues={defaultValues} onSubmitted={setSubmitted} /></FormProvider>}{view === 1 && <Stack spacing={1}><TextField label="Schema JSON" value={draft} onChange={(event) => setDraft(event.target.value)} multiline minRows={18} inputProps={{ spellCheck: false }} /><Button variant="contained" onClick={apply}>Apply schema</Button></Stack>}{view === 2 && <Paper component="pre" variant="outlined" sx={{ p: 2, overflow: 'auto' }}>{source}</Paper>}{diagnostic && <Alert severity={diagnostic.endsWith('copied.') ? 'success' : 'error'}>{diagnostic}</Alert>}{submitted && <Alert severity="success" data-testid="demo-submission">{JSON.stringify(submitted)}</Alert>}<Paper variant="outlined" sx={{ p: 2 }}><Typography variant="h6">Expected behavior and test steps</Typography><ol>{metadata.expectedBehavior.map((step) => <li key={step}>{step}</li>)}</ol></Paper></Stack>;
+}

@@ -1,4 +1,4 @@
-﻿import {
+import {
   FormProvider,
   useForm,
   useField
@@ -13,6 +13,8 @@ import {
   Paper,
   Typography
 } from "@mui/material";
+
+import { QuickstartExample } from "./examples/QuickstartExample";
 
 import type {
   FormSchema
@@ -383,8 +385,7 @@ export const schema: FormSchema = {
       name: "price",
       type: "currency",
       label: "Price",
-      currency: "INR",
-      locale: "en-IN",
+      config: { currency: "INR", locale: "en-IN" },
       validation: {
         min: 0,
       },
@@ -394,46 +395,35 @@ export const schema: FormSchema = {
       name: "discount",
       type: "percentage",
       label: "Discount",
-      min: 0,
-      max: 100,
-      step: 0.5,
+      config: { min: 0, max: 100, step: 0.5 },
     },
 
     {
       name: "experience",
       type: "slider",
       label: "Experience",
-      min: 0,
-      max: 30,
-      step: 1,
-      marks: true,
-      valueLabelDisplay: "auto",
+      config: { min: 0, max: 30, step: 1, marks: true, valueLabelDisplay: "auto" },
     },
 
     {
       name: "priceRange",
       type: "range-slider",
       label: "Price Range",
-      min: 0,
-      max: 100000,
-      step: 1000,
-      marks: true,
-      valueLabelDisplay: "auto",
+      config: { min: 0, max: 100000, step: 1000, marks: true, valueLabelDisplay: "auto" },
     },
 
     {
       name: "rating",
       type: "rating",
       label: "Rating",
-      max: 5,
-      precision: 0.5,
+      config: { max: 5, precision: 0.5 },
     },
 
     {
       name: "phone",
       type: "phone",
       label: "Phone Number",
-      defaultCountryCode: "+91",
+      config: { defaultCountryCode: "+91" },
       validation: {
         required: true,
       },
@@ -443,7 +433,7 @@ export const schema: FormSchema = {
       name: "otp",
       type: "otp",
       label: "Verification Code",
-      length: 6,
+      config: { length: 6 },
       validation: {
         required: true,
       },
@@ -453,15 +443,14 @@ export const schema: FormSchema = {
       name: "pin",
       type: "pin",
       label: "PIN",
-      length: 4,
-      mask: true,
+      config: { length: 4, mask: true },
     },
 
     {
       name: "employeeCode",
       type: "mask",
       label: "Employee Code",
-      mask: "AA-0000",
+      config: { mask: "AA-0000" },
     },
 
     // =========================================================
@@ -560,5 +549,8 @@ function FormDemo() {
 }
 
 export default function App() {
+  if (new URLSearchParams(window.location.search).get("example") === "quickstart") {
+    return <QuickstartExample />;
+  }
   return <FormDemo />;
 }
