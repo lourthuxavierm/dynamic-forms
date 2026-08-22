@@ -8,7 +8,7 @@
   "types": "./dist/index.d.ts",
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.mjs", "require": "./dist/index.js" } },
   "sideEffects": false,
-  "files": ["dist", "README.md"],
+  "files": ["dist", "README.md", "docs"],
   "peerDependencies": {
     "@dynamic-forms/core": "workspace:*",
     "@dynamic-forms/react": "workspace:*",
