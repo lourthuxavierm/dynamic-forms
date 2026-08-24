@@ -17,7 +17,7 @@ export function parseLocaleNumber(input: string, locale = 'en-US'): number | und
   let normalized = trimmed
     .replaceAll(group, '')
     .replaceAll('Â ', '')
-    .replaceAll('â€¯', '')
+    .replaceAll('\u202f', '')
     .replaceAll(' ', '')
     .replaceAll(minus, '-')
     .replace(decimal, '.')

@@ -7,6 +7,9 @@ headless React contract and contains no third-party component framework or runti
 
 The adapter includes native controls, composite and specialized fields, file and
 media workflows, structural arrays, declarative layouts, and opt-in theming.
+The stable v1 contract contains exactly 42 leaf controls, exported through
+V1_HTML_FIELD_TYPES, plus the object and array structural types. See
+docs/CONTROL-REFERENCE.md for their value and behavior contracts.
 
 ## Install
 

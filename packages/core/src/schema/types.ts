@@ -90,6 +90,7 @@ export interface NumericFieldConfig {
   min?: number;
   max?: number;
   step?: number;
+  precision?: number;
 }
 
 export interface CurrencyFieldConfig extends NumericFieldConfig {
@@ -100,16 +101,46 @@ export interface CurrencyFieldConfig extends NumericFieldConfig {
 export interface ChoiceFieldConfig {
   multiple?: boolean;
   searchable?: boolean;
+  debounceMs?: number;
+  clearOnDependencyChange?: boolean;
 }
 
 export interface DateTimeFieldConfig {
   minDate?: string;
   maxDate?: string;
+  step?: number;
 }
 
 export interface MaskFieldConfig {
   mask?: string;
   length?: number;
+  placeholderCharacter?: string;
+}
+
+/** Framework-neutral configuration for OTP and PIN controls. */
+export interface SegmentedFieldConfig {
+  length?: number;
+  numeric?: boolean;
+  autoComplete?: string;
+}
+
+/** Framework-neutral configuration for year controls. */
+export interface YearFieldConfig extends NumericFieldConfig {
+  /** When omitted, native numeric input behavior is used. */
+  inputMode?: 'numeric' | 'select';
+}
+
+/** Framework-neutral configuration for range values. */
+export interface RangeFieldConfig extends NumericFieldConfig {
+  minDistance?: number;
+}
+
+/** Framework-neutral constraints for array structural fields. */
+export interface ArrayFieldConfig {
+  minItems?: number;
+  maxItems?: number;
+  allowDuplicate?: boolean;
+  allowReorder?: boolean;
 }
 
 export interface FileFieldConfig {
@@ -127,6 +158,10 @@ export type FieldConfig =
   | ChoiceFieldConfig
   | DateTimeFieldConfig
   | MaskFieldConfig
+  | SegmentedFieldConfig
+  | YearFieldConfig
+  | RangeFieldConfig
+  | ArrayFieldConfig
   | FileFieldConfig
   | Record<string, unknown>;
 export interface FieldSchema {

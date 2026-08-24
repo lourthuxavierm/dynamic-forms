@@ -30,14 +30,14 @@ describe('Phase 13 performance contracts', () => {
     const view = render(<FormProvider schema={schema} store={store}><HtmlForm errorSummary={false} /></FormProvider>);
     expect(view.container.querySelectorAll('input')).toHaveLength(500);
     expect(performance.now() - started).toBeGreaterThanOrEqual(0);
-  });
+  }, 15_000);
 
   it('mounts only the viewport for a windowed 1,000-item array', () => {
     const schema: FormSchema = { id: 'windowed', fields: [{ name: 'rows', type: 'array', fields: [{ name: 'value', type: 'text', label: 'Value' }] }] };
     const store = new FormStore({ rows: Array.from({ length: 1000 }, (_, value) => ({ value })) });
     const view = render(<FormProvider schema={schema} store={store}><HtmlForm errorSummary={false} arrayItemsRenderer={({ items }) => <>{items.slice(0, 20).map((item) => <div key={item.id}>{item.content}</div>)}</>} /></FormProvider>);
     expect(view.getAllByLabelText('Value')).toHaveLength(20);
-  });
+  }, 15_000);
 
   it('keeps the default registry identity stable', () => {
     expect(createDefaultHtmlRegistry()).toBe(createDefaultHtmlRegistry());

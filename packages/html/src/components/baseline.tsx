@@ -27,7 +27,7 @@ function common(props: FieldComponentProps) {
   };
 }
 
-function HtmlInput(props: FieldComponentProps, type: InputKind, numeric = false, integer = false) {
+function HtmlInput(props: FieldComponentProps, type: InputKind, numeric = false, integer = false, defaultStep?: number) {
   const config = props.field.config as (NumericFieldConfig & DateTimeFieldConfig) | undefined;
   const inputProps: InputHTMLAttributes<HTMLInputElement> = {
     ...common(props),
@@ -37,7 +37,7 @@ function HtmlInput(props: FieldComponentProps, type: InputKind, numeric = false,
     value: props.value == null ? '' : String(props.value),
     min: numeric ? config?.min : config?.minDate,
     max: numeric ? config?.max : config?.maxDate,
-    step: numeric ? (integer ? 1 : config && 'step' in config ? config.step : 'any') : undefined,
+    step: numeric ? (integer ? 1 : config?.step ?? defaultStep ?? 'any') : undefined,
     onChange: (event: ChangeEvent<HTMLInputElement>) => {
       if (props.readOnly) return;
       const raw = event.target.value;
@@ -55,6 +55,8 @@ export const HtmlNumberField = (props: FieldComponentProps) => HtmlInput(props, 
 export const HtmlIntegerField = (props: FieldComponentProps) => HtmlInput(props, 'number', true, true);
 export const HtmlDecimalField = (props: FieldComponentProps) => HtmlInput(props, 'number', true);
 export const HtmlMonthField = (props: FieldComponentProps) => HtmlInput(props, 'month');
+/** Stores a numeric Gregorian year and uses native min/max/step constraints. */
+export const HtmlYearField = (props: FieldComponentProps) => HtmlInput(props, 'number', true, false, 1);
 
 export function HtmlTextarea(props: FieldComponentProps) {
   const config = props.field.config as { rows?: number } | undefined;

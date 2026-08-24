@@ -103,7 +103,7 @@ export function HtmlRangeSlider(props: FieldComponentProps) {
       aria-readonly={props.readOnly || undefined}
       onChange={(event) => { if (!props.readOnly) props.setValue([value[0], Number(event.target.value)]); }}
       onBlur={() => props.setTouched(true)} />
-    <output>{value[0] + ' Ã¢â‚¬â€œ ' + value[1]}</output>
+    <output>{value[0] + ' – ' + value[1]}</output>
   </div></HtmlFieldShell>;
 }
 
@@ -116,7 +116,7 @@ export function HtmlRating(props: FieldComponentProps) {
         value={rating} checked={props.value === rating} disabled={props.disabled}
         aria-label={rating + ' of ' + maximum}
         onChange={() => { if (!props.readOnly) props.setValue(rating); }}
-        onBlur={() => props.setTouched(true)} />{'Ã¢Ëœâ€¦'}</label>;
+        onBlur={() => props.setTouched(true)} />{'★'}</label>;
     })}
   </div></HtmlFieldShell>;
 }

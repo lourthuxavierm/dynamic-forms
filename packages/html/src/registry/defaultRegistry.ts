@@ -53,6 +53,7 @@ import {
   HtmlTextarea,
   HtmlTimeField,
   HtmlUrlField,
+  HtmlYearField,
 } from '../components/baseline';
 
 const DEFAULT_HTML_REGISTRY: HtmlFieldRegistry = Object.freeze({
@@ -85,6 +86,7 @@ const DEFAULT_HTML_REGISTRY: HtmlFieldRegistry = Object.freeze({
   'time-range': HtmlTimeRangeField,
   'datetime-range': HtmlDateTimeRangeField,
   month: HtmlMonthField,
+  year: HtmlYearField,
   file: HtmlFileUpload,
   'multi-file': HtmlMultiFileUpload,
   camera: HtmlCameraCapture,
