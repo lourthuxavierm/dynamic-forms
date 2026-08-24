@@ -8,7 +8,7 @@ Bring `@dynamic-forms/react` to a production-ready adapter for `@dynamic-forms/c
 
 - Package: `packages/react`
 - Uses `@dynamic-forms/core` as the single source of form state, validation, conditions, dependencies, data sources, and events.
-- Excludes MUI-specific rendering; those responsibilities remain in `@dynamic-forms/mui`.
+- Excludes visual rendering; those responsibilities remain in renderer packages.
 
 ## Phase 0 � Baseline and Package Health
 

@@ -1,7 +1,7 @@
 # @dynamic-forms/html
 
 Accessible native HTML rendering for Dynamic Forms. The package depends on the
-headless React contract and contains no MUI, Emotion, or runtime CSS-in-JS.
+headless React contract and contains no third-party component framework or runtime CSS-in-JS.
 
 ## Status
 

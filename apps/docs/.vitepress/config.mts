@@ -31,7 +31,6 @@ export default defineConfig({
           { text: 'Quick start', link: '/getting-started/quick-start' },
           { text: 'Schema basics', link: '/getting-started/schema-basics' },
           { text: 'React setup', link: '/getting-started/react-setup' },
-          { text: 'MUI setup', link: '/getting-started/mui-setup' },
         ],
       },
       {
@@ -49,7 +48,7 @@ export default defineConfig({
         items: [
           { text: 'Core', link: '/packages/core' },
           { text: 'React', link: '/packages/react' },
-          { text: 'MUI', link: '/packages/mui' },
+          { text: 'HTML', link: '/packages/html' },
           { text: 'Zod', link: '/packages/zod' },
           { text: 'React Hook Form', link: '/packages/react-hook-form' },
           { text: 'JSON Schema', link: '/packages/json-schema' },
@@ -61,7 +60,6 @@ export default defineConfig({
           { text: 'Overview', link: '/' },
           { text: 'Standards', link: '/documentation-standards' },
           { text: 'Inventory and traceability', link: '/documentation-inventory' },
-          { text: 'MUI control inventory', link: '/CONTROL' },
         ],
       },
     ],

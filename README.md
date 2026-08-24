@@ -1,22 +1,21 @@
 # Dynamic Forms
 
-A TypeScript-first dynamic forms monorepo with a framework-independent state engine, React bindings, and a Material UI renderer.
+A TypeScript-first dynamic forms monorepo with a framework-independent state engine, React bindings, and an accessible native HTML renderer.
 
-Status: pre-1.0 development (`0.1.0`). Core, React, and MUI are implemented. The Zod, React Hook Form, JSON Schema, and DevTools packages are currently placeholders and should not yet be treated as working integrations.
+Status: pre-1.0 development (`0.1.0`). Core, React, HTML, and Examples are implemented. The Zod, React Hook Form, JSON Schema, and DevTools packages are placeholders.
 
 ## Packages
 
 | Package | Purpose | Current maturity |
 | --- | --- | --- |
 | `@dynamic-forms/core` | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
-| `@dynamic-forms/react` | React provider, hooks, subscriptions, and renderer-neutral form components | Implemented |
-| `@dynamic-forms/mui` | MUI form renderer and default field registry | Implemented |
+| `@dynamic-forms/react` | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
+| `@dynamic-forms/html` | Accessible browser-native controls, layouts, registry, and styles | Implemented |
+| `@dynamic-forms/examples` | Adapter-neutral example schemas, values, and rules | Implemented |
 | `@dynamic-forms/zod` | Planned Zod adapter | Placeholder |
 | `@dynamic-forms/rhf` | Planned React Hook Form adapter | Placeholder |
 | `@dynamic-forms/json-schema` | Planned JSON Schema adapter | Placeholder |
 | `@dynamic-forms/devtools` | Planned developer tooling | Placeholder |
-
-The MUI package declares React 18 or 19, React DOM 18 or 19, MUI 7, and Emotion 11 as peer dependencies.
 
 ## Architecture
 
@@ -32,90 +31,75 @@ FormSchema
   FormProvider, hooks, subscriptions
     |
     v
-@dynamic-forms/mui
-  MuiForm, MuiFormRenderer, default MUI registry
+@dynamic-forms/html
+  HtmlForm, native controls, layouts, registry, optional static CSS
 ```
 
-Core does not import React or MUI. React owns lifecycle and subscription integration. MUI owns visual rendering and its control registry.
+Core contains no framework or renderer logic. React owns lifecycle and subscription integration. HTML owns browser-native rendering, accessibility, layouts, and styling.
 
 ## Quick start
 
-Install the implemented packages and their UI peers:
+Install the implemented runtime packages and React peers:
 
 ```bash
-pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/mui
-pnpm add react react-dom @mui/material @emotion/react @emotion/styled
+pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/html
+pnpm add react react-dom
 ```
 
-Create a schema and render it through `FormProvider` and `MuiForm`:
+Import the optional default stylesheet once:
+
+```ts
+import '@dynamic-forms/html/styles.css';
+```
+
+Create a schema and render it with `FormProvider` and `HtmlForm`:
 
 ```tsx
-import type { FormSchema } from "@dynamic-forms/core";
-import { FormProvider, useForm } from "@dynamic-forms/react";
-import { MuiForm } from "@dynamic-forms/mui";
+import type { FormSchema } from '@dynamic-forms/core';
+import { FormProvider } from '@dynamic-forms/react';
+import { HtmlForm } from '@dynamic-forms/html';
 
 const schema: FormSchema = {
-  id: "customer",
+  id: 'customer',
   fields: [
     {
-      name: "name",
-      type: "text",
-      label: "Name",
+      name: 'name',
+      type: 'text',
+      label: 'Name',
       validation: { required: true, minLength: 2 },
     },
     {
-      name: "customerType",
-      type: "select",
-      label: "Customer type",
+      name: 'customerType',
+      type: 'select',
+      label: 'Customer type',
       options: [
-        { label: "Individual", value: "individual" },
-        { label: "Business", value: "business" },
+        { label: 'Individual', value: 'individual' },
+        { label: 'Business', value: 'business' },
       ],
     },
     {
-      name: "companyName",
-      type: "text",
-      label: "Company name",
-      visibleWhen: {
-        field: "customerType",
-        operator: "equals",
-        value: "business",
-      },
+      name: 'companyName',
+      type: 'text',
+      label: 'Company name',
+      visibleWhen: { field: 'customerType', operator: 'equals', value: 'business' },
     },
   ],
 };
 
 export function CustomerForm() {
-  const { store, registry } = useForm({
-    defaultValues: { customerType: "individual" },
-  });
-
   return (
-    <FormProvider store={store} registry={registry} schema={schema}>
-      <MuiForm
-        schema={schema}
-        onSubmit={async (values) => {
-          console.log(values);
-        }}
-      />
+    <FormProvider
+      schema={schema}
+      defaultValues={{ customerType: 'individual' }}
+      onSubmit={async (values) => console.log(values)}
+    >
+      <HtmlForm schema={schema} />
     </FormProvider>
   );
 }
 ```
 
-`MuiForm` merges the default MUI registry automatically. Pass its `registry` prop to add or replace MUI controls.
-
-## Built-in MUI field types
-
-The default registry currently contains 42 types:
-
-- Core inputs: `text`, `textarea`, `password`, `email`, `url`, `number`, `integer`, `decimal`, `hidden`
-- Selection: `select`, `multi-select`, `autocomplete`, `async-autocomplete`, `checkbox`, `checkbox-group`, `radio`, `radio-group`, `switch`, `toggle-button-group`, `tree-select`
-- Date and time: `date`, `time`, `datetime`, `date-range`, `time-range`, `datetime-range`, `month`, `year`
-- Specialized: `currency`, `percentage`, `slider`, `range-slider`, `rating`, `phone`, `otp`, `pin`, `mask`
-- File and media: `file`, `multi-file`, `camera`, `signature`, `document-preview`
-
-`toggle-button`, `tree-checkbox`, `object`, and `array` exist in schema typing but do not currently have default MUI registry entries.
+See the [HTML package README](./packages/html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls.
 
 ## Workspace development
 
@@ -124,32 +108,27 @@ Requirements:
 - Node.js compatible with the installed toolchain
 - pnpm 10.15.0
 
-Common commands:
-
 ```bash
 pnpm install
 pnpm build
 pnpm test
 pnpm typecheck
-pnpm --filter @dynamic-forms/playground dev
+pnpm --filter @dynamic-forms/html-playground dev
 ```
 
 ## Documentation
 
+- [Documentation site](./apps/docs/index.md)
 - [Documentation standards](./apps/docs/documentation-standards.md)
-- [Documentation inventory and traceability](./apps/docs/documentation-inventory.md)
-- [MUI control inventory](./apps/docs/CONTROL.md)
+- [Documentation inventory](./apps/docs/documentation-inventory.md)
 - [Core package](./packages/core/README.md)
 - [React package](./packages/react/README.md)
-- [MUI value strategy](./packages/mui/docs/value-strategy.md)
-- [MUI runtime conditions and data sources](./packages/mui/docs/runtime-conditions-data-sources.md)
-- [File upload behavior](./packages/mui/docs/file-uploads.md)
-
-The VitePress documentation application is planned for Documentation Phase 1.
+- [HTML package](./packages/html/README.md)
+- [HTML v1 contracts](./packages/html/docs/VERSION-1.md)
 
 ## Contributing
 
-This repository is under active pre-1.0 development. Changes to public exports, peer dependencies, schema types, or the MUI default registry must update the corresponding documentation and traceability inventory.
+This repository is under active pre-1.0 development. Changes to public exports, peer dependencies, schema types, or the HTML registry must update the corresponding documentation and traceability inventory.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the repository workflow.
 

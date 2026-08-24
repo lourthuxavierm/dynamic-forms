@@ -6,9 +6,8 @@ const root = process.cwd();
 const policies = {
   core: { name: '@dynamic-forms/core', allowed: [] },
   react: { name: '@dynamic-forms/react', allowed: ['@dynamic-forms/core'] },
-  html: { name: '@dynamic-forms/html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react'], forbidden: ['@dynamic-forms/mui', '@emotion/react', '@emotion/styled', '@mui/material'] },
-  mui: { name: '@dynamic-forms/mui', allowed: ['@dynamic-forms/core', '@dynamic-forms/react'], forbidden: ['@dynamic-forms/html'] },
-  examples: { name: '@dynamic-forms/examples', allowed: ['@dynamic-forms/core'], forbidden: ['@dynamic-forms/react', '@dynamic-forms/html', '@dynamic-forms/mui', '@emotion/react', '@emotion/styled', '@mui/material'] },
+  html: { name: '@dynamic-forms/html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react'] },
+  examples: { name: '@dynamic-forms/examples', allowed: ['@dynamic-forms/core'], forbidden: ['@dynamic-forms/react', '@dynamic-forms/html'] },
 };
 const extensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx']);
 const importPattern = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"](@dynamic-forms\/[^'"]+)['"]/g;
@@ -51,7 +50,7 @@ for (const [directory, policy] of Object.entries(policies)) {
     }
   }
 }
-for (const application of ['playground', 'html-playground']) {
+for (const application of ['html-playground']) {
   const sourceRoot = path.join(root, 'apps', application, 'src');
   for (const file of await collect(sourceRoot)) {
     const source = (await readFile(file, 'utf8')).replaceAll('\\', '/');

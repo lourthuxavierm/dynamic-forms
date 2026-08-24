@@ -1,1 +1,0 @@
-export const dependencySource = `const graph = new DependencyGraph([\n  { field: 'state', dependsOn: ['country'] },\n  { field: 'city', dependsOn: ['state'] },\n]);\ngraph.getTransitiveDependents('country'); // ['state', 'city']`;

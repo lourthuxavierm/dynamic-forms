@@ -1,6 +1,6 @@
 # @dynamic-forms/core
 
-Framework-independent form state and schema runtime for Dynamic Forms. The package has no React, MUI, or renderer dependencies.
+Framework-independent form state and schema runtime for Dynamic Forms. The package has no React or renderer dependencies.
 
 ## Public API
 

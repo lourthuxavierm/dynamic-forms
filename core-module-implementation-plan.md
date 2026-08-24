@@ -2,7 +2,7 @@
 
 ## Objective
 
-Bring `@dynamic-forms/core` to a stable, testable baseline that can support the React and MUI packages without framework-specific logic.
+Bring `@dynamic-forms/core` to a stable, testable baseline that can support React and renderer packages without framework-specific logic.
 
 ## Scope
 
@@ -44,7 +44,7 @@ Bring `@dynamic-forms/core` to a stable, testable baseline that can support the 
 - [x] Add declarative condition properties: `visibleWhen`, `disabledWhen`, `requiredWhen`, and `readonlyWhen`.
 - [x] Add `dependsOn` and dependency behavior configuration to field schemas.
 - [x] Add a renderer-neutral `dataSource` configuration model.
-- [x] Add typed field configuration/metadata for specialized controls without coupling Core to MUI.
+- [x] Add typed field configuration/metadata for specialized controls without coupling Core to a renderer.
 - [x] Support readonly schema declarations throughout nested object and array fields.
 - [x] Validate field references, malformed definitions, invalid nested layouts, and duplicate names.
 
@@ -80,12 +80,12 @@ Bring `@dynamic-forms/core` to a stable, testable baseline that can support the 
 
 ## Verification Note
 
-Core verification is complete: its typecheck, build, and 51-test suite pass. Repository-wide verification remains blocked outside `@dynamic-forms/core` by existing MUI/playground TypeScript errors and placeholder adapter packages (`react`, `rhf`, `zod`, and `json-schema`) with no test files.
+Core verification is complete: its typecheck, build, and 51-test suite pass. At the time of this plan, repository-wide verification remained blocked outside `@dynamic-forms/core` by application TypeScript errors and placeholder adapter packages with no test files.
 
 ## Definition of Done
 
 - `pnpm typecheck`, `pnpm build`, and `pnpm test` pass from the repository root.
-- Core has no React, MUI, or renderer-specific dependencies.
+- Core has no React or renderer-specific dependencies.
 - Form state updates are immutable, correctly scoped, and efficiently subscribed to.
 - Schema conditions, dependencies, validation, data sources, and events work together through a documented Core API.
 - Critical behavior is covered by automated tests.

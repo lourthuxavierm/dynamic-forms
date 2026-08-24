@@ -13,9 +13,8 @@ The enforced dependency direction is `core <- react <- visual adapter`.
 | `@dynamic-forms/core` | Schemas, state, validation, rules, dependencies, data sources | None |
 | `@dynamic-forms/react` | Providers, hooks, subscriptions, focus and renderer contracts | Core |
 | `@dynamic-forms/html` | Native controls, DOM accessibility, registry, static CSS | Core, React |
-| `@dynamic-forms/mui` | Material UI controls and presentation | Core, React |
 
-Core must contain no React, DOM, or adapter details. React must contain no native controls, CSS, MUI, or Emotion. HTML and MUI must not depend on each other. Schemas and rules remain adapter-neutral. `pnpm check:boundaries` enforces these rules.
+Core must contain no React, DOM, or adapter details. React must contain no native controls or CSS. Schemas and rules remain adapter-neutral. `pnpm check:boundaries` enforces these rules.
 
 ## Supported platforms
 

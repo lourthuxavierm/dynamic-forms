@@ -12,7 +12,7 @@ export default function App() {
       <header className="hero">
         <p className="eyebrow">@dynamic-forms/html</p>
         <h1>Native HTML playground</h1>
-        <p>Headless React state and validation rendered with accessible browser-native controls—no MUI or Emotion.</p>
+        <p>Headless React state and validation rendered with accessible browser-native controls and static CSS.</p>
       </header>
 
       <section className="demo-grid" aria-label="Native HTML form demonstration">

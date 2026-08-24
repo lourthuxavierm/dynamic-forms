@@ -1,1 +1,0 @@
-export const basicExampleSource = `import { FormProvider } from '@dynamic-forms/react';\nimport { MuiForm } from '@dynamic-forms/mui';\n\n<FormProvider schema={basicFormSchema} defaultValues={basicInitialValues}>\n  <MuiForm schema={basicFormSchema} onSubmit={console.log} />\n</FormProvider>`;

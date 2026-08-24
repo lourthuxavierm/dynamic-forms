@@ -2,7 +2,7 @@
 
 ## Target
 
-Build the **Native HTML renderer for v1** with the same **42 field types**, without MUI or another UI framework.
+Build the **Native HTML renderer for v1** with the same **42 field types**, without another UI framework.
 
 ---
 
@@ -511,7 +511,7 @@ Also:
 * [ ] CSS variables
 * [ ] Custom class names
 * [ ] Data attributes
-* [ ] No MUI dependency
+* [ ] No third-party component-framework dependency
 * [ ] No Bootstrap dependency
 * [ ] No Tailwind dependency
 * [ ] Usable without custom CSS
@@ -521,7 +521,7 @@ Also:
 
 # Phase 16 — Registry
 
-Create the native equivalent of the old MUI registry:
+Create the native default registry:
 
 ```text
 text
@@ -682,7 +682,7 @@ Before calling v1 stable:
 * [ ] Playground demonstrates features
 * [ ] Documentation exists
 * [ ] Public APIs are reviewed
-* [ ] No MUI dependency
+* [ ] No third-party component-framework dependency
 * [ ] No framework-specific behavior leaks into Core
 
 ## Recommended implementation order
