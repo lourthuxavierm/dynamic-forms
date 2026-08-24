@@ -178,6 +178,17 @@ describe('Core Schema', () => {
     expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
   });
 
+  it('accepts indexed references to array item fields', () => {
+    const schema: FormSchema = {
+      id: 'indexed-references',
+      fields: [
+        { name: 'items', type: 'array', fields: [{ name: 'enabled', type: 'checkbox' }] },
+        { name: 'details', type: 'text', visibleWhen: { field: 'items.0.enabled', operator: 'equals', value: true }, dependsOn: ['items[0].enabled'] },
+      ],
+    };
+
+    expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
+  });
   it('rejects invalid structure, references, rule ranges, option values, and data sources', () => {
     const schema: FormSchema = {
       id: 'invalid-contract',

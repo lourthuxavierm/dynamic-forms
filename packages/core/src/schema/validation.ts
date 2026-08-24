@@ -58,15 +58,21 @@ function validateOptions(field: FieldSchema, path: string, errors: SchemaValidat
 function validateReferences(field: FieldSchema, path: string, all: Map<string, FieldSchema>, errors: SchemaValidationError[]): void {
   for (const condition of [field.visibleWhen, field.disabledWhen, field.requiredWhen, field.readOnlyWhen]) validateCondition(condition, path, all, errors);
   for (const dependency of field.dependsOn ?? []) {
-    if (!all.has(dependency)) errors.push({ path, message: `Unknown dependency field: ${dependency}` });
+    if (!hasSchemaPath(all, dependency)) errors.push({ path, message: `Unknown dependency field: ${dependency}` });
     if (dependency === path) errors.push({ path, message: 'A field cannot depend on itself' });
   }
+}
+
+function hasSchemaPath(all: Map<string, FieldSchema>, path: string): boolean {
+  if (all.has(path)) return true;
+  const schemaPath = path.replace(/\[(?:\d+)\]/g, '').split('.').filter((segment) => !/^\d+$/.test(segment)).join('.');
+  return all.has(schemaPath);
 }
 
 function validateCondition(condition: FieldCondition | undefined, path: string, all: Map<string, FieldSchema>, errors: SchemaValidationError[]): void {
   if (!condition) return;
   if ('field' in condition) {
-    if (!all.has(condition.field)) errors.push({ path, message: `Unknown condition field: ${condition.field}` });
+    if (!hasSchemaPath(all, condition.field)) errors.push({ path, message: `Unknown condition field: ${condition.field}` });
     return;
   }
   for (const nested of condition.and ?? []) validateCondition(nested, path, all, errors);
