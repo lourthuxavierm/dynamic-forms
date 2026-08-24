@@ -6,8 +6,9 @@ const root = process.cwd();
 const policies = {
   core: { name: '@dynamic-forms/core', allowed: [] },
   react: { name: '@dynamic-forms/react', allowed: ['@dynamic-forms/core'] },
-  html: { name: '@dynamic-forms/html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react'] },
-  examples: { name: '@dynamic-forms/examples', allowed: ['@dynamic-forms/core'], forbidden: ['@dynamic-forms/react', '@dynamic-forms/html'] },
+  html: { name: '@dynamic-forms/html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react', '@dynamic-forms/react-html'] },
+  'react-html': { name: '@dynamic-forms/react-html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react'] },
+  examples: { name: '@dynamic-forms/examples', allowed: ['@dynamic-forms/core'], forbidden: ['@dynamic-forms/react', '@dynamic-forms/html', '@dynamic-forms/react-html'] },
 };
 const extensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx']);
 const importPattern = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"](@dynamic-forms\/[^'"]+)['"]/g;

@@ -88,31 +88,21 @@ importers:
 
   packages/html:
     dependencies:
-      react:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.2.8
-      react-dom:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.2.8(react@19.2.8)
-    devDependencies:
       '@dynamic-forms/core':
         specifier: workspace:*
         version: link:../core
       '@dynamic-forms/react':
         specifier: workspace:*
         version: link:../react
-      '@types/react':
-        specifier: ^19.2.18
-        version: 19.2.18
-      '@types/react-dom':
-        specifier: ^19.2.4
-        version: 19.2.4(@types/react@19.2.18)
-      axe-core:
-        specifier: ^4.13.0
-        version: 4.13.0
-      happy-dom:
-        specifier: ^20.11.6
-        version: 20.11.6
+      '@dynamic-forms/react-html':
+        specifier: workspace:*
+        version: link:../react-html
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.8(react@19.2.8)
 
   packages/json-schema:
     dependencies:
@@ -138,6 +128,34 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.4
         version: 19.2.4(@types/react@19.2.18)
+      happy-dom:
+        specifier: ^20.11.6
+        version: 20.11.6
+
+  packages/react-html:
+    dependencies:
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@dynamic-forms/core':
+        specifier: workspace:*
+        version: link:../core
+      '@dynamic-forms/react':
+        specifier: workspace:*
+        version: link:../react
+      '@types/react':
+        specifier: ^19.2.18
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.2.4
+        version: 19.2.4(@types/react@19.2.18)
+      axe-core:
+        specifier: ^4.13.0
+        version: 4.13.0
       happy-dom:
         specifier: ^20.11.6
         version: 20.11.6
