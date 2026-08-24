@@ -4,11 +4,21 @@ import process from 'node:process';
 
 const root = process.cwd();
 const policies = {
-  core: { name: '@dynamic-forms/core', allowed: [] },
-  react: { name: '@dynamic-forms/react', allowed: ['@dynamic-forms/core'] },
-  html: { name: '@dynamic-forms/html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react', '@dynamic-forms/react-html'] },
-  'react-html': { name: '@dynamic-forms/react-html', allowed: ['@dynamic-forms/core', '@dynamic-forms/react'] },
-  examples: { name: '@dynamic-forms/examples', allowed: ['@dynamic-forms/core'], forbidden: ['@dynamic-forms/react', '@dynamic-forms/html', '@dynamic-forms/react-html'] },
+  core: { name: '@dynamic-forms/core', dependencies: [], imports: [] },
+  react: { name: '@dynamic-forms/react', dependencies: ['@dynamic-forms/core'] },
+  html: {
+    name: '@dynamic-forms/html',
+    dependencies: ['@dynamic-forms/core', '@dynamic-forms/react', '@dynamic-forms/react-html'],
+    imports: ['@dynamic-forms/react-html'],
+  },
+  'react-html': {
+    name: '@dynamic-forms/react-html',
+    dependencies: ['@dynamic-forms/core', '@dynamic-forms/react'],
+  },
+  examples: {
+    name: '@dynamic-forms/examples',
+    dependencies: ['@dynamic-forms/core'],
+  },
 };
 const extensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx']);
 const importPattern = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"](@dynamic-forms\/[^'"]+)['"]/g;
@@ -41,13 +51,13 @@ for (const [directory, policy] of Object.entries(policies)) {
   if (manifest.name !== policy.name) errors.push(`${path.relative(root, manifestPath)}: expected package name ${policy.name}`);
   const dependencies = { ...manifest.dependencies, ...manifest.peerDependencies, ...manifest.optionalDependencies, ...manifest.devDependencies };
   for (const dependency of Object.keys(dependencies)) {
-    if (dependency.startsWith('@dynamic-forms/') && !policy.allowed.includes(dependency)) errors.push(`${path.relative(root, manifestPath)}: forbidden dependency ${dependency}`);
-    if (policy.forbidden?.includes(dependency)) errors.push(`${path.relative(root, manifestPath)}: forbidden dependency ${dependency}`);
+    if (dependency.startsWith('@dynamic-forms/') && !policy.dependencies.includes(dependency)) errors.push(`${path.relative(root, manifestPath)}: forbidden dependency ${dependency}`);
   }
+  const allowedImports = policy.imports ?? policy.dependencies;
   for (const file of await collect(path.join(packageDirectory, 'src'))) {
     const fileSource = await readFile(file, 'utf8');
     for (const match of fileSource.matchAll(importPattern)) {
-      if (!policy.allowed.includes(packageName(match[1]))) errors.push(`${path.relative(root, file)}: forbidden import ${match[1]}`);
+      if (!allowedImports.includes(packageName(match[1]))) errors.push(`${path.relative(root, file)}: forbidden import ${match[1]}`);
     }
   }
 }
