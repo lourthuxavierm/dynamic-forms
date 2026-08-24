@@ -28,7 +28,8 @@
   },
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
-    "test": "vitest run --passWithNoTests",
+    "test": "pnpm --filter @dynamic-forms/react-html build && vitest run --passWithNoTests && pnpm build && node scripts/verify-compatibility.mjs",
+    "verify:compatibility": "node scripts/verify-compatibility.mjs",
     "typecheck": "tsc --noEmit"
   }
 }
