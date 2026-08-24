@@ -1,4 +1,4 @@
-# @dynamic-forms/html
+# @dynamic-forms/react-html
 
 Accessible native HTML rendering for Dynamic Forms. The package depends on the
 headless React contract and contains no third-party component framework or runtime CSS-in-JS.
@@ -13,13 +13,13 @@ docs/CONTROL-REFERENCE.md for their value and behavior contracts.
 
 ## Install
 
-    pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/html react react-dom
+    pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/react-html react react-dom
 
 ## Quickstart
 
     import { FormProvider } from '@dynamic-forms/react';
-    import { HtmlForm } from '@dynamic-forms/html';
-    import '@dynamic-forms/html/styles.css';
+    import { HtmlForm } from '@dynamic-forms/react-html';
+    import '@dynamic-forms/react-html/styles.css';
 
     <FormProvider schema={schema}>
       <HtmlForm

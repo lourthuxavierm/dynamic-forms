@@ -3,7 +3,7 @@
 The HTML adapter has no runtime CSS dependency. Import the optional stylesheet once from your application entry point:
 
 ```ts
-import '@dynamic-forms/html/styles.css';
+import '@dynamic-forms/react-html/styles.css';
 ```
 
 Without that import, controls remain semantic and unstyled. If the stylesheet is loaded but one form must opt out, pass `unstyled` to `HtmlForm`.

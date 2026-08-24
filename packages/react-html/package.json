@@ -1,5 +1,5 @@
 {
-  "name": "@dynamic-forms/html",
+  "name": "@dynamic-forms/react-html",
   "version": "0.1.0",
   "description": "Accessible native HTML adapter for Dynamic Forms",
   "license": "MIT",

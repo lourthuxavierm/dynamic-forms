@@ -1,6 +1,6 @@
 # Structural rendering contracts
 
-`@dynamic-forms/html` renders object and array schema fields recursively while keeping values and validation in the shared form store.
+`@dynamic-forms/react-html` renders object and array schema fields recursively while keeping values and validation in the shared form store.
 
 ## Arrays
 

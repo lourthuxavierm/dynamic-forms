@@ -17,7 +17,7 @@ function renderForm(props: React.ComponentProps<typeof HtmlForm> = {}) {
 describe('Phase 11 styling and theming', () => {
   it('exposes opt-in stylesheet metadata and stable form theme attributes', () => {
     expect(HTML_TOKEN_PREFIX).toBe('--df-');
-    expect(HTML_DEFAULT_STYLESHEET).toBe('@dynamic-forms/html/styles.css');
+    expect(HTML_DEFAULT_STYLESHEET).toBe('@dynamic-forms/react-html/styles.css');
     const view = renderForm({ colorScheme: 'dark', density: 'compact', dir: 'rtl', className: 'consumer-form' });
     const form = view.container.querySelector('form')!;
     expect(form.classList.contains('df-form')).toBe(true);
