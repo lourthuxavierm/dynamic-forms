@@ -1,0 +1,80 @@
+{
+  "name": "@dynamic-forms/examples",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Adapter-neutral example schemas, fixtures, and business rules for Dynamic Forms",
+  "license": "MIT",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./basic": {
+      "types": "./dist/basic.d.ts",
+      "import": "./dist/basic.js",
+      "require": "./dist/basic.cjs"
+    },
+    "./validation": {
+      "types": "./dist/validation.d.ts",
+      "import": "./dist/validation.js",
+      "require": "./dist/validation.cjs"
+    },
+    "./conditions": {
+      "types": "./dist/conditions.d.ts",
+      "import": "./dist/conditions.js",
+      "require": "./dist/conditions.cjs"
+    },
+    "./dependencies": {
+      "types": "./dist/dependencies.d.ts",
+      "import": "./dist/dependencies.js",
+      "require": "./dist/dependencies.cjs"
+    },
+    "./wizard": {
+      "types": "./dist/wizard.d.ts",
+      "import": "./dist/wizard.js",
+      "require": "./dist/wizard.cjs"
+    },
+    "./dataSources": {
+      "types": "./dist/dataSources.d.ts",
+      "import": "./dist/dataSources.js",
+      "require": "./dist/dataSources.cjs"
+    },
+    "./nestedArrays": {
+      "types": "./dist/nestedArrays.d.ts",
+      "import": "./dist/nestedArrays.js",
+      "require": "./dist/nestedArrays.cjs"
+    },
+    "./permissions": {
+      "types": "./dist/permissions.d.ts",
+      "import": "./dist/permissions.js",
+      "require": "./dist/permissions.cjs"
+    },
+    "./layouts": {
+      "types": "./dist/layouts.d.ts",
+      "import": "./dist/layouts.js",
+      "require": "./dist/layouts.cjs"
+    },
+    "./enterprise": {
+      "types": "./dist/enterprise.d.ts",
+      "import": "./dist/enterprise.js",
+      "require": "./dist/enterprise.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "@dynamic-forms/core": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "type": "module"
+}

@@ -1,20 +1,18 @@
 {
-  "name": "@dynamic-forms/playground",
+  "name": "@dynamic-forms/html-playground",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@dynamic-forms/core": "workspace:*",
-    "@dynamic-forms/mui": "workspace:*",
+    "@dynamic-forms/html": "workspace:*",
     "@dynamic-forms/react": "workspace:*",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/material": "^7.3.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "@dynamic-forms/examples": "workspace:*"

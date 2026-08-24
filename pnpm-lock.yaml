@@ -38,11 +38,45 @@ importers:
 
   apps/docs: {}
 
+  apps/html-playground:
+    dependencies:
+      '@dynamic-forms/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@dynamic-forms/examples':
+        specifier: workspace:*
+        version: link:../../packages/examples
+      '@dynamic-forms/html':
+        specifier: workspace:*
+        version: link:../../packages/html
+      '@dynamic-forms/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      react:
+        specifier: ^19.2.8
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.2.8
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.18
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.2.4
+        version: 19.2.4(@types/react@19.2.18)
+      '@vitejs/plugin-react':
+        specifier: latest
+        version: 6.1.0(vite@8.2.2(@types/node@26.2.0)(esbuild@0.27.7))
+
   apps/playground:
     dependencies:
       '@dynamic-forms/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@dynamic-forms/examples':
+        specifier: workspace:*
+        version: link:../../packages/examples
       '@dynamic-forms/mui':
         specifier: workspace:*
         version: link:../../packages/mui
@@ -85,6 +119,12 @@ importers:
       '@dynamic-forms/react':
         specifier: workspace:*
         version: link:../react
+
+  packages/examples:
+    dependencies:
+      '@dynamic-forms/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/html:
     dependencies:
