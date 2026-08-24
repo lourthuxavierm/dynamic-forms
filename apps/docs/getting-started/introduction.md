@@ -4,7 +4,7 @@ Dynamic Forms separates portable form behavior from visual rendering:
 
 - `@dynamic-forms/core` owns schemas, state, validation, conditions, dependencies, events, and data sources.
 - `@dynamic-forms/react` connects the runtime to React lifecycle and subscriptions.
-- `@dynamic-forms/html` renders accessible browser-native controls with an overridable registry and optional static CSS.
+- `@dynamic-forms/react-html` renders accessible browser-native controls with an overridable registry and optional static CSS.
 
 The packages are pre-1.0. Core, React, HTML, and Examples are implemented; consult the [package inventory](../documentation-inventory.md) before adopting other workspace packages.
 

@@ -8,14 +8,15 @@ Thank you for helping improve Dynamic Forms. The repository is a pnpm and Turbo 
 packages/
   core/          framework-independent form runtime
   react/         React providers, hooks, and renderer contracts
-  html/          accessible browser-native renderer
+  react-html/    React browser-native renderer
+  html/          legacy compatibility forwarding package
   examples/      adapter-neutral schemas and fixtures
   zod/           planned adapter
   rhf/           planned adapter
   json-schema/   planned adapter
   devtools/      planned developer tools
 apps/
-  html-playground/ native renderer demonstration
+  react-html-playground/ native React renderer demonstration
   docs/            VitePress documentation
 ```
 
@@ -34,15 +35,16 @@ Use the package-level scripts while iterating:
 ```sh
 pnpm --filter @dynamic-forms/core test
 pnpm --filter @dynamic-forms/react test
-pnpm --filter @dynamic-forms/html test
-pnpm --filter @dynamic-forms/html-playground dev
+pnpm --filter @dynamic-forms/react-html test
+pnpm --filter @dynamic-forms/react-html-playground dev
 ```
 
 ## Architecture rules
 
 - Core has no framework, DOM, or renderer dependencies.
 - React may depend on Core and owns lifecycle and subscriptions, not visual controls.
-- HTML may depend on Core and React and owns native controls, DOM accessibility, layouts, and static styles.
+- React HTML may depend on Core and React and owns native controls, DOM accessibility, layouts, and static styles.
+- The legacy HTML package may forward only to React HTML and must contain no renderer implementation.
 - Examples depend only on Core and remain adapter-neutral.
 - Applications must not import another application's internal source files.
 - Run `pnpm check:boundaries` after changing dependencies or imports.

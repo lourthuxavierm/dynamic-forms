@@ -48,7 +48,7 @@ export default defineConfig({
         items: [
           { text: 'Core', link: '/packages/core' },
           { text: 'React', link: '/packages/react' },
-          { text: 'HTML', link: '/packages/html' },
+          { text: 'React HTML', link: '/packages/react-html' },
           { text: 'Zod', link: '/packages/zod' },
           { text: 'React Hook Form', link: '/packages/react-hook-form' },
           { text: 'JSON Schema', link: '/packages/json-schema' },

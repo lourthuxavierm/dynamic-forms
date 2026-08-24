@@ -10,7 +10,7 @@ This inventory maps shipped source to its canonical documentation destination.
 ## Current-state findings
 
 - The canonical package scope is `@dynamic-forms/*`.
-- Core, React, HTML, and Examples contain substantive implementations.
+- Core, React, React HTML, and Examples contain substantive implementations.
 - Zod, React Hook Form, JSON Schema, and DevTools currently expose placeholder constants only.
 - The HTML renderer provides native controls, structural rendering, layouts, accessibility contracts, and optional static CSS.
 
@@ -20,7 +20,8 @@ This inventory maps shipped source to its canonical documentation destination.
 | --- | --- | --- | --- | --- |
 | `@dynamic-forms/core` | Implemented | `packages/core/src/index.ts` | `packages/core/README.md` | Core maintainers |
 | `@dynamic-forms/react` | Implemented | `packages/react/src/index.ts` | `packages/react/README.md` | React maintainers |
-| `@dynamic-forms/html` | Implemented | `packages/html/src/index.ts` and registry entries | `packages/html/README.md` and `packages/html/docs/*` | HTML maintainers |
+| `@dynamic-forms/react-html` | Implemented | `packages/react-html/src/index.ts` and registry entries | `packages/react-html/README.md` and `packages/react-html/docs/*` | React HTML maintainers |
+| `@dynamic-forms/html` | Compatibility only | `packages/html/src/index.ts` forwarding entries | `packages/html/README.md` | React HTML maintainers |
 | `@dynamic-forms/examples` | Implemented | `packages/examples/src/index.ts` | `packages/examples/README.md` | Example maintainers |
 | `@dynamic-forms/zod` | Placeholder | `packages/zod/src/index.ts` | `packages/zod.md` | Adapter owner |
 | `@dynamic-forms/rhf` | Placeholder | `packages/rhf/src/index.ts` | `packages/react-hook-form.md` | Adapter owner |

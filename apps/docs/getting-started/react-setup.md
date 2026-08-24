@@ -38,4 +38,4 @@ The provider exposes the store, schema, registry, validation, reset, and submiss
 
 Use `useField` for a control, `useWatch` for selected values, and `useFormState` with a selector for form-level UI. All must run beneath the matching provider.
 
-Continue with the [HTML package guide](../packages/html.md) to render the schema.
+Continue with the [React HTML package guide](../packages/react-html.md) to render the schema.

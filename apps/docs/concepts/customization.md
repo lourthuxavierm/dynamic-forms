@@ -6,7 +6,7 @@ The HTML adapter exposes registry factories and component contracts for additive
 
 ```tsx
 import type { FieldComponentProps } from '@dynamic-forms/react';
-import { createHtmlRegistry, HtmlForm } from '@dynamic-forms/html';
+import { createHtmlRegistry, HtmlForm } from '@dynamic-forms/react-html';
 
 function UppercaseField(props: FieldComponentProps<string>) {
   return (

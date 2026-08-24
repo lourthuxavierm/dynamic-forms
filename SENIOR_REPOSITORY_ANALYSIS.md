@@ -15,7 +15,7 @@ Dynamic Forms is organized into three runtime layers:
 @dynamic-forms/react
         |
         v
-@dynamic-forms/html
+@dynamic-forms/react-html
 ```
 
 Core owns portable form behavior, React owns lifecycle and subscriptions, and HTML owns accessible browser-native rendering. Examples remain adapter-neutral. The Zod, React Hook Form, JSON Schema, and DevTools packages are placeholders.

@@ -39,4 +39,4 @@ You can place `defaultValue` on a field, but the quickstart supplies a typed `de
 
 Schema validators store a message for each failing field. HTML controls expose that message through visible and accessible error output. Validation mode controls field timing; form submission always validates the full schema before invoking the submit handler.
 
-Compare field `type` values with the [HTML package guide](../packages/html.md).
+Compare field `type` values with the [React HTML package guide](../packages/react-html.md).

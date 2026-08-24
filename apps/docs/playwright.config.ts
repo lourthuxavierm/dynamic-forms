@@ -19,7 +19,7 @@ export default defineConfig({
       timeout: 120_000,
     },
     {
-      command: 'pnpm --filter @dynamic-forms/playground dev --host 127.0.0.1 --port 4175',
+      command: 'pnpm --filter @dynamic-forms/react-html-playground dev --host 127.0.0.1 --port 4175',
       url: 'http://127.0.0.1:4175/?example=quickstart',
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

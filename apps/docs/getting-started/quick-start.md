@@ -7,7 +7,7 @@ This walkthrough renders a validated form with accessible browser-native control
 Follow [Installation](./installation.md), then import the optional stylesheet:
 
 ```ts
-import '@dynamic-forms/html/styles.css';
+import '@dynamic-forms/react-html/styles.css';
 ```
 
 ## 2. Add the form
@@ -15,7 +15,7 @@ import '@dynamic-forms/html/styles.css';
 ```tsx
 import type { FormSchema } from '@dynamic-forms/core';
 import { FormProvider } from '@dynamic-forms/react';
-import { HtmlForm } from '@dynamic-forms/html';
+import { HtmlForm } from '@dynamic-forms/react-html';
 
 const schema: FormSchema = {
   id: 'profile',
@@ -46,4 +46,4 @@ export function ProfileForm() {
 
 - Learn the [schema contract](./schema-basics.md).
 - Understand [React state and provider setup](./react-setup.md).
-- Read the [HTML package guide](../packages/html.md).
+- Read the [React HTML package guide](../packages/react-html.md).

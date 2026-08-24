@@ -10,7 +10,8 @@ Status: pre-1.0 development (`0.1.0`). Core, React, HTML, and Examples are imple
 | --- | --- | --- |
 | `@dynamic-forms/core` | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
 | `@dynamic-forms/react` | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
-| `@dynamic-forms/html` | Accessible browser-native controls, layouts, registry, and styles | Implemented |
+| `@dynamic-forms/react-html` | React renderer with accessible browser-native controls, layouts, registry, and styles | Implemented |
+| `@dynamic-forms/html` | Compatibility forwarding package for existing consumers | Compatibility only |
 | `@dynamic-forms/examples` | Adapter-neutral example schemas, values, and rules | Implemented |
 | `@dynamic-forms/zod` | Planned Zod adapter | Placeholder |
 | `@dynamic-forms/rhf` | Planned React Hook Form adapter | Placeholder |
@@ -31,7 +32,7 @@ FormSchema
   FormProvider, hooks, subscriptions
     |
     v
-@dynamic-forms/html
+@dynamic-forms/react-html
   HtmlForm, native controls, layouts, registry, optional static CSS
 ```
 
@@ -42,14 +43,14 @@ Core contains no framework or renderer logic. React owns lifecycle and subscript
 Install the implemented runtime packages and React peers:
 
 ```bash
-pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/html
+pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/react-html
 pnpm add react react-dom
 ```
 
 Import the optional default stylesheet once:
 
 ```ts
-import '@dynamic-forms/html/styles.css';
+import '@dynamic-forms/react-html/styles.css';
 ```
 
 Create a schema and render it with `FormProvider` and `HtmlForm`:
@@ -57,7 +58,7 @@ Create a schema and render it with `FormProvider` and `HtmlForm`:
 ```tsx
 import type { FormSchema } from '@dynamic-forms/core';
 import { FormProvider } from '@dynamic-forms/react';
-import { HtmlForm } from '@dynamic-forms/html';
+import { HtmlForm } from '@dynamic-forms/react-html';
 
 const schema: FormSchema = {
   id: 'customer',
@@ -99,7 +100,7 @@ export function CustomerForm() {
 }
 ```
 
-See the [HTML package README](./packages/html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls.
+See the [React HTML package README](./packages/react-html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls. Existing `@dynamic-forms/html` imports remain available through the [compatibility package](./packages/html/README.md).
 
 ## Workspace development
 
@@ -113,7 +114,7 @@ pnpm install
 pnpm build
 pnpm test
 pnpm typecheck
-pnpm --filter @dynamic-forms/html-playground dev
+pnpm --filter @dynamic-forms/react-html-playground dev
 ```
 
 ## Documentation
@@ -123,8 +124,9 @@ pnpm --filter @dynamic-forms/html-playground dev
 - [Documentation inventory](./apps/docs/documentation-inventory.md)
 - [Core package](./packages/core/README.md)
 - [React package](./packages/react/README.md)
-- [HTML package](./packages/html/README.md)
-- [HTML v1 contracts](./packages/html/docs/VERSION-1.md)
+- [React HTML package](./packages/react-html/README.md)
+- [React HTML v1 contracts](./packages/react-html/docs/VERSION-1.md)
+- [Legacy HTML compatibility package](./packages/html/README.md)
 
 ## Contributing
 
