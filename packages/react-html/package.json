@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Accessible native HTML adapter for Dynamic Forms",
   "license": "MIT",
+  "publishConfig": { "access": "public" },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
