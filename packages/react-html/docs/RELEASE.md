@@ -21,3 +21,7 @@ The command builds and packs both packages, verifies their published manifests a
 5. Publish `@dynamic-forms/html` second so its exact canonical dependency already exists.
 
 Do not publish the compatibility package alone or allow its version to diverge from the canonical renderer.
+
+## Compatibility retirement
+
+Do not remove `@dynamic-forms/html` during v1. Retirement requires a later major release, advance release notes, a migration window, confirmation that repository consumers use only `@dynamic-forms/react-html`, and continued availability of `MIGRATION-FROM-HTML.md` in the final compatibility release.

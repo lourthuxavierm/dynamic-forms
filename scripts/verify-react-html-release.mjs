@@ -70,7 +70,7 @@ try {
 
   verifyFiles('react-html', canonical.packed.files, [
     'dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'dist/styles.css',
-    'docs/VERSION-1.md', 'docs/RELEASE.md', 'README.md', 'package.json',
+    'docs/VERSION-1.md', 'docs/RELEASE.md', 'docs/MIGRATION-FROM-HTML.md', 'README.md', 'package.json',
   ]);
   verifyFiles('html', compatibility.packed.files, [
     'dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'styles.css', 'README.md', 'package.json',

@@ -35,3 +35,7 @@ or pass `unstyled` when the stylesheet is present but one form must opt out.
 
 React 18 and 19 are supported. Native controls target WCAG 2.2 AA and evergreen
 browsers as defined by ADR 0001.
+
+Applications still using `@dynamic-forms/html` can follow the
+[package-name migration guide](./docs/MIGRATION-FROM-HTML.md). The compatibility
+package remains available throughout v1 but must not be adopted by new code.

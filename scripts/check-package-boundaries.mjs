@@ -41,6 +41,7 @@ async function collect(directory) {
   return files;
 }
 const packageName = (specifier) => specifier.split('/').slice(0, 2).join('/');
+const legacyHtmlPackage = '@dynamic-forms/html';
 
 for (const [directory, policy] of Object.entries(policies)) {
   const packageDirectory = path.join(root, 'packages', directory);
@@ -58,6 +59,27 @@ for (const [directory, policy] of Object.entries(policies)) {
     const fileSource = await readFile(file, 'utf8');
     for (const match of fileSource.matchAll(importPattern)) {
       if (!allowedImports.includes(packageName(match[1]))) errors.push(`${path.relative(root, file)}: forbidden import ${match[1]}`);
+    }
+  }
+}
+
+for (const scope of ['packages', 'apps']) {
+  const scopeDirectory = path.join(root, scope);
+  for (const entry of await readdir(scopeDirectory, { withFileTypes: true })) {
+    if (!entry.isDirectory() || (scope === 'packages' && entry.name === 'html')) continue;
+    const workspaceDirectory = path.join(scopeDirectory, entry.name);
+    const manifestPath = path.join(workspaceDirectory, 'package.json');
+    const manifestSource = await readOptional(manifestPath);
+    if (manifestSource !== undefined) {
+      const manifest = JSON.parse(manifestSource);
+      const dependencies = { ...manifest.dependencies, ...manifest.peerDependencies, ...manifest.optionalDependencies, ...manifest.devDependencies };
+      if (legacyHtmlPackage in dependencies) errors.push(`${path.relative(root, manifestPath)}: new consumers must use @dynamic-forms/react-html instead of ${legacyHtmlPackage}`);
+    }
+    for (const file of await collect(path.join(workspaceDirectory, 'src'))) {
+      const fileSource = await readFile(file, 'utf8');
+      for (const match of fileSource.matchAll(importPattern)) {
+        if (packageName(match[1]) === legacyHtmlPackage) errors.push(`${path.relative(root, file)}: new consumers must import @dynamic-forms/react-html instead of ${match[1]}`);
+      }
     }
   }
 }
