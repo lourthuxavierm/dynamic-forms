@@ -38,7 +38,7 @@ importers:
 
   apps/docs: {}
 
-  apps/html-playground:
+  apps/react-html-playground:
     dependencies:
       '@dynamic-forms/core':
         specifier: workspace:*
@@ -46,12 +46,12 @@ importers:
       '@dynamic-forms/examples':
         specifier: workspace:*
         version: link:../../packages/examples
-      '@dynamic-forms/html':
-        specifier: workspace:*
-        version: link:../../packages/html
       '@dynamic-forms/react':
         specifier: workspace:*
         version: link:../../packages/react
+      '@dynamic-forms/react-html':
+        specifier: workspace:*
+        version: link:../../packages/react-html
       react:
         specifier: ^19.2.8
         version: 19.2.8

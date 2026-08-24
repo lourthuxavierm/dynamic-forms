@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 const docsRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const playgroundRoot = resolve(docsRoot, '..', 'html-playground');
+const playgroundRoot = resolve(docsRoot, '..', 'react-html-playground');
 const generatedRoot = join(playgroundRoot, '.docs-snippet-check');
 const excludedDirectories = new Set(['node_modules', 'dist', 'cache', '.snippet-check']);
 const failures = [];

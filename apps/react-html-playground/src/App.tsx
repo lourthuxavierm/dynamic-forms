@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FieldOption, FieldSchema, FormSchema } from '@dynamic-forms/core';
-import { HtmlForm, HtmlSignatureProvider } from '@dynamic-forms/html';
+import { HtmlForm, HtmlSignatureProvider } from '@dynamic-forms/react-html';
 import { FormProvider } from '@dynamic-forms/react';
 
 const countries: readonly FieldOption[] = [
@@ -82,7 +82,7 @@ export default function App() {
   const [formKey, setFormKey] = useState(0);
   const [submitted, setSubmitted] = useState<Readonly<Record<string, unknown>>>();
   return <main className="app-shell">
-    <header className="hero"><p className="eyebrow">@dynamic-forms/html</p><h1>All native HTML controls</h1>
+    <header className="hero"><p className="eyebrow">@dynamic-forms/react-html</p><h1>All native HTML controls</h1>
       <p>All 42 stable controls plus object and array fields, rendered through React.</p></header>
     <section className="demo-grid" aria-label="All Native HTML controls"><div className="form-card">
       <FormProvider key={formKey} schema={schema} defaultValues={initialValues} validationMode="onBlur">

@@ -1,5 +1,5 @@
 {
-  "name": "@dynamic-forms/html-playground",
+  "name": "@dynamic-forms/react-html-playground",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@dynamic-forms/core": "workspace:*",
-    "@dynamic-forms/html": "workspace:*",
+    "@dynamic-forms/react-html": "workspace:*",
     "@dynamic-forms/react": "workspace:*",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

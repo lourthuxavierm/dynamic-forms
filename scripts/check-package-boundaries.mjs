@@ -61,11 +61,11 @@ for (const [directory, policy] of Object.entries(policies)) {
     }
   }
 }
-for (const application of ['html-playground']) {
+for (const application of ['react-html-playground']) {
   const sourceRoot = path.join(root, 'apps', application, 'src');
   for (const file of await collect(sourceRoot)) {
     const source = (await readFile(file, 'utf8')).replaceAll('\\', '/');
-    if (/(?:from\s*|import\s*\(\s*)['"][^'"]*apps\/(?:playground|html-playground)\//.test(source)) {
+    if (/(?:from\s*|import\s*\(\s*)['"][^'"]*apps\/(?:playground|html-playground|react-html-playground)\//.test(source)) {
       errors.push(path.relative(root, file) + ': applications must not import another application internal source files');
     }
   }
