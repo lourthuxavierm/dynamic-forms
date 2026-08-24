@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Alert, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography } from '@mui/material';
 import { FormErrorSummary, useFormActions, useFormContext, useFormState, useWatch, type ValidationMode } from '@dynamic-forms/react';
 import DemoShell from '../../components/DemoShell/DemoShell';
-import { validationInitialValues, validationSchema, validationSource } from '../../examples/validation/ValidationExample';
+import { validationInitialValues, validationSchema } from '@dynamic-forms/examples/validation';
+import { validationSource } from '../../examples/validation/ValidationExample';
 function ValidationTools() {
   const username = useWatch<string>('username') ?? ''; const age = useWatch<number | ''>('age'); const password = useWatch<string>('password') ?? ''; const confirm = useWatch<string>('confirmPassword') ?? ''; const errors = useFormState((state) => state.errors); const actions = useFormActions(); const { store } = useFormContext(); const [asyncState, setAsyncState] = useState('Idle'); const [trace, setTrace] = useState<string[]>([]);
   useEffect(() => { if (username.length < 3) { setAsyncState('Idle'); return; } const controller = new AbortController(); setAsyncState('Debouncing'); const debounce = window.setTimeout(() => { if (controller.signal.aborted) return; setAsyncState('Checking'); const request = window.setTimeout(() => { if (controller.signal.aborted) return; if (username.toLowerCase() === 'admin') { store.setError('username', 'Username is already in use'); setAsyncState('Unavailable'); } else { if (errors.username === 'Username is already in use') store.clearError('username'); setAsyncState('Available'); } }, 150); controller.signal.addEventListener('abort', () => window.clearTimeout(request), { once: true }); }, 350); return () => { controller.abort(); window.clearTimeout(debounce); }; }, [errors.username, store, username]);
