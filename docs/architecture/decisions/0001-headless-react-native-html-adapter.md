@@ -6,15 +6,17 @@
 
 ## Decision
 
-The enforced dependency direction is `core <- react <- visual adapter`.
+The enforced dependency direction is `core <- react <- react-html`. The legacy
+`html` package is a one-way compatibility facade over `react-html`.
 
 | Package | Owns | Allowed internal dependencies |
 | --- | --- | --- |
 | `@dynamic-forms/core` | Schemas, state, validation, rules, dependencies, data sources | None |
 | `@dynamic-forms/react` | Providers, hooks, subscriptions, focus and renderer contracts | Core |
-| `@dynamic-forms/html` | Native controls, DOM accessibility, registry, static CSS | Core, React |
+| `@dynamic-forms/react-html` | Native controls, DOM accessibility, registry, static CSS | Core, React |
+| `@dynamic-forms/html` | Compatibility exports for the former package name | React HTML |
 
-Core must contain no React, DOM, or adapter details. React must contain no native controls or CSS. Schemas and rules remain adapter-neutral. `pnpm check:boundaries` enforces these rules.
+Core must contain no React, DOM, or adapter details. React must contain no native controls or CSS. React HTML must never depend on the compatibility package, and the compatibility package must contain no renderer implementation. Schemas and rules remain adapter-neutral. `pnpm check:boundaries` enforces these rules.
 
 ## Supported platforms
 
