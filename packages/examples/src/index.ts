@@ -8,3 +8,4 @@ export * from './nestedArrays';
 export * from './permissions';
 export * from './layouts';
 export * from './enterprise';
+export * from './catalogue';
