@@ -1,0 +1,11 @@
+import type { FieldType } from '../schema';
+
+export interface FieldDefinition<TComponent = any> {
+  type: FieldType | string;
+  component: TComponent;
+  metadata?: Record<string, any>;
+}
+
+export interface RegistryOptions {
+  allowOverrides?: boolean;
+}

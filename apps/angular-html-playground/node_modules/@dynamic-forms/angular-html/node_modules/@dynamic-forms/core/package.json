@@ -1,0 +1,24 @@
+{
+    "name":  "@dynamic-forms/core",
+    "version":  "0.1.0",
+    "description":  "Framework-independent dynamic forms core",
+    "license":  "MIT",
+    "main":  "./dist/index.js",
+    "module":  "./dist/index.mjs",
+    "types":  "./dist/index.d.ts",
+    "exports":  {
+                    ".":  {
+                              "types":  "./dist/index.d.ts",
+                              "import":  "./dist/index.mjs",
+                              "require":  "./dist/index.js"
+                          }
+                },
+    "files":  [
+                  "dist"
+              ],
+    "scripts":  {
+                    "build":  "tsup \u0026\u0026 tsc -p tsconfig.build.json",
+                    "test":  "vitest run",
+                    "typecheck":  "tsc --noEmit"
+                }
+}

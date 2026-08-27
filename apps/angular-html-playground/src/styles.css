@@ -1,0 +1,8 @@
+:root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #172033; background: #f4f7fb; }
+body { margin: 0; }
+main { width: min(72rem, calc(100% - 2rem)); margin: 2rem auto; }
+.eyebrow { color: #174ea6; font-weight: 700; }
+.layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr); gap: 2rem; align-items: start; }
+.df-form, aside { padding: 1.5rem; border: 1px solid #d5dbe7; border-radius: 0.75rem; background: white; box-shadow: 0 0.5rem 1.5rem rgb(25 45 80 / 8%); }
+pre { overflow: auto; white-space: pre-wrap; }
+@media (max-width: 48rem) { .layout { grid-template-columns: 1fr; } }

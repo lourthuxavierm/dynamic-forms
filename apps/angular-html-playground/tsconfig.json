@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "types": ["vite/client"]
+  },
+  "angularCompilerOptions": { "strictTemplates": true },
+  "include": ["src/**/*.ts", "vite.config.ts"]
+}
