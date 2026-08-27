@@ -19,6 +19,10 @@ const policies = {
     name: '@dynamic-forms/examples',
     dependencies: ['@dynamic-forms/core'],
   },
+  zod: {
+    name: '@dynamic-forms/zod',
+    dependencies: ['@dynamic-forms/core'],
+  },
 };
 const extensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx']);
 const importPattern = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"](@dynamic-forms\/[^'"]+)['"]/g;

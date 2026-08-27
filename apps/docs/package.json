@@ -5,8 +5,9 @@
     "api": "node scripts/generate-api-reference.mjs", "api:check": "node scripts/generate-api-reference.mjs --check && node scripts/verify-api-reference.mjs",
     "governance": "node scripts/verify-documentation-governance.mjs",
     "health": "node scripts/audit-documentation-health.mjs",
+    "zod:architecture": "node scripts/verify-zod-architecture.mjs",
     "examples:capture": "node scripts/capture-example-screenshots.mjs",
-    "verify": "node scripts/verify-docs.mjs && node scripts/verify-enterprise-docs.mjs && node scripts/verify-example-catalogue.mjs && node scripts/verify-operational-support.mjs && pnpm governance && pnpm health && pnpm api:check",
+    "verify": "node scripts/verify-docs.mjs && node scripts/verify-enterprise-docs.mjs && node scripts/verify-example-catalogue.mjs && node scripts/verify-operational-support.mjs && pnpm governance && pnpm health && pnpm zod:architecture && pnpm api:check",
     "test:smoke": "playwright test --config playwright.config.ts"
   }
 }

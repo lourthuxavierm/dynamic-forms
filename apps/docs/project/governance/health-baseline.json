@@ -4,7 +4,7 @@
   "defaultMaxAgeDays": 120,
   "areas": [
     { "id": "standards", "source": "documentation-standards.md", "owner": "Documentation maintainers", "lastVerified": "2026-08-22", "maxAgeDays": 180 },
-    { "id": "maturity", "source": "project/feature-maturity.md", "owner": "Documentation maintainers with package owners", "lastVerified": "2026-08-27" },
+    { "id": "maturity", "source": "project/feature-maturity.md", "owner": "Documentation maintainers with package owners", "lastVerified": "2026-08-28" },
     { "id": "compatibility", "source": "project/framework-compatibility.md", "owner": "Core and integration maintainers", "lastVerified": "2026-08-27" },
     { "id": "ownership", "source": "project/documentation-ownership.md", "owner": "Documentation maintainers", "lastVerified": "2026-08-28" },
     { "id": "governance", "source": "project/governance/index.md", "owner": "Documentation maintainers", "lastVerified": "2026-08-28" },
