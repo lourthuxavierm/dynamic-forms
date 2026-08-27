@@ -1,0 +1,1825 @@
+{
+  "generatedBy": "apps/docs/scripts/generate-api-reference.mjs",
+  "packages": {
+    "@dynamic-forms/core": {
+      "maturity": "Implemented",
+      "exports": [
+        {
+          "name": "ArrayFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "ChoiceFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "Condition",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/types.ts"
+        },
+        {
+          "name": "ConditionController",
+          "kind": "class",
+          "source": "packages/core/src/conditions/controller.ts"
+        },
+        {
+          "name": "ConditionGroup",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/types.ts"
+        },
+        {
+          "name": "ConditionOperator",
+          "kind": "type",
+          "source": "packages/core/src/conditions/types.ts"
+        },
+        {
+          "name": "createFieldValidators",
+          "kind": "function",
+          "source": "packages/core/src/validation/schemaValidators.ts"
+        },
+        {
+          "name": "createFormValidator",
+          "kind": "function",
+          "source": "packages/core/src/validation/schemaValidators.ts"
+        },
+        {
+          "name": "CurrencyFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "DataSource",
+          "kind": "type",
+          "source": "packages/core/src/datasource/types.ts"
+        },
+        {
+          "name": "DataSourceConfig",
+          "kind": "interface",
+          "source": "packages/core/src/datasource/types.ts"
+        },
+        {
+          "name": "DataSourceContext",
+          "kind": "interface",
+          "source": "packages/core/src/datasource/types.ts"
+        },
+        {
+          "name": "DataSourceLoadOptions",
+          "kind": "interface",
+          "source": "packages/core/src/datasource/datasource.ts"
+        },
+        {
+          "name": "DataSourceManager",
+          "kind": "class",
+          "source": "packages/core/src/datasource/datasource.ts"
+        },
+        {
+          "name": "DataSourceManagerOptions",
+          "kind": "interface",
+          "source": "packages/core/src/datasource/datasource.ts"
+        },
+        {
+          "name": "DataSourceResult",
+          "kind": "interface",
+          "source": "packages/core/src/datasource/types.ts"
+        },
+        {
+          "name": "DateTimeFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "deleteByPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "DependencyController",
+          "kind": "class",
+          "source": "packages/core/src/dependencies/controller.ts"
+        },
+        {
+          "name": "DependencyControllerOptions",
+          "kind": "interface",
+          "source": "packages/core/src/dependencies/controller.ts"
+        },
+        {
+          "name": "DependencyGraph",
+          "kind": "class",
+          "source": "packages/core/src/dependencies/graph.ts"
+        },
+        {
+          "name": "evaluateCondition",
+          "kind": "function",
+          "source": "packages/core/src/conditions/evaluate.ts"
+        },
+        {
+          "name": "FieldCondition",
+          "kind": "type",
+          "source": "packages/core/src/conditions/types.ts"
+        },
+        {
+          "name": "FieldConditionState",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/controller.ts"
+        },
+        {
+          "name": "FieldConfig",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldDefinition",
+          "kind": "interface",
+          "source": "packages/core/src/registry/types.ts"
+        },
+        {
+          "name": "FieldDependency",
+          "kind": "interface",
+          "source": "packages/core/src/dependencies/types.ts"
+        },
+        {
+          "name": "FieldOption",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldRegistry",
+          "kind": "class",
+          "source": "packages/core/src/registry/registry.ts"
+        },
+        {
+          "name": "FieldSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldType",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldValidation",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldValidationOverrides",
+          "kind": "interface",
+          "source": "packages/core/src/validation/schemaValidators.ts"
+        },
+        {
+          "name": "FieldValue",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FileFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FormErrors",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "FormEvent",
+          "kind": "interface",
+          "source": "packages/core/src/events/types.ts"
+        },
+        {
+          "name": "FormEventEmitter",
+          "kind": "class",
+          "source": "packages/core/src/events/emitter.ts"
+        },
+        {
+          "name": "FormEventListener",
+          "kind": "type",
+          "source": "packages/core/src/events/types.ts"
+        },
+        {
+          "name": "FormEventType",
+          "kind": "type",
+          "source": "packages/core/src/events/types.ts"
+        },
+        {
+          "name": "FormListener",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "FormSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FormState",
+          "kind": "interface",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "FormStore",
+          "kind": "class",
+          "source": "packages/core/src/store/store.ts"
+        },
+        {
+          "name": "FormSubmitHandler",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "FormValidator",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "FormValues",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "getByPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "InferSchemaType",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "MaskFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "NumericFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "RangeFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "RegistryOptions",
+          "kind": "interface",
+          "source": "packages/core/src/registry/types.ts"
+        },
+        {
+          "name": "ResetOptions",
+          "kind": "interface",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "SchemaValidationError",
+          "kind": "interface",
+          "source": "packages/core/src/schema/validation.ts"
+        },
+        {
+          "name": "SchemaValidationResult",
+          "kind": "interface",
+          "source": "packages/core/src/schema/validation.ts"
+        },
+        {
+          "name": "SegmentedFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "setByPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "SetValueOptions",
+          "kind": "interface",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "TextFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "validateField",
+          "kind": "function",
+          "source": "packages/core/src/validation/validator.ts"
+        },
+        {
+          "name": "validateSchema",
+          "kind": "function",
+          "source": "packages/core/src/schema/validation.ts"
+        },
+        {
+          "name": "ValidationError",
+          "kind": "interface",
+          "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "ValidationIssue",
+          "kind": "interface",
+          "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "ValidationResult",
+          "kind": "interface",
+          "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "Validator",
+          "kind": "type",
+          "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "ValidatorResult",
+          "kind": "type",
+          "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "VERSION",
+          "kind": "const",
+          "source": "packages/core/src/index.ts"
+        },
+        {
+          "name": "YearFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        }
+      ]
+    },
+    "@dynamic-forms/react": {
+      "maturity": "Documented",
+      "exports": [
+        {
+          "name": "DynamicField",
+          "kind": "function",
+          "source": "packages/react/src/components/DynamicField.tsx"
+        },
+        {
+          "name": "DynamicFieldProps",
+          "kind": "interface",
+          "source": "packages/react/src/components/DynamicField.tsx"
+        },
+        {
+          "name": "DynamicForm",
+          "kind": "function",
+          "source": "packages/react/src/components/DynamicForm.tsx"
+        },
+        {
+          "name": "DynamicFormProps",
+          "kind": "interface",
+          "source": "packages/react/src/components/DynamicForm.tsx"
+        },
+        {
+          "name": "FieldAccessibilityProps",
+          "kind": "interface",
+          "source": "packages/react/src/components/DynamicField.tsx"
+        },
+        {
+          "name": "FieldArrayItem",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useFieldArray.ts"
+        },
+        {
+          "name": "FieldComponentProps",
+          "kind": "interface",
+          "source": "packages/react/src/components/DynamicField.tsx"
+        },
+        {
+          "name": "fieldId",
+          "kind": "function",
+          "source": "packages/react/src/components/FormErrorSummary.tsx"
+        },
+        {
+          "name": "FieldPath",
+          "kind": "type",
+          "source": "packages/react/src/types.ts"
+        },
+        {
+          "name": "FormContextValue",
+          "kind": "interface",
+          "source": "packages/react/src/context/FormContext.tsx"
+        },
+        {
+          "name": "FormErrorSummary",
+          "kind": "function",
+          "source": "packages/react/src/components/FormErrorSummary.tsx"
+        },
+        {
+          "name": "FormErrorSummaryProps",
+          "kind": "interface",
+          "source": "packages/react/src/components/FormErrorSummary.tsx"
+        },
+        {
+          "name": "FormProvider",
+          "kind": "function",
+          "source": "packages/react/src/context/FormContext.tsx"
+        },
+        {
+          "name": "FormProviderProps",
+          "kind": "interface",
+          "source": "packages/react/src/context/FormContext.tsx"
+        },
+        {
+          "name": "LiveRegion",
+          "kind": "function",
+          "source": "packages/react/src/components/LiveRegion.tsx"
+        },
+        {
+          "name": "LiveRegionProps",
+          "kind": "interface",
+          "source": "packages/react/src/components/LiveRegion.tsx"
+        },
+        {
+          "name": "registerReactField",
+          "kind": "function",
+          "source": "packages/react/src/registry.ts"
+        },
+        {
+          "name": "TypedFieldPath",
+          "kind": "type",
+          "source": "packages/react/src/types.ts"
+        },
+        {
+          "name": "useDataSource",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useDataSource.ts"
+        },
+        {
+          "name": "UseDataSourceOptions",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useDataSource.ts"
+        },
+        {
+          "name": "UseDataSourceResult",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useDataSource.ts"
+        },
+        {
+          "name": "useField",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useField.ts"
+        },
+        {
+          "name": "useFieldArray",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFieldArray.ts"
+        },
+        {
+          "name": "UseFieldArrayReturn",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useFieldArray.ts"
+        },
+        {
+          "name": "useFieldState",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFieldState.ts"
+        },
+        {
+          "name": "useForm",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useForm.ts"
+        },
+        {
+          "name": "useFormActions",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFormState.ts"
+        },
+        {
+          "name": "useFormContext",
+          "kind": "function",
+          "source": "packages/react/src/context/FormContext.tsx"
+        },
+        {
+          "name": "useFormEvent",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFormEvent.ts"
+        },
+        {
+          "name": "UseFormOptions",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useForm.ts"
+        },
+        {
+          "name": "useFormState",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFormState.ts"
+        },
+        {
+          "name": "useFormStore",
+          "kind": "function",
+          "source": "packages/react/src/subscriptions/useFormStore.ts"
+        },
+        {
+          "name": "useSection",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useSection.ts"
+        },
+        {
+          "name": "UseSectionOptions",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useSection.ts"
+        },
+        {
+          "name": "useWatch",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useWatch.ts"
+        },
+        {
+          "name": "useWizard",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useWizard.ts"
+        },
+        {
+          "name": "UseWizardOptions",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useWizard.ts"
+        },
+        {
+          "name": "ValidationMode",
+          "kind": "type",
+          "source": "packages/react/src/context/FormContext.tsx"
+        },
+        {
+          "name": "WizardStep",
+          "kind": "interface",
+          "source": "packages/react/src/hooks/useWizard.ts"
+        }
+      ]
+    },
+    "@dynamic-forms/react-html": {
+      "maturity": "Documented",
+      "exports": [
+        {
+          "name": "applyMask",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "createDefaultHtmlRegistry",
+          "kind": "function",
+          "source": "packages/react-html/src/registry/defaultRegistry.ts"
+        },
+        {
+          "name": "createHtmlLayoutRegistry",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "createHtmlRegistry",
+          "kind": "function",
+          "source": "packages/react-html/src/registry/registry.ts"
+        },
+        {
+          "name": "createHtmlTemporalField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "createLazyHtmlRegistry",
+          "kind": "function",
+          "source": "packages/react-html/src/registry/lazyRegistry.ts"
+        },
+        {
+          "name": "createSafeFileSnapshot",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "EXPERIMENTAL_HTML_FIELD_TYPES",
+          "kind": "const",
+          "source": "packages/react-html/src/registry/v1.ts"
+        },
+        {
+          "name": "ExperimentalHtmlFieldType",
+          "kind": "type",
+          "source": "packages/react-html/src/registry/v1.ts"
+        },
+        {
+          "name": "extractMaskValue",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "formatCurrency",
+          "kind": "function",
+          "source": "packages/react-html/src/components/numericFormat.ts"
+        },
+        {
+          "name": "formatPercentage",
+          "kind": "function",
+          "source": "packages/react-html/src/components/numericFormat.ts"
+        },
+        {
+          "name": "HTML_ADAPTER_VERSION",
+          "kind": "const",
+          "source": "packages/react-html/src/index.ts"
+        },
+        {
+          "name": "HTML_DEFAULT_STYLESHEET",
+          "kind": "const",
+          "source": "packages/react-html/src/styles/index.ts"
+        },
+        {
+          "name": "HTML_TOKEN_PREFIX",
+          "kind": "const",
+          "source": "packages/react-html/src/styles/index.ts"
+        },
+        {
+          "name": "HtmlAccessibilityAttributes",
+          "kind": "interface",
+          "source": "packages/react-html/src/accessibility/index.ts"
+        },
+        {
+          "name": "HtmlAccordion",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlArrayItemsRenderer",
+          "kind": "type",
+          "source": "packages/react-html/src/components/structural.tsx"
+        },
+        {
+          "name": "HtmlArrayItemsRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/structural.tsx"
+        },
+        {
+          "name": "HtmlArrayRenderItem",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/structural.tsx"
+        },
+        {
+          "name": "HtmlAsyncAutocomplete",
+          "kind": "const",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlAutocomplete",
+          "kind": "const",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlCameraCapture",
+          "kind": "const",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlCardSection",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlCheckbox",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlCheckboxGroup",
+          "kind": "function",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlColorScheme",
+          "kind": "type",
+          "source": "packages/react-html/src/styles/index.ts"
+        },
+        {
+          "name": "HtmlCurrencyField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlDateField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlDateRangeField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlDateTimeField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlDateTimeRangeField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlDecimalField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlDensity",
+          "kind": "type",
+          "source": "packages/react-html/src/styles/index.ts"
+        },
+        {
+          "name": "HtmlDocumentPreview",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlEmailField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlFieldComponent",
+          "kind": "type",
+          "source": "packages/react-html/src/components/index.ts"
+        },
+        {
+          "name": "HtmlFieldErrorBoundary",
+          "kind": "class",
+          "source": "packages/react-html/src/components/HtmlFieldErrorBoundary.tsx"
+        },
+        {
+          "name": "HtmlFieldErrorBoundaryProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/HtmlFieldErrorBoundary.tsx"
+        },
+        {
+          "name": "HtmlFieldRegistration",
+          "kind": "interface",
+          "source": "packages/react-html/src/registry/types.ts"
+        },
+        {
+          "name": "HtmlFieldRegistry",
+          "kind": "type",
+          "source": "packages/react-html/src/registry/types.ts"
+        },
+        {
+          "name": "HtmlFieldRegistryOverrides",
+          "kind": "type",
+          "source": "packages/react-html/src/registry/types.ts"
+        },
+        {
+          "name": "HtmlFieldRenderer",
+          "kind": "const",
+          "source": "packages/react-html/src/renderer/HtmlFieldRenderer.tsx"
+        },
+        {
+          "name": "HtmlFieldRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/renderer/HtmlFieldRenderer.tsx"
+        },
+        {
+          "name": "HtmlFieldsetLayout",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlFieldShell",
+          "kind": "function",
+          "source": "packages/react-html/src/components/HtmlFieldShell.tsx"
+        },
+        {
+          "name": "HtmlFieldShellProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/HtmlFieldShell.tsx"
+        },
+        {
+          "name": "HtmlFileControlConfig",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlFileField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlFileUpload",
+          "kind": "const",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlFileUploadProvider",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlForm",
+          "kind": "function",
+          "source": "packages/react-html/src/components/HtmlForm.tsx"
+        },
+        {
+          "name": "HtmlFormProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/HtmlForm.tsx"
+        },
+        {
+          "name": "HtmlGrid",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlHiddenField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlInlineGroup",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlIntegerField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlLayoutComponent",
+          "kind": "type",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlLayoutComponentProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlLayoutNode",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlLayoutRegistry",
+          "kind": "type",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlLayoutRegistryOverrides",
+          "kind": "type",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlLayoutRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/renderer/HtmlLayoutRenderer.tsx"
+        },
+        {
+          "name": "HtmlLayoutRenderResult",
+          "kind": "interface",
+          "source": "packages/react-html/src/renderer/HtmlLayoutRenderer.tsx"
+        },
+        {
+          "name": "HtmlLayoutType",
+          "kind": "type",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlMaskField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlMonthField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlMultiFileUpload",
+          "kind": "const",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlMultiSelect",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlNumberField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlOtpField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlPasswordField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlPercentageField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlPhoneField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlPinField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlRadio",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlRadioGroup",
+          "kind": "const",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlRangeSlider",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlRating",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlReadOnlySummary",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlSearchableSelect",
+          "kind": "const",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlSection",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlSelect",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlSignatureField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlSignatureProvider",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlSignatureRenderer",
+          "kind": "type",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlSignatureRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlSlider",
+          "kind": "function",
+          "source": "packages/react-html/src/components/specialized.tsx"
+        },
+        {
+          "name": "HtmlStack",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlStickyActions",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlStructuralField",
+          "kind": "function",
+          "source": "packages/react-html/src/components/structural.tsx"
+        },
+        {
+          "name": "HtmlStructuralFieldProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/structural.tsx"
+        },
+        {
+          "name": "HtmlSwitch",
+          "kind": "function",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlTabDescriptor",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlTabs",
+          "kind": "function",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlTabsRenderer",
+          "kind": "type",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlTabsRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/layout.tsx"
+        },
+        {
+          "name": "HtmlTemporalEnhancementContext",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlTemporalEnhancer",
+          "kind": "type",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlTextarea",
+          "kind": "function",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlTextField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlTimeField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlTimeRangeField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/temporal.tsx"
+        },
+        {
+          "name": "HtmlToggleButtonGroup",
+          "kind": "function",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlTreeCheckbox",
+          "kind": "function",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlTreeSelect",
+          "kind": "function",
+          "source": "packages/react-html/src/components/composites.tsx"
+        },
+        {
+          "name": "HtmlUploadHandler",
+          "kind": "type",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlUploadRequest",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "HtmlUrlField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "HtmlYearField",
+          "kind": "const",
+          "source": "packages/react-html/src/components/baseline.tsx"
+        },
+        {
+          "name": "LocaleNumberOptions",
+          "kind": "interface",
+          "source": "packages/react-html/src/components/numericFormat.ts"
+        },
+        {
+          "name": "mergeHtmlRegistries",
+          "kind": "function",
+          "source": "packages/react-html/src/registry/registry.ts"
+        },
+        {
+          "name": "normalizeDateOnly",
+          "kind": "function",
+          "source": "packages/react-html/src/components/temporalValues.ts"
+        },
+        {
+          "name": "normalizeLocalDateTime",
+          "kind": "function",
+          "source": "packages/react-html/src/components/temporalValues.ts"
+        },
+        {
+          "name": "normalizeNumericValue",
+          "kind": "function",
+          "source": "packages/react-html/src/components/numericFormat.ts"
+        },
+        {
+          "name": "normalizeTemporalValue",
+          "kind": "function",
+          "source": "packages/react-html/src/components/temporalValues.ts"
+        },
+        {
+          "name": "normalizeTimeOnly",
+          "kind": "function",
+          "source": "packages/react-html/src/components/temporalValues.ts"
+        },
+        {
+          "name": "parseLocalDateTime",
+          "kind": "function",
+          "source": "packages/react-html/src/components/temporalValues.ts"
+        },
+        {
+          "name": "parseLocaleNumber",
+          "kind": "function",
+          "source": "packages/react-html/src/components/numericFormat.ts"
+        },
+        {
+          "name": "renderHtmlLayout",
+          "kind": "function",
+          "source": "packages/react-html/src/renderer/HtmlLayoutRenderer.tsx"
+        },
+        {
+          "name": "TemporalKind",
+          "kind": "type",
+          "source": "packages/react-html/src/components/temporalValues.ts"
+        },
+        {
+          "name": "TypedHtmlFieldComponent",
+          "kind": "type",
+          "source": "packages/react-html/src/components/index.ts"
+        },
+        {
+          "name": "useObjectUrl",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        },
+        {
+          "name": "V1_HTML_FIELD_TYPES",
+          "kind": "const",
+          "source": "packages/react-html/src/registry/v1.ts"
+        },
+        {
+          "name": "V1HtmlFieldType",
+          "kind": "type",
+          "source": "packages/react-html/src/registry/v1.ts"
+        },
+        {
+          "name": "validateSelectedFiles",
+          "kind": "function",
+          "source": "packages/react-html/src/components/fileMedia.tsx"
+        }
+      ]
+    },
+    "@dynamic-forms/html": {
+      "maturity": "Compatibility-only",
+      "exports": [
+        {
+          "name": "applyMask",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "createDefaultHtmlRegistry",
+          "kind": "function",
+          "source": "packages/react-html/dist/registry/defaultRegistry.d.ts"
+        },
+        {
+          "name": "createHtmlLayoutRegistry",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "createHtmlRegistry",
+          "kind": "function",
+          "source": "packages/react-html/dist/registry/registry.d.ts"
+        },
+        {
+          "name": "createHtmlTemporalField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "createLazyHtmlRegistry",
+          "kind": "function",
+          "source": "packages/react-html/dist/registry/lazyRegistry.d.ts"
+        },
+        {
+          "name": "createSafeFileSnapshot",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "EXPERIMENTAL_HTML_FIELD_TYPES",
+          "kind": "const",
+          "source": "packages/react-html/dist/registry/v1.d.ts"
+        },
+        {
+          "name": "ExperimentalHtmlFieldType",
+          "kind": "type",
+          "source": "packages/react-html/dist/registry/v1.d.ts"
+        },
+        {
+          "name": "extractMaskValue",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "formatCurrency",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/numericFormat.d.ts"
+        },
+        {
+          "name": "formatPercentage",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/numericFormat.d.ts"
+        },
+        {
+          "name": "HTML_ADAPTER_VERSION",
+          "kind": "const",
+          "source": "packages/react-html/dist/index.d.ts"
+        },
+        {
+          "name": "HTML_DEFAULT_STYLESHEET",
+          "kind": "const",
+          "source": "packages/react-html/dist/styles/index.d.ts"
+        },
+        {
+          "name": "HTML_TOKEN_PREFIX",
+          "kind": "const",
+          "source": "packages/react-html/dist/styles/index.d.ts"
+        },
+        {
+          "name": "HtmlAccessibilityAttributes",
+          "kind": "interface",
+          "source": "packages/react-html/dist/accessibility/index.d.ts"
+        },
+        {
+          "name": "HtmlAccordion",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlArrayItemsRenderer",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/structural.d.ts"
+        },
+        {
+          "name": "HtmlArrayItemsRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/structural.d.ts"
+        },
+        {
+          "name": "HtmlArrayRenderItem",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/structural.d.ts"
+        },
+        {
+          "name": "HtmlAsyncAutocomplete",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlAutocomplete",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlCameraCapture",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlCardSection",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlCheckbox",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlCheckboxGroup",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlColorScheme",
+          "kind": "type",
+          "source": "packages/react-html/dist/styles/index.d.ts"
+        },
+        {
+          "name": "HtmlCurrencyField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlDateField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlDateRangeField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlDateTimeField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlDateTimeRangeField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlDecimalField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlDensity",
+          "kind": "type",
+          "source": "packages/react-html/dist/styles/index.d.ts"
+        },
+        {
+          "name": "HtmlDocumentPreview",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlEmailField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlFieldComponent",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/index.d.ts"
+        },
+        {
+          "name": "HtmlFieldErrorBoundary",
+          "kind": "class",
+          "source": "packages/react-html/dist/components/HtmlFieldErrorBoundary.d.ts"
+        },
+        {
+          "name": "HtmlFieldErrorBoundaryProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/HtmlFieldErrorBoundary.d.ts"
+        },
+        {
+          "name": "HtmlFieldRegistration",
+          "kind": "interface",
+          "source": "packages/react-html/dist/registry/types.d.ts"
+        },
+        {
+          "name": "HtmlFieldRegistry",
+          "kind": "type",
+          "source": "packages/react-html/dist/registry/types.d.ts"
+        },
+        {
+          "name": "HtmlFieldRegistryOverrides",
+          "kind": "type",
+          "source": "packages/react-html/dist/registry/types.d.ts"
+        },
+        {
+          "name": "HtmlFieldRenderer",
+          "kind": "const",
+          "source": "packages/react-html/dist/renderer/HtmlFieldRenderer.d.ts"
+        },
+        {
+          "name": "HtmlFieldRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/renderer/HtmlFieldRenderer.d.ts"
+        },
+        {
+          "name": "HtmlFieldsetLayout",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlFieldShell",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/HtmlFieldShell.d.ts"
+        },
+        {
+          "name": "HtmlFieldShellProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/HtmlFieldShell.d.ts"
+        },
+        {
+          "name": "HtmlFileControlConfig",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlFileField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlFileUpload",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlFileUploadProvider",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlForm",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/HtmlForm.d.ts"
+        },
+        {
+          "name": "HtmlFormProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/HtmlForm.d.ts"
+        },
+        {
+          "name": "HtmlGrid",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlHiddenField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlInlineGroup",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlIntegerField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlLayoutComponent",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlLayoutComponentProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlLayoutNode",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlLayoutRegistry",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlLayoutRegistryOverrides",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlLayoutRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/renderer/HtmlLayoutRenderer.d.ts"
+        },
+        {
+          "name": "HtmlLayoutRenderResult",
+          "kind": "interface",
+          "source": "packages/react-html/dist/renderer/HtmlLayoutRenderer.d.ts"
+        },
+        {
+          "name": "HtmlLayoutType",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlMaskField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlMonthField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlMultiFileUpload",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlMultiSelect",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlNumberField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlOtpField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlPasswordField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlPercentageField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlPhoneField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlPinField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlRadio",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlRadioGroup",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlRangeSlider",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlRating",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlReadOnlySummary",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlSearchableSelect",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlSection",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlSelect",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlSignatureField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlSignatureProvider",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlSignatureRenderer",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlSignatureRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlSlider",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/specialized.d.ts"
+        },
+        {
+          "name": "HtmlStack",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlStickyActions",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlStructuralField",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/structural.d.ts"
+        },
+        {
+          "name": "HtmlStructuralFieldProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/structural.d.ts"
+        },
+        {
+          "name": "HtmlSwitch",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlTabDescriptor",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlTabs",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlTabsRenderer",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlTabsRendererProps",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/layout.d.ts"
+        },
+        {
+          "name": "HtmlTemporalEnhancementContext",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlTemporalEnhancer",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlTextarea",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlTextField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlTimeField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlTimeRangeField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/temporal.d.ts"
+        },
+        {
+          "name": "HtmlToggleButtonGroup",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlTreeCheckbox",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlTreeSelect",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/composites.d.ts"
+        },
+        {
+          "name": "HtmlUploadHandler",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlUploadRequest",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "HtmlUrlField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "HtmlYearField",
+          "kind": "const",
+          "source": "packages/react-html/dist/components/baseline.d.ts"
+        },
+        {
+          "name": "LocaleNumberOptions",
+          "kind": "interface",
+          "source": "packages/react-html/dist/components/numericFormat.d.ts"
+        },
+        {
+          "name": "mergeHtmlRegistries",
+          "kind": "function",
+          "source": "packages/react-html/dist/registry/registry.d.ts"
+        },
+        {
+          "name": "normalizeDateOnly",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/temporalValues.d.ts"
+        },
+        {
+          "name": "normalizeLocalDateTime",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/temporalValues.d.ts"
+        },
+        {
+          "name": "normalizeNumericValue",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/numericFormat.d.ts"
+        },
+        {
+          "name": "normalizeTemporalValue",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/temporalValues.d.ts"
+        },
+        {
+          "name": "normalizeTimeOnly",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/temporalValues.d.ts"
+        },
+        {
+          "name": "parseLocalDateTime",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/temporalValues.d.ts"
+        },
+        {
+          "name": "parseLocaleNumber",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/numericFormat.d.ts"
+        },
+        {
+          "name": "renderHtmlLayout",
+          "kind": "function",
+          "source": "packages/react-html/dist/renderer/HtmlLayoutRenderer.d.ts"
+        },
+        {
+          "name": "TemporalKind",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/temporalValues.d.ts"
+        },
+        {
+          "name": "TypedHtmlFieldComponent",
+          "kind": "type",
+          "source": "packages/react-html/dist/components/index.d.ts"
+        },
+        {
+          "name": "useObjectUrl",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        },
+        {
+          "name": "V1_HTML_FIELD_TYPES",
+          "kind": "const",
+          "source": "packages/react-html/dist/registry/v1.d.ts"
+        },
+        {
+          "name": "V1HtmlFieldType",
+          "kind": "type",
+          "source": "packages/react-html/dist/registry/v1.d.ts"
+        },
+        {
+          "name": "validateSelectedFiles",
+          "kind": "function",
+          "source": "packages/react-html/dist/components/fileMedia.d.ts"
+        }
+      ]
+    }
+  }
+}

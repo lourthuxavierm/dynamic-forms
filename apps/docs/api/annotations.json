@@ -1,0 +1,36 @@
+{
+  "packages": {
+    "core": {
+      "summary": "Framework-independent schema, state, validation, conditions, dependencies, data sources, and lifecycle contracts.",
+      "guide": "../../runtime/",
+      "example": "../../playground/"
+    },
+    "react": {
+      "summary": "Headless React provider, hooks, subscriptions, and renderer extension points.",
+      "guide": "../../integrations/react/",
+      "example": "../../playground/"
+    },
+    "react-html": {
+      "summary": "Accessible browser-native React controls, layouts, styles, and form components.",
+      "guide": "../../integrations/react-html/",
+      "example": "../../controls/"
+    },
+    "html": {
+      "summary": "Compatibility entry point forwarding the React HTML surface; new applications should import React HTML directly.",
+      "guide": "../../integrations/native-html/",
+      "example": "../../playground/"
+    }
+  },
+  "symbols": {
+    "core.FormSchema": "Root declarative form contract. See the schema reference before accepting schemas across a trust boundary.",
+    "core.FieldSchema": "Declarative field contract shared by supported renderers.",
+    "core.FormStore": "Framework-neutral observable form state and mutation boundary.",
+    "core.createFormValidator": "Creates the authoritative client-side validator for a schema; servers must still validate submitted data.",
+    "react.FormProvider": "Owns the React form context, store lifecycle, validation mode, and optional submission callbacks.",
+    "react.useFormState": "Subscribes to a selected form-state slice through React external-store semantics.",
+    "react.useField": "Binds a field path to value, touched state, errors, and validation behavior.",
+    "react-html.HtmlForm": "Renders a schema with native HTML controls and owns normal browser-form submission.",
+    "react-html.HtmlField": "Renders one field through the React HTML registry.",
+    "html.HTML_ADAPTER_VERSION": "Compatibility-package version marker; this does not identify a separate native DOM renderer."
+  }
+}
