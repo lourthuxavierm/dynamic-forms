@@ -1,6 +1,9 @@
 name: Documentation
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 1 * *"
   pull_request:
     paths:
       - "apps/docs/**"
@@ -49,6 +52,7 @@ jobs:
       - run: pnpm docs:governance
         env:
           DOCS_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+      - run: pnpm docs:health
       - run: pnpm docs:verify
       - run: pnpm docs:build
       - run: pnpm exec playwright install --with-deps chromium

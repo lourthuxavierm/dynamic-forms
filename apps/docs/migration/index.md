@@ -2,6 +2,7 @@
 
 - Status: Maintained for published breaking changes
 - Owner: Package owners
+- Last verified: 2026-08-28
 
 Choose the boundary that is changing:
 

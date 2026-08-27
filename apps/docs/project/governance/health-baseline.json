@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-08-28",
+  "defaultMaxAgeDays": 120,
+  "areas": [
+    { "id": "standards", "source": "documentation-standards.md", "owner": "Documentation maintainers", "lastVerified": "2026-08-22", "maxAgeDays": 180 },
+    { "id": "maturity", "source": "project/feature-maturity.md", "owner": "Documentation maintainers with package owners", "lastVerified": "2026-08-27" },
+    { "id": "compatibility", "source": "project/framework-compatibility.md", "owner": "Core and integration maintainers", "lastVerified": "2026-08-27" },
+    { "id": "ownership", "source": "project/documentation-ownership.md", "owner": "Documentation maintainers", "lastVerified": "2026-08-28" },
+    { "id": "governance", "source": "project/governance/index.md", "owner": "Documentation maintainers", "lastVerified": "2026-08-28" },
+    { "id": "api", "source": "api/index.md", "owner": "Package owners and documentation maintainers", "lastVerified": "2026-08-27" },
+    { "id": "examples", "source": "playground/index.md", "owner": "Example and renderer maintainers", "lastVerified": "2026-08-27" },
+    { "id": "enterprise", "source": "enterprise/index.md", "owner": "Architecture and platform maintainers", "lastVerified": "2026-08-27" },
+    { "id": "operations", "source": "support/index.md", "owner": "Documentation maintainers and package owners", "lastVerified": "2026-08-28" },
+    { "id": "migration", "source": "migration/index.md", "owner": "Package owners", "lastVerified": "2026-08-28" }
+  ]
+}

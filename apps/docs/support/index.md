@@ -2,6 +2,7 @@
 
 - Status: Supported process
 - Owner: Documentation maintainers and package owners
+- Last verified: 2026-08-28
 - Applies to: All published integrations
 
 Use this section after adoption: diagnose production symptoms, prepare upgrades,

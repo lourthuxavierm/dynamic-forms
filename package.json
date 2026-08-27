@@ -5,7 +5,7 @@
     "build": "turbo run build", "dev": "turbo run dev", "test": "turbo run test",
     "check:boundaries": "node scripts/check-package-boundaries.mjs", "test:e2e": "playwright test", "lint": "turbo run lint", "typecheck": "turbo run typecheck",
     "docs:dev": "pnpm --filter @dynamic-forms/docs dev", "docs:build": "pnpm --filter @dynamic-forms/docs build", "docs:preview": "pnpm --filter @dynamic-forms/docs preview",
-    "docs:api": "pnpm --filter @dynamic-forms/docs api", "docs:api:check": "pnpm --filter @dynamic-forms/docs api:check", "docs:governance": "pnpm --filter @dynamic-forms/docs governance",
+    "docs:api": "pnpm --filter @dynamic-forms/docs api", "docs:api:check": "pnpm --filter @dynamic-forms/docs api:check", "docs:governance": "pnpm --filter @dynamic-forms/docs governance", "docs:health": "pnpm --filter @dynamic-forms/docs health",
     "docs:examples:capture": "pnpm --filter @dynamic-forms/docs examples:capture",
     "docs:verify": "pnpm --filter @dynamic-forms/docs verify", "docs:test": "pnpm --filter @dynamic-forms/docs test:smoke",
     "verify:react-html-release": "node scripts/verify-react-html-release.mjs"
