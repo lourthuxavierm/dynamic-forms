@@ -1,8 +1,8 @@
 # Documentation ownership
 
-- Status: Active Phase 0 baseline
+- Status: Active governance policy
 - Owner: Documentation maintainers
-- Last verified: 2026-08-25
+- Last verified: 2026-08-28
 - Applies to: All public documentation in this repository
 
 Ownership identifies the maintainer role responsible for technical correctness.
@@ -24,8 +24,8 @@ It does not require one person to write every page.
 | Security | Relevant package owner | Security reviewer when assigned | Data, file, HTML, or trust-boundary change |
 | Performance | Relevant package owner | Performance reviewer when assigned | Subscription, rendering, async, or threshold change |
 | Placeholder adapters | Assigned adapter owner | Core and documentation maintainers | Before maturity rises above Placeholder |
-| Future Angular adapter | Angular maintainers once assigned | Core and documentation maintainers | Architecture proposal or implementation change |
-| Future Angular HTML | Angular HTML maintainers once assigned | Angular, accessibility, and documentation reviewers | Renderer proposal or implementation change |
+| Experimental Angular adapter | Angular maintainers | Core and documentation maintainers | Public API, architecture, or implementation change |
+| Experimental Angular HTML | Angular HTML maintainers | Angular, accessibility, and documentation reviewers | Renderer API, control, or implementation change |
 | Documentation platform | Documentation maintainers | Developer-experience maintainer | VitePress, verification, navigation, or CI change |
 
 ## Required update rules
@@ -47,3 +47,7 @@ It does not require one person to write every page.
 | Quarterly | Broken links, stale pages, screenshots, and example drift |
 | Twice yearly | Information architecture and enterprise adoption guidance |
 | Before a major release | Full documentation, accessibility, compatibility, and migration review |
+
+Repository path ownership is enforced by `.github/CODEOWNERS`. This role map is
+the accountable review policy; CODEOWNERS maps those responsibilities to current
+GitHub maintainers.

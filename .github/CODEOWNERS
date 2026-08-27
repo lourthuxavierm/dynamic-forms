@@ -1,0 +1,15 @@
+# Default review owner. Role responsibilities are defined in the documentation
+# ownership map; replace or extend these handles as the maintainer team grows.
+* @lourthuxavierm
+
+/apps/docs/ @lourthuxavierm
+/.github/workflows/docs.yml @lourthuxavierm
+/.github/pull_request_template.md @lourthuxavierm
+
+/packages/core/ @lourthuxavierm
+/packages/react/ @lourthuxavierm
+/packages/react-html/ @lourthuxavierm
+/packages/html/ @lourthuxavierm
+/packages/angular/ @lourthuxavierm
+/packages/angular-html/ @lourthuxavierm
+/packages/examples/ @lourthuxavierm
