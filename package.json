@@ -1,36 +1,17 @@
 {
-  "name": "dynamic-forms",
-  "version": "0.1.0",
-  "private": true,
-  "description": "Framework-independent dynamic forms monorepo",
-  "license": "MIT",
-  "packageManager": "pnpm@10.15.0",
+  "name": "dynamic-forms", "version": "0.1.0", "private": true,
+  "description": "Framework-independent dynamic forms monorepo", "license": "MIT", "packageManager": "pnpm@10.15.0",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "test": "turbo run test",
-    "check:boundaries": "node scripts/check-package-boundaries.mjs",
-    "test:e2e": "playwright test",
-    "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "docs:dev": "pnpm --filter @dynamic-forms/docs dev",
-    "docs:build": "pnpm --filter @dynamic-forms/docs build",
-    "docs:preview": "pnpm --filter @dynamic-forms/docs preview",
-    "docs:api": "pnpm --filter @dynamic-forms/docs api",
-    "docs:api:check": "pnpm --filter @dynamic-forms/docs api:check",
-    "docs:verify": "pnpm --filter @dynamic-forms/docs verify",
-    "docs:test": "pnpm --filter @dynamic-forms/docs test:smoke",
+    "build": "turbo run build", "dev": "turbo run dev", "test": "turbo run test",
+    "check:boundaries": "node scripts/check-package-boundaries.mjs", "test:e2e": "playwright test", "lint": "turbo run lint", "typecheck": "turbo run typecheck",
+    "docs:dev": "pnpm --filter @dynamic-forms/docs dev", "docs:build": "pnpm --filter @dynamic-forms/docs build", "docs:preview": "pnpm --filter @dynamic-forms/docs preview",
+    "docs:api": "pnpm --filter @dynamic-forms/docs api", "docs:api:check": "pnpm --filter @dynamic-forms/docs api:check",
+    "docs:examples:capture": "pnpm --filter @dynamic-forms/docs examples:capture",
+    "docs:verify": "pnpm --filter @dynamic-forms/docs verify", "docs:test": "pnpm --filter @dynamic-forms/docs test:smoke",
     "verify:react-html-release": "node scripts/verify-react-html-release.mjs"
   },
   "devDependencies": {
-    "@testing-library/dom": "latest",
-    "@testing-library/react": "latest",
-    "playwright": "latest",
-    "tsup": "latest",
-    "turbo": "latest",
-    "typescript": "6.0.2",
-    "vite": "latest",
-    "vitepress": "latest",
-    "vitest": "latest"
+    "@testing-library/dom": "latest", "@testing-library/react": "latest", "playwright": "latest", "tsup": "latest", "turbo": "latest",
+    "typescript": "6.0.2", "vite": "latest", "vitepress": "latest", "vitest": "latest"
   }
 }
