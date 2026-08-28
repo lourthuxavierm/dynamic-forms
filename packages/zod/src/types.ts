@@ -1,5 +1,5 @@
 /** A segment in a Zod issue path. Numeric segments represent array indexes. */
-export type ZodPathSegment = string | number;
+export type ZodPathSegment = PropertyKey;
 
 /** Minimum issue surface consumed by the adapter across supported Zod majors. */
 export interface ZodIssueLike {
@@ -35,7 +35,7 @@ export interface ZodSchemaLike<TInput = unknown, TOutput = TInput> {
 
 export type ZodErrorMode = 'first' | 'all';
 
-/** Options reserved for the issue-mapping and validator implementation phases. */
+/** Options shared by issue mapping and the future validator factories. */
 export interface ZodAdapterOptions {
   rootErrorPath?: string;
   errorMode?: ZodErrorMode;

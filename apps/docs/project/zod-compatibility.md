@@ -1,13 +1,13 @@
 # Zod compatibility
 
-- Status: Package foundation implemented; validation Placeholder
+- Status: Issue mapping implemented; validation Placeholder
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-28
 - Applies to: `@dynamic-forms/zod` 0.1.0
 
-`@dynamic-forms/zod` now exports framework-neutral structural types and produces
-package declarations. It does not export form or field validator factories yet.
-Do not import it for application validation.
+`@dynamic-forms/zod` now exports framework-neutral structural types and
+deterministic issue-mapping utilities. It does not execute a Zod schema through
+form or field validator factories yet. Do not use it as an application validator.
 
 ## Candidate version policy
 
@@ -59,6 +59,25 @@ guidance, and the Zod release verifier all pass.
 - `sideEffects: false` declares the type-only foundation tree-shakeable.
 - Structural contracts do not expose a concrete Zod-major class.
 - Validator factories remain intentionally unavailable.
+
+## Phase 2 issue mapping
+
+The following utilities are implemented and tested:
+
+- `zodPathToFieldPath(path, rootErrorPath?)`
+- `zodIssueToValidationIssue(issue)`
+- `normalizeZodIssue(issue, rootErrorPath?)`
+- `zodIssuesToFormErrors(issues, options?)`
+
+The mapping distinguishes numeric array indexes from numeric-looking string
+properties, preserves issue order, safely creates reserved keys such as
+`__proto__`, and maps empty paths to `_form`. Fields containing Core path
+separators and symbolic keys receive quoted diagnostic paths; Dynamic Forms
+schema field names cannot use those segments.
+
+The default `first` mode retains the first message for a field. The `all`
+mode joins every message in source order using either `; ` or a caller-supplied
+formatter.
 
 See the repository ADR at
 `docs/architecture/decisions/zod-adapter.md` for the complete decision.
