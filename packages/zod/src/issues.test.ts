@@ -50,7 +50,7 @@ describe('Zod issue mapping', () => {
 
   it('maps real Zod 4 issues through the structural contract', async () => {
     const result = await z.object({
-      contacts: z.array(z.object({ email: z.email() })),
+      contacts: z.array(z.object({ email: z.string().email() })),
     }).safeParseAsync({ contacts: [{ email: 'invalid' }] });
 
     expect(result.success).toBe(false);

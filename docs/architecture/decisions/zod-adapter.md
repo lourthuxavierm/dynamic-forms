@@ -28,7 +28,7 @@ values with parsed output.
    `all` mode may join messages with a caller-owned formatter.
 6. Validation uses `safeParseAsync` so synchronous and asynchronous refinements
    share one deterministic contract.
-7. The candidate compatibility range is Zod `^3.25.0 || ^4.0.0`. It is not
+7. The candidate compatibility range is Zod `^3.25.5 || ^4.0.0`. It is not
    certified until both-major build, type, and behavior tests pass.
 8. The public adapter will accept a deliberately narrow structural schema
    contract. It will not expose Zod 3 or Zod 4 concrete classes in generated
@@ -45,6 +45,8 @@ values with parsed output.
   async-result handling remains a runtime/application concern.
 - The placeholder maturity remains unchanged until implementation, tests,
   examples, documentation, and release verification exist.
+- Zod 3.25.0 through 3.25.4 are excluded because their published packages do
+  not provide the declaration files referenced by their package metadata.
 
 ## Rejected alternatives
 

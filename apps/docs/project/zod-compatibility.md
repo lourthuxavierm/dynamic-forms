@@ -13,13 +13,15 @@ The complete dual-major matrix is not available yet.
 
 | Zod line | Candidate range | Current support |
 | --- | --- | --- |
-| Zod 3 | `^3.25.0` | Not certified |
-| Zod 4 | `^4.0.0` | Phase 4 behavior tested on 4.4.3; matrix not certified |
+| Zod 3 | `^3.25.5` | Phase 5 matrix: 3.25.5 and 3.25.76 |
+| Zod 4 | `^4.0.0` | Phase 5 matrix: 4.0.0 and 4.5.1 |
 | Zod Mini | Not selected | Not supported |
 
 The manifest range identifies versions intended for the implementation matrix.
-Support begins only after package builds, declarations, and behavior tests pass
-against both selected majors.
+The Phase 5 CI matrix runs package builds, declarations, and behavior tests
+against the lowest and latest selected releases of both supported majors.
+Zod 3.25.0 through 3.25.4 are excluded because their published packages omit
+the declaration files referenced by their package metadata.
 
 ## Approved boundary
 
@@ -47,9 +49,21 @@ Core and renderers never import Zod. The adapter produces Core-compatible errors
 
 ## Promotion gate
 
-Experimental status remains until form and field validators, the dual-major
-matrix, generated API reference, framework-neutral examples, migration guidance,
-and the Zod release verifier all pass.
+Experimental status remains until generated API reference, framework-neutral
+examples, migration guidance, and the Zod release verifier all pass.
+
+## Phase 5 compatibility matrix
+
+The `Zod compatibility` workflow tests four explicit cells on Node.js 22:
+
+- Zod 3.25.5, the supported Zod 3 floor
+- Zod 3.25.76, the selected latest Zod 3 release
+- Zod 4.0.0, the supported Zod 4 floor
+- Zod 4.5.1, the current stable Zod 4 release
+
+Every cell runs adapter type checking, all behavior tests, the ESM/CommonJS
+bundle build, and declaration emission. Version pins are reviewed deliberately;
+the workflow never floats on an npm dist-tag.
 
 ## Phase 1 foundation
 
@@ -90,7 +104,7 @@ import { z } from 'zod';
 
 type Profile = { email: string };
 const validateProfile = createZodFormValidator<Profile>(
-  z.object({ email: z.email('Enter a valid email') }),
+  z.object({ email: z.string().email('Enter a valid email') }),
 );
 ```
 
@@ -113,7 +127,7 @@ import { createZodFieldValidator } from '@dynamic-forms/zod';
 import { z } from 'zod';
 
 const validateEmail = createZodFieldValidator(
-  z.email('Enter a valid email'),
+  z.string().email('Enter a valid email'),
 );
 ```
 

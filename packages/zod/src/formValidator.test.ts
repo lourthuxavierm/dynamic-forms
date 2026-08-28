@@ -11,8 +11,8 @@ interface ProfileValues extends Record<string, unknown> {
 describe('createZodFormValidator', () => {
   it('returns no errors for valid values', async () => {
     const validator = createZodFormValidator<ProfileValues>(z.object({
-      email: z.email(),
-      contacts: z.array(z.object({ email: z.email() })),
+      email: z.string().email(),
+      contacts: z.array(z.object({ email: z.string().email() })),
     }));
     await expect(validator({
       email: 'person@example.com',
@@ -22,8 +22,8 @@ describe('createZodFormValidator', () => {
 
   it('maps nested array issues to Core form errors', async () => {
     const validator = createZodFormValidator<ProfileValues>(z.object({
-      email: z.email('Email is invalid'),
-      contacts: z.array(z.object({ email: z.email('Contact email is invalid') })),
+      email: z.string().email('Email is invalid'),
+      contacts: z.array(z.object({ email: z.string().email('Contact email is invalid') })),
     }));
     await expect(validator({
       email: 'invalid',
@@ -102,7 +102,7 @@ describe('createZodFormValidator', () => {
   it('does not share state between concurrent validations', async () => {
     type Values = { value: string };
     const validator = createZodFormValidator<Values>(
-      z.object({ value: z.literal('valid', 'Value is invalid') }),
+      z.object({ value: z.string().refine((value) => value === 'valid', 'Value is invalid') }),
     );
     const [invalid, valid] = await Promise.all([
       validator({ value: 'invalid' }),

@@ -15,7 +15,7 @@ server validation in place.
 
 - Depends on `@dynamic-forms/core`.
 - Keeps Zod out of Core and renderer packages.
-- Targets candidate peer ranges `^3.25.0 || ^4.0.0`.
+- Supports peer ranges `^3.25.5 || ^4.0.0` through a pinned four-cell CI matrix.
 - Uses a structural asynchronous schema contract in declarations.
 - Will validate without silently applying parsed/transformed output to FormStore.
 
@@ -54,7 +54,7 @@ import { createZodFieldValidator } from '@dynamic-forms/zod';
 import { z } from 'zod';
 
 const validateEmail = createZodFieldValidator(
-  z.email('Enter a valid email address'),
+  z.string().email('Enter a valid email address'),
 );
 ```
 

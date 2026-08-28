@@ -23,13 +23,14 @@ const required = [
   'packages/zod/src/issues.test.ts',
   'packages/zod/src/formValidator.test.ts',
   'packages/zod/src/fieldValidator.test.ts',
+  '.github/workflows/zod-compatibility.yml',
 ];
 for (const file of required) if (!existsSync(resolve(repoRoot, file))) failures.push(`${file}: missing`);
 
 const manifest = JSON.parse(read('packages/zod/package.json'));
 if (manifest.name !== '@dynamic-forms/zod') failures.push('Zod package name mismatch');
 if (manifest.dependencies?.['@dynamic-forms/core'] !== 'workspace:*') failures.push('Zod adapter must depend on Core');
-if (manifest.peerDependencies?.zod !== '^3.25.0 || ^4.0.0') failures.push('candidate Zod peer matrix must be ^3.25.0 || ^4.0.0');
+if (manifest.peerDependencies?.zod !== '^3.25.5 || ^4.0.0') failures.push('Zod peer matrix must be ^3.25.5 || ^4.0.0');
 for (const forbidden of ['@dynamic-forms/react', '@dynamic-forms/react-html', '@dynamic-forms/angular', '@dynamic-forms/angular-html']) {
   if (manifest.dependencies?.[forbidden]) failures.push(`Zod adapter must not depend on ${forbidden}`);
 }
@@ -52,15 +53,24 @@ if (!manifest.scripts?.test || manifest.scripts.test.includes('passWithNoTests')
 const coreSurface = read('packages/core/package.json') + read('packages/core/src/index.ts');
 if (/\bzod\b/i.test(coreSurface)) failures.push('Core must remain independent of Zod');
 
+const matrix = read('.github/workflows/zod-compatibility.yml');
+for (const version of ['3.25.5', '3.25.76', '4.0.0', '4.5.1']) {
+  if (!matrix.includes(`"${version}"`)) failures.push(`Zod matrix missing pinned version: ${version}`);
+}
+for (const command of ['typecheck', 'test', 'build']) {
+  if (!matrix.includes(`@dynamic-forms/zod ${command}`)) failures.push(`Zod matrix missing ${command} command`);
+}
+
 const decision = required.slice(0, 2).map(read).join('\n');
 for (const expectation of [
   'validation-only', '_form', 'contacts[0].email', 'first',
-  'safeParseAsync', '^3.25.0', '^4.0.0', 'Not certified',
+  'safeParseAsync', '^3.25.5', '^4.0.0',
   'Experimental status remains',
   'Form and field validation Experimental',
   'Successful Zod output is discarded',
   'Phase 4 field validation',
   'Rules that compare multiple values belong',
+  'Phase 5 compatibility matrix',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -70,4 +80,4 @@ if (failures.length) {
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 4 verification passed: experimental form and field validation, async and transform boundaries, issue mapping, declarations, and candidate v3/v4 matrix.');
+console.log('Zod Phase 5 verification passed: form and field validation plus pinned lowest/latest Zod 3 and Zod 4 matrix coverage.');

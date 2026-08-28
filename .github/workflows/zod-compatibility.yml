@@ -1,0 +1,49 @@
+name: Zod compatibility
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "packages/zod/**"
+      - "packages/core/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/zod-compatibility.yml"
+  push:
+    branches: [main]
+    paths:
+      - "packages/zod/**"
+      - "packages/core/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/zod-compatibility.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zod-compatibility-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  adapter:
+    name: Zod ${{ matrix.zod }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        zod: ["3.25.5", "3.25.76", "4.0.0", "4.5.1"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Select Zod ${{ matrix.zod }}
+        run: pnpm --filter @dynamic-forms/zod add --save-dev --lockfile=false zod@${{ matrix.zod }}
+      - run: pnpm --filter @dynamic-forms/zod typecheck
+      - run: pnpm --filter @dynamic-forms/zod test
+      - run: pnpm --filter @dynamic-forms/zod build

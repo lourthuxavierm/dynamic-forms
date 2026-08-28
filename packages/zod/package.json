@@ -19,7 +19,7 @@
               ],
     "sideEffects":  false,
     "peerDependencies":  {
-                             "zod":  "^3.25.0 || ^4.0.0"
+                             "zod":  "^3.25.5 || ^4.0.0"
                          },
     "dependencies":  {
                          "@dynamic-forms/core":  "workspace:*"

@@ -36,11 +36,12 @@ test('Zod issue mapping documents root, array, and multiple-error behavior', asy
   await expect(article.getByText(/all.*joins every message in source order/)).toBeVisible();
 });
 
-test('Zod policy exposes candidate majors without certifying them', async ({ page }) => {
+test('Zod policy exposes the pinned dual-major matrix', async ({ page }) => {
   await page.goto('/project/zod-compatibility');
   const article = page.locator('main');
-  await expect(article.getByText('^3.25.0', { exact: true })).toBeVisible();
+  await expect(article.getByText('^3.25.5', { exact: true })).toBeVisible();
   await expect(article.getByText('^4.0.0', { exact: true })).toBeVisible();
-  await expect(article.getByText('Not certified', { exact: true }).first()).toBeVisible();
+  await expect(article.getByRole('heading', { level: 2, name: 'Phase 5 compatibility matrix' })).toBeVisible();
+  await expect(article.getByText(/workflow tests four explicit cells/)).toBeVisible();
   await expect(article.getByText(/Do not silently apply Zod coercions, defaults, or transformed output/)).toBeVisible();
 });

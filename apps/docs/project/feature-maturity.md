@@ -26,7 +26,7 @@
 | `@dynamic-forms/angular` | Experimental | Angular 22 facade, readonly signals, DI, RxJS, validation, CVA, tests and build |
 | `@dynamic-forms/angular-html` | Experimental | Angular 22 OnPush native form and 15-type baseline renderer |
 | `@dynamic-forms/examples` | Implemented, private | Shared schemas and rules |
-| `@dynamic-forms/zod` | Experimental | Form and field validators, async behavior, transform boundary, and issue mapping tested on Zod 4.4.3; dual-major certification pending |
+| `@dynamic-forms/zod` | Experimental | Form and field validators plus pinned lowest/latest Zod 3 and Zod 4 CI matrix; examples, migration guidance, and release gate pending |
 | `@dynamic-forms/rhf` | Placeholder | Marker only |
 | `@dynamic-forms/json-schema` | Placeholder | Marker only |
 | `@dynamic-forms/devtools` | Placeholder | Marker only |
