@@ -1,4 +1,6 @@
+# Installed dependencies and tool-generated module caches must never be tracked.
 node_modules/
+**/.vite/
 dist/
 build/
 coverage/
