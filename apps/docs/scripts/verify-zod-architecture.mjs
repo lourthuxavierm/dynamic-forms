@@ -21,6 +21,7 @@ const required = [
   'packages/zod/src/public-api.test.ts',
   'packages/zod/src/paths.test.ts',
   'packages/zod/src/issues.test.ts',
+  'packages/zod/src/formValidator.test.ts',
 ];
 for (const file of required) if (!existsSync(resolve(repoRoot, file))) failures.push(`${file}: missing`);
 
@@ -34,7 +35,8 @@ for (const forbidden of ['@dynamic-forms/react', '@dynamic-forms/react-html', '@
 
 const source = read('packages/zod/src/index.ts');
 if (source.includes('ZOD_ADAPTER')) failures.push('Phase 2 must keep the retired placeholder marker removed');
-if (/createZod(Form|Field)Validator/.test(source)) failures.push('Phase 2 must not publish an unimplemented validator factory');
+if (!source.includes('createZodFormValidator')) failures.push('Phase 3 form validator must be public');
+if (source.includes('createZodFieldValidator')) failures.push('Phase 3 must not publish an unimplemented field validator');
 for (const typeName of ['ZodSchemaLike', 'ZodIssueLike', 'ZodAdapterOptions', 'ZodSafeParseResult']) {
   if (!source.includes(typeName)) failures.push(`Phase 1 public types missing: ${typeName}`);
 }
@@ -53,7 +55,9 @@ const decision = required.slice(0, 2).map(read).join('\n');
 for (const expectation of [
   'validation-only', '_form', 'contacts[0].email', 'first',
   'safeParseAsync', '^3.25.0', '^4.0.0', 'Not certified',
-  'Do not use it',
+  'Experimental status remains',
+  'Form validation Experimental',
+  'Successful Zod output is discarded',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -63,4 +67,4 @@ if (failures.length) {
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 2 verification passed: issue mapping, type surface, declarations, package boundary, placeholder truth, and candidate v3/v4 matrix.');
+console.log('Zod Phase 3 verification passed: experimental form validation, async and transform boundaries, issue mapping, declarations, and candidate v3/v4 matrix.');

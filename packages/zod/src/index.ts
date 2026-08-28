@@ -1,9 +1,10 @@
 /**
  * Framework-neutral contracts for the future Zod validation adapter.
  *
- * Phase 2 exports deterministic issue normalization. Validator factories are
- * introduced in later behavior phases.
+ * Phase 3 exports deterministic issue normalization and form validation.
  */
+export { createZodFormValidator } from './formValidator';
+export type { ZodFormValidatorFactory } from './formValidator';
 export { zodPathToFieldPath } from './paths';
 export {
   normalizeZodIssue,

@@ -1,20 +1,20 @@
 # Zod compatibility
 
-- Status: Issue mapping implemented; validation Placeholder
+- Status: Form validation Experimental
 - Owner: Core and adapter maintainers
-- Last verified: 2026-08-28
+- Last verified: 2026-08-29
 - Applies to: `@dynamic-forms/zod` 0.1.0
 
-`@dynamic-forms/zod` now exports framework-neutral structural types and
-deterministic issue-mapping utilities. It does not execute a Zod schema through
-form or field validator factories yet. Do not use it as an application validator.
+`@dynamic-forms/zod` now provides Experimental form-level validation through
+`createZodFormValidator`. Field-level validation and the complete dual-major
+matrix are not available yet.
 
 ## Candidate version policy
 
 | Zod line | Candidate range | Current support |
 | --- | --- | --- |
 | Zod 3 | `^3.25.0` | Not certified |
-| Zod 4 | `^4.0.0` | Not certified |
+| Zod 4 | `^4.0.0` | Phase 3 behavior tested on 4.4.3; matrix not certified |
 | Zod Mini | Not selected | Not supported |
 
 The manifest range identifies versions intended for the implementation matrix.
@@ -47,9 +47,9 @@ Core and renderers never import Zod. The adapter produces Core-compatible errors
 
 ## Promotion gate
 
-Placeholder status remains until validator implementation, unit and compatibility tests,
-generated declarations, API reference, framework-neutral examples, migration
-guidance, and the Zod release verifier all pass.
+Experimental status remains until form and field validators, the dual-major
+matrix, generated API reference, framework-neutral examples, migration guidance,
+and the Zod release verifier all pass.
 
 ## Phase 1 foundation
 
@@ -58,7 +58,7 @@ guidance, and the Zod release verifier all pass.
 - ESM and CommonJS bundles remain supported.
 - `sideEffects: false` declares the type-only foundation tree-shakeable.
 - Structural contracts do not expose a concrete Zod-major class.
-- Validator factories remain intentionally unavailable.
+- Validator factories were intentionally withheld until behavior tests existed.
 
 ## Phase 2 issue mapping
 
@@ -78,6 +78,30 @@ schema field names cannot use those segments.
 The default `first` mode retains the first message for a field. The `all`
 mode joins every message in source order using either `; ` or a caller-supplied
 formatter.
+
+## Phase 3 form validation
+
+`createZodFormValidator<TValues>(schema, options?)` returns the Core
+`FormValidator<TValues>` contract:
+
+```ts
+import { createZodFormValidator } from '@dynamic-forms/zod';
+import { z } from 'zod';
+
+type Profile = { email: string };
+const validateProfile = createZodFormValidator<Profile>(
+  z.object({ email: z.email('Enter a valid email') }),
+);
+```
+
+It always awaits `safeParseAsync`, maps nested and root issues, supports
+cross-field and asynchronous refinements, and propagates thrown operational
+errors. Successful Zod output is discarded, so coercions, defaults, and
+transforms never silently replace form state. Concurrent calls share no mutable
+adapter state.
+
+Field-level `createZodFieldValidator` remains unavailable. Client validation is
+not an authorization or security boundary; validate submissions on the server.
 
 See the repository ADR at
 `docs/architecture/decisions/zod-adapter.md` for the complete decision.

@@ -2,7 +2,7 @@
 
 - Status: Active
 - Owner: Documentation maintainers with package owners
-- Last verified: 2026-08-28
+- Last verified: 2026-08-29
 - Applies to: Repository version 0.1.0
 
 | Label | Meaning |
@@ -26,7 +26,7 @@
 | `@dynamic-forms/angular` | Experimental | Angular 22 facade, readonly signals, DI, RxJS, validation, CVA, tests and build |
 | `@dynamic-forms/angular-html` | Experimental | Angular 22 OnPush native form and 15-type baseline renderer |
 | `@dynamic-forms/examples` | Implemented, private | Shared schemas and rules |
-| `@dynamic-forms/zod` | Placeholder | Foundation and deterministic issue mapping implemented; schema-executing validator factories and compatibility certification are not yet available |
+| `@dynamic-forms/zod` | Experimental | Form validator, async/cross-field behavior, transforms boundary, and issue mapping tested on Zod 4.4.3; field validator and dual-major certification pending |
 | `@dynamic-forms/rhf` | Placeholder | Marker only |
 | `@dynamic-forms/json-schema` | Placeholder | Marker only |
 | `@dynamic-forms/devtools` | Placeholder | Marker only |
