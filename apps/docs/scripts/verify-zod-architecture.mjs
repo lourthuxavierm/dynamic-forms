@@ -22,6 +22,7 @@ const required = [
   'packages/zod/src/paths.test.ts',
   'packages/zod/src/issues.test.ts',
   'packages/zod/src/formValidator.test.ts',
+  'packages/zod/src/fieldValidator.test.ts',
 ];
 for (const file of required) if (!existsSync(resolve(repoRoot, file))) failures.push(`${file}: missing`);
 
@@ -34,9 +35,9 @@ for (const forbidden of ['@dynamic-forms/react', '@dynamic-forms/react-html', '@
 }
 
 const source = read('packages/zod/src/index.ts');
-if (source.includes('ZOD_ADAPTER')) failures.push('Phase 2 must keep the retired placeholder marker removed');
+if (source.includes('ZOD_ADAPTER')) failures.push('Phase 4 must keep the retired placeholder marker removed');
 if (!source.includes('createZodFormValidator')) failures.push('Phase 3 form validator must be public');
-if (source.includes('createZodFieldValidator')) failures.push('Phase 3 must not publish an unimplemented field validator');
+if (!source.includes('createZodFieldValidator')) failures.push('Phase 4 field validator must be public');
 for (const typeName of ['ZodSchemaLike', 'ZodIssueLike', 'ZodAdapterOptions', 'ZodSafeParseResult']) {
   if (!source.includes(typeName)) failures.push(`Phase 1 public types missing: ${typeName}`);
 }
@@ -56,8 +57,10 @@ for (const expectation of [
   'validation-only', '_form', 'contacts[0].email', 'first',
   'safeParseAsync', '^3.25.0', '^4.0.0', 'Not certified',
   'Experimental status remains',
-  'Form validation Experimental',
+  'Form and field validation Experimental',
   'Successful Zod output is discarded',
+  'Phase 4 field validation',
+  'Rules that compare multiple values belong',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -67,4 +70,4 @@ if (failures.length) {
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 3 verification passed: experimental form validation, async and transform boundaries, issue mapping, declarations, and candidate v3/v4 matrix.');
+console.log('Zod Phase 4 verification passed: experimental form and field validation, async and transform boundaries, issue mapping, declarations, and candidate v3/v4 matrix.');

@@ -41,3 +41,9 @@ export interface ZodAdapterOptions {
   errorMode?: ZodErrorMode;
   joinMessages?: (messages: readonly string[]) => string;
 }
+
+/** Options for reducing a field schema's issues to one Core issue. */
+export type ZodFieldValidatorOptions = Pick<
+  ZodAdapterOptions,
+  'errorMode' | 'joinMessages'
+>;

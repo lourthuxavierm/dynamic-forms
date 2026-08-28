@@ -1,12 +1,22 @@
 import { expect, test } from 'playwright/test';
 
-test('Zod compatibility presents form validation as Experimental', async ({ page }) => {
+test('Zod compatibility presents form and field validation as Experimental', async ({ page }) => {
   await page.goto('/project/zod-compatibility');
   const article = page.locator('main');
   await expect(article.getByRole('heading', { level: 1, name: 'Zod compatibility' })).toBeVisible();
-  await expect(article.getByText('Form validation Experimental')).toBeVisible();
+  await expect(article.getByText('Form and field validation Experimental')).toBeVisible();
   await expect(article.getByText('createZodFormValidator', { exact: true }).first()).toBeVisible();
-  await expect(article.getByText(/Field-level validation and the complete dual-major matrix are not available/)).toBeVisible();
+  await expect(article.getByText('createZodFieldValidator', { exact: true }).first()).toBeVisible();
+  await expect(article.getByText(/The complete dual-major matrix is not available/)).toBeVisible();
+});
+
+test('Zod field validation documents its ownership and result boundaries', async ({ page }) => {
+  await page.goto('/project/zod-compatibility');
+  const article = page.locator('main');
+  await expect(article.getByRole('heading', { level: 2, name: 'Phase 4 field validation' })).toBeVisible();
+  await expect(article.getByText(/Issue paths are ignored because Core associates/)).toBeVisible();
+  await expect(article.getByText(/Rules that compare multiple values belong/)).toBeVisible();
+  await expect(article.getByText(/Successful transformed output is discarded/)).toBeVisible();
 });
 
 test('Zod form validation documents async, transform, and security boundaries', async ({ page }) => {

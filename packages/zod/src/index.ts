@@ -1,8 +1,10 @@
 /**
  * Framework-neutral contracts for the future Zod validation adapter.
  *
- * Phase 3 exports deterministic issue normalization and form validation.
+ * Phase 4 exports deterministic issue normalization plus form and field validation.
  */
+export { createZodFieldValidator } from './fieldValidator';
+export type { ZodFieldValidatorFactory } from './fieldValidator';
 export { createZodFormValidator } from './formValidator';
 export type { ZodFormValidatorFactory } from './formValidator';
 export { zodPathToFieldPath } from './paths';
@@ -18,6 +20,7 @@ export type {
   ZodErrorLike,
   ZodErrorMode,
   ZodFailure,
+  ZodFieldValidatorOptions,
   ZodIssueLike,
   ZodPathSegment,
   ZodSafeParseResult,

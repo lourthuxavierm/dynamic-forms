@@ -1,20 +1,20 @@
 # Zod compatibility
 
-- Status: Form validation Experimental
+- Status: Form and field validation Experimental
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
 - Applies to: `@dynamic-forms/zod` 0.1.0
 
-`@dynamic-forms/zod` now provides Experimental form-level validation through
-`createZodFormValidator`. Field-level validation and the complete dual-major
-matrix are not available yet.
+`@dynamic-forms/zod` now provides Experimental form-level and field-level
+validation through `createZodFormValidator` and `createZodFieldValidator`.
+The complete dual-major matrix is not available yet.
 
 ## Candidate version policy
 
 | Zod line | Candidate range | Current support |
 | --- | --- | --- |
 | Zod 3 | `^3.25.0` | Not certified |
-| Zod 4 | `^4.0.0` | Phase 3 behavior tested on 4.4.3; matrix not certified |
+| Zod 4 | `^4.0.0` | Phase 4 behavior tested on 4.4.3; matrix not certified |
 | Zod Mini | Not selected | Not supported |
 
 The manifest range identifies versions intended for the implementation matrix.
@@ -100,8 +100,32 @@ errors. Successful Zod output is discarded, so coercions, defaults, and
 transforms never silently replace form state. Concurrent calls share no mutable
 adapter state.
 
-Field-level `createZodFieldValidator` remains unavailable. Client validation is
-not an authorization or security boundary; validate submissions on the server.
+Client validation is not an authorization or security boundary; validate
+submissions on the server.
+
+## Phase 4 field validation
+
+`createZodFieldValidator<TValue>(schema, options?)` returns the Core
+`Validator<TValue>` contract:
+
+```ts
+import { createZodFieldValidator } from '@dynamic-forms/zod';
+import { z } from 'zod';
+
+const validateEmail = createZodFieldValidator(
+  z.email('Enter a valid email'),
+);
+```
+
+It awaits asynchronous refinements and returns `undefined` on success or one
+Core `ValidationIssue` on failure. The default returns the first Zod issue;
+`errorMode: 'all'` joins all messages deterministically while retaining the
+first issue code. Empty structural failures receive a stable `zod` fallback.
+
+Issue paths are ignored because Core associates the result with the field that
+owns the validator. Rules that compare multiple values belong in
+`createZodFormValidator`. Successful transformed output is discarded, input
+values remain unchanged, and operational exceptions propagate to the caller.
 
 See the repository ADR at
 `docs/architecture/decisions/zod-adapter.md` for the complete decision.
