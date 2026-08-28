@@ -1,5 +1,11 @@
 # Zod package
 
-Status: Placeholder; do not adopt in production.
+Status: Experimental; evaluate with the documented compatibility policy.
 
-The package currently exports only a marker constant and has no adapter, runtime behavior, configuration API, or supported usage. It is intentionally excluded from the quick start. Use Core, React, and HTML directly until implementation, public types, tests, and migration guidance land.
+The package provides framework-neutral form and field validator factories,
+deterministic issue mapping, asynchronous refinement support, and pinned Zod 3
+and Zod 4 compatibility coverage. It is validation-only: parsed or transformed
+output never replaces Core store values.
+
+Start with the [Zod integration guide](/integrations/zod), then review the
+[compatibility and architecture evidence](/project/zod-compatibility).

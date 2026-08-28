@@ -12,6 +12,7 @@
 | [React HTML](/integrations/react-html/) | Documented | Complete browser-native controls rendered through React |
 | [Headless Angular](/integrations/angular/) | Experimental | Angular 22 readonly signals, DI lifecycle, events, validation, and Forms interop |
 | [Angular HTML](/integrations/angular-html/) | Experimental | Angular 22 browser-native 15-type baseline renderer |
+| [Zod validation](/integrations/zod) | Experimental | Framework-neutral form and field validation through the shared Core store |
 | `@dynamic-forms/html` | Compatibility-only | Existing React HTML import compatibility |
 | [Standalone Native HTML/DOM](/integrations/native-html/) | Planned | No public DOM-only renderer exists |
 

@@ -9,6 +9,7 @@ const read = (path) => readFileSync(resolve(repoRoot, path), 'utf8');
 const required = [
   'docs/architecture/decisions/zod-adapter.md',
   'apps/docs/project/zod-compatibility.md',
+  'apps/docs/integrations/zod.md',
   'apps/docs/tests/zod-architecture.spec.ts',
   'packages/zod/README.md',
   'packages/zod/tsconfig.json',
@@ -23,6 +24,7 @@ const required = [
   'packages/zod/src/issues.test.ts',
   'packages/zod/src/formValidator.test.ts',
   'packages/zod/src/fieldValidator.test.ts',
+  'packages/zod/src/coreIntegration.test.ts',
   '.github/workflows/zod-compatibility.yml',
 ];
 for (const file of required) if (!existsSync(resolve(repoRoot, file))) failures.push(`${file}: missing`);
@@ -71,8 +73,18 @@ for (const expectation of [
   'Phase 4 field validation',
   'Rules that compare multiple values belong',
   'Phase 5 compatibility matrix',
+  'Phase 6 integration examples',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
+}
+
+const guide = read('apps/docs/integrations/zod.md');
+for (const expectation of [
+  'FrameworkAvailability', 'FrameworkTabs', 'profileStore.validate(validateProfile)',
+  'profileStore.submit(saveProfile, validateProfile)', 'form.store.validate(validateProfile)',
+  'Standalone Native HTML/DOM rendering is planned', 'Validate again on the server',
+]) {
+  if (!guide.includes(expectation)) failures.push(`Zod integration guide missing: ${expectation}`);
 }
 
 if (failures.length) {
@@ -80,4 +92,4 @@ if (failures.length) {
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 5 verification passed: form and field validation plus pinned lowest/latest Zod 3 and Zod 4 matrix coverage.');
+console.log('Zod Phase 6 verification passed: dual-major adapter behavior plus framework-neutral and renderer handoff examples.');

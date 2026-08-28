@@ -49,8 +49,8 @@ Core and renderers never import Zod. The adapter produces Core-compatible errors
 
 ## Promotion gate
 
-Experimental status remains until generated API reference, framework-neutral
-examples, migration guidance, and the Zod release verifier all pass.
+Experimental status remains until generated API reference, migration guidance,
+and the Zod release verifier all pass.
 
 ## Phase 5 compatibility matrix
 
@@ -64,6 +64,13 @@ The `Zod compatibility` workflow tests four explicit cells on Node.js 22:
 Every cell runs adapter type checking, all behavior tests, the ESM/CommonJS
 bundle build, and declaration emission. Version pins are reviewed deliberately;
 the workflow never floats on an npm dist-tag.
+
+## Phase 6 integration examples
+
+The [Zod integration guide](/integrations/zod) provides one shared Core setup,
+renderer handoff guidance for React HTML and Angular HTML, honest Native HTML
+availability, field validation, submission behavior, and a production checklist.
+The executable Core examples are covered by adapter behavior tests.
 
 ## Phase 1 foundation
 

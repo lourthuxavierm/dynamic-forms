@@ -45,3 +45,14 @@ test('Zod policy exposes the pinned dual-major matrix', async ({ page }) => {
   await expect(article.getByText(/workflow tests four explicit cells/)).toBeVisible();
   await expect(article.getByText(/Do not silently apply Zod coercions, defaults, or transformed output/)).toBeVisible();
 });
+
+test('Zod integration guide exposes framework-specific handoff guidance', async ({ page }) => {
+  await page.goto('/integrations/zod');
+  const article = page.locator('main');
+  await expect(article.getByRole('heading', { level: 1, name: 'Zod validation' })).toBeVisible();
+  await expect(article.getByText(/Use one Zod schema with the framework-independent/)).toBeVisible();
+  await expect(article.getByRole('tab', { name: 'React HTML' })).toBeVisible();
+  await expect(article.getByRole('tab', { name: 'Angular HTML' })).toBeVisible();
+  await expect(article.getByRole('tab', { name: 'Native HTML' })).toBeVisible();
+  await expect(article.getByRole('heading', { level: 2, name: 'Production checklist' })).toBeVisible();
+});
