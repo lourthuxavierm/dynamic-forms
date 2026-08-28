@@ -14,8 +14,10 @@
                           }
                 },
     "files":  [
-                  "dist"
+                  "dist",
+                  "README.md"
               ],
+    "sideEffects":  false,
     "peerDependencies":  {
                              "zod":  "^3.25.0 || ^4.0.0"
                          },
@@ -23,8 +25,11 @@
                          "@dynamic-forms/core":  "workspace:*"
                      },
     "scripts":  {
-                    "build":  "tsup",
-                    "test":  "vitest run --passWithNoTests",
-                    "typecheck":  "tsc --noEmit"
-                }
+                    "build":  "tsup && tsc -p tsconfig.build.json",
+                    "test":  "vitest run",
+                    "typecheck":  "tsc --noEmit -p tsconfig.json"
+                },
+    "devDependencies":  {
+                             "zod":  "4.4.3"
+                         }
 }

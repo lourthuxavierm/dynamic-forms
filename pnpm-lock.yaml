@@ -300,8 +300,9 @@ importers:
       '@dynamic-forms/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       zod:
-        specifier: ^3.25.0 || ^4.0.0
+        specifier: 4.4.3
         version: 4.4.3
 
 packages:

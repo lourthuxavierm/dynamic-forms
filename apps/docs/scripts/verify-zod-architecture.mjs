@@ -10,6 +10,15 @@ const required = [
   'docs/architecture/decisions/zod-adapter.md',
   'apps/docs/project/zod-compatibility.md',
   'apps/docs/tests/zod-architecture.spec.ts',
+  'packages/zod/README.md',
+  'packages/zod/tsconfig.json',
+  'packages/zod/tsconfig.build.json',
+  'packages/zod/src/types.ts',
+  'packages/zod/src/paths.ts',
+  'packages/zod/src/issues.ts',
+  'packages/zod/src/formValidator.ts',
+  'packages/zod/src/fieldValidator.ts',
+  'packages/zod/src/public-api.test.ts',
 ];
 for (const file of required) if (!existsSync(resolve(repoRoot, file))) failures.push(`${file}: missing`);
 
@@ -22,8 +31,15 @@ for (const forbidden of ['@dynamic-forms/react', '@dynamic-forms/react-html', '@
 }
 
 const source = read('packages/zod/src/index.ts');
-if (!source.includes('ZOD_ADAPTER = true')) failures.push('Phase 0 must retain the placeholder marker');
-if (/createZod(Form|Field)Validator/.test(source)) failures.push('Phase 0 must not publish an unimplemented validator API');
+if (source.includes('ZOD_ADAPTER')) failures.push('Phase 1 must remove the placeholder marker');
+if (/createZod(Form|Field)Validator/.test(source)) failures.push('Phase 1 must not publish an unimplemented validator factory');
+for (const typeName of ['ZodSchemaLike', 'ZodIssueLike', 'ZodAdapterOptions', 'ZodSafeParseResult']) {
+  if (!source.includes(typeName)) failures.push(`Phase 1 public types missing: ${typeName}`);
+}
+if (manifest.sideEffects !== false) failures.push('Zod package must declare sideEffects false');
+if (manifest.devDependencies?.zod !== '4.4.3') failures.push('Zod package must pin the development compiler/test version');
+if (!manifest.scripts?.build?.includes('tsconfig.build.json')) failures.push('Zod build must emit declarations');
+if (!manifest.scripts?.test || manifest.scripts.test.includes('passWithNoTests')) failures.push('Zod tests must be required');
 
 const coreSurface = read('packages/core/package.json') + read('packages/core/src/index.ts');
 if (/\bzod\b/i.test(coreSurface)) failures.push('Core must remain independent of Zod');
@@ -42,4 +58,4 @@ if (failures.length) {
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod architecture verification passed: placeholder truth, package boundary, error semantics, and candidate v3/v4 matrix.');
+console.log('Zod foundation verification passed: type surface, declarations, package boundary, placeholder truth, and candidate v3/v4 matrix.');
