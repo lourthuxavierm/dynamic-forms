@@ -14,6 +14,8 @@ const required = [
   'apps/docs/migration/zod-adapter.md',
   'apps/docs/tests/zod-architecture.spec.ts',
   'packages/zod/README.md',
+  'packages/zod/RELEASE.md',
+  'scripts/verify-zod-release.mjs',
   'packages/zod/tsconfig.json',
   'packages/zod/tsconfig.build.json',
   'packages/zod/src/types.ts',
@@ -50,6 +52,8 @@ for (const functionName of ['zodPathToFieldPath', 'zodIssueToValidationIssue', '
   if (!source.includes(functionName)) failures.push(`Phase 2 public mapping missing: ${functionName}`);
 }
 if (manifest.sideEffects !== false) failures.push('Zod package must declare sideEffects false');
+if (manifest.publishConfig?.access !== 'public') failures.push('Zod package must publish with public access');
+if (!manifest.files?.includes('RELEASE.md')) failures.push('Zod package must publish its release process');
 if (manifest.devDependencies?.zod !== '4.4.3') failures.push('Zod package must pin the development compiler/test version');
 if (!manifest.scripts?.build?.includes('tsconfig.build.json')) failures.push('Zod build must emit declarations');
 if (!manifest.scripts?.test || manifest.scripts.test.includes('passWithNoTests')) failures.push('Zod tests must be required');
@@ -64,13 +68,17 @@ for (const version of ['3.25.5', '3.25.76', '4.0.0', '4.5.1']) {
 for (const command of ['typecheck', 'test', 'build']) {
   if (!matrix.includes(`@dynamic-forms/zod ${command}`)) failures.push(`Zod matrix missing ${command} command`);
 }
+if (!matrix.includes('needs: adapter') || !matrix.includes('pnpm verify:zod-release')) failures.push('Zod CI release gate must depend on the compatibility matrix');
+
+const rootManifest = JSON.parse(read('package.json'));
+if (rootManifest.scripts?.['verify:zod-release'] !== 'node scripts/verify-zod-release.mjs') failures.push('root Zod release command is missing');
 
 const decision = required.slice(0, 2).map(read).join('\n');
 for (const expectation of [
   'validation-only', '_form', 'contacts[0].email', 'first',
   'safeParseAsync', '^3.25.5', '^4.0.0',
-  'Experimental status remains',
-  'Form and field validation Experimental',
+  'Release-ready for the documented 0.1.x contract',
+  'Run the matrix-dependent release verifier again',
   'Successful Zod output is discarded',
   'Phase 4 field validation',
   'Rules that compare multiple values belong',
@@ -78,6 +86,7 @@ for (const expectation of [
   'Phase 6 integration examples',
   'Phase 7 generated API reference',
   'Phase 8 migration guidance',
+  'Phase 9 release verifier',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -93,7 +102,7 @@ for (const expectation of [
 
 const api = read('apps/docs/api/generated/zod.md');
 for (const expectation of [
-  'Maturity: Experimental', 'createZodFormValidator', 'createZodFieldValidator',
+  'Maturity: Release-ready', 'createZodFormValidator', 'createZodFieldValidator',
   'zodIssuesToFormErrors', 'zodPathToFieldPath',
 ]) {
   if (!api.includes(expectation)) failures.push(`Generated Zod API missing: ${expectation}`);
@@ -113,4 +122,4 @@ if (failures.length) {
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 8 verification passed: adapter behavior, compatibility, integration/API documentation, and migration/rollback guidance.');
+console.log('Zod Phase 9 architecture passed: complete adapter evidence and a matrix-dependent publish-artifact release gate.');

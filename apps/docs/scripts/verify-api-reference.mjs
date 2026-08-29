@@ -11,7 +11,7 @@ const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath
 const zod = manifest.packages['@dynamic-forms/zod'];
 if (!zod) failures.push('@dynamic-forms/zod: generated manifest entry is missing');
 else {
-  if (zod.maturity !== 'Experimental') failures.push('@dynamic-forms/zod: maturity must remain Experimental');
+  if (zod.maturity !== 'Release-ready') failures.push('@dynamic-forms/zod: maturity must be Release-ready');
   for (const name of ['createZodFormValidator', 'createZodFieldValidator', 'zodIssuesToFormErrors', 'zodPathToFieldPath']) {
     if (!zod.exports.some((symbol) => symbol.name === name)) failures.push(`@dynamic-forms/zod.${name}: generated export is missing`);
   }

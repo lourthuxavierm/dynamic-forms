@@ -21,10 +21,10 @@ test('generated API exposes explicit deprecation policy', async ({ page }) => {
   await expect(page.getByText('replacement and removal target')).toBeVisible();
 });
 
-test('generated Zod API preserves Experimental maturity and validator factories', async ({ page }) => {
+test('generated Zod API exposes Release-ready maturity and validator factories', async ({ page }) => {
   await page.goto('/api/generated/zod');
   await expect(page.getByRole('heading', { level: 1, name: '@dynamic-forms/zod API' })).toBeVisible();
-  await expect(page.getByText('Maturity: Experimental')).toBeVisible();
+  await expect(page.getByText('Maturity: Release-ready')).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'createZodFormValidator' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 3, name: 'createZodFieldValidator' })).toBeVisible();
 });

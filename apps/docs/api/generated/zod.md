@@ -2,11 +2,11 @@
 
 <!-- GENERATED FILE. Run pnpm docs:api to update. -->
 
-- Maturity: Experimental
+- Maturity: Release-ready
 - Source: TypeScript public exports
 - Internal symbols: excluded
 
-Experimental validation-only adapter mapping Zod form and field issues into framework-neutral Core contracts.
+Release-ready validation-only adapter mapping Zod form and field issues into framework-neutral Core contracts.
 
 Related: [guide](../../integrations/zod) · [controls/examples](../../project/zod-compatibility)
 

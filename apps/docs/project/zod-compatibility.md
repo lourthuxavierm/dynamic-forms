@@ -1,11 +1,11 @@
 # Zod compatibility
 
-- Status: Form and field validation Experimental
+- Status: Release-ready for the documented 0.1.x contract
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
 - Applies to: `@dynamic-forms/zod` 0.1.0
 
-`@dynamic-forms/zod` now provides Experimental form-level and field-level
+`@dynamic-forms/zod` provides Release-ready form-level and field-level
 validation through `createZodFormValidator` and `createZodFieldValidator`.
 The complete dual-major matrix is not available yet.
 
@@ -47,9 +47,13 @@ Core and renderers never import Zod. The adapter produces Core-compatible errors
 - Do not silently apply Zod coercions, defaults, or transformed output to store values.
 - Preserve server validation as the authoritative security boundary.
 
-## Promotion gate
+## Release status
 
-Experimental status remains until the Zod release verifier passes.
+All planned implementation gates are present and pass in the repository:
+behavior, dual-major compatibility, integration examples, generated API,
+migration guidance, and publish-artifact verification. Because the package is
+pre-1.0, compatibility may still change through documented semver releases.
+Run the matrix-dependent release verifier again on the exact publication commit.
 
 ## Phase 5 compatibility matrix
 
@@ -76,8 +80,8 @@ The executable Core examples are covered by adapter behavior tests.
 The generated [`@dynamic-forms/zod` API reference](/api/generated/zod) is built
 from the package entry point and checked for drift. It includes every public
 factory, mapping utility, option, and structural contract with source locations.
-The page remains explicitly Experimental; API generation does not promote
-package maturity.
+The generated page is labeled Release-ready and remains coupled to drift checks;
+API generation alone does not determine package maturity.
 
 ## Phase 8 migration guidance
 
@@ -85,6 +89,18 @@ The [Zod migration guide](/migration/zod-adapter) covers adoption from manual
 issue mapping and custom Core validators, explicit handling for parsed or
 transformed submission output, renderer rollout, canary stop conditions, and
 rollback without stored-data conversion.
+
+## Phase 9 release verifier
+
+Run `pnpm verify:zod-release` from the repository root. The verifier checks
+package boundaries, type safety, all adapter tests, dependency builds,
+declaration output, ESM and CommonJS loading, generated API drift, architecture
+evidence, and the packed npm manifest and file list. It rejects leaked source or
+tests and unresolved `workspace:` protocols.
+
+In CI, the release-gate job depends on all four pinned Zod compatibility cells.
+Publication order, stop conditions, and incident rollback are defined in
+`packages/zod/RELEASE.md`.
 
 ## Phase 1 foundation
 

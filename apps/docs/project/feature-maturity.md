@@ -26,7 +26,7 @@
 | `@dynamic-forms/angular` | Experimental | Angular 22 facade, readonly signals, DI, RxJS, validation, CVA, tests and build |
 | `@dynamic-forms/angular-html` | Experimental | Angular 22 OnPush native form and 15-type baseline renderer |
 | `@dynamic-forms/examples` | Implemented, private | Shared schemas and rules |
-| `@dynamic-forms/zod` | Experimental | Validators, dual-major matrix, integration/API documentation, and migration/rollback guidance; release gate pending |
+| `@dynamic-forms/zod` | Release-ready | Validators, pinned dual-major matrix, integration/API/migration guidance, ESM/CommonJS and packed-artifact release gate |
 | `@dynamic-forms/rhf` | Placeholder | Marker only |
 | `@dynamic-forms/json-schema` | Placeholder | Marker only |
 | `@dynamic-forms/devtools` | Placeholder | Marker only |

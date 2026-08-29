@@ -4,12 +4,12 @@ Zod validation adapter foundation for Dynamic Forms.
 
 ## Current maturity
 
-This package is **Experimental**. Phase 4 provides form-level and field-level
-validation, structural types, and deterministic issue mapping. The dual-major
-compatibility matrix is not complete.
+This package is **Release-ready** for the documented 0.1.x contract. It provides
+form-level and field-level validation, structural types, deterministic issue
+mapping, a pinned dual-major matrix, and an automated publish-artifact gate.
 
-Use it only with the Experimental compatibility policy and keep authoritative
-server validation in place.
+The package remains pre-1.0, so review migration guidance before upgrades and
+keep authoritative server validation in place.
 
 ## Architecture
 
@@ -32,7 +32,7 @@ Root issues map to `_form`. Numeric segments use Core bracket notation, such
 as `contacts[0].email`. The default keeps the first message for each path;
 `errorMode: 'all'` enables deterministic joining.
 
-## Experimental form validation
+## Form validation
 
 ```ts
 import { createZodFormValidator } from '@dynamic-forms/zod';
@@ -47,7 +47,7 @@ const validate = createZodFormValidator<Values>(
 The validator always awaits `safeParseAsync`. Successful parsed or transformed
 output is discarded; validation never mutates or replaces FormStore values.
 
-## Experimental field validation
+## Field validation
 
 ```ts
 import { createZodFieldValidator } from '@dynamic-forms/zod';

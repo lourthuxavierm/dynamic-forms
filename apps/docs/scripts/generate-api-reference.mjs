@@ -13,7 +13,7 @@ const packages = [
   { slug: 'react', name: '@dynamic-forms/react', entry: 'packages/react/src/index.ts', maturity: 'Documented' },
   { slug: 'react-html', name: '@dynamic-forms/react-html', entry: 'packages/react-html/src/index.ts', maturity: 'Documented' },
   { slug: 'html', name: '@dynamic-forms/html', entry: 'packages/html/src/index.ts', maturity: 'Compatibility-only' },
-  { slug: 'zod', name: '@dynamic-forms/zod', entry: 'packages/zod/src/index.ts', maturity: 'Experimental' },
+  { slug: 'zod', name: '@dynamic-forms/zod', entry: 'packages/zod/src/index.ts', maturity: 'Release-ready' },
 ];
 
 const entries = packages.map((pkg) => resolve(root, pkg.entry));

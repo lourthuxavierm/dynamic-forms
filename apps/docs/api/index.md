@@ -15,11 +15,11 @@ the relevant integration, runtime, controls, and examples documentation.
 - [`@dynamic-forms/react`](./generated/react)
 - [`@dynamic-forms/react-html`](./generated/react-html)
 - [`@dynamic-forms/html`](./generated/html) compatibility surface
-- [`@dynamic-forms/zod`](./generated/zod) Experimental validation adapter
+- [`@dynamic-forms/zod`](./generated/zod) Release-ready validation adapter
 
-The Experimental Zod API is included because its public factories and dual-major
-matrix are implemented; its generated page retains an Experimental maturity
-label. Experimental Angular APIs remain in their integration documentation until
+The Zod API is included because its public factories, dual-major matrix, and
+publish-artifact release gate are implemented; its generated page retains a
+Release-ready maturity label. Experimental Angular APIs remain in their integration documentation until
 their compatibility contract reaches the generated-reference policy. Placeholder
 packages are excluded because marker constants are not usable integrations.
 

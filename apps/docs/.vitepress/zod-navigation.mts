@@ -3,6 +3,7 @@ export const zodSidebar = {
     { text: 'Integration guide', link: '/integrations/zod' },
     { text: 'Generated API', link: '/api/generated/zod' },
     { text: 'Migration guide', link: '/migration/zod-adapter' },
+    { text: 'Release readiness', link: '/project/zod-compatibility#phase-9-release-verifier' },
     { text: 'Compatibility and architecture', link: '/project/zod-compatibility' },
   ],
 } as const;

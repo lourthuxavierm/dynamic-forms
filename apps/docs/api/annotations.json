@@ -21,7 +21,7 @@
       "example": "../../playground/"
     },
     "zod": {
-      "summary": "Experimental validation-only adapter mapping Zod form and field issues into framework-neutral Core contracts.",
+      "summary": "Release-ready validation-only adapter mapping Zod form and field issues into framework-neutral Core contracts.",
       "guide": "../../integrations/zod",
       "example": "../../project/zod-compatibility"
     }

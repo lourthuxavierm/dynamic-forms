@@ -1822,7 +1822,7 @@
       ]
     },
     "@dynamic-forms/zod": {
-      "maturity": "Experimental",
+      "maturity": "Release-ready",
       "exports": [
         {
           "name": "createZodFieldValidator",

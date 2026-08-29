@@ -1,6 +1,6 @@
 # Zod validation
 
-- Status: Experimental
+- Status: Release-ready adapter; renderer maturity varies below
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
 - Applies to: `@dynamic-forms/zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`

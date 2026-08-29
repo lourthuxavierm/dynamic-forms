@@ -1,6 +1,6 @@
 # Zod package
 
-Status: Experimental; evaluate with the documented compatibility policy.
+Status: Release-ready for the documented pre-1.0 compatibility policy.
 
 The package provides framework-neutral form and field validator factories,
 deterministic issue mapping, asynchronous refinement support, and pinned Zod 3

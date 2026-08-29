@@ -1,10 +1,10 @@
 import { expect, test } from 'playwright/test';
 
-test('Zod compatibility presents form and field validation as Experimental', async ({ page }) => {
+test('Zod compatibility presents form and field validation as Release-ready', async ({ page }) => {
   await page.goto('/project/zod-compatibility');
   const article = page.locator('main');
   await expect(article.getByRole('heading', { level: 1, name: 'Zod compatibility' })).toBeVisible();
-  await expect(article.getByText('Form and field validation Experimental')).toBeVisible();
+  await expect(article.getByText('Release-ready for the documented 0.1.x contract')).toBeVisible();
   await expect(article.getByText('createZodFormValidator', { exact: true }).first()).toBeVisible();
   await expect(article.getByText('createZodFieldValidator', { exact: true }).first()).toBeVisible();
   await expect(article.getByText(/The complete dual-major matrix is not available/)).toBeVisible();
@@ -57,7 +57,7 @@ test('Zod integration guide exposes framework-specific handoff guidance', async 
   await expect(article.getByRole('heading', { level: 2, name: 'Production checklist' })).toBeVisible();
 });
 
-test('Zod compatibility links to the generated Experimental API', async ({ page }) => {
+test('Zod compatibility links to the generated API', async ({ page }) => {
   await page.goto('/project/zod-compatibility');
   const article = page.locator('main');
   await expect(article.getByRole('heading', { level: 2, name: 'Phase 7 generated API reference' })).toBeVisible();
@@ -72,4 +72,13 @@ test('Zod migration documents transformed output, stop conditions, and rollback'
   await expect(article.getByText(/adapter does not migrate or rewrite persisted values/)).toBeVisible();
   await expect(article.getByRole('heading', { level: 2, name: 'Canary and stop conditions' })).toBeVisible();
   await expect(article.getByRole('heading', { level: 2, name: 'Rollback' })).toBeVisible();
+});
+
+test('Zod release verifier documents artifact and matrix gates', async ({ page }) => {
+  await page.goto('/project/zod-compatibility');
+  const article = page.locator('main');
+  await expect(article.getByRole('heading', { level: 2, name: 'Phase 9 release verifier' })).toBeVisible();
+  await expect(article.getByText('pnpm verify:zod-release', { exact: true }).first()).toBeVisible();
+  await expect(article.getByText(/release-gate job depends on all four pinned/)).toBeVisible();
+  await expect(article.getByText(/rejects leaked source or tests and unresolved/)).toBeVisible();
 });

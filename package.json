@@ -8,7 +8,7 @@
     "docs:api": "pnpm --filter @dynamic-forms/docs api", "docs:api:check": "pnpm --filter @dynamic-forms/docs api:check", "docs:governance": "pnpm --filter @dynamic-forms/docs governance", "docs:health": "pnpm --filter @dynamic-forms/docs health",
     "docs:examples:capture": "pnpm --filter @dynamic-forms/docs examples:capture",
     "docs:verify": "pnpm --filter @dynamic-forms/docs verify", "docs:test": "pnpm --filter @dynamic-forms/docs test:smoke",
-    "verify:react-html-release": "node scripts/verify-react-html-release.mjs", "verify:zod-architecture": "pnpm --filter @dynamic-forms/docs zod:architecture"
+    "verify:react-html-release": "node scripts/verify-react-html-release.mjs", "verify:zod-architecture": "pnpm --filter @dynamic-forms/docs zod:architecture", "verify:zod-release": "node scripts/verify-zod-release.mjs"
   },
   "devDependencies": {
     "@testing-library/dom": "latest", "@testing-library/react": "latest", "playwright": "latest", "tsup": "latest", "turbo": "latest",

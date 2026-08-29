@@ -1,6 +1,6 @@
 # Migrating to the Zod adapter
 
-- Status: Experimental migration path
+- Status: Maintained release migration path
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
 - Applies to: `@dynamic-forms/zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`
