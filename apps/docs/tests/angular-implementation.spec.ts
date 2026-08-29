@@ -31,4 +31,9 @@ test('Angular HTML runs the shared Zod form validator before emitting submission
   await expect(page.getByText('Enter a valid work email')).toBeVisible();
   await expect(page.getByText('Use at least eight characters')).toBeVisible();
   await expect(page.getByRole('complementary')).toContainText('Submit a valid form.');
+  await page.getByLabel('Work email').fill('engineer@example.com');
+  await page.getByLabel('Password', { exact: true }).fill('secure-pass');
+  await page.getByLabel('Confirm password').fill('secure-pass');
+  await page.getByRole('button', { name: 'Submit Zod validation' }).click();
+  await expect(page.getByRole('complementary')).toContainText('engineer@example.com');
 });

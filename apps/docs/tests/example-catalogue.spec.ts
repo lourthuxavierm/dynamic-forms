@@ -23,9 +23,15 @@ for (const [id, title] of examples) {
 test('Zod example blocks invalid React HTML submission with mapped errors', async ({ page }) => {
   await page.goto('http://127.0.0.1:4175/?example=zod-validation');
   await page.getByRole('button', { name: 'Validate' }).click();
-  await expect(page.getByText('Enter a valid work email')).toBeVisible();
-  await expect(page.getByText('Use at least eight characters')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Enter a valid work email' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Use at least eight characters' })).toBeVisible();
   await expect(page.getByTestId('submitted-values')).toContainText('Submit a valid form.');
+  await page.getByLabel('Work email').fill('engineer@example.com');
+  await page.getByLabel('Password', { exact: true }).fill('secure-pass');
+  await page.getByLabel('Confirm password').fill('secure-pass');
+  await page.getByRole('button', { name: 'Submit Zod validation' }).click();
+  await expect(page.getByTestId('submitted-values')).toContainText('engineer@example.com');
+  await expect(page.getByTestId('event-log')).toContainText('submit');
 });
 
 test('debug panel records state, validation, events, submission, and reset', async ({ page }) => {

@@ -64,3 +64,4 @@ values with parsed output.
 - Nested objects, arrays, root issues, cross-field issues, and async refinements
 - Explicit transform behavior
 - Package boundary, API reference, documentation, and example verification
+- Phase 12 cross-renderer browser release gate covering invalid and corrected submissions

@@ -6,6 +6,17 @@ on:
     paths:
       - "packages/zod/**"
       - "packages/core/**"
+      - "packages/examples/**"
+      - "packages/react/**"
+      - "packages/react-html/**"
+      - "packages/angular/**"
+      - "packages/angular-html/**"
+      - "apps/react-html-playground/**"
+      - "apps/angular-html-playground/**"
+      - "apps/docs/playwright.config.ts"
+      - "apps/docs/zod-playground.config.ts"
+      - "apps/docs/tests/example-catalogue.spec.ts"
+      - "apps/docs/tests/angular-implementation.spec.ts"
       - "pnpm-lock.yaml"
       - ".github/workflows/zod-compatibility.yml"
   push:
@@ -13,6 +24,17 @@ on:
     paths:
       - "packages/zod/**"
       - "packages/core/**"
+      - "packages/examples/**"
+      - "packages/react/**"
+      - "packages/react-html/**"
+      - "packages/angular/**"
+      - "packages/angular-html/**"
+      - "apps/react-html-playground/**"
+      - "apps/angular-html-playground/**"
+      - "apps/docs/playwright.config.ts"
+      - "apps/docs/zod-playground.config.ts"
+      - "apps/docs/tests/example-catalogue.spec.ts"
+      - "apps/docs/tests/angular-implementation.spec.ts"
       - "pnpm-lock.yaml"
       - ".github/workflows/zod-compatibility.yml"
 
@@ -48,9 +70,29 @@ jobs:
       - run: pnpm --filter @dynamic-forms/zod test
       - run: pnpm --filter @dynamic-forms/zod build
 
+  playground-evidence:
+    name: React and Angular playground evidence
+    needs: adapter
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @dynamic-forms/react-html-playground... build
+      - run: pnpm --filter @dynamic-forms/angular-html-playground... build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm --filter @dynamic-forms/docs exec playwright test --config zod-playground.config.ts --grep Zod
+
   release-gate:
     name: Release gate
-    needs: adapter
+    needs: [adapter, playground-evidence]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

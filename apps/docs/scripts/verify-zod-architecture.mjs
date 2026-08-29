@@ -14,6 +14,9 @@ const required = [
   'apps/docs/migration/zod-adapter.md',
   'apps/docs/public/examples/zod-validation.png',
   'apps/docs/tests/zod-architecture.spec.ts',
+  'apps/docs/tests/example-catalogue.spec.ts',
+  'apps/docs/tests/angular-implementation.spec.ts',
+  'apps/docs/zod-playground.config.ts',
   'packages/zod/README.md',
   'packages/zod/RELEASE.md',
   'scripts/verify-zod-release.mjs',
@@ -69,7 +72,14 @@ for (const version of ['3.25.5', '3.25.76', '4.0.0', '4.5.1']) {
 for (const command of ['typecheck', 'test', 'build']) {
   if (!matrix.includes(`@dynamic-forms/zod ${command}`)) failures.push(`Zod matrix missing ${command} command`);
 }
-if (!matrix.includes('needs: adapter') || !matrix.includes('pnpm verify:zod-release')) failures.push('Zod CI release gate must depend on the compatibility matrix');
+if (!matrix.includes('needs: [adapter, playground-evidence]') || !matrix.includes('pnpm verify:zod-release')) failures.push('Zod CI release gate must depend on compatibility and playground evidence');
+for (const expectation of [
+  'playground-evidence:',
+  'pnpm exec playwright install --with-deps chromium',
+  'playwright test --config zod-playground.config.ts --grep Zod',
+]) {
+  if (!matrix.includes(expectation)) failures.push(`Zod browser matrix missing: ${expectation}`);
+}
 
 const rootManifest = JSON.parse(read('package.json'));
 if (rootManifest.scripts?.['verify:zod-release'] !== 'node scripts/verify-zod-release.mjs') failures.push('root Zod release command is missing');
@@ -90,6 +100,7 @@ for (const expectation of [
   'Phase 9 release verifier',
   'Phase 10 renderer playground integration',
   'Phase 11 deterministic visual evidence',
+  'Phase 12 cross-renderer browser release gate',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -128,10 +139,14 @@ if (!angularFacade.includes('formValidator?: FormValidator<T>')) failures.push('
 if (!catalogue.includes("item('zod-validation'")) failures.push('shared Zod playground example is missing');
 const capture = read('apps/docs/scripts/capture-example-screenshots.mjs');
 if (!capture.includes("id === 'zod-validation'") || !capture.includes("getByRole('alert')")) failures.push('deterministic Zod error-state capture is missing');
+for (const testPath of ['apps/docs/tests/example-catalogue.spec.ts', 'apps/docs/tests/angular-implementation.spec.ts']) {
+  const browserTest = read(testPath);
+  if (!browserTest.includes('engineer@example.com') || !browserTest.includes('Submit Zod validation')) failures.push(`${testPath}: Zod invalid-to-valid browser scenario is missing`);
+}
 
 if (failures.length) {
   console.error(`Zod architecture verification failed with ${failures.length} issue(s):\n`);
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 11 verification passed: release-ready cross-renderer adapter plus deterministic documented error-state capture.');
+console.log('Zod Phase 12 verification passed: release-ready adapter plus matrix-dependent React and Angular browser evidence.');

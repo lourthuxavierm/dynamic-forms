@@ -117,6 +117,14 @@ fixed light-theme viewport. Documentation verification requires the generated
 `zod-validation.png` asset, and browser coverage verifies its accessible image
 description on the integration guide.
 
+## Phase 12 cross-renderer browser release gate
+
+The Zod compatibility workflow builds the React HTML and Angular HTML playground
+dependency graphs and runs focused Chromium scenarios for the shared
+`zod-validation` route. Both renderers must reject invalid values with mapped
+field errors and then accept a corrected submission. The package release gate
+depends on this browser evidence as well as every pinned Zod compatibility cell.
+
 ## Phase 1 foundation
 
 - The placeholder runtime marker has been removed.
