@@ -49,8 +49,8 @@ Core and renderers never import Zod. The adapter produces Core-compatible errors
 
 ## Promotion gate
 
-Experimental status remains until generated API reference, migration guidance,
-and the Zod release verifier all pass.
+Experimental status remains until migration guidance and the Zod release
+verifier pass.
 
 ## Phase 5 compatibility matrix
 
@@ -71,6 +71,14 @@ The [Zod integration guide](/integrations/zod) provides one shared Core setup,
 renderer handoff guidance for React HTML and Angular HTML, honest Native HTML
 availability, field validation, submission behavior, and a production checklist.
 The executable Core examples are covered by adapter behavior tests.
+
+## Phase 7 generated API reference
+
+The generated [`@dynamic-forms/zod` API reference](/api/generated/zod) is built
+from the package entry point and checked for drift. It includes every public
+factory, mapping utility, option, and structural contract with source locations.
+The page remains explicitly Experimental; API generation does not promote
+package maturity.
 
 ## Phase 1 foundation
 

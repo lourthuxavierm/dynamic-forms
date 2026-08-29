@@ -5,5 +5,6 @@ export const phase13Sidebar = {
     { text: 'React', link: '/api/generated/react' },
     { text: 'React HTML', link: '/api/generated/react-html' },
     { text: 'HTML compatibility', link: '/api/generated/html' },
+    { text: 'Zod (Experimental)', link: '/api/generated/zod' },
   ],
 } as const;

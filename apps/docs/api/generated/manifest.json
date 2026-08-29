@@ -1820,6 +1820,111 @@
           "source": "packages/react-html/dist/components/fileMedia.d.ts"
         }
       ]
+    },
+    "@dynamic-forms/zod": {
+      "maturity": "Experimental",
+      "exports": [
+        {
+          "name": "createZodFieldValidator",
+          "kind": "function",
+          "source": "packages/zod/src/fieldValidator.ts"
+        },
+        {
+          "name": "createZodFormValidator",
+          "kind": "function",
+          "source": "packages/zod/src/formValidator.ts"
+        },
+        {
+          "name": "NormalizedZodIssue",
+          "kind": "interface",
+          "source": "packages/zod/src/issues.ts"
+        },
+        {
+          "name": "normalizeZodIssue",
+          "kind": "function",
+          "source": "packages/zod/src/issues.ts"
+        },
+        {
+          "name": "ZodAdapterOptions",
+          "kind": "interface",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodErrorLike",
+          "kind": "interface",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodErrorMode",
+          "kind": "type",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodFailure",
+          "kind": "interface",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodFieldValidatorFactory",
+          "kind": "type",
+          "source": "packages/zod/src/fieldValidator.ts"
+        },
+        {
+          "name": "ZodFieldValidatorOptions",
+          "kind": "type",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodFormValidatorFactory",
+          "kind": "type",
+          "source": "packages/zod/src/formValidator.ts"
+        },
+        {
+          "name": "ZodIssueLike",
+          "kind": "interface",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "zodIssuesToFormErrors",
+          "kind": "function",
+          "source": "packages/zod/src/issues.ts"
+        },
+        {
+          "name": "zodIssueToValidationIssue",
+          "kind": "function",
+          "source": "packages/zod/src/issues.ts"
+        },
+        {
+          "name": "ZodPathMapping",
+          "kind": "interface",
+          "source": "packages/zod/src/paths.ts"
+        },
+        {
+          "name": "ZodPathSegment",
+          "kind": "type",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "zodPathToFieldPath",
+          "kind": "function",
+          "source": "packages/zod/src/paths.ts"
+        },
+        {
+          "name": "ZodSafeParseResult",
+          "kind": "type",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodSchemaLike",
+          "kind": "interface",
+          "source": "packages/zod/src/types.ts"
+        },
+        {
+          "name": "ZodSuccess",
+          "kind": "interface",
+          "source": "packages/zod/src/types.ts"
+        }
+      ]
     }
   }
 }

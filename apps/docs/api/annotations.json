@@ -19,6 +19,11 @@
       "summary": "Compatibility entry point forwarding the React HTML surface; new applications should import React HTML directly.",
       "guide": "../../integrations/native-html/",
       "example": "../../playground/"
+    },
+    "zod": {
+      "summary": "Experimental validation-only adapter mapping Zod form and field issues into framework-neutral Core contracts.",
+      "guide": "../../integrations/zod",
+      "example": "../../project/zod-compatibility"
     }
   },
   "symbols": {
@@ -31,6 +36,10 @@
     "react.useField": "Binds a field path to value, touched state, errors, and validation behavior.",
     "react-html.HtmlForm": "Renders a schema with native HTML controls and owns normal browser-form submission.",
     "react-html.HtmlField": "Renders one field through the React HTML registry.",
-    "html.HTML_ADAPTER_VERSION": "Compatibility-package version marker; this does not identify a separate native DOM renderer."
+    "html.HTML_ADAPTER_VERSION": "Compatibility-package version marker; this does not identify a separate native DOM renderer.",
+    "zod.createZodFormValidator": "Adapts a complete Zod object schema to the Core FormValidator contract; use this for cross-field and root rules.",
+    "zod.createZodFieldValidator": "Adapts one Zod schema to the Core Validator contract; Core associates its issue with the owning field.",
+    "zod.zodIssuesToFormErrors": "Maps ordered Zod issues to Core field paths and deterministic first-or-all messages.",
+    "zod.zodPathToFieldPath": "Maps Zod path segments to Core dot and bracket path notation."
   }
 }

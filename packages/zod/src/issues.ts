@@ -2,7 +2,7 @@ import type { FormErrors, ValidationIssue } from '@dynamic-forms/core';
 import { zodPathToFieldPath } from './paths';
 import type { ZodAdapterOptions, ZodIssueLike } from './types';
 
-/** Internal normalized issue shape implemented in Phase 2. */
+/** Normalized issue mapping result with its Core field path and source issue. */
 export interface NormalizedZodIssue {
   readonly field: string;
   readonly issue: ValidationIssue;

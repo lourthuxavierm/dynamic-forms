@@ -8,6 +8,14 @@ const failures = [];
 const manifestPath = resolve(generated, 'manifest.json');
 if (!existsSync(manifestPath)) failures.push('generated API manifest is missing');
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : { packages: {} };
+const zod = manifest.packages['@dynamic-forms/zod'];
+if (!zod) failures.push('@dynamic-forms/zod: generated manifest entry is missing');
+else {
+  if (zod.maturity !== 'Experimental') failures.push('@dynamic-forms/zod: maturity must remain Experimental');
+  for (const name of ['createZodFormValidator', 'createZodFieldValidator', 'zodIssuesToFormErrors', 'zodPathToFieldPath']) {
+    if (!zod.exports.some((symbol) => symbol.name === name)) failures.push(`@dynamic-forms/zod.${name}: generated export is missing`);
+  }
+}
 for (const [name, pkg] of Object.entries(manifest.packages)) {
   const slug = name.replace('@dynamic-forms/', '');
   const page = resolve(generated, `${slug}.md`);

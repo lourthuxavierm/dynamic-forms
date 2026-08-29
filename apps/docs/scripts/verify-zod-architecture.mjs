@@ -10,6 +10,7 @@ const required = [
   'docs/architecture/decisions/zod-adapter.md',
   'apps/docs/project/zod-compatibility.md',
   'apps/docs/integrations/zod.md',
+  'apps/docs/api/generated/zod.md',
   'apps/docs/tests/zod-architecture.spec.ts',
   'packages/zod/README.md',
   'packages/zod/tsconfig.json',
@@ -74,6 +75,7 @@ for (const expectation of [
   'Rules that compare multiple values belong',
   'Phase 5 compatibility matrix',
   'Phase 6 integration examples',
+  'Phase 7 generated API reference',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -87,9 +89,17 @@ for (const expectation of [
   if (!guide.includes(expectation)) failures.push(`Zod integration guide missing: ${expectation}`);
 }
 
+const api = read('apps/docs/api/generated/zod.md');
+for (const expectation of [
+  'Maturity: Experimental', 'createZodFormValidator', 'createZodFieldValidator',
+  'zodIssuesToFormErrors', 'zodPathToFieldPath',
+]) {
+  if (!api.includes(expectation)) failures.push(`Generated Zod API missing: ${expectation}`);
+}
+
 if (failures.length) {
   console.error(`Zod architecture verification failed with ${failures.length} issue(s):\n`);
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 6 verification passed: dual-major adapter behavior plus framework-neutral and renderer handoff examples.');
+console.log('Zod Phase 7 verification passed: dual-major adapter behavior, integration examples, and generated public API coverage.');

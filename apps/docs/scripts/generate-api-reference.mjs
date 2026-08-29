@@ -13,6 +13,7 @@ const packages = [
   { slug: 'react', name: '@dynamic-forms/react', entry: 'packages/react/src/index.ts', maturity: 'Documented' },
   { slug: 'react-html', name: '@dynamic-forms/react-html', entry: 'packages/react-html/src/index.ts', maturity: 'Documented' },
   { slug: 'html', name: '@dynamic-forms/html', entry: 'packages/html/src/index.ts', maturity: 'Compatibility-only' },
+  { slug: 'zod', name: '@dynamic-forms/zod', entry: 'packages/zod/src/index.ts', maturity: 'Experimental' },
 ];
 
 const entries = packages.map((pkg) => resolve(root, pkg.entry));
@@ -112,4 +113,4 @@ for (const pkg of packages) {
 
 persist(resolve(generatedRoot, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 if (failures.length) { console.error(`API reference drift detected:\n${failures.map((entry) => `- ${entry}`).join('\n')}`); process.exit(1); }
-console.log(`${check ? 'Verified' : 'Generated'} API reference for ${packages.length} stable/compatibility packages and ${Object.values(manifest.packages).reduce((count, pkg) => count + pkg.exports.length, 0)} public exports.`);
+console.log(`${check ? 'Verified' : 'Generated'} API reference for ${packages.length} packages and ${Object.values(manifest.packages).reduce((count, pkg) => count + pkg.exports.length, 0)} public exports.`);

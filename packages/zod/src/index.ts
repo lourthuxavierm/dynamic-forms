@@ -1,5 +1,5 @@
 /**
- * Framework-neutral contracts for the future Zod validation adapter.
+ * Framework-neutral contracts for the Zod validation adapter.
  *
  * Phase 4 exports deterministic issue normalization plus form and field validation.
  */

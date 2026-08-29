@@ -56,3 +56,10 @@ test('Zod integration guide exposes framework-specific handoff guidance', async 
   await expect(article.getByRole('tab', { name: 'Native HTML' })).toBeVisible();
   await expect(article.getByRole('heading', { level: 2, name: 'Production checklist' })).toBeVisible();
 });
+
+test('Zod compatibility links to the generated Experimental API', async ({ page }) => {
+  await page.goto('/project/zod-compatibility');
+  const article = page.locator('main');
+  await expect(article.getByRole('heading', { level: 2, name: 'Phase 7 generated API reference' })).toBeVisible();
+  await expect(article.getByRole('link', { name: '@dynamic-forms/zod API reference' })).toHaveAttribute('href', '/api/generated/zod');
+});

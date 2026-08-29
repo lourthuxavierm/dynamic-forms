@@ -35,7 +35,7 @@ export interface ZodSchemaLike<TInput = unknown, TOutput = TInput> {
 
 export type ZodErrorMode = 'first' | 'all';
 
-/** Options shared by issue mapping and the future validator factories. */
+/** Options shared by issue mapping and form-level validation. */
 export interface ZodAdapterOptions {
   rootErrorPath?: string;
   errorMode?: ZodErrorMode;

@@ -3,7 +3,7 @@
 - Status: Generated and curated
 - Owner: Package owners and documentation maintainers
 - Last verified: 2026-08-27
-- Applies to: Stable and compatibility `@dynamic-forms/*` exports
+- Applies to: Generated `@dynamic-forms/*` package exports with explicit maturity labels
 
 The generated reference records the compiler-visible public surface. Generated
 signatures do not replace task-oriented guides. Each package page links back to
@@ -15,9 +15,12 @@ the relevant integration, runtime, controls, and examples documentation.
 - [`@dynamic-forms/react`](./generated/react)
 - [`@dynamic-forms/react-html`](./generated/react-html)
 - [`@dynamic-forms/html`](./generated/html) compatibility surface
+- [`@dynamic-forms/zod`](./generated/zod) Experimental validation adapter
 
-Experimental Angular APIs remain in the Angular integration documentation until
-their compatibility contract reaches the stable-reference policy. Placeholder
+The Experimental Zod API is included because its public factories and dual-major
+matrix are implemented; its generated page retains an Experimental maturity
+label. Experimental Angular APIs remain in their integration documentation until
+their compatibility contract reaches the generated-reference policy. Placeholder
 packages are excluded because marker constants are not usable integrations.
 
 ## Generation contract
