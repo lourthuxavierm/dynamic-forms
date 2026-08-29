@@ -68,11 +68,11 @@ class DynamicFormFacade {
     setValues(values) { this.store.setValues(values); }
     reset() { this.store.reset(); }
     resetField(path) { this.store.resetField(path); }
-    validate() { return this.store.validate(createFormValidator(this.schema)); }
+    validate() { return this.store.validate(this.validator()); }
     async submit() {
         if (!this.options.onSubmit)
             return undefined;
-        return this.store.submit(this.options.onSubmit, createFormValidator(this.schema));
+        return this.store.submit(this.options.onSubmit, this.validator());
     }
     on(type, listener) { return this.store.on(type, listener); }
     dispose() {
@@ -82,6 +82,13 @@ class DynamicFormFacade {
         this.unsubscribeState();
         this.conditions.dispose();
         this.dependencies.dispose();
+    }
+    validator() {
+        const builtIn = createFormValidator(this.schema);
+        const custom = this.options.formValidator;
+        if (!custom)
+            return builtIn;
+        return async (values) => ({ ...await builtIn(values), ...await custom(values) });
     }
 }
 function createDynamicForm(options) {

@@ -154,7 +154,7 @@ export interface FormErrorSummaryProps;
 Owns the React form context, store lifecycle, validation mode, and optional submission callbacks.
 
 ```ts
-export declare function FormProvider<T extends FormValues = FormValues>({ store, registry, schema, defaultValues, children, onSubmit, onError, onChange, onValidate, validationMode, onInvalidSubmit, focusOnInvalidSubmit, onDataSourceRefresh, }: FormProviderProps<T>): import("react").JSX.Element
+export declare function FormProvider<T extends FormValues = FormValues>({ store, registry, schema, defaultValues, children, onSubmit, formValidator, onError, onChange, onValidate, validationMode, onInvalidSubmit, focusOnInvalidSubmit, onDataSourceRefresh, }: FormProviderProps<T>): import("react").JSX.Element
 ```
 
 ### FormProviderProps

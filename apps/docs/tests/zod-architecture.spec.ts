@@ -82,3 +82,11 @@ test('Zod release verifier documents artifact and matrix gates', async ({ page }
   await expect(article.getByText(/release-gate job depends on all four pinned/)).toBeVisible();
   await expect(article.getByText(/rejects leaked source or tests and unresolved/)).toBeVisible();
 });
+
+test('Zod compatibility documents the shared renderer playground hook', async ({ page }) => {
+  await page.goto('/project/zod-compatibility');
+  const article = page.locator('main');
+  await expect(article.getByRole('heading', { level: 2, name: 'Phase 10 renderer playground integration' })).toBeVisible();
+  await expect(article.getByText(/accept an optional.*formValidator/)).toBeVisible();
+  await expect(article.getByText(/shared.*zod-validation.*catalogue route/)).toBeVisible();
+});

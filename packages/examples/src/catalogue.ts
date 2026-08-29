@@ -30,6 +30,9 @@ export const formExamples: readonly FormExample[] = Object.freeze([
   ]), { country: 'IN', technologies: ['react'], primary: 'developer' }),
   item('date-time', 'Date and time controls', 'Calendar, time-of-day, and range values.', schema('date-time', [field('startDate', 'date', 'Start date'), field('startTime', 'time', 'Start time'), field('window', 'date-range', 'Delivery window')]), { startDate: '2026-09-01', startTime: '09:30', window: ['2026-09-01', '2026-09-05'] }),
   item('validation-errors', 'Validation and error states', 'Required, length, and numeric constraints.', validationSchema, validationInitialValues),
+  item('zod-validation', 'Zod validation', 'Cross-field and format validation through the shared Core validator contract.', schema('zod-validation', [
+    field('email', 'email', 'Work email'), field('password', 'password', 'Password'), field('confirmation', 'password', 'Confirm password'),
+  ]), { email: '', password: '', confirmation: '' }, ['react-html', 'angular-html']),
   item('conditional-dependencies', 'Conditional fields and dependencies', 'Declarative visibility and dependent behavior.', conditionalSchema, conditionalInitialValues),
   item('async-data', 'Async data sources', 'A deterministic service-backed option source.', schema('async-data', [field('technology', 'async-autocomplete', 'Technology', { dataSource: { type: 'function', cache: true, load: async () => [{ label: 'React', value: 'react' }, { label: 'Angular', value: 'angular' }] } })]), { technology: '' }, ['react-html'], 'simulated-application-service'),
   item('nested-objects-arrays', 'Nested objects and arrays', 'Structured profile and repeatable address values.', schema('nested-objects-arrays', [

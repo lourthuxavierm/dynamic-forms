@@ -1,8 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
-import type { FormEvent } from '@dynamic-forms/core';
+import type { FormEvent, FormValidator } from '@dynamic-forms/core';
 import { formExamples, getFormExample } from '@dynamic-forms/examples';
 import { HtmlForm } from '@dynamic-forms/react-html';
 import { FormProvider, useFormActions, useFormState } from '@dynamic-forms/react';
+import { createZodFormValidator } from '@dynamic-forms/zod';
+import { z } from 'zod';
 
 interface EventEntry { readonly sequence: number; readonly type: string; readonly detail: string; }
 
@@ -13,6 +15,7 @@ export default function App() {
   const [submitted, setSubmitted] = useState<Readonly<Record<string, unknown>>>();
   const [events, setEvents] = useState<readonly EventEntry[]>([]);
   const selected = useMemo(() => getFormExample(selectedId), [selectedId]);
+  const formValidator = useMemo(() => validatorFor(selected.id), [selected.id]);
   const record = useCallback((type: string, detail: string) => {
     setEvents((current) => [...current.slice(-7), { sequence: (current.at(-1)?.sequence ?? 0) + 1, type, detail }]);
   }, []);
@@ -40,7 +43,7 @@ export default function App() {
     </header>
     <section className="demo-grid" aria-label={selected.title}>
       <div className="form-card"><h2>{selected.title}</h2><p>{selected.summary}</p>
-        <FormProvider key={`${selected.id}-${run}`} schema={selected.schema} defaultValues={{ ...selected.initialValues }} validationMode="onBlur"
+        <FormProvider key={`${selected.id}-${run}`} schema={selected.schema} defaultValues={{ ...selected.initialValues }} formValidator={formValidator} validationMode="onBlur"
           onChange={change} onValidate={(valid) => record('validate', valid ? 'valid' : 'invalid')}>
           <HtmlForm schema={selected.schema} submitLabel={`Submit ${selected.title}`} onSubmit={(values) => { setSubmitted(values); record('submit', 'Submission accepted by playground'); }} />
           <DebugActions onReset={() => { setSubmitted(undefined); setEvents([]); setRun((value) => value + 1); }} />
@@ -49,6 +52,18 @@ export default function App() {
       </div>
     </section>
   </main>;
+}
+
+const zodExampleValidator = createZodFormValidator<Record<string, unknown>>(z.object({
+  email: z.string().email('Enter a valid work email'),
+  password: z.string().min(8, 'Use at least eight characters'),
+  confirmation: z.string(),
+}).refine((values) => values.password === values.confirmation, {
+  path: ['confirmation'], message: 'Passwords must match',
+}));
+
+function validatorFor(id: string): FormValidator<Record<string, unknown>> | undefined {
+  return id === 'zod-validation' ? zodExampleValidator : undefined;
 }
 
 function DebugActions({ onReset }: { readonly onReset: () => void }) {

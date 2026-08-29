@@ -87,6 +87,7 @@ for (const expectation of [
   'Phase 7 generated API reference',
   'Phase 8 migration guidance',
   'Phase 9 release verifier',
+  'Phase 10 renderer playground integration',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -94,7 +95,7 @@ for (const expectation of [
 const guide = read('apps/docs/integrations/zod.md');
 for (const expectation of [
   'FrameworkAvailability', 'FrameworkTabs', 'profileStore.validate(validateProfile)',
-  'profileStore.submit(saveProfile, validateProfile)', 'form.store.validate(validateProfile)',
+  'profileStore.submit(saveProfile, validateProfile)', 'formValidator: validateProfile',
   'Standalone Native HTML/DOM rendering is planned', 'Validate again on the server',
 ]) {
   if (!guide.includes(expectation)) failures.push(`Zod integration guide missing: ${expectation}`);
@@ -117,9 +118,16 @@ for (const expectation of [
   if (!migration.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod migration guide missing: ${expectation}`);
 }
 
+const reactProvider = read('packages/react/src/context/FormContext.tsx');
+const angularFacade = read('packages/angular/src/facade.ts');
+const catalogue = read('packages/examples/src/catalogue.ts');
+if (!reactProvider.includes('formValidator?: FormValidator<T>')) failures.push('React FormProvider custom form validator hook is missing');
+if (!angularFacade.includes('formValidator?: FormValidator<T>')) failures.push('Angular facade custom form validator hook is missing');
+if (!catalogue.includes("item('zod-validation'")) failures.push('shared Zod playground example is missing');
+
 if (failures.length) {
   console.error(`Zod architecture verification failed with ${failures.length} issue(s):\n`);
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 9 architecture passed: complete adapter evidence and a matrix-dependent publish-artifact release gate.');
+console.log('Zod Phase 10 verification passed: release-ready adapter plus composed React/Angular validator hooks and a shared playground route.');

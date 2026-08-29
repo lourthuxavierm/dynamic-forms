@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormErrors, FormSchema, FormValidator } from '@dynamic-forms/core';
 import { createDynamicForm } from './facade';
 
 const schema: FormSchema = {
@@ -27,6 +27,19 @@ describe('DynamicFormFacade', () => {
     form.setValue('name', 'Ada');
     expect(await form.submit()).toBe('Ada');
     expect(onSubmit).toHaveBeenCalledOnce();
+    form.dispose();
+  });
+
+  it('composes a custom form validator after schema validation', async () => {
+    const formValidator: FormValidator<{ name: string; details: string }> = vi.fn(async (values): Promise<FormErrors> => (
+      values.name === 'Ada' ? { name: 'Name is reserved' } : {}
+    ));
+    const onSubmit = vi.fn();
+    const form = createDynamicForm({ schema, defaultValues: { name: 'Ada', details: '' }, formValidator, onSubmit });
+    expect(await form.validate()).toBe(false);
+    expect(form.store.getState().errors.name).toBe('Name is reserved');
+    expect(await form.submit()).toBeUndefined();
+    expect(onSubmit).not.toHaveBeenCalled();
     form.dispose();
   });
 

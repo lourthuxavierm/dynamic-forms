@@ -22,6 +22,7 @@ state, validity, submission, events, validation, and reset.
 | `selection-controls` | Selection controls | Runnable | Not advertised | Browser render |
 | `date-time` | Date and time controls | Runnable | Not advertised | Browser render |
 | `validation-errors` | Validation and error states | Runnable | Not advertised | Validation state |
+| `zod-validation` | Zod validation | Runnable | Runnable | Shared custom `FormValidator` and mapped errors |
 | `conditional-dependencies` | Conditional fields and dependencies | Runnable | Not advertised | Runtime conditions |
 | `async-data` | Async data sources | Runnable | Not advertised | Deterministic service simulation |
 | `nested-objects-arrays` | Nested objects and arrays | Runnable | Not advertised | Structural renderer |

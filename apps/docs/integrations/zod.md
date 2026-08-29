@@ -64,18 +64,15 @@ invalid form never calls the application service. Root schema issues appear at
 <FrameworkTabs initial="react-html">
   <template #react-html>
 
-Pass `profileStore` to `FormProvider`. Before the application service runs,
-call `profileStore.validate(validateProfile)` from the submit handler. The same
-store error state drives React HTML error summaries and controls.
+Pass `profileStore` and `validateProfile` to `FormProvider`. The provider
+composes Zod validation after schema validation for manual validation and
+submission. The same store error state drives React HTML summaries and controls.
 
 ```tsx
-<FormProvider store={profileStore} schema={uiSchema}>
+<FormProvider store={profileStore} schema={uiSchema} formValidator={validateProfile}>
   <HtmlForm
     schema={uiSchema}
-    onSubmit={async (values) => {
-      if (!(await profileStore.validate(validateProfile))) return;
-      await saveProfile(values as ProfileValues);
-    }}
+    onSubmit={async (values) => saveProfile(values as ProfileValues)}
   />
 </FormProvider>
 ```
@@ -91,16 +88,13 @@ with Zod before calling the service.
 const form = createDynamicForm<ProfileValues>({
   schema: uiSchema,
   store: profileStore,
-  onSubmit: async (values) => {
-    if (!(await profileStore.validate(validateProfile))) return;
-    await saveProfile(values);
-  },
+  formValidator: validateProfile,
+  onSubmit: saveProfile,
 });
 ```
 
-Angular and Angular HTML remain Experimental. The facade's built-in `validate`
-method currently runs schema validation; call `form.store.validate(validateProfile)`
-for the Zod boundary.
+Angular and Angular HTML remain Experimental. The facade composes the supplied
+validator into both `validate()` and `submit()`.
 
   </template>
   <template #native-html>

@@ -24,3 +24,11 @@ test('Angular HTML falls back when an example is not advertised for it', async (
   await page.goto('http://127.0.0.1:4176/?example=file-media');
   await expect(page.getByText('Basic form', { exact: true })).toBeVisible();
 });
+
+test('Angular HTML runs the shared Zod form validator before emitting submission', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4176/?example=zod-validation');
+  await page.getByRole('button', { name: 'Submit Zod validation' }).click();
+  await expect(page.getByText('Enter a valid work email')).toBeVisible();
+  await expect(page.getByText('Use at least eight characters')).toBeVisible();
+  await expect(page.getByRole('complementary')).toContainText('Submit a valid form.');
+});

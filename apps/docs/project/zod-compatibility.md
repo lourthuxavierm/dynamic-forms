@@ -102,6 +102,13 @@ In CI, the release-gate job depends on all four pinned Zod compatibility cells.
 Publication order, stop conditions, and incident rollback are defined in
 `packages/zod/RELEASE.md`.
 
+## Phase 10 renderer playground integration
+
+React `FormProvider` and Angular `createDynamicForm` accept an optional
+`formValidator` and compose it after schema validation. The shared
+`zod-validation` catalogue route uses the real adapter in both React HTML and
+Angular HTML, demonstrates mapped errors, and blocks invalid submission.
+
 ## Phase 1 foundation
 
 - The placeholder runtime marker has been removed.

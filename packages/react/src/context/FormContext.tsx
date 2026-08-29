@@ -19,6 +19,7 @@ import {
   type FieldSchema,
   type FormEvent,
   type FormSubmitHandler,
+  type FormValidator,
   type FormValues,
   type FormSchema,
   type FieldConditionState,
@@ -52,6 +53,8 @@ export interface FormProviderProps<T extends FormValues = FormValues> {
   defaultValues?: T;
   children: ReactNode;
   onSubmit?: FormSubmitHandler<T>;
+  /** Additional form-level validator composed after schema validation. */
+  formValidator?: FormValidator<T>;
   onError?: (error: unknown) => void;
   onChange?: (event: FormEvent) => void;
   onValidate?: (valid: boolean) => void;
@@ -68,6 +71,7 @@ export function FormProvider<T extends FormValues = FormValues>({
   defaultValues,
   children,
   onSubmit,
+  formValidator,
   onError,
   onChange,
   onValidate,
@@ -108,24 +112,28 @@ export function FormProvider<T extends FormValues = FormValues>({
     onInvalidSubmit?.(errors);
     if (focusOnInvalidSubmit) focusFirstInvalidField(errors);
   }, [focusOnInvalidSubmit, onInvalidSubmit]);
+  const resolvedFormValidator = useMemo(
+    () => composeFormValidator(schema, formValidator),
+    [formValidator, schema],
+  );
   const validateForm = useCallback(async (): Promise<boolean> => {
-    if (!schema) return true;
-    const valid = await resolvedStore.validate(createFormValidator(schema));
+    if (!resolvedFormValidator) return true;
+    const valid = await resolvedStore.validate(resolvedFormValidator);
     if (!valid) handleInvalidSubmit(resolvedStore.getState().errors);
     return valid;
-  }, [handleInvalidSubmit, onValidate, resolvedStore, schema]);
+  }, [handleInvalidSubmit, resolvedFormValidator, resolvedStore]);
 
   const submit = useCallback(async <TResult,>(): Promise<TResult | undefined> => {
     if (!onSubmit) return undefined;
     try {
-      const result = await resolvedStore.submit(onSubmit as FormSubmitHandler<T, TResult>, schema ? createFormValidator(schema) : undefined);
+      const result = await resolvedStore.submit(onSubmit as FormSubmitHandler<T, TResult>, resolvedFormValidator);
       if (result === undefined && !resolvedStore.getState().valid) handleInvalidSubmit(resolvedStore.getState().errors);
       return result;
     } catch (error) {
       onError?.(error);
       throw error;
     }
-  }, [handleInvalidSubmit, onError, onSubmit, resolvedStore, schema]);
+  }, [handleInvalidSubmit, onError, onSubmit, resolvedFormValidator, resolvedStore]);
 
   const reset = useCallback(() => resolvedStore.reset(), [resolvedStore]);
   const resetField = useCallback((name: string) => resolvedStore.resetField(name), [resolvedStore]);
@@ -187,4 +195,17 @@ function focusFirstInvalidField(errors: Readonly<Record<string, string>>): void 
   if (!name) return;
   const escaped = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(name) : name.replace(/(["\\])/g, '\\$1');
   document.querySelector<HTMLElement>(`[name="${escaped}"]`)?.focus();
+}
+
+function composeFormValidator<T extends FormValues>(
+  schema: FormSchema | undefined,
+  custom: FormValidator<T> | undefined,
+): FormValidator<T> | undefined {
+  const builtIn = schema ? createFormValidator(schema) : undefined;
+  if (!builtIn) return custom;
+  if (!custom) return builtIn as FormValidator<T>;
+  return async (values) => ({
+    ...await builtIn(values),
+    ...await custom(values),
+  });
 }

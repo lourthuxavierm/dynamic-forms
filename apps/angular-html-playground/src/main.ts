@@ -5,10 +5,19 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { createDynamicForm } from '@dynamic-forms/angular';
 import { DynamicHtmlFormComponent } from '@dynamic-forms/angular-html';
 import { getFormExample } from '@dynamic-forms/examples';
+import { createZodFormValidator } from '@dynamic-forms/zod';
+import { z } from 'zod';
 
 const requested = new URLSearchParams(window.location.search).get('example');
 const candidate = getFormExample(requested);
 const selected = candidate.renderers.includes('angular-html') ? candidate : getFormExample('basic-form');
+const zodExampleValidator = createZodFormValidator<Record<string, unknown>>(z.object({
+  email: z.string().email('Enter a valid work email'),
+  password: z.string().min(8, 'Use at least eight characters'),
+  confirmation: z.string(),
+}).refine((values) => values.password === values.confirmation, {
+  path: ['confirmation'], message: 'Passwords must match',
+}));
 
 @Component({
   selector: 'df-angular-playground', standalone: true, imports: [DynamicHtmlFormComponent],
@@ -28,7 +37,11 @@ const selected = candidate.renderers.includes('angular-html') ? candidate : getF
 })
 class AppComponent implements OnDestroy {
   readonly example = selected;
-  readonly form = createDynamicForm<Record<string, unknown>>({ schema: selected.schema, defaultValues: { ...selected.initialValues } });
+  readonly form = createDynamicForm<Record<string, unknown>>({
+    schema: selected.schema,
+    defaultValues: { ...selected.initialValues },
+    formValidator: selected.id === 'zod-validation' ? zodExampleValidator : undefined,
+  });
   submitted?: Readonly<Record<string, unknown>>;
   json(value: unknown): string { return JSON.stringify(value, null, 2); }
   ngOnDestroy(): void { this.form.dispose(); }

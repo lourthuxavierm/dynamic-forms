@@ -111,10 +111,10 @@ renderer and UI schema unchanged, inject or expose the existing store, and add
 the Zod validation boundary described in the [integration guide](/integrations/zod).
 Standalone Native HTML/DOM rendering remains planned.
 
-For Angular, `DynamicFormFacade.validate()` continues to run schema validation;
-use `form.store.validate(validateProfile)` for Zod validation. For React, pass
-the shared store to `FormProvider` and validate it before the application
-service call.
+For Angular, pass `formValidator: validateProfile` to `createDynamicForm`. For
+React, pass `formValidator={validateProfile}` to `FormProvider`. Both adapters
+compose the application validator after schema validation for manual validation
+and submission; application errors take precedence for the same path.
 
 ## Canary and stop conditions
 

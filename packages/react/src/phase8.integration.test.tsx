@@ -2,7 +2,7 @@
 import { StrictMode, useEffect } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { FormStore, type FormSchema } from '@dynamic-forms/core';
+import { FormStore, type FormErrors, type FormSchema, type FormValidator } from '@dynamic-forms/core';
 import { describe, expect, it, vi } from 'vitest';
 import { FormProvider, useField, useFieldState, useFormActions, useWatch, useDataSource } from './index';
 
@@ -62,6 +62,22 @@ describe('React adapter integration quality gates', () => {
     render(<FormProvider store={store} schema={schema} onSubmit={onSubmit}><Probe /></FormProvider>);
     expect(await validate()).toBe(false);
     expect(store.getState().errors.name).toBeDefined();
+  });
+
+  it('composes a custom form validator after schema validation', async () => {
+    const store = new FormStore({ name: 'Ada' });
+    const formValidator: FormValidator<{ name: string }> = vi.fn(async (values): Promise<FormErrors> => (
+      values.name === 'Ada' ? { name: 'Name is reserved' } : {}
+    ));
+    const onSubmit = vi.fn();
+    let validateForm!: () => Promise<boolean>;
+    let submit!: () => Promise<unknown>;
+    function Actions() { ({ validateForm, submit } = useFormActions()); return null; }
+    render(<FormProvider store={store} schema={schema} formValidator={formValidator} onSubmit={onSubmit}><Actions /></FormProvider>);
+    expect(await validateForm()).toBe(false);
+    expect(store.getState().errors.name).toBe('Name is reserved');
+    expect(await submit()).toBeUndefined();
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('loads data sources and supports value-only watches', async () => {

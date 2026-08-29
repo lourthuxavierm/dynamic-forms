@@ -9,7 +9,7 @@ const docs = readFileSync(resolve(docsRoot, 'playground/index.md'), 'utf8');
 const tests = readFileSync(resolve(docsRoot, 'tests/example-catalogue.spec.ts'), 'utf8');
 const ids = [...source.matchAll(/item\('([^']+)'/g)].map((match) => match[1]);
 const failures = [];
-if (ids.length !== 14 || new Set(ids).size !== 14) failures.push(`expected 14 unique catalogue IDs, found ${ids.length}`);
+if (ids.length !== 15 || new Set(ids).size !== 15) failures.push(`expected 15 unique catalogue IDs, found ${ids.length}`);
 for (const id of ids) {
   if (!docs.includes(`\`${id}\``)) failures.push(`${id}: missing documentation row`);
   if (!tests.includes(`['${id}',`)) failures.push(`${id}: missing browser coverage`);

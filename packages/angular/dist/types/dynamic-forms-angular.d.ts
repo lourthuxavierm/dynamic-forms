@@ -1,7 +1,7 @@
 import * as _dynamic_forms_angular from '@dynamic-forms/angular';
 import * as i0 from '@angular/core';
 import { Signal, InjectionToken, Provider, EnvironmentProviders, OnDestroy } from '@angular/core';
-import { FormValues, FormStore, FormSchema, FormState, FormEvent, FormSubmitHandler, FormEventType } from '@dynamic-forms/core';
+import { FormValues, FormStore, FormSchema, FormState, FormEvent, FormSubmitHandler, FormValidator, FormEventType } from '@dynamic-forms/core';
 import { Observable } from 'rxjs';
 import { ControlValueAccessor } from '@angular/forms';
 
@@ -10,6 +10,8 @@ interface DynamicFormOptions<T extends FormValues = FormValues> {
     defaultValues?: T;
     store?: FormStore<T>;
     onSubmit?: FormSubmitHandler<T>;
+    /** Additional form-level validator composed after schema validation. */
+    formValidator?: FormValidator<T>;
 }
 interface DynamicFieldSignals<T = unknown> {
     value: Signal<T>;
@@ -49,6 +51,7 @@ declare class DynamicFormFacade<T extends FormValues = FormValues> {
     submit<TResult = unknown>(): Promise<TResult | undefined>;
     on(type: FormEventType, listener: (event: FormEvent) => void): () => void;
     dispose(): void;
+    private validator;
 }
 declare function createDynamicForm<T extends FormValues = FormValues>(options: DynamicFormOptions<T>): DynamicFormFacade<T>;
 

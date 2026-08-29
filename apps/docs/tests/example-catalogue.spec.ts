@@ -3,6 +3,7 @@ import { expect, test } from 'playwright/test';
 const examples = [
   ['basic-form', 'Basic form'], ['core-controls', 'Core controls'], ['text-numeric', 'Text and numeric controls'],
   ['selection-controls', 'Selection controls'], ['date-time', 'Date and time controls'], ['validation-errors', 'Validation and error states'],
+  ['zod-validation', 'Zod validation'],
   ['conditional-dependencies', 'Conditional fields and dependencies'], ['async-data', 'Async data sources'],
   ['nested-objects-arrays', 'Nested objects and arrays'], ['file-media', 'File and media fields'], ['schema-loading', 'Schema loading'],
   ['multi-step-workflow', 'Multi-step workflow'], ['draft-autosave', 'Draft and autosave'], ['enterprise-profile', 'Enterprise profile form'],
@@ -18,6 +19,14 @@ for (const [id, title] of examples) {
     await expect(page.getByRole('button', { name: 'Reset example' })).toBeVisible();
   });
 }
+
+test('Zod example blocks invalid React HTML submission with mapped errors', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4175/?example=zod-validation');
+  await page.getByRole('button', { name: 'Validate' }).click();
+  await expect(page.getByText('Enter a valid work email')).toBeVisible();
+  await expect(page.getByText('Use at least eight characters')).toBeVisible();
+  await expect(page.getByTestId('submitted-values')).toContainText('Submit a valid form.');
+});
 
 test('debug panel records state, validation, events, submission, and reset', async ({ page }) => {
   await page.goto('http://127.0.0.1:4175/?example=basic-form');

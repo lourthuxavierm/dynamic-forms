@@ -3,6 +3,7 @@ import {
   ConditionController, DependencyController, FormStore, createFormValidator,
   type FormEvent, type FormEventType, type FormSchema, type FormState,
   type FormSubmitHandler, type FormValues,
+  type FormValidator,
 } from '@dynamic-forms/core';
 import { Observable } from 'rxjs';
 
@@ -11,6 +12,8 @@ export interface DynamicFormOptions<T extends FormValues = FormValues> {
   defaultValues?: T;
   store?: FormStore<T>;
   onSubmit?: FormSubmitHandler<T>;
+  /** Additional form-level validator composed after schema validation. */
+  formValidator?: FormValidator<T>;
 }
 
 export interface DynamicFieldSignals<T = unknown> {
@@ -88,10 +91,10 @@ export class DynamicFormFacade<T extends FormValues = FormValues> {
   setValues(values: Partial<T>): void { this.store.setValues(values); }
   reset(): void { this.store.reset(); }
   resetField(path: string): void { this.store.resetField(path); }
-  validate(): Promise<boolean> { return this.store.validate(createFormValidator(this.schema)); }
+  validate(): Promise<boolean> { return this.store.validate(this.validator()); }
   async submit<TResult = unknown>(): Promise<TResult | undefined> {
     if (!this.options.onSubmit) return undefined;
-    return this.store.submit(this.options.onSubmit as FormSubmitHandler<T, TResult>, createFormValidator(this.schema));
+    return this.store.submit(this.options.onSubmit as FormSubmitHandler<T, TResult>, this.validator());
   }
   on(type: FormEventType, listener: (event: FormEvent) => void): () => void { return this.store.on(type, listener); }
 
@@ -101,6 +104,13 @@ export class DynamicFormFacade<T extends FormValues = FormValues> {
     this.unsubscribeState();
     this.conditions.dispose();
     this.dependencies.dispose();
+  }
+
+  private validator(): FormValidator<T> {
+    const builtIn = createFormValidator(this.schema);
+    const custom = this.options.formValidator;
+    if (!custom) return builtIn as FormValidator<T>;
+    return async (values) => ({ ...await builtIn(values), ...await custom(values) });
   }
 }
 
