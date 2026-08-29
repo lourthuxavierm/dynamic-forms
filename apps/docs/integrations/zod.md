@@ -9,6 +9,8 @@ Use one Zod schema with the framework-independent `FormStore`, then share that
 store with React HTML or Angular HTML. The adapter reports validation errors; it
 never replaces stored values with Zod defaults, coercions, or transforms.
 
+![Zod validation example with mapped field errors](/examples/zod-validation.png)
+
 <FrameworkAvailability
   core="available"
   react="available"

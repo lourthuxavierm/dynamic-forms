@@ -90,3 +90,8 @@ test('Zod compatibility documents the shared renderer playground hook', async ({
   await expect(article.getByText(/accept an optional.*formValidator/)).toBeVisible();
   await expect(article.getByText(/shared.*zod-validation.*catalogue route/)).toBeVisible();
 });
+
+test('Zod integration renders deterministic visual evidence', async ({ page }) => {
+  await page.goto('/integrations/zod');
+  await expect(page.getByRole('img', { name: 'Zod validation example with mapped field errors' })).toBeVisible();
+});

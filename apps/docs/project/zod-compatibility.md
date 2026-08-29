@@ -109,6 +109,14 @@ React `FormProvider` and Angular `createDynamicForm` accept an optional
 `zod-validation` catalogue route uses the real adapter in both React HTML and
 Angular HTML, demonstrates mapped errors, and blocks invalid submission.
 
+## Phase 11 deterministic visual evidence
+
+The documentation screenshot pipeline opens the real `zod-validation` React
+HTML route, triggers validation, waits for the mapped Zod error, and captures a
+fixed light-theme viewport. Documentation verification requires the generated
+`zod-validation.png` asset, and browser coverage verifies its accessible image
+description on the integration guide.
+
 ## Phase 1 foundation
 
 - The placeholder runtime marker has been removed.

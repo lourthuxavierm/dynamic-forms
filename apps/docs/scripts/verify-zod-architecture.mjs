@@ -12,6 +12,7 @@ const required = [
   'apps/docs/integrations/zod.md',
   'apps/docs/api/generated/zod.md',
   'apps/docs/migration/zod-adapter.md',
+  'apps/docs/public/examples/zod-validation.png',
   'apps/docs/tests/zod-architecture.spec.ts',
   'packages/zod/README.md',
   'packages/zod/RELEASE.md',
@@ -88,6 +89,7 @@ for (const expectation of [
   'Phase 8 migration guidance',
   'Phase 9 release verifier',
   'Phase 10 renderer playground integration',
+  'Phase 11 deterministic visual evidence',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -124,10 +126,12 @@ const catalogue = read('packages/examples/src/catalogue.ts');
 if (!reactProvider.includes('formValidator?: FormValidator<T>')) failures.push('React FormProvider custom form validator hook is missing');
 if (!angularFacade.includes('formValidator?: FormValidator<T>')) failures.push('Angular facade custom form validator hook is missing');
 if (!catalogue.includes("item('zod-validation'")) failures.push('shared Zod playground example is missing');
+const capture = read('apps/docs/scripts/capture-example-screenshots.mjs');
+if (!capture.includes("id === 'zod-validation'") || !capture.includes("getByRole('alert')")) failures.push('deterministic Zod error-state capture is missing');
 
 if (failures.length) {
   console.error(`Zod architecture verification failed with ${failures.length} issue(s):\n`);
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 10 verification passed: release-ready adapter plus composed React/Angular validator hooks and a shared playground route.');
+console.log('Zod Phase 11 verification passed: release-ready cross-renderer adapter plus deterministic documented error-state capture.');

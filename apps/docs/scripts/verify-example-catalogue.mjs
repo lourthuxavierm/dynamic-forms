@@ -14,11 +14,11 @@ for (const id of ids) {
   if (!docs.includes(`\`${id}\``)) failures.push(`${id}: missing documentation row`);
   if (!tests.includes(`['${id}',`)) failures.push(`${id}: missing browser coverage`);
 }
-for (const image of ['basic-form.png', 'validation-errors.png', 'enterprise-profile.png']) {
+for (const image of ['basic-form.png', 'validation-errors.png', 'zod-validation.png', 'enterprise-profile.png']) {
   if (!existsSync(resolve(docsRoot, 'public', 'examples', image))) failures.push(`${image}: deterministic screenshot missing`);
 }
 for (const phrase of ['Form state', 'Event log', 'Reset example', 'simulated-application-service']) {
   if (!`${docs}\n${readFileSync(resolve(root, 'apps/react-html-playground/src/App.tsx'), 'utf8')}`.includes(phrase)) failures.push(`missing playground capability: ${phrase}`);
 }
 if (failures.length) { console.error(`Example catalogue verification failed:\n${failures.map((failure) => `- ${failure}`).join('\n')}`); process.exit(1); }
-console.log(`Example catalogue verification passed: ${ids.length} routes, 3 deterministic screenshots, and debug capabilities.`);
+console.log(`Example catalogue verification passed: ${ids.length} routes, 4 deterministic screenshots, and debug capabilities.`);

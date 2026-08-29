@@ -45,6 +45,8 @@ fixed viewport:
 
 ![Validation errors deterministic state](/examples/validation-errors.png)
 
+![Zod validation deterministic error state](/examples/zod-validation.png)
+
 ![Enterprise profile deterministic state](/examples/enterprise-profile.png)
 
 Run `pnpm docs:examples:capture` to regenerate them. Browser tests verify every
