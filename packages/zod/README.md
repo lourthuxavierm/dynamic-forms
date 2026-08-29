@@ -65,3 +65,5 @@ current field. Put rules that compare multiple fields in
 operational exceptions propagate to the caller.
 
 See `docs/architecture/decisions/zod-adapter.md` for the accepted decision.
+Application adoption and rollback guidance is available at
+`apps/docs/migration/zod-adapter.md`.

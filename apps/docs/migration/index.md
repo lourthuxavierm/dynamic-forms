@@ -11,6 +11,7 @@ Choose the boundary that is changing:
 - [React major versions](./react-major-versions)
 - [Angular major versions](./angular-major-versions)
 - [Dynamic Forms package major versions](./package-major-versions)
+- [Adopting the Zod adapter](./zod-adapter)
 
 ## Safe migration sequence
 

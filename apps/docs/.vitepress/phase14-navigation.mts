@@ -11,5 +11,6 @@ export const phase14Sidebar = {
     { text: 'React major versions', link: '/migration/react-major-versions' },
     { text: 'Angular major versions', link: '/migration/angular-major-versions' },
     { text: 'Package major versions', link: '/migration/package-major-versions' },
+    { text: 'Adopt the Zod adapter', link: '/migration/zod-adapter' },
   ],
 } as const;

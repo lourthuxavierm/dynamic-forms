@@ -63,3 +63,13 @@ test('Zod compatibility links to the generated Experimental API', async ({ page 
   await expect(article.getByRole('heading', { level: 2, name: 'Phase 7 generated API reference' })).toBeVisible();
   await expect(article.getByRole('link', { name: '@dynamic-forms/zod API reference' })).toHaveAttribute('href', '/api/generated/zod');
 });
+
+test('Zod migration documents transformed output, stop conditions, and rollback', async ({ page }) => {
+  await page.goto('/migration/zod-adapter');
+  const article = page.locator('main');
+  await expect(article.getByRole('heading', { level: 1, name: 'Migrating to the Zod adapter' })).toBeVisible();
+  await expect(article.getByRole('heading', { level: 2, name: 'Preserve transformed submission data' })).toBeVisible();
+  await expect(article.getByText(/adapter does not migrate or rewrite persisted values/)).toBeVisible();
+  await expect(article.getByRole('heading', { level: 2, name: 'Canary and stop conditions' })).toBeVisible();
+  await expect(article.getByRole('heading', { level: 2, name: 'Rollback' })).toBeVisible();
+});

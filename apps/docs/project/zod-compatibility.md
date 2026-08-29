@@ -49,8 +49,7 @@ Core and renderers never import Zod. The adapter produces Core-compatible errors
 
 ## Promotion gate
 
-Experimental status remains until migration guidance and the Zod release
-verifier pass.
+Experimental status remains until the Zod release verifier passes.
 
 ## Phase 5 compatibility matrix
 
@@ -79,6 +78,13 @@ from the package entry point and checked for drift. It includes every public
 factory, mapping utility, option, and structural contract with source locations.
 The page remains explicitly Experimental; API generation does not promote
 package maturity.
+
+## Phase 8 migration guidance
+
+The [Zod migration guide](/migration/zod-adapter) covers adoption from manual
+issue mapping and custom Core validators, explicit handling for parsed or
+transformed submission output, renderer rollout, canary stop conditions, and
+rollback without stored-data conversion.
 
 ## Phase 1 foundation
 

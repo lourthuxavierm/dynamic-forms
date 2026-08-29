@@ -11,6 +11,7 @@ const required = [
   'apps/docs/project/zod-compatibility.md',
   'apps/docs/integrations/zod.md',
   'apps/docs/api/generated/zod.md',
+  'apps/docs/migration/zod-adapter.md',
   'apps/docs/tests/zod-architecture.spec.ts',
   'packages/zod/README.md',
   'packages/zod/tsconfig.json',
@@ -76,6 +77,7 @@ for (const expectation of [
   'Phase 5 compatibility matrix',
   'Phase 6 integration examples',
   'Phase 7 generated API reference',
+  'Phase 8 migration guidance',
 ]) {
   if (!decision.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod decision missing: ${expectation}`);
 }
@@ -97,9 +99,18 @@ for (const expectation of [
   if (!api.includes(expectation)) failures.push(`Generated Zod API missing: ${expectation}`);
 }
 
+const migration = read('apps/docs/migration/zod-adapter.md');
+for (const expectation of [
+  'Preserve transformed submission data', 'profileSchema.parseAsync(values)',
+  'Canary and stop conditions', 'Rollback', 'requires no data conversion',
+  'server validation remains authoritative',
+]) {
+  if (!migration.toLowerCase().includes(expectation.toLowerCase())) failures.push(`Zod migration guide missing: ${expectation}`);
+}
+
 if (failures.length) {
   console.error(`Zod architecture verification failed with ${failures.length} issue(s):\n`);
   failures.forEach((failure) => console.error(`- ${failure}`));
   process.exit(1);
 }
-console.log('Zod Phase 7 verification passed: dual-major adapter behavior, integration examples, and generated public API coverage.');
+console.log('Zod Phase 8 verification passed: adapter behavior, compatibility, integration/API documentation, and migration/rollback guidance.');
