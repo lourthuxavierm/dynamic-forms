@@ -11,7 +11,7 @@ one child field.
 ## Schema and value
 
 ```ts verify
-import type { FormSchema, InferSchemaType } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema, InferSchemaType } from '@dynamic-form-engine/core';
 
 export const customerSchema = {
   id: 'customer',

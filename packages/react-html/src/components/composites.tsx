@@ -1,6 +1,6 @@
 import { useId, useMemo, useState, type KeyboardEvent } from 'react';
-import type { FieldOption } from '@lourthuxavierm/dynamic-forms-core';
-import { useDataSource, type FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldOption } from '@dynamic-form-engine/core';
+import { useDataSource, type FieldComponentProps } from '@dynamic-form-engine/react';
 import { HtmlFieldShell } from './HtmlFieldShell';
 import { HtmlRadio } from './baseline';
 

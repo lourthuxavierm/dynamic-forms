@@ -13,7 +13,7 @@ On success it sets submitting, awaits the handler, emits `submit`, and restores
 submitting in `finally`.
 
 ```ts verify
-import { FormStore } from '@lourthuxavierm/dynamic-forms-core';
+import { FormStore } from '@dynamic-form-engine/core';
 
 const store = new FormStore({ email: 'ada@example.com' });
 const result = await store.submit(

@@ -39,9 +39,9 @@ function verifyPublishedFiles(files) {
 
 try {
   runPnpm(['check:boundaries']);
-  runPnpm(['--filter', '@lourthuxavierm/dynamic-forms-zod', 'typecheck']);
-  runPnpm(['--filter', '@lourthuxavierm/dynamic-forms-zod', 'test']);
-  runPnpm(['--filter', '@lourthuxavierm/dynamic-forms-zod...', 'build']);
+  runPnpm(['--filter', '@dynamic-form-engine/zod', 'typecheck']);
+  runPnpm(['--filter', '@dynamic-form-engine/zod', 'test']);
+  runPnpm(['--filter', '@dynamic-form-engine/zod...', 'build']);
   runPnpm(['docs:api:check']);
   runPnpm(['verify:zod-architecture']);
 
@@ -57,18 +57,18 @@ try {
   }
 
   const output = runPnpm([
-    '--filter', '@lourthuxavierm/dynamic-forms-zod', 'pack', '--json', '--pack-destination', verificationRoot,
+    '--filter', '@dynamic-form-engine/zod', 'pack', '--json', '--pack-destination', verificationRoot,
   ]);
   const packed = JSON.parse(output.slice(output.indexOf('{')));
   verifyPublishedFiles(packed.files);
 
   run('tar', ['-xf', packed.filename, '-C', verificationRoot]);
   const manifest = JSON.parse(readFileSync(join(verificationRoot, 'package', 'package.json'), 'utf8'));
-  assert.equal(manifest.name, '@lourthuxavierm/dynamic-forms-zod');
+  assert.equal(manifest.name, '@dynamic-form-engine/zod');
   assert.equal(manifest.publishConfig?.access, 'public');
   assert.equal(manifest.sideEffects, false);
   assert.equal(manifest.peerDependencies?.zod, '^3.25.5 || ^4.0.0');
-  assert.equal(manifest.dependencies?.['@lourthuxavierm/dynamic-forms-core'], manifest.version);
+  assert.equal(manifest.dependencies?.['@dynamic-form-engine/core'], manifest.version);
   assert.ok(!JSON.stringify(manifest).includes('workspace:'), 'Packed manifest contains an unresolved workspace protocol');
   assert.deepEqual(manifest.exports?.['.'], {
     types: './dist/index.d.ts', import: './dist/index.mjs', require: './dist/index.js',

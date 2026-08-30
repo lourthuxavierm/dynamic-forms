@@ -5,7 +5,7 @@
 Fields support `visibleWhen`, `disabledWhen`, `requiredWhen`, and `readOnlyWhen`. Conditions use `equals`, `notEquals`, existence, containment, and numeric comparison operators, with nested `and`, `or`, and `not` groups. `ConditionController` subscribes only to referenced paths. Hidden values follow `preserve` (default), `clear`, or `reset` policy.
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 export const schema: FormSchema = { id: 'company', fields: [
   { name: 'accountType', type: 'select' },
   { name: 'companyName', type: 'text', visibleWhen: { field: 'accountType', operator: 'equals', value: 'business' }, hiddenValuePolicy: 'clear' },
@@ -19,7 +19,7 @@ export const schema: FormSchema = { id: 'company', fields: [
 ## Data-source example
 
 ```ts verify
-import { DataSourceManager } from '@lourthuxavierm/dynamic-forms-core';
+import { DataSourceManager } from '@dynamic-form-engine/core';
 const manager = new DataSourceManager();
 const options = await manager.loadConfig('countries', { type: 'function', cache: true, load: async ({ signal }) => { signal?.throwIfAborted(); return [{ label: 'India', value: 'IN' }]; } }, { values: {} });
 void options;

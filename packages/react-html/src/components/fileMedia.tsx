@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldComponentProps } from '@dynamic-form-engine/react';
 import { HtmlFieldShell } from './HtmlFieldShell';
 
 export interface HtmlFileControlConfig {

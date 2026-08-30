@@ -1,4 +1,4 @@
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 export type View = 'design' | 'preview' | 'json';
 export interface BuilderState { schema: FormSchema; selectedPath?: string; view: View; past: readonly FormSchema[]; future: readonly FormSchema[]; saved: boolean; message?: string }
 export type Action = { type: 'commit'; schema: FormSchema; selectedPath?: string; message?: string } | { type: 'select'; path?: string } | { type: 'view'; view: View } | { type: 'undo' } | { type: 'redo' } | { type: 'saved' } | { type: 'message'; message?: string };

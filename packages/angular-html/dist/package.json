@@ -1,17 +1,17 @@
 {
-  "name": "@lourthuxavierm/dynamic-forms-angular-html",
+  "name": "@dynamic-form-engine/angular-html",
   "version": "0.1.0",
   "description": "Browser-native Dynamic Forms renderer for Angular",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/fesm2022/dynamic-forms-angular-html.mjs",
-  "module": "fesm2022/lourthuxavierm-dynamic-forms-angular-html.mjs",
-  "types": "./dist/types/lourthuxavierm-dynamic-forms-angular-html.d.ts",
+  "main": "./dist/fesm2022/dynamic-form-engine-angular-html.mjs",
+  "module": "fesm2022/dynamic-form-engine-angular-html.mjs",
+  "types": "./dist/types/dynamic-form-engine-angular-html.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/fesm2022/dynamic-forms-angular-html.mjs",
-      "types": "./types/lourthuxavierm-dynamic-forms-angular-html.d.ts",
-      "default": "./fesm2022/lourthuxavierm-dynamic-forms-angular-html.mjs"
+      "import": "./dist/fesm2022/dynamic-form-engine-angular-html.mjs",
+      "types": "./types/dynamic-form-engine-angular-html.d.ts",
+      "default": "./fesm2022/dynamic-form-engine-angular-html.mjs"
     },
     "./styles.css": "./styles.css",
     "./package.json": {
@@ -27,14 +27,14 @@
     "README.md"
   ],
   "dependencies": {
-    "@lourthuxavierm/dynamic-forms-angular": "workspace:*",
+    "@dynamic-form-engine/angular": "workspace:*",
     "tslib": "^2.8.1"
   },
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/forms": "^22.0.0",
-    "@lourthuxavierm/dynamic-forms-core": "workspace:*"
+    "@dynamic-form-engine/core": "workspace:*"
   },
-  "typings": "types/lourthuxavierm-dynamic-forms-angular-html.d.ts"
+  "typings": "types/dynamic-form-engine-angular-html.d.ts"
 }

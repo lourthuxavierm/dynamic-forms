@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useReducer, useRef, useState, type ChangeEvent, type DragEvent, type ReactNode } from 'react';
-import type { ConditionOperator, DataSourceConfig, FieldCondition, FieldSchema, FieldType, FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
-import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
+import type { ConditionOperator, DataSourceConfig, FieldCondition, FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider } from '@dynamic-form-engine/react';
+import { HtmlForm } from '@dynamic-form-engine/react-html';
 import { initialState, reducer } from './builder/reducer';
 import { clearDraft, loadDraft, saveDraft, starterSchema } from './persistence/draft';
 import { createField, hasOptions, isNumeric, isTextual, palette } from './schema/catalogue';

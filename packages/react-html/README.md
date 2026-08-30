@@ -1,4 +1,4 @@
-# @lourthuxavierm/dynamic-forms-react-html
+# @dynamic-form-engine/react-html
 
 Accessible native HTML rendering for Dynamic Forms. The package depends on the
 headless React contract and contains no third-party component framework or runtime CSS-in-JS.
@@ -13,13 +13,13 @@ docs/CONTROL-REFERENCE.md for their value and behavior contracts.
 
 ## Install
 
-    pnpm add @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom
+    pnpm add @dynamic-form-engine/core @dynamic-form-engine/react @dynamic-form-engine/react-html react react-dom
 
 ## Quickstart
 
-    import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
-    import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
-    import '@lourthuxavierm/dynamic-forms-react-html/styles.css';
+    import { FormProvider } from '@dynamic-form-engine/react';
+    import { HtmlForm } from '@dynamic-form-engine/react-html';
+    import '@dynamic-form-engine/react-html/styles.css';
 
     <FormProvider schema={schema}>
       <HtmlForm
@@ -36,6 +36,6 @@ or pass `unstyled` when the stylesheet is present but one form must opt out.
 React 18 and 19 are supported. Native controls target WCAG 2.2 AA and evergreen
 browsers as defined by ADR 0001.
 
-Applications still using `@lourthuxavierm/dynamic-forms-html` can follow the
+Applications still using `@dynamic-form-engine/html` can follow the
 [package-name migration guide](./docs/MIGRATION-FROM-HTML.md). The compatibility
 package remains available throughout v1 but must not be adopted by new code.

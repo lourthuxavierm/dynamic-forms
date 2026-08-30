@@ -3,7 +3,7 @@
 - Status: Implemented extension point
 - Owner: Core maintainers and application schema owners
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
+- Applies to: `@dynamic-form-engine/core` 0.1.0
 
 `FieldSchema.metadata` is an open `Record<string, unknown>` for application or
 renderer extensions. Core stores the object but assigns it no automatic
@@ -12,7 +12,7 @@ validation or runtime behavior.
 ## Example
 
 ```ts verify
-import type { FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldSchema } from '@dynamic-form-engine/core';
 
 export const employeeId: FieldSchema = {
   name: 'employeeId',

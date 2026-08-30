@@ -24,7 +24,7 @@ datetime normalization rejects `Z` and explicit UTC offsets.
 ## Schema example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const temporalSchema: FormSchema = {
   id: 'temporal-controls',

@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
+- Applies to: `@dynamic-form-engine/core` 0.1.0
 
 ## Signature
 
@@ -26,7 +26,7 @@ interface FormSchema {
 ## Example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const accountSchema: FormSchema = {
   id: 'account',

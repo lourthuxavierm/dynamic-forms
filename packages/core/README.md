@@ -1,4 +1,4 @@
-# @lourthuxavierm/dynamic-forms-core
+# @dynamic-form-engine/core
 
 Framework-independent form state and schema runtime for Dynamic Forms. The package has no React or renderer dependencies.
 
@@ -20,7 +20,7 @@ import {
   createFormValidator,
   FormStore,
   type FormSchema,
-} from '@lourthuxavierm/dynamic-forms-core';
+} from '@dynamic-form-engine/core';
 
 const schema: FormSchema = {
   id: 'account',

@@ -1,6 +1,6 @@
 import { Directive, forwardRef, input, type OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, type ControlValueAccessor } from '@angular/forms';
-import type { FormValues } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormValues } from '@dynamic-form-engine/core';
 import type { DynamicFormFacade } from './facade';
 
 @Directive({

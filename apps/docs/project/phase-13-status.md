@@ -11,10 +11,10 @@ purpose and guide links without replacing task-oriented documentation.
 
 ## Covered entry points
 
-- `@lourthuxavierm/dynamic-forms-core`
-- `@lourthuxavierm/dynamic-forms-react`
-- `@lourthuxavierm/dynamic-forms-react-html`
-- `@lourthuxavierm/dynamic-forms-html` compatibility surface
+- `@dynamic-form-engine/core`
+- `@dynamic-form-engine/react`
+- `@dynamic-form-engine/react-html`
+- `@dynamic-form-engine/html` compatibility surface
 
 Experimental Angular packages remain in their integration documentation until
 their public contracts reach the stable API-reference policy.

@@ -1,13 +1,13 @@
 import * as _angular_core from '@angular/core';
 import { Type } from '@angular/core';
-import * as _lourthuxavierm_dynamic_forms_angular from '@lourthuxavierm/dynamic-forms-angular';
-import { DynamicFormFacade } from '@lourthuxavierm/dynamic-forms-angular';
-import { FieldSchema, FormValues, FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import * as _dynamic_form_engine_angular from '@dynamic-form-engine/angular';
+import { DynamicFormFacade } from '@dynamic-form-engine/angular';
+import { FieldSchema, FormValues, FormSchema } from '@dynamic-form-engine/core';
 
 declare class DynamicHtmlFieldComponent {
     readonly field: _angular_core.InputSignal<FieldSchema>;
     readonly form: _angular_core.InputSignal<DynamicFormFacade<FormValues>>;
-    readonly binding: _angular_core.Signal<_lourthuxavierm_dynamic_forms_angular.DynamicFieldSignals<unknown>>;
+    readonly binding: _angular_core.Signal<_dynamic_form_engine_angular.DynamicFieldSignals<unknown>>;
     readonly visible: _angular_core.Signal<boolean>;
     readonly disabled: _angular_core.Signal<boolean>;
     readonly required: _angular_core.Signal<boolean>;

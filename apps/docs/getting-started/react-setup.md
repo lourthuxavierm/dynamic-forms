@@ -1,10 +1,10 @@
 # React setup
 
-`@lourthuxavierm/dynamic-forms-react` connects a Core `FormStore` to React. Place one `FormProvider` around each independent form.
+`@dynamic-form-engine/react` connects a Core `FormStore` to React. Place one `FormProvider` around each independent form.
 
 ```tsx verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider, useField } from '@lourthuxavierm/dynamic-forms-react';
+import type { FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider, useField } from '@dynamic-form-engine/react';
 
 const schema: FormSchema = {
   id: 'newsletter',

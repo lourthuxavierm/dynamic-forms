@@ -10,13 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@lourthuxavierm/dynamic-forms-core": "workspace:*",
-    "@lourthuxavierm/dynamic-forms-react-html": "workspace:*",
-    "@lourthuxavierm/dynamic-forms-react": "workspace:*",
+    "@dynamic-form-engine/core": "workspace:*",
+    "@dynamic-form-engine/react-html": "workspace:*",
+    "@dynamic-form-engine/react": "workspace:*",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "@dynamic-forms/examples": "workspace:*",
-    "@lourthuxavierm/dynamic-forms-zod": "workspace:*",
+    "@dynamic-form-engine/zod": "workspace:*",
     "zod": "4.4.3"
   },
   "devDependencies": {

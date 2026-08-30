@@ -1,12 +1,12 @@
 # Migrating HTML compatibility to React HTML
 
-`@lourthuxavierm/dynamic-forms-html` is a compatibility surface. Migrate React rendering code
-to the canonical `@lourthuxavierm/dynamic-forms-react-html` package while retaining
-`@lourthuxavierm/dynamic-forms-core` for schema and runtime contracts.
+`@dynamic-form-engine/html` is a compatibility surface. Migrate React rendering code
+to the canonical `@dynamic-form-engine/react-html` package while retaining
+`@dynamic-form-engine/core` for schema and runtime contracts.
 
 ## Procedure
 
-1. Inventory imports from `@lourthuxavierm/dynamic-forms-html`.
+1. Inventory imports from `@dynamic-form-engine/html`.
 2. Confirm each symbol in the [compatibility API](../api/generated/html) and its
    canonical [React HTML API](../api/generated/react-html).
 3. Replace package imports without changing schema or submission behavior in the same commit.

@@ -68,5 +68,5 @@ Every redirect must record:
 
 ## Current migration constraint
 
-`@lourthuxavierm/dynamic-forms-html` documentation must point new users to React HTML. This is
+`@dynamic-form-engine/html` documentation must point new users to React HTML. This is
 a package migration, not evidence of a standalone Native HTML renderer.

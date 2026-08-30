@@ -1,5 +1,5 @@
 {
-    "name":  "@lourthuxavierm/dynamic-forms-devtools",
+    "name":  "@dynamic-form-engine/devtools",
     "version":  "0.1.0",
     "description":  "Developer tools for Dynamic Forms",
     "license":  "MIT",
@@ -17,8 +17,8 @@
                   "dist"
               ],
     "dependencies":  {
-                         "@lourthuxavierm/dynamic-forms-core":  "workspace:*",
-                         "@lourthuxavierm/dynamic-forms-react":  "workspace:*"
+                         "@dynamic-form-engine/core":  "workspace:*",
+                         "@dynamic-form-engine/react":  "workspace:*"
                      },
     "scripts":  {
                     "build":  "tsup",

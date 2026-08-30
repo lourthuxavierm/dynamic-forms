@@ -1,7 +1,7 @@
-import * as _lourthuxavierm_dynamic_forms_angular from '@lourthuxavierm/dynamic-forms-angular';
+import * as _dynamic_form_engine_angular from '@dynamic-form-engine/angular';
 import * as i0 from '@angular/core';
 import { Signal, InjectionToken, Provider, EnvironmentProviders, OnDestroy } from '@angular/core';
-import { FormValues, FormStore, FormSchema, FormState, FormEvent, FormSubmitHandler, FormValidator, FormEventType } from '@lourthuxavierm/dynamic-forms-core';
+import { FormValues, FormStore, FormSchema, FormState, FormEvent, FormSubmitHandler, FormValidator, FormEventType } from '@dynamic-form-engine/core';
 import { Observable } from 'rxjs';
 import { ControlValueAccessor } from '@angular/forms';
 
@@ -64,7 +64,7 @@ declare const DYNAMIC_FORM: InjectionToken<DynamicFormFacade<FormValues>>;
 declare function provideDynamicForms(config?: DynamicFormsConfig): EnvironmentProviders;
 declare function provideDynamicForm<T extends FormValues>(options: DynamicFormOptions<T>): Provider[];
 declare function injectDynamicForm<T extends FormValues = FormValues>(): DynamicFormFacade<T>;
-declare function injectDynamicField<T = unknown>(path: string): _lourthuxavierm_dynamic_forms_angular.DynamicFieldSignals<T>;
+declare function injectDynamicField<T = unknown>(path: string): _dynamic_form_engine_angular.DynamicFieldSignals<T>;
 
 declare class DynamicFormsValueAccessor<T extends FormValues = FormValues> implements ControlValueAccessor, OnDestroy {
     readonly form: i0.InputSignal<DynamicFormFacade<T>>;

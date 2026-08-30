@@ -7,7 +7,7 @@ Status: Implemented and source-verified.
 Field names are dot paths such as `profile.email`; numeric array segments may use dots or brackets. `getByPath`, `setByPath`, and `deleteByPath` perform immutable path operations. `FormStore` deep-clones initial values and publishes frozen state containing values, errors, touched, dirty, validity, submitting, disabled, and loading.
 
 ```ts verify
-import { FormStore, type FormValidator } from '@lourthuxavierm/dynamic-forms-core';
+import { FormStore, type FormValidator } from '@dynamic-form-engine/core';
 type Values = Record<string, unknown> & { profile: { email: string } };
 const store = new FormStore<Values>({ profile: { email: '' } });
 const unsubscribe = store.subscribeToField('profile.email', () => undefined);

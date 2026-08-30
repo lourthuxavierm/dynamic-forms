@@ -1,4 +1,4 @@
-import type { FieldSchema, FieldType, FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/core';
 
 export type FieldLocation = { field: FieldSchema; parentPath: string; index: number };
 export const structural = (field: FieldSchema) => field.type === 'object' || field.type === 'array';

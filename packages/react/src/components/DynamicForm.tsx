@@ -1,5 +1,5 @@
 import { type FormEvent, type ReactNode } from 'react';
-import type { FieldSchema, FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldSchema, FormSchema } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
 import { useFieldArray } from '../hooks/useFieldArray';
 import { DynamicField } from './DynamicField';

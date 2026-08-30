@@ -1,5 +1,5 @@
 {
-    "name":  "@lourthuxavierm/dynamic-forms-core",
+    "name":  "@dynamic-form-engine/core",
     "version":  "0.1.0",
     "description":  "Framework-independent dynamic forms core",
     "license":  "MIT",

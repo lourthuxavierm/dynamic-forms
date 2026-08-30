@@ -22,7 +22,7 @@ and Angular HTML renderers are planned.
 ## Schema example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const textSchema: FormSchema = {
   id: 'text-controls',

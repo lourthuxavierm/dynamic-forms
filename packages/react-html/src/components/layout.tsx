@@ -1,6 +1,6 @@
 import { Children, useState, useSyncExternalStore, type CSSProperties, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
-import type { FieldSchema, FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { useFormContext } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldSchema, FormSchema } from '@dynamic-form-engine/core';
+import { useFormContext } from '@dynamic-form-engine/react';
 
 export type HtmlLayoutType = 'section' | 'fieldset' | 'grid' | 'stack' | 'inline' | 'card' | 'accordion' | 'tabs' | 'actions' | 'summary' | (string & {});
 

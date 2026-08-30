@@ -1,6 +1,6 @@
-# @lourthuxavierm/dynamic-forms-react
+# @dynamic-form-engine/react
 
-React bindings for `@lourthuxavierm/dynamic-forms-core`. React and React DOM 18 or 19 are peer dependencies.
+React bindings for `@dynamic-form-engine/core`. React and React DOM 18 or 19 are peer dependencies.
 
 ## Core API
 
@@ -14,7 +14,7 @@ React bindings for `@lourthuxavierm/dynamic-forms-core`. React and React DOM 18 
 ## Typed provider and nested paths
 
 ```tsx
-import { FormProvider, useForm, useWatch } from '@lourthuxavierm/dynamic-forms-react';
+import { FormProvider, useForm, useWatch } from '@dynamic-form-engine/react';
 
 type Profile = { name: string; address: { city: string } };
 
@@ -31,8 +31,8 @@ function ProfileForm() {
 ## Custom controls
 
 ```tsx
-import { FieldRegistry } from '@lourthuxavierm/dynamic-forms-core';
-import { registerReactField, type FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+import { FieldRegistry } from '@dynamic-form-engine/core';
+import { registerReactField, type FieldComponentProps } from '@dynamic-form-engine/react';
 
 function TextControl({ name, value, setValue, error, disabled }: FieldComponentProps<string>) {
   return <><input name={name} value={value ?? ''} disabled={disabled}

@@ -30,7 +30,7 @@ The React HTML leaf-control counts total 42.
 | --- | --- |
 | React HTML | 42 stable leaf controls documented by these group pages |
 | Angular HTML | [Experimental 15-type baseline](../integrations/angular-html/controls.md) |
-| `@lourthuxavierm/dynamic-forms-html` | Compatibility forwarding surface for React HTML |
+| `@dynamic-form-engine/html` | Compatibility forwarding surface for React HTML |
 | Standalone Native HTML/DOM | Planned; no renderer exists |
 
 Core accepts custom field strings, so Core schema validity is not proof of

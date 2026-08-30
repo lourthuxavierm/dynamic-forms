@@ -6,8 +6,8 @@
 
 ## Context
 
-`@lourthuxavierm/dynamic-forms-core` exposes framework-neutral `FormValidator` and
-`Validator` functions. The existing `@lourthuxavierm/dynamic-forms-zod` package exports only
+`@dynamic-form-engine/core` exposes framework-neutral `FormValidator` and
+`Validator` functions. The existing `@dynamic-form-engine/zod` package exports only
 `ZOD_ADAPTER = true`; it is not a usable adapter.
 
 Zod schemas may validate asynchronously and may transform input into a different

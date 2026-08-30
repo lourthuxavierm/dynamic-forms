@@ -33,9 +33,9 @@ pnpm build
 Use the package-level scripts while iterating:
 
 ```sh
-pnpm --filter @lourthuxavierm/dynamic-forms-core test
-pnpm --filter @lourthuxavierm/dynamic-forms-react test
-pnpm --filter @lourthuxavierm/dynamic-forms-react-html test
+pnpm --filter @dynamic-form-engine/core test
+pnpm --filter @dynamic-form-engine/react test
+pnpm --filter @dynamic-form-engine/react-html test
 pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground dev
 ```
 

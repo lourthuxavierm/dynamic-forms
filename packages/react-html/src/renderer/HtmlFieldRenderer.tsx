@@ -1,6 +1,6 @@
 import { memo, Suspense, type ErrorInfo, type ReactNode } from 'react';
-import type { FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { DynamicField } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldSchema } from '@dynamic-form-engine/core';
+import { DynamicField } from '@dynamic-form-engine/react';
 import { HtmlFieldErrorBoundary } from '../components/HtmlFieldErrorBoundary';
 import { HtmlStructuralField, type HtmlArrayItemsRenderer } from '../components/structural';
 import type { HtmlFieldRegistry } from '../registry';

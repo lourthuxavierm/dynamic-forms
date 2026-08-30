@@ -3,7 +3,7 @@
 - Status: Implemented
 - Owner: React HTML and design-system maintainers
 - Last verified: 2026-08-27
-- Applies to: `@lourthuxavierm/dynamic-forms-react-html/styles.css`
+- Applies to: `@dynamic-form-engine/react-html/styles.css`
 
 The renderer remains semantic without CSS. Import the optional stylesheet for
 the default layer, or pass `unstyled` for a form-level opt-out. `colorScheme`

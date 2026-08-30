@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent, type ClipboardEvent, type KeyboardEvent } from 'react';
-import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldComponentProps } from '@dynamic-form-engine/react';
 import { HtmlFieldShell } from './HtmlFieldShell';
 import { formatCurrency, formatPercentage, normalizeNumericValue, parseLocaleNumber } from './numericFormat';
 

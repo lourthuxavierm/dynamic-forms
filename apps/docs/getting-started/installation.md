@@ -16,10 +16,10 @@ The repository is version 0.1.0. If these packages are not published to your reg
 ## Install the runtime
 
 ```sh
-pnpm add @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom
+pnpm add @dynamic-form-engine/core @dynamic-form-engine/react @dynamic-form-engine/react-html react react-dom
 ```
 
-The React HTML renderer has no third-party component-library peer dependency. Import `@lourthuxavierm/dynamic-forms-react-html/styles.css` if you want the optional default styles.
+The React HTML renderer has no third-party component-library peer dependency. Import `@dynamic-form-engine/react-html/styles.css` if you want the optional default styles.
 
 ## Verify the install
 

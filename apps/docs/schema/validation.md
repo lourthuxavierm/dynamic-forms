@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
+- Applies to: `@dynamic-form-engine/core` 0.1.0
 
 Schema validation and value validation are separate operations.
 
@@ -12,7 +12,7 @@ Schema validation and value validation are separate operations.
 Use `validateSchema` before accepting generated, stored, or remote definitions:
 
 ```ts verify
-import { validateSchema, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { validateSchema, type FormSchema } from '@dynamic-form-engine/core';
 
 const schema: FormSchema = {
   id: 'quantity',

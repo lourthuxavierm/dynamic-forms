@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
+- Applies to: `@dynamic-form-engine/core` 0.1.0
 
 Dependencies declare that one field reacts when one or more value paths change.
 They are distinct from visibility conditions.
@@ -11,7 +11,7 @@ They are distinct from visibility conditions.
 ## Example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const locationSchema: FormSchema = {
   id: 'location',

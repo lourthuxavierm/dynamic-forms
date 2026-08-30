@@ -17,8 +17,8 @@ assert.deepEqual(compatibilityExports, canonicalExports, 'Public export subpaths
 const runtimeSubpaths = compatibilityExports.filter((subpath) => subpath !== './styles.css');
 for (const subpath of runtimeSubpaths) {
   const suffix = subpath === '.' ? '' : subpath.slice(1);
-  const compatibilitySpecifier = `@lourthuxavierm/dynamic-forms-html${suffix}`;
-  const canonicalSpecifier = `@lourthuxavierm/dynamic-forms-react-html${suffix}`;
+  const compatibilitySpecifier = `@dynamic-form-engine/html${suffix}`;
+  const canonicalSpecifier = `@dynamic-form-engine/react-html${suffix}`;
 
   const compatibilityEsm = await import(compatibilitySpecifier);
   const canonicalEsm = await import(canonicalSpecifier);
@@ -43,6 +43,6 @@ for (const [subpath, target] of Object.entries(compatibilityManifest.exports)) {
 }
 
 const stylesheet = readFileSync(resolve(packageRoot, 'styles.css'), 'utf8').trim();
-assert.equal(stylesheet, "@import '@lourthuxavierm/dynamic-forms-react-html/styles.css';");
+assert.equal(stylesheet, "@import '@dynamic-form-engine/react-html/styles.css';");
 
 console.log(`Compatibility verified: ${runtimeSubpaths.length} runtime entries in ESM and CommonJS, plus stylesheet.`);

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { FormEventListener, FormEventType } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormEventListener, FormEventType } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
 
 /** Subscribe to a Core form event; cleanup is handled with the component lifecycle. */

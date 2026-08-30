@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import type { FormState, FormValues } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormState, FormValues } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
 
 export function useFormState<TSelected = FormState>(selector: (state: FormState) => TSelected = (state) => state as TSelected): TSelected {

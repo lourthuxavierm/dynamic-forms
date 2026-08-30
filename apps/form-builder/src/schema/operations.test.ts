@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 import { allPaths, duplicateField, findField, insertField, moveField, moveToParent, normalizeType, removeField, uniqueName, updateField } from './operations';
 const schema: FormSchema = { id: 'test', fields: [{ name: 'name', type: 'text' }, { name: 'group', type: 'object', fields: [{ name: 'email', type: 'email' }] }] };
 describe('schema operations', () => {

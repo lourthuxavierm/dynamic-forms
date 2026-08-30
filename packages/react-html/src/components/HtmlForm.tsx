@@ -1,6 +1,6 @@
 import { useMemo, type FormEvent, type ReactNode } from 'react';
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormErrorSummary, useFormContext } from '@lourthuxavierm/dynamic-forms-react';
+import type { FormSchema } from '@dynamic-form-engine/core';
+import { FormErrorSummary, useFormContext } from '@dynamic-form-engine/react';
 import { createDefaultHtmlRegistry, type HtmlFieldRegistryOverrides } from '../registry';
 import { HtmlFieldRenderer } from '../renderer';
 import { renderHtmlLayout } from '../renderer/HtmlLayoutRenderer';

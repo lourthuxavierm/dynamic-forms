@@ -53,19 +53,19 @@ importers:
       '@angular/platform-browser':
         specifier: 22.1.3
         version: 22.1.3(@angular/common@22.1.3(@angular/core@22.1.3(@angular/compiler@22.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.3(@angular/compiler@22.1.3)(rxjs@7.8.2))
-      '@lourthuxavierm/dynamic-forms-angular':
+      '@dynamic-form-engine/angular':
         specifier: workspace:*
         version: link:../../packages/angular
-      '@lourthuxavierm/dynamic-forms-angular-html':
+      '@dynamic-form-engine/angular-html':
         specifier: workspace:*
         version: link:../../packages/angular-html
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@dynamic-forms/examples':
         specifier: workspace:*
         version: link:../../packages/examples
-      '@lourthuxavierm/dynamic-forms-zod':
+      '@dynamic-form-engine/zod':
         specifier: workspace:*
         version: link:../../packages/zod
       rxjs:
@@ -98,13 +98,13 @@ importers:
 
   apps/form-builder:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@lourthuxavierm/dynamic-forms-react':
+      '@dynamic-form-engine/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@lourthuxavierm/dynamic-forms-react-html':
+      '@dynamic-form-engine/react-html':
         specifier: workspace:*
         version: link:../../packages/react-html
       react:
@@ -126,19 +126,19 @@ importers:
 
   apps/react-html-playground:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@dynamic-forms/examples':
         specifier: workspace:*
         version: link:../../packages/examples
-      '@lourthuxavierm/dynamic-forms-react':
+      '@dynamic-form-engine/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@lourthuxavierm/dynamic-forms-react-html':
+      '@dynamic-form-engine/react-html':
         specifier: workspace:*
         version: link:../../packages/react-html
-      '@lourthuxavierm/dynamic-forms-zod':
+      '@dynamic-form-engine/zod':
         specifier: workspace:*
         version: link:../../packages/zod
       react:
@@ -163,7 +163,7 @@ importers:
 
   packages/angular:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
       tslib:
@@ -197,7 +197,7 @@ importers:
 
   packages/angular-html:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-angular':
+      '@dynamic-form-engine/angular':
         specifier: workspace:*
         version: link:../angular
       tslib:
@@ -219,7 +219,7 @@ importers:
       '@angular/forms':
         specifier: 22.1.3
         version: 22.1.3(@angular/common@22.1.3(@angular/core@22.1.3(@angular/compiler@22.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.3(@angular/compiler@22.1.3)(rxjs@7.8.2))(@angular/platform-browser@22.1.3(@angular/common@22.1.3(@angular/core@22.1.3(@angular/compiler@22.1.3)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.3(@angular/compiler@22.1.3)(rxjs@7.8.2)))(rxjs@7.8.2)
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
       happy-dom:
@@ -236,28 +236,28 @@ importers:
 
   packages/devtools:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
-      '@lourthuxavierm/dynamic-forms-react':
+      '@dynamic-form-engine/react':
         specifier: workspace:*
         version: link:../react
 
   packages/examples:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
 
   packages/html:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
-      '@lourthuxavierm/dynamic-forms-react':
+      '@dynamic-form-engine/react':
         specifier: workspace:*
         version: link:../react
-      '@lourthuxavierm/dynamic-forms-react-html':
+      '@dynamic-form-engine/react-html':
         specifier: workspace:*
         version: link:../react-html
       react:
@@ -269,13 +269,13 @@ importers:
 
   packages/json-schema:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
 
   packages/react:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
       react:
@@ -304,10 +304,10 @@ importers:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.2.8(react@19.2.8)
     devDependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
-      '@lourthuxavierm/dynamic-forms-react':
+      '@dynamic-form-engine/react':
         specifier: workspace:*
         version: link:../react
       '@types/react':
@@ -325,7 +325,7 @@ importers:
 
   packages/rhf:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
       react:
@@ -337,7 +337,7 @@ importers:
 
   packages/zod:
     dependencies:
-      '@lourthuxavierm/dynamic-forms-core':
+      '@dynamic-form-engine/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:

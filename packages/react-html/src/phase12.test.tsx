@@ -1,8 +1,8 @@
 /** @vitest-environment happy-dom */
 import axe from 'axe-core';
 import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
-import { FormStore, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
+import { FormStore, type FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider } from '@dynamic-form-engine/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { HtmlForm, type HtmlLayoutNode } from './index';
 

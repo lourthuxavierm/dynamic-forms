@@ -10,12 +10,12 @@
 
 | Goal | Packages | Status |
 | --- | --- | --- |
-| Use schemas and runtime without UI | `@lourthuxavierm/dynamic-forms-core` | Implemented |
-| Build a custom React renderer | Core and `@lourthuxavierm/dynamic-forms-react` | Documented |
-| Render complete browser-native controls through React | Core, React, and `@lourthuxavierm/dynamic-forms-react-html` | Documented and recommended |
-| Build a custom Angular renderer | Core and `@lourthuxavierm/dynamic-forms-angular` | Experimental |
-| Evaluate browser-native controls through Angular | Core, Angular, and `@lourthuxavierm/dynamic-forms-angular-html` | Experimental 15-type baseline |
-| Keep an existing `@lourthuxavierm/dynamic-forms-html` import | `@lourthuxavierm/dynamic-forms-html` | Compatibility-only |
+| Use schemas and runtime without UI | `@dynamic-form-engine/core` | Implemented |
+| Build a custom React renderer | Core and `@dynamic-form-engine/react` | Documented |
+| Render complete browser-native controls through React | Core, React, and `@dynamic-form-engine/react-html` | Documented and recommended |
+| Build a custom Angular renderer | Core and `@dynamic-form-engine/angular` | Experimental |
+| Evaluate browser-native controls through Angular | Core, Angular, and `@dynamic-form-engine/angular-html` | Experimental 15-type baseline |
+| Keep an existing `@dynamic-form-engine/html` import | `@dynamic-form-engine/html` | Compatibility-only |
 | Render directly to the DOM without a framework | No package | Planned |
 
 ## Recommendation

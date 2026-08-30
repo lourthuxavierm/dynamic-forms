@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
-import type { FieldSchema, FormSchema, FormValues } from '@lourthuxavierm/dynamic-forms-core';
-import type { DynamicFormFacade } from '@lourthuxavierm/dynamic-forms-angular';
+import type { FieldSchema, FormSchema, FormValues } from '@dynamic-form-engine/core';
+import type { DynamicFormFacade } from '@dynamic-form-engine/angular';
 
 @Component({
   selector: 'df-html-field',

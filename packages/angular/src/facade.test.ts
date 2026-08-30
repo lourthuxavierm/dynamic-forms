@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { FormErrors, FormSchema, FormValidator } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormErrors, FormSchema, FormValidator } from '@dynamic-form-engine/core';
 import { createDynamicForm } from './facade';
 
 const schema: FormSchema = {

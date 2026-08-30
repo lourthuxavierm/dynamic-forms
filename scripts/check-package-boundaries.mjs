@@ -4,24 +4,24 @@ import process from 'node:process';
 
 const root = process.cwd();
 const policies = {
-  core: { name: '@lourthuxavierm/dynamic-forms-core', dependencies: [], imports: [] },
-  react: { name: '@lourthuxavierm/dynamic-forms-react', dependencies: ['@lourthuxavierm/dynamic-forms-core'] },
+  core: { name: '@dynamic-form-engine/core', dependencies: [], imports: [] },
+  react: { name: '@dynamic-form-engine/react', dependencies: ['@dynamic-form-engine/core'] },
   html: {
-    name: '@lourthuxavierm/dynamic-forms-html',
-    dependencies: ['@lourthuxavierm/dynamic-forms-core', '@lourthuxavierm/dynamic-forms-react', '@lourthuxavierm/dynamic-forms-react-html'],
-    imports: ['@lourthuxavierm/dynamic-forms-react-html'],
+    name: '@dynamic-form-engine/html',
+    dependencies: ['@dynamic-form-engine/core', '@dynamic-form-engine/react', '@dynamic-form-engine/react-html'],
+    imports: ['@dynamic-form-engine/react-html'],
   },
   'react-html': {
-    name: '@lourthuxavierm/dynamic-forms-react-html',
-    dependencies: ['@lourthuxavierm/dynamic-forms-core', '@lourthuxavierm/dynamic-forms-react'],
+    name: '@dynamic-form-engine/react-html',
+    dependencies: ['@dynamic-form-engine/core', '@dynamic-form-engine/react'],
   },
   examples: {
     name: '@dynamic-forms/examples',
-    dependencies: ['@lourthuxavierm/dynamic-forms-core'],
+    dependencies: ['@dynamic-form-engine/core'],
   },
   zod: {
-    name: '@lourthuxavierm/dynamic-forms-zod',
-    dependencies: ['@lourthuxavierm/dynamic-forms-core'],
+    name: '@dynamic-form-engine/zod',
+    dependencies: ['@dynamic-form-engine/core'],
   },
 };
 const extensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx']);
@@ -45,7 +45,7 @@ async function collect(directory) {
   return files;
 }
 const packageName = (specifier) => specifier.split('/').slice(0, 2).join('/');
-const legacyHtmlPackage = '@lourthuxavierm/dynamic-forms-html';
+const legacyHtmlPackage = '@dynamic-form-engine/html';
 
 for (const [directory, policy] of Object.entries(policies)) {
   const packageDirectory = path.join(root, 'packages', directory);
@@ -77,12 +77,12 @@ for (const scope of ['packages', 'apps']) {
     if (manifestSource !== undefined) {
       const manifest = JSON.parse(manifestSource);
       const dependencies = { ...manifest.dependencies, ...manifest.peerDependencies, ...manifest.optionalDependencies, ...manifest.devDependencies };
-      if (legacyHtmlPackage in dependencies) errors.push(`${path.relative(root, manifestPath)}: new consumers must use @lourthuxavierm/dynamic-forms-react-html instead of ${legacyHtmlPackage}`);
+      if (legacyHtmlPackage in dependencies) errors.push(`${path.relative(root, manifestPath)}: new consumers must use @dynamic-form-engine/react-html instead of ${legacyHtmlPackage}`);
     }
     for (const file of await collect(path.join(workspaceDirectory, 'src'))) {
       const fileSource = await readFile(file, 'utf8');
       for (const match of fileSource.matchAll(importPattern)) {
-        if (packageName(match[1]) === legacyHtmlPackage) errors.push(`${path.relative(root, file)}: new consumers must import @lourthuxavierm/dynamic-forms-react-html instead of ${match[1]}`);
+        if (packageName(match[1]) === legacyHtmlPackage) errors.push(`${path.relative(root, file)}: new consumers must import @dynamic-form-engine/react-html instead of ${match[1]}`);
       }
     }
   }

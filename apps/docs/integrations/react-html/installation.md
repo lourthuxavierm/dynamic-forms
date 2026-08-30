@@ -6,10 +6,10 @@
 - Applies to: React 18 or 19
 
 ```sh
-pnpm add @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom
+pnpm add @dynamic-form-engine/core @dynamic-form-engine/react @dynamic-form-engine/react-html react react-dom
 ```
 
-Import `@lourthuxavierm/dynamic-forms-react-html/styles.css` once when using the default style
+Import `@dynamic-form-engine/react-html/styles.css` once when using the default style
 layer. Wrap `HtmlForm` in `FormProvider`; the provider owns runtime lifecycle
 and the HTML form owns browser-control rendering and its `onSubmit(values)`
 callback.

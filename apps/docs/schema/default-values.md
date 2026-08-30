@@ -12,8 +12,8 @@ the integration or application.
 ## Recommended initialization
 
 ```tsx verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
+import type { FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider } from '@dynamic-form-engine/react';
 
 const schema: FormSchema = {
   id: 'defaults',

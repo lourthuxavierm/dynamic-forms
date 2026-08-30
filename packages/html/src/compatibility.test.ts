@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import * as canonical from '@lourthuxavierm/dynamic-forms-react-html';
-import * as canonicalBaseline from '@lourthuxavierm/dynamic-forms-react-html/controls/baseline';
-import * as canonicalComposites from '@lourthuxavierm/dynamic-forms-react-html/controls/composites';
-import * as canonicalCore from '@lourthuxavierm/dynamic-forms-react-html/core';
-import * as canonicalMedia from '@lourthuxavierm/dynamic-forms-react-html/controls/media';
-import * as canonicalSpecialized from '@lourthuxavierm/dynamic-forms-react-html/controls/specialized';
-import * as canonicalTemporal from '@lourthuxavierm/dynamic-forms-react-html/controls/temporal';
-import * as canonicalText from '@lourthuxavierm/dynamic-forms-react-html/controls/text';
+import * as canonical from '@dynamic-form-engine/react-html';
+import * as canonicalBaseline from '@dynamic-form-engine/react-html/controls/baseline';
+import * as canonicalComposites from '@dynamic-form-engine/react-html/controls/composites';
+import * as canonicalCore from '@dynamic-form-engine/react-html/core';
+import * as canonicalMedia from '@dynamic-form-engine/react-html/controls/media';
+import * as canonicalSpecialized from '@dynamic-form-engine/react-html/controls/specialized';
+import * as canonicalTemporal from '@dynamic-form-engine/react-html/controls/temporal';
+import * as canonicalText from '@dynamic-form-engine/react-html/controls/text';
 import * as compatibility from './index';
 import * as compatibilityBaseline from './entries/baseline';
 import * as compatibilityComposites from './entries/composites';
@@ -27,7 +27,7 @@ const forwardedEntries = [
   [compatibilityMedia, canonicalMedia],
 ] as const;
 
-describe('@lourthuxavierm/dynamic-forms-html compatibility package', () => {
+describe('@dynamic-form-engine/html compatibility package', () => {
   it('forwards every runtime entry without wrapping exports', () => {
     for (const [legacyEntry, canonicalEntry] of forwardedEntries) {
       expect(Object.keys(legacyEntry).sort()).toEqual(Object.keys(canonicalEntry).sort());

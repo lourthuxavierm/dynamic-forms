@@ -9,18 +9,18 @@ const angular = json('packages/angular/package.json');
 const html = json('packages/angular-html/package.json');
 const playground = json('apps/angular-html-playground/package.json');
 
-if (angular.name !== '@lourthuxavierm/dynamic-forms-angular' || html.name !== '@lourthuxavierm/dynamic-forms-angular-html') failures.push('Angular package names mismatch');
-if (angular.dependencies?.['@lourthuxavierm/dynamic-forms-core'] !== 'workspace:*') failures.push('Angular adapter must depend on Core');
-if (html.dependencies?.['@lourthuxavierm/dynamic-forms-angular'] !== 'workspace:*') failures.push('Angular HTML must depend on Angular adapter');
-if (angular.dependencies?.['@lourthuxavierm/dynamic-forms-angular-html']) failures.push('headless Angular must not depend on Angular HTML');
+if (angular.name !== '@dynamic-form-engine/angular' || html.name !== '@dynamic-form-engine/angular-html') failures.push('Angular package names mismatch');
+if (angular.dependencies?.['@dynamic-form-engine/core'] !== 'workspace:*') failures.push('Angular adapter must depend on Core');
+if (html.dependencies?.['@dynamic-form-engine/angular'] !== 'workspace:*') failures.push('Angular HTML must depend on Angular adapter');
+if (angular.dependencies?.['@dynamic-form-engine/angular-html']) failures.push('headless Angular must not depend on Angular HTML');
 if (!angular.peerDependencies?.['@angular/core']?.startsWith('^22.') || !html.peerDependencies?.['@angular/core']?.startsWith('^22.')) failures.push('Angular 22 peer policy missing');
-if (playground.dependencies?.['@lourthuxavierm/dynamic-forms-angular-html'] !== 'workspace:*') failures.push('playground workspace dependency missing');
+if (playground.dependencies?.['@dynamic-form-engine/angular-html'] !== 'workspace:*') failures.push('playground workspace dependency missing');
 
 for (const artifact of [
-  'packages/angular/dist/fesm2022/lourthuxavierm-dynamic-forms-angular.mjs',
-  'packages/angular/dist/types/lourthuxavierm-dynamic-forms-angular.d.ts',
-  'packages/angular-html/dist/fesm2022/lourthuxavierm-dynamic-forms-angular-html.mjs',
-  'packages/angular-html/dist/types/lourthuxavierm-dynamic-forms-angular-html.d.ts',
+  'packages/angular/dist/fesm2022/dynamic-form-engine-angular.mjs',
+  'packages/angular/dist/types/dynamic-form-engine-angular.d.ts',
+  'packages/angular-html/dist/fesm2022/dynamic-form-engine-angular-html.mjs',
+  'packages/angular-html/dist/types/dynamic-form-engine-angular-html.d.ts',
   'packages/angular-html/dist/styles.css',
 ]) if (!existsSync(resolve(root, artifact))) failures.push(`${artifact}: missing partial-Ivy artifact`);
 

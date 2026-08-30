@@ -1,4 +1,4 @@
-import { evaluateCondition, type FieldCondition, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { evaluateCondition, type FieldCondition, type FormSchema } from '@dynamic-form-engine/core';
 
 export const approvalCondition: FieldCondition = { and: [{ field: 'employmentType', operator: 'equals', value: 'employee' }, { or: [{ field: 'profile.region', operator: 'equals', value: 'EU' }, { field: 'team.0.certified', operator: 'equals', value: true }] }] };
 export const conditionalSchema: FormSchema = { id: 'business-rules', version: '1.0.0', fields: [

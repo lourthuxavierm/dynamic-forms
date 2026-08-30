@@ -27,8 +27,8 @@ hook options. It watches field dependencies, search, page, and page size;
 debounces search; refreshes enabled sources; and cancels on cleanup.
 
 ```tsx verify
-import { useDataSource } from '@lourthuxavierm/dynamic-forms-react';
-import type { FieldOption } from '@lourthuxavierm/dynamic-forms-core';
+import { useDataSource } from '@dynamic-form-engine/react';
+import type { FieldOption } from '@dynamic-form-engine/core';
 
 export function DepartmentStatus() {
   const source = useDataSource<FieldOption>('department', { debounceMs: 300 });

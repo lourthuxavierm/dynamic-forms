@@ -1,5 +1,5 @@
 import { type ComponentType, type ReactNode, useEffect, useRef } from 'react';
-import type { FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldSchema } from '@dynamic-form-engine/core';
 import { useField } from '../hooks/useField';
 import { useFieldState } from '../hooks/useFieldState';
 import { useFormContext } from '../context';

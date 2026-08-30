@@ -1,4 +1,4 @@
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export interface BasicFormValues extends Record<string, unknown> {
   fullName: string;

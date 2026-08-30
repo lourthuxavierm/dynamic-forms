@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataSourceManager, type DataSourceConfig, type DataSourceResult, type FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { DataSourceManager, type DataSourceConfig, type DataSourceResult, type FieldSchema } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
 import { useWatch } from './useWatch';
 

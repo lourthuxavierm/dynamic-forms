@@ -3,9 +3,9 @@
 - Status: Release-ready for the documented 0.1.x contract
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
-- Applies to: `@lourthuxavierm/dynamic-forms-zod` 0.1.0
+- Applies to: `@dynamic-form-engine/zod` 0.1.0
 
-`@lourthuxavierm/dynamic-forms-zod` provides Release-ready form-level and field-level
+`@dynamic-form-engine/zod` provides Release-ready form-level and field-level
 validation through `createZodFormValidator` and `createZodFieldValidator`.
 The complete dual-major matrix is not available yet.
 
@@ -28,7 +28,7 @@ the declaration files referenced by their package metadata.
 ```text
 Zod schema
     |
-@lourthuxavierm/dynamic-forms-zod
+@dynamic-form-engine/zod
     |
 Core FormValidator / Validator
     |
@@ -77,7 +77,7 @@ The executable Core examples are covered by adapter behavior tests.
 
 ## Phase 7 generated API reference
 
-The generated [`@lourthuxavierm/dynamic-forms-zod` API reference](/api/generated/zod) is built
+The generated [`@dynamic-form-engine/zod` API reference](/api/generated/zod) is built
 from the package entry point and checked for drift. It includes every public
 factory, mapping utility, option, and structural contract with source locations.
 The generated page is labeled Release-ready and remains coupled to drift checks;
@@ -159,7 +159,7 @@ formatter.
 `FormValidator<TValues>` contract:
 
 ```ts
-import { createZodFormValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { createZodFormValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 type Profile = { email: string };
@@ -183,7 +183,7 @@ submissions on the server.
 `Validator<TValue>` contract:
 
 ```ts
-import { createZodFieldValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { createZodFieldValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 const validateEmail = createZodFieldValidator(

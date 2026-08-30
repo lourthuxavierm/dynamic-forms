@@ -27,7 +27,7 @@ values at application boundaries unless that is the declared API contract.
 ## Schema example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 const options = [
   { label: 'Engineering', value: 'engineering' },

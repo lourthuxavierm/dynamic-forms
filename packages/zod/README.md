@@ -1,4 +1,4 @@
-# @lourthuxavierm/dynamic-forms-zod
+# @dynamic-form-engine/zod
 
 Zod validation adapter foundation for Dynamic Forms.
 
@@ -13,7 +13,7 @@ keep authoritative server validation in place.
 
 ## Architecture
 
-- Depends on `@lourthuxavierm/dynamic-forms-core`.
+- Depends on `@dynamic-form-engine/core`.
 - Keeps Zod out of Core and renderer packages.
 - Supports peer ranges `^3.25.5 || ^4.0.0` through a pinned four-cell CI matrix.
 - Uses a structural asynchronous schema contract in declarations.
@@ -35,7 +35,7 @@ as `contacts[0].email`. The default keeps the first message for each path;
 ## Form validation
 
 ```ts
-import { createZodFormValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { createZodFormValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 type Values = { email: string };
@@ -50,7 +50,7 @@ output is discarded; validation never mutates or replaces FormStore values.
 ## Field validation
 
 ```ts
-import { createZodFieldValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { createZodFieldValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 const validateEmail = createZodFieldValidator(

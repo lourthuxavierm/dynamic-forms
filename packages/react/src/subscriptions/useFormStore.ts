@@ -5,7 +5,7 @@ import {
 import type {
   FormStore,
   FormState
-} from "@lourthuxavierm/dynamic-forms-core";
+} from "@dynamic-form-engine/core";
 
 export function useFormStore(
   store: FormStore

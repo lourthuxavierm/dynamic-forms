@@ -20,9 +20,9 @@ schemas unless your application defines and validates that composition format.
 ## React HTML layout example
 
 ```tsx verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
-import { HtmlForm, type HtmlLayoutNode } from '@lourthuxavierm/dynamic-forms-react-html';
+import type { FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider } from '@dynamic-form-engine/react';
+import { HtmlForm, type HtmlLayoutNode } from '@dynamic-form-engine/react-html';
 
 const schema: FormSchema = {
   id: 'layout-example',

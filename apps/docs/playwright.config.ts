@@ -22,7 +22,7 @@ export default defineConfig({
       timeout: 120_000,
     },
     {
-      command: 'pnpm --filter @lourthuxavierm/dynamic-forms-angular build && pnpm --filter @lourthuxavierm/dynamic-forms-angular-html build && pnpm --filter @lourthuxavierm/dynamic-forms-angular-html-playground dev --host 127.0.0.1 --port 4176',
+      command: 'pnpm --filter @dynamic-form-engine/angular build && pnpm --filter @dynamic-form-engine/angular-html build && pnpm --filter @lourthuxavierm/dynamic-forms-angular-html-playground dev --host 127.0.0.1 --port 4176',
       url: 'http://127.0.0.1:4176',
       reuseExistingServer: !process.env.CI,
       timeout: 180_000,

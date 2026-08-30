@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { FieldRegistry, FormStore, type FormValues } from '@lourthuxavierm/dynamic-forms-core';
+import { FieldRegistry, FormStore, type FormValues } from '@dynamic-form-engine/core';
 
 export interface UseFormOptions<TValues extends FormValues = FormValues> {
   defaultValues?: TValues;

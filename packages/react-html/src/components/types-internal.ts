@@ -1,2 +1,2 @@
-export type { FieldOption, NumericFieldConfig, DateTimeFieldConfig } from '@lourthuxavierm/dynamic-forms-core';
-export type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+export type { FieldOption, NumericFieldConfig, DateTimeFieldConfig } from '@dynamic-form-engine/core';
+export type { FieldComponentProps } from '@dynamic-form-engine/react';

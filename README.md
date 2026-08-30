@@ -1,26 +1,26 @@
 # Dynamic Forms
 
-[![npm version](https://img.shields.io/npm/v/@lourthuxavierm/dynamic-forms-core.svg)](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-core)
+[![npm version](https://img.shields.io/npm/v/@dynamic-form-engine/core.svg)](https://www.npmjs.com/package/@dynamic-form-engine/core)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 A TypeScript-first dynamic forms platform with a framework-independent state engine, React and Angular integrations, accessible native HTML renderers, schema-driven validation, conditions, dependencies, and data sources.
 
-Version `0.1.0` is published on npm under the `@lourthuxavierm` scope. The project is pre-1.0, so public APIs may evolve between minor releases.
+Version `0.1.0` is prepared for publication under the `@dynamic-form-engine` npm organization. The project is pre-1.0, so public APIs may evolve between minor releases.
 
 ## Packages
 
 | Package | Purpose | Maturity |
 | --- | --- | --- |
-| [`@lourthuxavierm/dynamic-forms-core`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-core) | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
-| [`@lourthuxavierm/dynamic-forms-react`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-react) | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
-| [`@lourthuxavierm/dynamic-forms-react-html`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-react-html) | Accessible native HTML renderer for React | Implemented |
-| [`@lourthuxavierm/dynamic-forms-angular`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-angular) | Angular signals, forms, dependency injection, and lifecycle adapter | Implemented |
-| [`@lourthuxavierm/dynamic-forms-angular-html`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-angular-html) | Accessible native HTML renderer for Angular | Implemented |
-| [`@lourthuxavierm/dynamic-forms-html`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-html) | Compatibility forwarding package for existing HTML consumers | Compatibility |
-| [`@lourthuxavierm/dynamic-forms-zod`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-zod) | Zod field and form validation adapter | Implemented |
-| [`@lourthuxavierm/dynamic-forms-rhf`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-rhf) | React Hook Form adapter | Placeholder |
-| [`@lourthuxavierm/dynamic-forms-json-schema`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-json-schema) | JSON Schema adapter | Placeholder |
-| [`@lourthuxavierm/dynamic-forms-devtools`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-devtools) | Developer tooling | Placeholder |
+| [`@dynamic-form-engine/core`](https://www.npmjs.com/package/@dynamic-form-engine/core) | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
+| [`@dynamic-form-engine/react`](https://www.npmjs.com/package/@dynamic-form-engine/react) | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
+| [`@dynamic-form-engine/react-html`](https://www.npmjs.com/package/@dynamic-form-engine/react-html) | Accessible native HTML renderer for React | Implemented |
+| [`@dynamic-form-engine/angular`](https://www.npmjs.com/package/@dynamic-form-engine/angular) | Angular signals, forms, dependency injection, and lifecycle adapter | Implemented |
+| [`@dynamic-form-engine/angular-html`](https://www.npmjs.com/package/@dynamic-form-engine/angular-html) | Accessible native HTML renderer for Angular | Implemented |
+| [`@dynamic-form-engine/html`](https://www.npmjs.com/package/@dynamic-form-engine/html) | Compatibility forwarding package for existing HTML consumers | Compatibility |
+| [`@dynamic-form-engine/zod`](https://www.npmjs.com/package/@dynamic-form-engine/zod) | Zod field and form validation adapter | Implemented |
+| [`@dynamic-form-engine/rhf`](https://www.npmjs.com/package/@dynamic-form-engine/rhf) | React Hook Form adapter | Placeholder |
+| [`@dynamic-form-engine/json-schema`](https://www.npmjs.com/package/@dynamic-form-engine/json-schema) | JSON Schema adapter | Placeholder |
+| [`@dynamic-form-engine/devtools`](https://www.npmjs.com/package/@dynamic-form-engine/devtools) | Developer tooling | Placeholder |
 
 The example schemas, documentation site, playgrounds, and visual form builder are private workspace applications and are not published as npm packages.
 
@@ -30,15 +30,15 @@ The example schemas, documentation site, playgrounds, and visual form builder ar
 FormSchema
     |
     v
-@lourthuxavierm/dynamic-forms-core
+@dynamic-form-engine/core
   FormStore, validation, conditions, dependencies, data sources, events
     |
     v
-@lourthuxavierm/dynamic-forms-react
+@dynamic-form-engine/react
   FormProvider, hooks, subscriptions
     |
     v
-@lourthuxavierm/dynamic-forms-react-html
+@dynamic-form-engine/react-html
   HtmlForm, native controls, layouts, registry, optional static CSS
 ```
 
@@ -49,33 +49,33 @@ Core contains no framework or renderer logic. React owns lifecycle and subscript
 Install the React runtime and renderer:
 
 ```bash
-npm install @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom
+npm install @dynamic-form-engine/core @dynamic-form-engine/react @dynamic-form-engine/react-html react react-dom
 ```
 
 For Angular, install the headless adapter and native HTML renderer:
 
 ```bash
-npm install @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-angular @lourthuxavierm/dynamic-forms-angular-html
+npm install @dynamic-form-engine/core @dynamic-form-engine/angular @dynamic-form-engine/angular-html
 ```
 
 Zod validation is available separately:
 
 ```bash
-npm install @lourthuxavierm/dynamic-forms-zod zod
+npm install @dynamic-form-engine/zod zod
 ```
 
 Import the optional default stylesheet once:
 
 ```ts
-import '@lourthuxavierm/dynamic-forms-react-html/styles.css';
+import '@dynamic-form-engine/react-html/styles.css';
 ```
 
 Create a schema and render it with `FormProvider` and `HtmlForm`:
 
 ```tsx
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
-import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
+import type { FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider } from '@dynamic-form-engine/react';
+import { HtmlForm } from '@dynamic-form-engine/react-html';
 
 const schema: FormSchema = {
   id: 'customer',
@@ -117,7 +117,7 @@ export function CustomerForm() {
 }
 ```
 
-See the [React HTML package README](./packages/react-html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls. Existing `@lourthuxavierm/dynamic-forms-html` imports remain available through the [compatibility package](./packages/html/README.md).
+See the [React HTML package README](./packages/react-html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls. Existing `@dynamic-form-engine/html` imports remain available through the [compatibility package](./packages/html/README.md).
 
 ## Workspace development
 

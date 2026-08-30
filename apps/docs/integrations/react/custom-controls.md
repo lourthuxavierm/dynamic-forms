@@ -3,7 +3,7 @@
 - Status: Implemented
 - Owner: React maintainers
 - Last verified: 2026-08-27
-- Applies to: `@lourthuxavierm/dynamic-forms-react` 0.1.0
+- Applies to: `@dynamic-form-engine/react` 0.1.0
 
 Register a React component with `registerReactField` and a Core
 `FieldRegistry`, or pass an explicit render callback to `DynamicField`.

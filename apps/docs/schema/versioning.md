@@ -14,7 +14,7 @@ Choose one documented convention, such as semantic versions or immutable
 revision identifiers, and keep it independent from package versions.
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const loanApplicationV2: FormSchema = {
   id: 'loan-application',

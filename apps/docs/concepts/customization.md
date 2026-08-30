@@ -5,8 +5,8 @@
 The HTML adapter exposes registry factories and component contracts for additive controls or intentional overrides. Keep portable behavior in Core and browser rendering in the HTML package.
 
 ```tsx
-import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
-import { createHtmlRegistry, HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
+import type { FieldComponentProps } from '@dynamic-form-engine/react';
+import { createHtmlRegistry, HtmlForm } from '@dynamic-form-engine/react-html';
 
 function UppercaseField(props: FieldComponentProps<string>) {
   return (

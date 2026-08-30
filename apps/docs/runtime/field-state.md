@@ -19,7 +19,7 @@
 - `readOnly`
 
 ```tsx verify
-import { useFieldState } from '@lourthuxavierm/dynamic-forms-react';
+import { useFieldState } from '@dynamic-form-engine/react';
 
 export function EmailState() {
   const state = useFieldState('email');

@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: React and React HTML maintainers
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-react` and `@lourthuxavierm/dynamic-forms-react-html` 0.1.0
+- Applies to: `@dynamic-form-engine/react` and `@dynamic-form-engine/react-html` 0.1.0
 - Prerequisites: A validated React HTML form
 
 ## Outcome
@@ -15,9 +15,9 @@ client validation as server authorization.
 
 ```tsx verify
 import { useState } from 'react';
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
-import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
+import type { FormSchema } from '@dynamic-form-engine/core';
+import { FormProvider } from '@dynamic-form-engine/react';
+import { HtmlForm } from '@dynamic-form-engine/react-html';
 
 const schema: FormSchema = {
   id: 'submission-example',

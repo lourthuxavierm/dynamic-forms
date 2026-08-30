@@ -1,7 +1,7 @@
 {
   "generatedBy": "apps/docs/scripts/generate-api-reference.mjs",
   "packages": {
-    "@lourthuxavierm/dynamic-forms-core": {
+    "@dynamic-form-engine/core": {
       "maturity": "Implemented",
       "exports": [
         {
@@ -351,7 +351,7 @@
         }
       ]
     },
-    "@lourthuxavierm/dynamic-forms-react": {
+    "@dynamic-form-engine/react": {
       "maturity": "Documented",
       "exports": [
         {
@@ -551,7 +551,7 @@
         }
       ]
     },
-    "@lourthuxavierm/dynamic-forms-react-html": {
+    "@dynamic-form-engine/react-html": {
       "maturity": "Documented",
       "exports": [
         {
@@ -1186,7 +1186,7 @@
         }
       ]
     },
-    "@lourthuxavierm/dynamic-forms-html": {
+    "@dynamic-form-engine/html": {
       "maturity": "Compatibility-only",
       "exports": [
         {
@@ -1821,7 +1821,7 @@
         }
       ]
     },
-    "@lourthuxavierm/dynamic-forms-zod": {
+    "@dynamic-form-engine/zod": {
       "maturity": "Release-ready",
       "exports": [
         {

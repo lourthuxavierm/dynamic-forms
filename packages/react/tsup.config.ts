@@ -11,6 +11,6 @@ export default defineConfig({
   external: [
     "react",
     "react-dom",
-    "@lourthuxavierm/dynamic-forms-core"
+    "@dynamic-form-engine/core"
   ]
 });

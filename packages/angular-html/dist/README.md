@@ -1,4 +1,4 @@
-# @lourthuxavierm/dynamic-forms-angular-html
+# @dynamic-form-engine/angular-html
 
 Experimental Angular 22 renderer for browser-native controls. The initial
 baseline covers 15 common text, numeric, selection, boolean, and temporal field

@@ -17,9 +17,9 @@ injection, signals, change detection, forms interoperability, and SSR.
 
 Use two package boundaries:
 
-- proposed `@lourthuxavierm/dynamic-forms-angular` for lifecycle, dependency injection,
+- proposed `@dynamic-form-engine/angular` for lifecycle, dependency injection,
   signals, renderer-neutral directives/components, and interoperability;
-- proposed `@lourthuxavierm/dynamic-forms-angular-html` for browser-native Angular controls,
+- proposed `@dynamic-form-engine/angular-html` for browser-native Angular controls,
   layouts, registry defaults, styling, and accessibility markup.
 
 Neither package name is installable or reserved until manifests and exports are
@@ -33,7 +33,7 @@ change-detection integration. It must not fork validation, conditions,
 dependencies, data-source, or event semantics.
 
 ```text
-FormSchema -> @lourthuxavierm/dynamic-forms-core -> proposed Angular adapter
+FormSchema -> @dynamic-form-engine/core -> proposed Angular adapter
                                       |       |
                                       |       `-> signals / optional streams
                                       `-> proposed Angular HTML renderer

@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes, ReactNode } from 'react';
-import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldComponentProps } from '@dynamic-form-engine/react';
 import { HtmlFieldShell } from './HtmlFieldShell';
 import { normalizeTemporalValue, type TemporalKind } from './temporalValues';
 

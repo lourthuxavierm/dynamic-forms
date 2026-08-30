@@ -3,5 +3,5 @@
   "dest": "dist",
   "lib": { "entryFile": "src/index.ts" },
   "assets": ["styles.css"],
-  "allowedNonPeerDependencies": ["@lourthuxavierm/dynamic-forms-angular"]
+  "allowedNonPeerDependencies": ["@dynamic-form-engine/angular"]
 }

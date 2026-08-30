@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
+- Applies to: `@dynamic-form-engine/core` 0.1.0
 
 The schema is the framework-independent contract describing fields, validation,
 conditional behavior, dependencies, data sources, nested values, and metadata.

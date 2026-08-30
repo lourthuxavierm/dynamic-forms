@@ -4,7 +4,7 @@ import {
   type FormEvent, type FormEventType, type FormSchema, type FormState,
   type FormSubmitHandler, type FormValues,
   type FormValidator,
-} from '@lourthuxavierm/dynamic-forms-core';
+} from '@dynamic-form-engine/core';
 import { Observable } from 'rxjs';
 
 export interface DynamicFormOptions<T extends FormValues = FormValues> {

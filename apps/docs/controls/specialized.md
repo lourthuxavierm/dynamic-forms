@@ -23,7 +23,7 @@ slider, range-slider, rating, phone, OTP, PIN, and mask.
 ## Schema example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const specializedSchema: FormSchema = {
   id: 'specialized-controls',

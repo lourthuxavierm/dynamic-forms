@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from 'react';
-import type { FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldSchema } from '@dynamic-form-engine/core';
 import type { HtmlLayoutNode, HtmlLayoutRegistry, HtmlTabsRenderer } from '../components/layout';
 import { HtmlTabs } from '../components/layout';
 

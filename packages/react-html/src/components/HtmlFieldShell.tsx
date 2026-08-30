@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
+import type { FieldComponentProps } from '@dynamic-form-engine/react';
 
 export interface HtmlFieldShellProps {
   props: FieldComponentProps;

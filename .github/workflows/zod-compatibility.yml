@@ -65,10 +65,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Select Zod ${{ matrix.zod }}
-        run: pnpm --filter @lourthuxavierm/dynamic-forms-zod add --save-dev --lockfile=false zod@${{ matrix.zod }}
-      - run: pnpm --filter @lourthuxavierm/dynamic-forms-zod typecheck
-      - run: pnpm --filter @lourthuxavierm/dynamic-forms-zod test
-      - run: pnpm --filter @lourthuxavierm/dynamic-forms-zod build
+        run: pnpm --filter @dynamic-form-engine/zod add --save-dev --lockfile=false zod@${{ matrix.zod }}
+      - run: pnpm --filter @dynamic-form-engine/zod typecheck
+      - run: pnpm --filter @dynamic-form-engine/zod test
+      - run: pnpm --filter @dynamic-form-engine/zod build
 
   playground-evidence:
     name: React and Angular playground evidence

@@ -2,7 +2,7 @@
 import { StrictMode, useEffect } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { FormStore, type FormErrors, type FormSchema, type FormValidator } from '@lourthuxavierm/dynamic-forms-core';
+import { FormStore, type FormErrors, type FormSchema, type FormValidator } from '@dynamic-form-engine/core';
 import { describe, expect, it, vi } from 'vitest';
 import { FormProvider, useField, useFieldState, useFormActions, useWatch, useDataSource } from './index';
 

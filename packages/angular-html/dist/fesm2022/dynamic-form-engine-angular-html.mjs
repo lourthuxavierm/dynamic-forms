@@ -148,4 +148,4 @@ const ANGULAR_HTML_ADAPTER_VERSION = '0.1.0';
  */
 
 export { ANGULAR_HTML_ADAPTER_VERSION, ANGULAR_HTML_BASELINE_FIELD_TYPES, DynamicHtmlFieldComponent, DynamicHtmlFormComponent, createAngularHtmlRegistry };
-//# sourceMappingURL=lourthuxavierm-dynamic-forms-angular-html.mjs.map
+//# sourceMappingURL=dynamic-form-engine-angular-html.mjs.map

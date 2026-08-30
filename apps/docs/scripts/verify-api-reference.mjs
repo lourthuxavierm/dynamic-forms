@@ -8,16 +8,16 @@ const failures = [];
 const manifestPath = resolve(generated, 'manifest.json');
 if (!existsSync(manifestPath)) failures.push('generated API manifest is missing');
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : { packages: {} };
-const zod = manifest.packages['@lourthuxavierm/dynamic-forms-zod'];
-if (!zod) failures.push('@lourthuxavierm/dynamic-forms-zod: generated manifest entry is missing');
+const zod = manifest.packages['@dynamic-form-engine/zod'];
+if (!zod) failures.push('@dynamic-form-engine/zod: generated manifest entry is missing');
 else {
-  if (zod.maturity !== 'Release-ready') failures.push('@lourthuxavierm/dynamic-forms-zod: maturity must be Release-ready');
+  if (zod.maturity !== 'Release-ready') failures.push('@dynamic-form-engine/zod: maturity must be Release-ready');
   for (const name of ['createZodFormValidator', 'createZodFieldValidator', 'zodIssuesToFormErrors', 'zodPathToFieldPath']) {
-    if (!zod.exports.some((symbol) => symbol.name === name)) failures.push(`@lourthuxavierm/dynamic-forms-zod.${name}: generated export is missing`);
+    if (!zod.exports.some((symbol) => symbol.name === name)) failures.push(`@dynamic-form-engine/zod.${name}: generated export is missing`);
   }
 }
 for (const [name, pkg] of Object.entries(manifest.packages)) {
-  const slug = name.replace('@lourthuxavierm/dynamic-forms-', '').replace('@dynamic-forms/', '');
+  const slug = name.replace('@dynamic-form-engine/', '').replace('@dynamic-forms/', '');
   const page = resolve(generated, `${slug}.md`);
   if (!existsSync(page)) { failures.push(`${name}: generated page is missing`); continue; }
   const markdown = readFileSync(page, 'utf8');

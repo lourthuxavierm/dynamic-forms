@@ -15,20 +15,20 @@ an existing API.
 In this documentation, **Standalone Native HTML/DOM** means a renderer that
 uses browser-native elements without React or another UI framework. It does not
 mean static HTML generation and it does not mean the legacy
-`@lourthuxavierm/dynamic-forms-html` package.
+`@dynamic-form-engine/html` package.
 
 The shipped renderer is [React HTML](../../packages/react-html.md), which uses
-browser-native elements through React. `@lourthuxavierm/dynamic-forms-html` is only a
+browser-native elements through React. `@dynamic-form-engine/html` is only a
 React-dependent compatibility package forwarding React HTML.
 
 ## Decision guide
 
 | Requirement | Current choice |
 | --- | --- |
-| Browser-native controls in a React application | Use `@lourthuxavierm/dynamic-forms-react-html` |
-| Existing code importing `@lourthuxavierm/dynamic-forms-html` | Migrate to `@lourthuxavierm/dynamic-forms-react-html` |
+| Browser-native controls in a React application | Use `@dynamic-form-engine/react-html` |
+| Existing code importing `@dynamic-form-engine/html` | Migrate to `@dynamic-form-engine/react-html` |
 | Direct DOM rendering with no React dependency | Not available; integration is Planned |
-| Framework-independent form state without a renderer | Use `@lourthuxavierm/dynamic-forms-core` |
+| Framework-independent form state without a renderer | Use `@dynamic-form-engine/core` |
 
 ## Reference
 

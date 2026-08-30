@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import type { FormEvent, FormValidator } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormEvent, FormValidator } from '@dynamic-form-engine/core';
 import { formExamples, getFormExample } from '@dynamic-forms/examples';
-import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
-import { FormProvider, useFormActions, useFormState } from '@lourthuxavierm/dynamic-forms-react';
-import { createZodFormValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { HtmlForm } from '@dynamic-form-engine/react-html';
+import { FormProvider, useFormActions, useFormState } from '@dynamic-form-engine/react';
+import { createZodFormValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 interface EventEntry { readonly sequence: number; readonly type: string; readonly detail: string; }
@@ -31,7 +31,7 @@ export default function App() {
 
   return <main className="app-shell">
     <header className="hero">
-      <p className="eyebrow">@dynamic-forms/examples + @lourthuxavierm/dynamic-forms-react-html</p>
+      <p className="eyebrow">@dynamic-forms/examples + @dynamic-form-engine/react-html</p>
       <h1>Executable example catalogue</h1>
       <p>Shared versioned schemas, deterministic initial values, live form state, validation, events, submission, and reset.</p>
       <label className="example-picker">Example

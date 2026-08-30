@@ -28,7 +28,7 @@ for (const [group, pages] of Object.entries(groups)) {
 const reactManifest = JSON.parse(readFileSync(resolve(root, 'packages/react/package.json'), 'utf8'));
 const htmlManifest = JSON.parse(readFileSync(resolve(root, 'packages/react-html/package.json'), 'utf8'));
 if (reactManifest.description !== 'React adapter for Dynamic Forms') failures.push('React package responsibility changed');
-if (reactManifest.dependencies?.['@lourthuxavierm/dynamic-forms-core'] !== 'workspace:*') failures.push('React must depend on Core');
+if (reactManifest.dependencies?.['@dynamic-form-engine/core'] !== 'workspace:*') failures.push('React must depend on Core');
 if (!reactManifest.peerDependencies?.react || !reactManifest.peerDependencies?.['react-dom']) failures.push('React peer boundary is undocumented');
 if (!htmlManifest.peerDependencies?.react || !htmlManifest.peerDependencies?.['react-dom']) failures.push('React HTML peer boundary is undocumented');
 

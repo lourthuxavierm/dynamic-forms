@@ -13,8 +13,8 @@ available.
 
 - Standalone Native HTML/DOM means direct browser DOM rendering without React.
 - No such public renderer or package exists in the repository.
-- `@lourthuxavierm/dynamic-forms-html` is a React-dependent forwarding package for
-  `@lourthuxavierm/dynamic-forms-react-html`, not a separate renderer.
+- `@dynamic-form-engine/html` is a React-dependent forwarding package for
+  `@dynamic-form-engine/react-html`, not a separate renderer.
 - Static HTML generation is not currently advertised.
 
 ## Delivered

@@ -3,7 +3,7 @@
 - Status: Implemented
 - Owner: React maintainers
 - Last verified: 2026-08-27
-- Applies to: `@lourthuxavierm/dynamic-forms-react` 0.1.0
+- Applies to: `@dynamic-form-engine/react` 0.1.0
 
 `DynamicField` resolves a schema field and passes renderer-neutral
 `FieldComponentProps` to an explicit render callback or a component registered

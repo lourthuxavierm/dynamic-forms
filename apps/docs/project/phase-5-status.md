@@ -3,7 +3,7 @@
 - Status: Implemented and verified
 - Owner: React HTML and documentation maintainers
 - Last verified: 2026-08-26
-- Applies to: `@lourthuxavierm/dynamic-forms-react-html` 0.1.0
+- Applies to: `@dynamic-form-engine/react-html` 0.1.0
 
 ## Delivered
 

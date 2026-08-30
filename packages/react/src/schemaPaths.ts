@@ -1,4 +1,4 @@
-import type { FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldSchema } from '@dynamic-form-engine/core';
 
 const missingField = Symbol('missing-field');
 const schemaPathCache = new WeakMap<readonly FieldSchema[], Map<string, FieldSchema | typeof missingField>>();

@@ -1,7 +1,7 @@
 /** Stable prefix for default HTML adapter CSS custom properties. */
 export const HTML_TOKEN_PREFIX = '--df-' as const;
 /** Opt-in stylesheet subpath. Import once from your application entry point. */
-export const HTML_DEFAULT_STYLESHEET = '@lourthuxavierm/dynamic-forms-react-html/styles.css' as const;
+export const HTML_DEFAULT_STYLESHEET = '@dynamic-form-engine/react-html/styles.css' as const;
 
 export type HtmlColorScheme = 'light' | 'dark' | 'auto';
 export type HtmlDensity = 'compact' | 'standard' | 'comfortable';

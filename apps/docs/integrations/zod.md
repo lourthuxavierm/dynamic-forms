@@ -3,7 +3,7 @@
 - Status: Release-ready adapter; renderer maturity varies below
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
-- Applies to: `@lourthuxavierm/dynamic-forms-zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`
+- Applies to: `@dynamic-form-engine/zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`
 
 Use one Zod schema with the framework-independent `FormStore`, then share that
 store with React HTML or Angular HTML. The adapter reports validation errors; it
@@ -22,7 +22,7 @@ never replaces stored values with Zod defaults, coercions, or transforms.
 
 ## Install
 
-<InstallBlock packages="@lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-zod zod" />
+<InstallBlock packages="@dynamic-form-engine/core @dynamic-form-engine/zod zod" />
 
 Keep the adapter and Zod in application dependencies when validation runs in
 the browser. The supported range is enforced by the package peer dependency and
@@ -31,8 +31,8 @@ the pinned [compatibility matrix](/project/zod-compatibility#phase-5-compatibili
 ## Define one validation boundary
 
 ```ts
-import { FormStore } from '@lourthuxavierm/dynamic-forms-core';
-import { createZodFormValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { FormStore } from '@dynamic-form-engine/core';
+import { createZodFormValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 export interface ProfileValues extends Record<string, unknown> {
@@ -114,8 +114,8 @@ Use a field validator for isolated rules such as email syntax or an asynchronous
 availability lookup:
 
 ```ts
-import { validateField } from '@lourthuxavierm/dynamic-forms-core';
-import { createZodFieldValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { validateField } from '@dynamic-form-engine/core';
+import { createZodFieldValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 const validateEmail = createZodFieldValidator(

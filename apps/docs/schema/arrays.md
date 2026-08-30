@@ -11,7 +11,7 @@ must define at least one child field.
 ## Example
 
 ```ts verify
-import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export const contactsSchema: FormSchema = {
   id: 'contacts',

@@ -1,4 +1,4 @@
-import { FieldRegistry, type FieldDefinition } from '@lourthuxavierm/dynamic-forms-core';
+import { FieldRegistry, type FieldDefinition } from '@dynamic-form-engine/core';
 import type { ComponentType } from 'react';
 import type { FieldComponentProps } from './components/DynamicField';
 

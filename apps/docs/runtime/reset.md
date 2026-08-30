@@ -29,7 +29,7 @@ touched, and dirty. It notifies affected path subscribers but does not emit the
 form-level `reset` event.
 
 ```ts verify
-import { FormStore } from '@lourthuxavierm/dynamic-forms-core';
+import { FormStore } from '@dynamic-form-engine/core';
 
 const store = new FormStore({ name: 'Ada', active: true });
 store.setValue('name', 'Grace', { shouldTouch: true });

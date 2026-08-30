@@ -3,7 +3,7 @@
 - Status: Experimental
 - Owner: Angular maintainers
 - Last verified: 2026-08-27
-- Applies to: `@lourthuxavierm/dynamic-forms-angular` 0.1.0
+- Applies to: `@dynamic-form-engine/angular` 0.1.0
 
 `provideDynamicForms` registers application defaults. `provideDynamicForm`
 creates an isolated `DynamicFormFacade` for a component scope, and

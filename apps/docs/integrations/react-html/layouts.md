@@ -3,7 +3,7 @@
 - Status: Implemented
 - Owner: React HTML maintainers
 - Last verified: 2026-08-27
-- Applies to: `@lourthuxavierm/dynamic-forms-react-html` 0.1.0
+- Applies to: `@dynamic-form-engine/react-html` 0.1.0
 
 `HtmlForm.layout` accepts declarative nodes for sections, fieldsets, grids,
 stacks, inline groups, cards, accordions, tabs, actions, and summaries. Fields

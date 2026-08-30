@@ -3,7 +3,7 @@
 - Status: Maintained release migration path
 - Owner: Core and adapter maintainers
 - Last verified: 2026-08-29
-- Applies to: `@lourthuxavierm/dynamic-forms-zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`
+- Applies to: `@dynamic-form-engine/zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`
 
 Adopt the adapter without changing renderer, stored-value, and submission
 behavior in the same rollout. The adapter is validation-only: it maps Zod
@@ -53,7 +53,7 @@ const validateProfile = async (values: ProfileValues) => {
 After:
 
 ```ts
-import { createZodFormValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { createZodFormValidator } from '@dynamic-form-engine/zod';
 
 const validateProfile = createZodFormValidator<ProfileValues>(profileSchema);
 ```
@@ -92,7 +92,7 @@ an explicit parsed-value boundary.
 ## Migrate field validators selectively
 
 ```ts
-import { createZodFieldValidator } from '@lourthuxavierm/dynamic-forms-zod';
+import { createZodFieldValidator } from '@dynamic-form-engine/zod';
 import { z } from 'zod';
 
 const validateEmail = createZodFieldValidator(

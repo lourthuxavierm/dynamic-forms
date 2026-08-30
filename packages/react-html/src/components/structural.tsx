@@ -1,6 +1,6 @@
 import { useSyncExternalStore, type ReactNode } from 'react';
-import { evaluateCondition, type FieldSchema } from '@lourthuxavierm/dynamic-forms-core';
-import { useFieldArray, useFieldState, useFormContext } from '@lourthuxavierm/dynamic-forms-react';
+import { evaluateCondition, type FieldSchema } from '@dynamic-form-engine/core';
+import { useFieldArray, useFieldState, useFormContext } from '@dynamic-form-engine/react';
 import type { HtmlFieldRegistry } from '../registry';
 
 export interface HtmlArrayRenderItem {

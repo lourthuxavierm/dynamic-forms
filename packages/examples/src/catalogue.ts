@@ -1,4 +1,4 @@
-import type { FieldOption, FieldSchema, FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import type { FieldOption, FieldSchema, FormSchema } from '@dynamic-form-engine/core';
 import { basicFormSchema, basicInitialValues } from './basic';
 import { conditionalInitialValues, conditionalSchema } from './conditions';
 import { validationInitialValues, validationSchema } from './validation';
