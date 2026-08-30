@@ -5,7 +5,7 @@
 
 A TypeScript-first dynamic forms platform with a framework-independent state engine, React and Angular integrations, accessible native HTML renderers, schema-driven validation, conditions, dependencies, and data sources.
 
-Version `0.1.0` is prepared for publication under the `@dynamic-form-engine` npm organization. The project is pre-1.0, so public APIs may evolve between minor releases.
+Version `0.1.0` is published under the `@dynamic-form-engine` npm organization. The project is pre-1.0, so public APIs may evolve between minor releases.
 
 ## Packages
 
