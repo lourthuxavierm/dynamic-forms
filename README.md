@@ -1,22 +1,28 @@
 # Dynamic Forms
 
-A TypeScript-first dynamic forms monorepo with a framework-independent state engine, React bindings, and an accessible native HTML renderer.
+[![npm version](https://img.shields.io/npm/v/@lourthuxavierm/dynamic-forms-core.svg)](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-core)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Status: pre-1.0 development (`0.1.0`). Core, React, HTML, and Examples are implemented. The Zod, React Hook Form, JSON Schema, and DevTools packages are placeholders.
+A TypeScript-first dynamic forms platform with a framework-independent state engine, React and Angular integrations, accessible native HTML renderers, schema-driven validation, conditions, dependencies, and data sources.
+
+Version `0.1.0` is published on npm under the `@lourthuxavierm` scope. The project is pre-1.0, so public APIs may evolve between minor releases.
 
 ## Packages
 
-| Package | Purpose | Current maturity |
+| Package | Purpose | Maturity |
 | --- | --- | --- |
-| `@lourthuxavierm/dynamic-forms-core` | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
-| `@lourthuxavierm/dynamic-forms-react` | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
-| `@lourthuxavierm/dynamic-forms-react-html` | React renderer with accessible browser-native controls, layouts, registry, and styles | Implemented |
-| `@lourthuxavierm/dynamic-forms-html` | Compatibility forwarding package for existing consumers | Compatibility only |
-| `@dynamic-forms/examples` | Adapter-neutral example schemas, values, and rules | Implemented |
-| `@lourthuxavierm/dynamic-forms-zod` | Planned Zod adapter | Placeholder |
-| `@lourthuxavierm/dynamic-forms-rhf` | Planned React Hook Form adapter | Placeholder |
-| `@lourthuxavierm/dynamic-forms-json-schema` | Planned JSON Schema adapter | Placeholder |
-| `@lourthuxavierm/dynamic-forms-devtools` | Planned developer tooling | Placeholder |
+| [`@lourthuxavierm/dynamic-forms-core`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-core) | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
+| [`@lourthuxavierm/dynamic-forms-react`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-react) | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
+| [`@lourthuxavierm/dynamic-forms-react-html`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-react-html) | Accessible native HTML renderer for React | Implemented |
+| [`@lourthuxavierm/dynamic-forms-angular`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-angular) | Angular signals, forms, dependency injection, and lifecycle adapter | Implemented |
+| [`@lourthuxavierm/dynamic-forms-angular-html`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-angular-html) | Accessible native HTML renderer for Angular | Implemented |
+| [`@lourthuxavierm/dynamic-forms-html`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-html) | Compatibility forwarding package for existing HTML consumers | Compatibility |
+| [`@lourthuxavierm/dynamic-forms-zod`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-zod) | Zod field and form validation adapter | Implemented |
+| [`@lourthuxavierm/dynamic-forms-rhf`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-rhf) | React Hook Form adapter | Placeholder |
+| [`@lourthuxavierm/dynamic-forms-json-schema`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-json-schema) | JSON Schema adapter | Placeholder |
+| [`@lourthuxavierm/dynamic-forms-devtools`](https://www.npmjs.com/package/@lourthuxavierm/dynamic-forms-devtools) | Developer tooling | Placeholder |
+
+The example schemas, documentation site, playgrounds, and visual form builder are private workspace applications and are not published as npm packages.
 
 ## Architecture
 
@@ -40,11 +46,22 @@ Core contains no framework or renderer logic. React owns lifecycle and subscript
 
 ## Quick start
 
-Install the implemented runtime packages and React peers:
+Install the React runtime and renderer:
 
 ```bash
-pnpm add @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html
-pnpm add react react-dom
+npm install @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom
+```
+
+For Angular, install the headless adapter and native HTML renderer:
+
+```bash
+npm install @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-angular @lourthuxavierm/dynamic-forms-angular-html
+```
+
+Zod validation is available separately:
+
+```bash
+npm install @lourthuxavierm/dynamic-forms-zod zod
 ```
 
 Import the optional default stylesheet once:
@@ -114,7 +131,7 @@ pnpm install
 pnpm build
 pnpm test
 pnpm typecheck
-pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground dev
+pnpm --filter @dynamic-forms/react-html-playground dev
 ```
 
 ## Documentation
