@@ -1,4 +1,4 @@
-import type { FormErrors, ValidationIssue } from '@dynamic-forms/core';
+import type { FormErrors, ValidationIssue } from '@lourthuxavierm/dynamic-forms-core';
 import { zodPathToFieldPath } from './paths';
 import type { ZodAdapterOptions, ZodIssueLike } from './types';
 

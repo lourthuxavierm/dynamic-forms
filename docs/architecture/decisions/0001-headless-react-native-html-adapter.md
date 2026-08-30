@@ -1,4 +1,4 @@
-﻿# ADR 0001: Headless React and native HTML adapter boundaries
+# ADR 0001: Headless React and native HTML adapter boundaries
 
 - Status: Accepted
 - Date: 2026-08-23
@@ -11,10 +11,10 @@ The enforced dependency direction is `core <- react <- react-html`. The legacy
 
 | Package | Owns | Allowed internal dependencies |
 | --- | --- | --- |
-| `@dynamic-forms/core` | Schemas, state, validation, rules, dependencies, data sources | None |
-| `@dynamic-forms/react` | Providers, hooks, subscriptions, focus and renderer contracts | Core |
-| `@dynamic-forms/react-html` | Native controls, DOM accessibility, registry, static CSS | Core, React |
-| `@dynamic-forms/html` | Compatibility exports for the former package name | React HTML |
+| `@lourthuxavierm/dynamic-forms-core` | Schemas, state, validation, rules, dependencies, data sources | None |
+| `@lourthuxavierm/dynamic-forms-react` | Providers, hooks, subscriptions, focus and renderer contracts | Core |
+| `@lourthuxavierm/dynamic-forms-react-html` | Native controls, DOM accessibility, registry, static CSS | Core, React |
+| `@lourthuxavierm/dynamic-forms-html` | Compatibility exports for the former package name | React HTML |
 
 Core must contain no React, DOM, or adapter details. React must contain no native controls or CSS. React HTML must never depend on the compatibility package, and the compatibility package must contain no renderer implementation. Schemas and rules remain adapter-neutral. `pnpm check:boundaries` enforces these rules.
 

@@ -18,15 +18,15 @@ This inventory maps shipped source to its canonical documentation destination.
 
 | Package | Current maturity | Source of truth | Existing documentation | Owner |
 | --- | --- | --- | --- | --- |
-| `@dynamic-forms/core` | Implemented | `packages/core/src/index.ts` | `packages/core/README.md` | Core maintainers |
-| `@dynamic-forms/react` | Implemented | `packages/react/src/index.ts` | `packages/react/README.md` | React maintainers |
-| `@dynamic-forms/react-html` | Implemented | `packages/react-html/src/index.ts` and registry entries | `packages/react-html/README.md` and `packages/react-html/docs/*` | React HTML maintainers |
-| `@dynamic-forms/html` | Compatibility only | `packages/html/src/index.ts` forwarding entries | `packages/html/README.md` | React HTML maintainers |
+| `@lourthuxavierm/dynamic-forms-core` | Implemented | `packages/core/src/index.ts` | `packages/core/README.md` | Core maintainers |
+| `@lourthuxavierm/dynamic-forms-react` | Implemented | `packages/react/src/index.ts` | `packages/react/README.md` | React maintainers |
+| `@lourthuxavierm/dynamic-forms-react-html` | Implemented | `packages/react-html/src/index.ts` and registry entries | `packages/react-html/README.md` and `packages/react-html/docs/*` | React HTML maintainers |
+| `@lourthuxavierm/dynamic-forms-html` | Compatibility only | `packages/html/src/index.ts` forwarding entries | `packages/html/README.md` | React HTML maintainers |
 | `@dynamic-forms/examples` | Implemented | `packages/examples/src/index.ts` | `packages/examples/README.md` | Example maintainers |
-| `@dynamic-forms/zod` | Placeholder | `packages/zod/src/index.ts` | `packages/zod.md` | Adapter owner |
-| `@dynamic-forms/rhf` | Placeholder | `packages/rhf/src/index.ts` | `packages/react-hook-form.md` | Adapter owner |
-| `@dynamic-forms/json-schema` | Placeholder | `packages/json-schema/src/index.ts` | `packages/json-schema.md` | Adapter owner |
-| `@dynamic-forms/devtools` | Placeholder | `packages/devtools/src/index.ts` | `packages/devtools.md` | DevTools owner |
+| `@lourthuxavierm/dynamic-forms-zod` | Placeholder | `packages/zod/src/index.ts` | `packages/zod.md` | Adapter owner |
+| `@lourthuxavierm/dynamic-forms-rhf` | Placeholder | `packages/rhf/src/index.ts` | `packages/react-hook-form.md` | Adapter owner |
+| `@lourthuxavierm/dynamic-forms-json-schema` | Placeholder | `packages/json-schema/src/index.ts` | `packages/json-schema.md` | Adapter owner |
+| `@lourthuxavierm/dynamic-forms-devtools` | Placeholder | `packages/devtools/src/index.ts` | `packages/devtools.md` | DevTools owner |
 
 ## Baseline maintenance rule
 

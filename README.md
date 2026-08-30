@@ -8,15 +8,15 @@ Status: pre-1.0 development (`0.1.0`). Core, React, HTML, and Examples are imple
 
 | Package | Purpose | Current maturity |
 | --- | --- | --- |
-| `@dynamic-forms/core` | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
-| `@dynamic-forms/react` | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
-| `@dynamic-forms/react-html` | React renderer with accessible browser-native controls, layouts, registry, and styles | Implemented |
-| `@dynamic-forms/html` | Compatibility forwarding package for existing consumers | Compatibility only |
+| `@lourthuxavierm/dynamic-forms-core` | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
+| `@lourthuxavierm/dynamic-forms-react` | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
+| `@lourthuxavierm/dynamic-forms-react-html` | React renderer with accessible browser-native controls, layouts, registry, and styles | Implemented |
+| `@lourthuxavierm/dynamic-forms-html` | Compatibility forwarding package for existing consumers | Compatibility only |
 | `@dynamic-forms/examples` | Adapter-neutral example schemas, values, and rules | Implemented |
-| `@dynamic-forms/zod` | Planned Zod adapter | Placeholder |
-| `@dynamic-forms/rhf` | Planned React Hook Form adapter | Placeholder |
-| `@dynamic-forms/json-schema` | Planned JSON Schema adapter | Placeholder |
-| `@dynamic-forms/devtools` | Planned developer tooling | Placeholder |
+| `@lourthuxavierm/dynamic-forms-zod` | Planned Zod adapter | Placeholder |
+| `@lourthuxavierm/dynamic-forms-rhf` | Planned React Hook Form adapter | Placeholder |
+| `@lourthuxavierm/dynamic-forms-json-schema` | Planned JSON Schema adapter | Placeholder |
+| `@lourthuxavierm/dynamic-forms-devtools` | Planned developer tooling | Placeholder |
 
 ## Architecture
 
@@ -24,15 +24,15 @@ Status: pre-1.0 development (`0.1.0`). Core, React, HTML, and Examples are imple
 FormSchema
     |
     v
-@dynamic-forms/core
+@lourthuxavierm/dynamic-forms-core
   FormStore, validation, conditions, dependencies, data sources, events
     |
     v
-@dynamic-forms/react
+@lourthuxavierm/dynamic-forms-react
   FormProvider, hooks, subscriptions
     |
     v
-@dynamic-forms/react-html
+@lourthuxavierm/dynamic-forms-react-html
   HtmlForm, native controls, layouts, registry, optional static CSS
 ```
 
@@ -43,22 +43,22 @@ Core contains no framework or renderer logic. React owns lifecycle and subscript
 Install the implemented runtime packages and React peers:
 
 ```bash
-pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/react-html
+pnpm add @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html
 pnpm add react react-dom
 ```
 
 Import the optional default stylesheet once:
 
 ```ts
-import '@dynamic-forms/react-html/styles.css';
+import '@lourthuxavierm/dynamic-forms-react-html/styles.css';
 ```
 
 Create a schema and render it with `FormProvider` and `HtmlForm`:
 
 ```tsx
-import type { FormSchema } from '@dynamic-forms/core';
-import { FormProvider } from '@dynamic-forms/react';
-import { HtmlForm } from '@dynamic-forms/react-html';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
+import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
 
 const schema: FormSchema = {
   id: 'customer',
@@ -100,7 +100,7 @@ export function CustomerForm() {
 }
 ```
 
-See the [React HTML package README](./packages/react-html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls. Existing `@dynamic-forms/html` imports remain available through the [compatibility package](./packages/html/README.md).
+See the [React HTML package README](./packages/react-html/README.md) for registry overrides, layouts, styling, accessibility, performance, and specialized controls. Existing `@lourthuxavierm/dynamic-forms-html` imports remain available through the [compatibility package](./packages/html/README.md).
 
 ## Workspace development
 
@@ -114,7 +114,7 @@ pnpm install
 pnpm build
 pnpm test
 pnpm typecheck
-pnpm --filter @dynamic-forms/react-html-playground dev
+pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground dev
 ```
 
 ## Documentation

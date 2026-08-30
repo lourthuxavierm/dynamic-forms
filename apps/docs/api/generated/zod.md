@@ -1,4 +1,4 @@
-# @dynamic-forms/zod API
+# @lourthuxavierm/dynamic-forms-zod API
 
 <!-- GENERATED FILE. Run pnpm docs:api to update. -->
 
@@ -52,7 +52,7 @@ export interface NormalizedZodIssue;
 - Kind: function
 - Source: `packages/zod/src/issues.ts`
 
-Public function exported by @dynamic-forms/zod.
+Public function exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export declare function normalizeZodIssue(issue: ZodIssueLike, rootErrorPath?: string): NormalizedZodIssue
@@ -85,7 +85,7 @@ export interface ZodErrorLike;
 - Kind: type
 - Source: `packages/zod/src/types.ts`
 
-Public type exported by @dynamic-forms/zod.
+Public type exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export type ZodErrorMode;
@@ -96,7 +96,7 @@ export type ZodErrorMode;
 - Kind: interface
 - Source: `packages/zod/src/types.ts`
 
-Public interface exported by @dynamic-forms/zod.
+Public interface exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export interface ZodFailure;
@@ -107,7 +107,7 @@ export interface ZodFailure;
 - Kind: type
 - Source: `packages/zod/src/fieldValidator.ts`
 
-Public type exported by @dynamic-forms/zod.
+Public type exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export type ZodFieldValidatorFactory;
@@ -129,7 +129,7 @@ export type ZodFieldValidatorOptions;
 - Kind: type
 - Source: `packages/zod/src/formValidator.ts`
 
-Public type exported by @dynamic-forms/zod.
+Public type exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export type ZodFormValidatorFactory;
@@ -162,7 +162,7 @@ export declare function zodIssuesToFormErrors(issues: readonly ZodIssueLike[], o
 - Kind: function
 - Source: `packages/zod/src/issues.ts`
 
-Public function exported by @dynamic-forms/zod.
+Public function exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export declare function zodIssueToValidationIssue(issue: ZodIssueLike): ValidationIssue
@@ -173,7 +173,7 @@ export declare function zodIssueToValidationIssue(issue: ZodIssueLike): Validati
 - Kind: interface
 - Source: `packages/zod/src/paths.ts`
 
-Public interface exported by @dynamic-forms/zod.
+Public interface exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export interface ZodPathMapping;
@@ -206,7 +206,7 @@ export declare function zodPathToFieldPath(path: readonly ZodPathSegment[], root
 - Kind: type
 - Source: `packages/zod/src/types.ts`
 
-Public type exported by @dynamic-forms/zod.
+Public type exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export type ZodSafeParseResult;
@@ -228,7 +228,7 @@ export interface ZodSchemaLike;
 - Kind: interface
 - Source: `packages/zod/src/types.ts`
 
-Public interface exported by @dynamic-forms/zod.
+Public interface exported by @lourthuxavierm/dynamic-forms-zod.
 
 ```ts
 export interface ZodSuccess;

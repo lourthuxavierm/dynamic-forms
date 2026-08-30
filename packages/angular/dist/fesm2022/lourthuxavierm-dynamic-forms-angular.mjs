@@ -1,6 +1,6 @@
 import * as i0 from '@angular/core';
 import { signal, computed, InjectionToken, makeEnvironmentProviders, inject, DestroyRef, input, forwardRef, Directive } from '@angular/core';
-import { FormStore, ConditionController, DependencyController, createFormValidator } from '@dynamic-forms/core';
+import { FormStore, ConditionController, DependencyController, createFormValidator } from '@lourthuxavierm/dynamic-forms-core';
 import { Observable } from 'rxjs';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -156,4 +156,4 @@ const ANGULAR_ADAPTER_VERSION = '0.1.0';
  */
 
 export { ANGULAR_ADAPTER_VERSION, DYNAMIC_FORM, DYNAMIC_FORMS_CONFIG, DYNAMIC_FORM_OPTIONS, DynamicFormFacade, DynamicFormsValueAccessor, createDynamicForm, injectDynamicField, injectDynamicForm, provideDynamicForm, provideDynamicForms };
-//# sourceMappingURL=dynamic-forms-angular.mjs.map
+//# sourceMappingURL=lourthuxavierm-dynamic-forms-angular.mjs.map

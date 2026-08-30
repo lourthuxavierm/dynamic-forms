@@ -1,5 +1,5 @@
 import { lazy, type ComponentType } from 'react';
-import type { FieldComponentProps } from '@dynamic-forms/react';
+import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
 import type { HtmlFieldRegistryOverrides } from './types';
 
 function lazyField(load: () => Promise<Record<string, unknown>>, name: string) {

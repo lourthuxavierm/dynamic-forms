@@ -7,12 +7,12 @@
 
 There is no honest complete standalone Native HTML example to publish today.
 The repository's React HTML examples—even examples importing
-`@dynamic-forms/html`—exercise React and are not evidence of direct-DOM support.
+`@lourthuxavierm/dynamic-forms-html`—exercise React and are not evidence of direct-DOM support.
 
 ## Example required for release
 
 The first complete example must run without `react`, `react-dom`,
-`@dynamic-forms/react`, or `@dynamic-forms/react-html`. It must demonstrate:
+`@lourthuxavierm/dynamic-forms-react`, or `@lourthuxavierm/dynamic-forms-react-html`. It must demonstrate:
 
 1. creation from a schema and initial values;
 2. text, numeric, selection, temporal, conditional, and nested fields;

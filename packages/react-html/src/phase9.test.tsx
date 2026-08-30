@@ -1,7 +1,7 @@
 /** @vitest-environment happy-dom */
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { FormStore, type FormSchema } from '@dynamic-forms/core';
-import { FormProvider } from '@dynamic-forms/react';
+import { FormStore, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
 import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { HtmlArrayRenderItem } from './index';

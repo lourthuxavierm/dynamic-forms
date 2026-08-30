@@ -1,4 +1,4 @@
-import type { FormValues } from '@dynamic-forms/core';
+import type { FormValues } from '@lourthuxavierm/dynamic-forms-core';
 
 /** Dot-separated paths accepted by React form hooks. */
 export type FieldPath<TValues extends FormValues = FormValues> = TValues extends object

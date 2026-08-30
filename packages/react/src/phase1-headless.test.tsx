@@ -1,7 +1,7 @@
-﻿/** @vitest-environment happy-dom */
+/** @vitest-environment happy-dom */
 import { act, renderHook } from '@testing-library/react';
 import { createElement, type ReactNode } from 'react';
-import { FormStore, createFormValidator, type FormSchema } from '@dynamic-forms/core';
+import { FormStore, createFormValidator, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 import { describe, expect, it } from 'vitest';
 import { FormProvider, useFieldArray, useSection, useWizard } from './index';
 

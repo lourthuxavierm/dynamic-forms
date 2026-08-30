@@ -1,5 +1,5 @@
 import { DestroyRef, InjectionToken, inject, makeEnvironmentProviders, type EnvironmentProviders, type Provider } from '@angular/core';
-import type { FormValues } from '@dynamic-forms/core';
+import type { FormValues } from '@lourthuxavierm/dynamic-forms-core';
 import { DynamicFormFacade, type DynamicFormOptions } from './facade';
 
 export interface DynamicFormsConfig { developmentWarnings?: boolean; }

@@ -1,1 +1,1 @@
-export * from '@dynamic-forms/react-html/controls/text';
+export * from '@lourthuxavierm/dynamic-forms-react-html/controls/text';

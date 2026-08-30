@@ -1,1 +1,1 @@
-export * from '@dynamic-forms/react-html/controls/media';
+export * from '@lourthuxavierm/dynamic-forms-react-html/controls/media';

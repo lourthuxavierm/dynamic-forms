@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 - Prerequisites: Complete installation
 
 ## Outcome
@@ -14,7 +14,7 @@ same schema can be consumed by any compatible renderer.
 ## Define the schema
 
 ```ts verify
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export interface EmployeeFormValues extends Record<string, unknown> {
   fullName: string;

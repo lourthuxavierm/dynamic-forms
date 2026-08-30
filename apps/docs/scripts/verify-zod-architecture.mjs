@@ -38,10 +38,10 @@ const required = [
 for (const file of required) if (!existsSync(resolve(repoRoot, file))) failures.push(`${file}: missing`);
 
 const manifest = JSON.parse(read('packages/zod/package.json'));
-if (manifest.name !== '@dynamic-forms/zod') failures.push('Zod package name mismatch');
-if (manifest.dependencies?.['@dynamic-forms/core'] !== 'workspace:*') failures.push('Zod adapter must depend on Core');
+if (manifest.name !== '@lourthuxavierm/dynamic-forms-zod') failures.push('Zod package name mismatch');
+if (manifest.dependencies?.['@lourthuxavierm/dynamic-forms-core'] !== 'workspace:*') failures.push('Zod adapter must depend on Core');
 if (manifest.peerDependencies?.zod !== '^3.25.5 || ^4.0.0') failures.push('Zod peer matrix must be ^3.25.5 || ^4.0.0');
-for (const forbidden of ['@dynamic-forms/react', '@dynamic-forms/react-html', '@dynamic-forms/angular', '@dynamic-forms/angular-html']) {
+for (const forbidden of ['@lourthuxavierm/dynamic-forms-react', '@lourthuxavierm/dynamic-forms-react-html', '@lourthuxavierm/dynamic-forms-angular', '@lourthuxavierm/dynamic-forms-angular-html']) {
   if (manifest.dependencies?.[forbidden]) failures.push(`Zod adapter must not depend on ${forbidden}`);
 }
 
@@ -70,7 +70,7 @@ for (const version of ['3.25.5', '3.25.76', '4.0.0', '4.5.1']) {
   if (!matrix.includes(`"${version}"`)) failures.push(`Zod matrix missing pinned version: ${version}`);
 }
 for (const command of ['typecheck', 'test', 'build']) {
-  if (!matrix.includes(`@dynamic-forms/zod ${command}`)) failures.push(`Zod matrix missing ${command} command`);
+  if (!matrix.includes(`@lourthuxavierm/dynamic-forms-zod ${command}`)) failures.push(`Zod matrix missing ${command} command`);
 }
 if (!matrix.includes('needs: [adapter, playground-evidence]') || !matrix.includes('pnpm verify:zod-release')) failures.push('Zod CI release gate must depend on compatibility and playground evidence');
 for (const expectation of [

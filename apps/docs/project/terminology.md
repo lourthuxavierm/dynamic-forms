@@ -13,15 +13,15 @@ technology are not confused.
 | Term | Definition | Usage rule |
 | --- | --- | --- |
 | Dynamic Forms | The complete project and package ecosystem. | Capitalize when naming the project. |
-| Core | Framework-independent schemas, state, validation, conditions, dependencies, data sources, registries, and events in `@dynamic-forms/core`. | Do not attribute rendering or framework lifecycle to Core. |
+| Core | Framework-independent schemas, state, validation, conditions, dependencies, data sources, registries, and events in `@lourthuxavierm/dynamic-forms-core`. | Do not attribute rendering or framework lifecycle to Core. |
 | Adapter | A package that integrates Core with a framework or external contract. | Name the adapted system, such as React adapter or future Angular adapter. |
 | Renderer | A package or component layer that turns schema and state into user interface elements. | Do not use renderer for Core state processing. |
-| Headless React | React context, hooks, subscriptions, and renderer-neutral components in `@dynamic-forms/react`. | It does not provide the default browser controls or stylesheet. |
-| React HTML | The shipped `@dynamic-forms/react-html` renderer. It renders browser-native HTML elements through React. | Preferred name for the current renderer. |
+| Headless React | React context, hooks, subscriptions, and renderer-neutral components in `@lourthuxavierm/dynamic-forms-react`. | It does not provide the default browser controls or stylesheet. |
+| React HTML | The shipped `@lourthuxavierm/dynamic-forms-react-html` renderer. It renders browser-native HTML elements through React. | Preferred name for the current renderer. |
 | Browser-native control | An HTML element or semantic composition using browser behavior instead of a third-party component library. | This describes the control technology, not framework independence. |
 | Native HTML | A descriptive phrase for browser-native elements. | Qualify it as React HTML when referring to the shipped renderer. Do not imply a standalone DOM renderer. |
 | Standalone Native HTML/DOM renderer | A future renderer usable without React. | Always label Planned until a public implementation exists. |
-| HTML compatibility package | `@dynamic-forms/html`, which forwards `@dynamic-forms/react-html`. | Do not call it a separate renderer or recommend it for new applications. |
+| HTML compatibility package | `@lourthuxavierm/dynamic-forms-html`, which forwards `@lourthuxavierm/dynamic-forms-react-html`. | Do not call it a separate renderer or recommend it for new applications. |
 | Angular adapter | A future Angular lifecycle/state integration. | Always label Planned until implemented and tested. |
 | Angular HTML | A future Angular renderer using browser-native HTML controls. | Always label Planned until implemented and tested. |
 | Field type | The schema `type` value selecting field behavior. | Distinguish leaf controls from structural `object` and `array` fields. |
@@ -39,7 +39,7 @@ technology are not confused.
 
 | Avoid | Prefer |
 | --- | --- |
-| “the HTML package” when the package is unclear | `@dynamic-forms/react-html` or `@dynamic-forms/html` |
+| “the HTML package” when the package is unclear | `@lourthuxavierm/dynamic-forms-react-html` or `@lourthuxavierm/dynamic-forms-html` |
 | “framework-free HTML renderer” for current code | “React HTML renderer using browser-native controls” |
 | “Angular support” | “Angular support is planned” |
 | “all controls are stable” | “the 42 controls in `V1_HTML_FIELD_TYPES` are the v1 leaf-control contract” |

@@ -3,14 +3,14 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 
 `FormStore<T>` is the framework-independent state engine.
 
 ## Create and update
 
 ```ts verify
-import { FormStore } from '@dynamic-forms/core';
+import { FormStore } from '@lourthuxavierm/dynamic-forms-core';
 
 const store = new FormStore({
   profile: { name: 'Ada' },

@@ -12,5 +12,5 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   target: 'es2022',
-  external: ['react', 'react-dom', '@dynamic-forms/core', '@dynamic-forms/react'],
+  external: ['react', 'react-dom', '@lourthuxavierm/dynamic-forms-core', '@lourthuxavierm/dynamic-forms-react'],
 });

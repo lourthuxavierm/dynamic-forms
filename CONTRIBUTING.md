@@ -33,10 +33,10 @@ pnpm build
 Use the package-level scripts while iterating:
 
 ```sh
-pnpm --filter @dynamic-forms/core test
-pnpm --filter @dynamic-forms/react test
-pnpm --filter @dynamic-forms/react-html test
-pnpm --filter @dynamic-forms/react-html-playground dev
+pnpm --filter @lourthuxavierm/dynamic-forms-core test
+pnpm --filter @lourthuxavierm/dynamic-forms-react test
+pnpm --filter @lourthuxavierm/dynamic-forms-react-html test
+pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground dev
 ```
 
 ## Architecture rules

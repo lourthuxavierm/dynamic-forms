@@ -3,7 +3,7 @@
 - Status: Implemented
 - Owner: React HTML maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/react-html` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-react-html` 0.1.0
 
 `createHtmlRegistry`, `mergeHtmlRegistries`, and `createDefaultHtmlRegistry`
 produce immutable registry objects. An override value replaces a control;

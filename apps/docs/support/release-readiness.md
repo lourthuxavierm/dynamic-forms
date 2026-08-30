@@ -22,7 +22,7 @@ The release owner records the completed checklist with the release evidence.
 
 ## Zod adapter gate
 
-Run `pnpm verify:zod-release` before publishing `@dynamic-forms/zod`. Its CI
+Run `pnpm verify:zod-release` before publishing `@lourthuxavierm/dynamic-forms-zod`. Its CI
 release job depends on all four pinned Zod compatibility cells, then verifies
 the package build, declarations, ESM/CommonJS loading, documentation/API drift,
 and packed npm artifact. Follow the package `RELEASE.md` for publication order

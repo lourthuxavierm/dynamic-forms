@@ -11,7 +11,7 @@ installation or production guidance.
 
 ## Proposed headless package
 
-Proposed package: `@dynamic-forms/angular`.
+Proposed package: `@lourthuxavierm/dynamic-forms-angular`.
 
 | Area | Candidate API | Responsibility |
 | --- | --- | --- |
@@ -27,7 +27,7 @@ Proposed package: `@dynamic-forms/angular`.
 
 ## Proposed Angular HTML package
 
-Proposed package: `@dynamic-forms/angular-html`.
+Proposed package: `@lourthuxavierm/dynamic-forms-angular-html`.
 
 | Area | Candidate API | Responsibility |
 | --- | --- | --- |

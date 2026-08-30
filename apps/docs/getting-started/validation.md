@@ -14,7 +14,7 @@ an invalid submission without sending values.
 ## Define rules in the schema
 
 ```ts verify
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export const validatedSchema: FormSchema = {
   id: 'validated-profile',
@@ -49,9 +49,9 @@ Submission always validates the form before `HtmlForm.onSubmit` runs.
 ## Observe invalid submission
 
 ```tsx verify
-import type { FormSchema } from '@dynamic-forms/core';
-import { FormProvider } from '@dynamic-forms/react';
-import { HtmlForm } from '@dynamic-forms/react-html';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
+import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
 
 const schema: FormSchema = {
   id: 'validation-example',

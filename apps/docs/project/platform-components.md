@@ -32,7 +32,7 @@ documentation components.
 
 ## Installation block
 
-<InstallBlock packages="@dynamic-forms/core @dynamic-forms/react @dynamic-forms/react-html react react-dom" />
+<InstallBlock packages="@lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom" />
 
 ## Framework tabs
 

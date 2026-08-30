@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 
 Data sources describe static, function, or URL-backed option data. Rendering and
 option mapping remain integration responsibilities.
@@ -11,7 +11,7 @@ option mapping remain integration responsibilities.
 ## Static source
 
 ```ts verify
-import type { DataSourceConfig, FieldOption } from '@dynamic-forms/core';
+import type { DataSourceConfig, FieldOption } from '@lourthuxavierm/dynamic-forms-core';
 
 export const departments: DataSourceConfig<FieldOption> = {
   type: 'static',

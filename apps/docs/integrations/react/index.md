@@ -3,9 +3,9 @@
 - Status: Implemented and documented
 - Owner: React maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/react` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-react` 0.1.0
 
-`@dynamic-forms/react` connects the framework-independent Core runtime to React.
+`@lourthuxavierm/dynamic-forms-react` connects the framework-independent Core runtime to React.
 It owns provider lifecycle, context, focused subscriptions, hooks, headless
 schema components, error summaries, live regions, and typed control
 registration. It does not ship browser controls or visual styling.
@@ -13,8 +13,8 @@ registration. It does not ship browser controls or visual styling.
 ## Responsibility boundary
 
 ```text
-@dynamic-forms/core -> @dynamic-forms/react -> application controls
-                                           `-> @dynamic-forms/react-html
+@lourthuxavierm/dynamic-forms-core -> @lourthuxavierm/dynamic-forms-react -> application controls
+                                           `-> @lourthuxavierm/dynamic-forms-react-html
 ```
 
 Use React alone when an application or design system supplies every control.

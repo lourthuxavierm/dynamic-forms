@@ -6,7 +6,7 @@
 - Applies to: Angular and Angular HTML 0.1.0
 
 Phase 9 established the package and state-ownership design. Phase 10 implements
-the first slice as `@dynamic-forms/angular` and `@dynamic-forms/angular-html`.
+the first slice as `@lourthuxavierm/dynamic-forms-angular` and `@lourthuxavierm/dynamic-forms-angular-html`.
 Core remains authoritative and framework-independent.
 
 | Layer | Current responsibility |

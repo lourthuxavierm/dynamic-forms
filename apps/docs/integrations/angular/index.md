@@ -3,9 +3,9 @@
 - Status: Experimental implementation
 - Owner: Angular maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/angular` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-angular` 0.1.0
 
-`@dynamic-forms/angular` is the headless Angular 22 adapter for Core. It ships a
+`@lourthuxavierm/dynamic-forms-angular` is the headless Angular 22 adapter for Core. It ships a
 typed `DynamicFormFacade`, readonly signals, focused field signals, DI providers,
 an RxJS event bridge, explicit disposal, and a whole-form
 `ControlValueAccessor` directive. It does not render browser controls.

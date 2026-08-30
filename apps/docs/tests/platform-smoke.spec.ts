@@ -19,7 +19,7 @@ test('framework tabs expose Angular HTML experimental status', async ({ page }) 
 test('installation tabs switch package managers without changing package scope', async ({ page }) => {
   await page.goto('/project/platform-components');
   await page.getByRole('tablist', { name: 'Package manager' }).getByRole('tab', { name: 'npm', exact: true }).click();
-  await expect(page.getByText('npm install @dynamic-forms/core @dynamic-forms/react @dynamic-forms/react-html react react-dom')).toBeVisible();
+  await expect(page.getByText('npm install @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom')).toBeVisible();
 });
 
 test('component fixture has no horizontal page overflow at a narrow viewport', async ({ page }) => {

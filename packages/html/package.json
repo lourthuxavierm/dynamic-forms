@@ -1,7 +1,7 @@
 {
-  "name": "@dynamic-forms/html",
+  "name": "@lourthuxavierm/dynamic-forms-html",
   "version": "0.1.0",
-  "description": "Compatibility package forwarding to @dynamic-forms/react-html",
+  "description": "Compatibility package forwarding to @lourthuxavierm/dynamic-forms-react-html",
   "license": "MIT",
   "publishConfig": { "access": "public" },
   "main": "./dist/index.js",
@@ -20,16 +20,16 @@
   },
   "sideEffects": ["*.css"],
   "files": ["dist", "styles.css", "README.md"],
-  "dependencies": { "@dynamic-forms/react-html": "workspace:*" },
+  "dependencies": { "@lourthuxavierm/dynamic-forms-react-html": "workspace:*" },
   "peerDependencies": {
-    "@dynamic-forms/core": "workspace:*",
-    "@dynamic-forms/react": "workspace:*",
+    "@lourthuxavierm/dynamic-forms-core": "workspace:*",
+    "@lourthuxavierm/dynamic-forms-react": "workspace:*",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
-    "test": "pnpm --filter @dynamic-forms/react-html build && vitest run --passWithNoTests && pnpm build && node scripts/verify-compatibility.mjs",
+    "test": "pnpm --filter @lourthuxavierm/dynamic-forms-react-html build && vitest run --passWithNoTests && pnpm build && node scripts/verify-compatibility.mjs",
     "verify:compatibility": "node scripts/verify-compatibility.mjs",
     "typecheck": "tsc --noEmit"
   }

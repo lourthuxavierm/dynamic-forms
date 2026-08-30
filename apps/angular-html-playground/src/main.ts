@@ -1,11 +1,11 @@
-import '@dynamic-forms/angular-html/styles.css';
+import '@lourthuxavierm/dynamic-forms-angular-html/styles.css';
 import './styles.css';
 import { ChangeDetectionStrategy, Component, OnDestroy, provideZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { createDynamicForm } from '@dynamic-forms/angular';
-import { DynamicHtmlFormComponent } from '@dynamic-forms/angular-html';
+import { createDynamicForm } from '@lourthuxavierm/dynamic-forms-angular';
+import { DynamicHtmlFormComponent } from '@lourthuxavierm/dynamic-forms-angular-html';
 import { getFormExample } from '@dynamic-forms/examples';
-import { createZodFormValidator } from '@dynamic-forms/zod';
+import { createZodFormValidator } from '@lourthuxavierm/dynamic-forms-zod';
 import { z } from 'zod';
 
 const requested = new URLSearchParams(window.location.search).get('example');

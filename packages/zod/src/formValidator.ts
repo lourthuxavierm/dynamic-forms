@@ -1,4 +1,4 @@
-import type { FormErrors, FormValidator } from '@dynamic-forms/core';
+import type { FormErrors, FormValidator } from '@lourthuxavierm/dynamic-forms-core';
 import { zodIssuesToFormErrors } from './issues';
 import type { ZodAdapterOptions, ZodSchemaLike } from './types';
 

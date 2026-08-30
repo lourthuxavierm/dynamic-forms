@@ -1,4 +1,4 @@
-# @dynamic-forms/core API
+# @lourthuxavierm/dynamic-forms-core API
 
 <!-- GENERATED FILE. Run pnpm docs:api to update. -->
 
@@ -30,7 +30,7 @@ export interface ArrayFieldConfig;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface ChoiceFieldConfig;
@@ -41,7 +41,7 @@ export interface ChoiceFieldConfig;
 - Kind: interface
 - Source: `packages/core/src/conditions/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface Condition;
@@ -52,7 +52,7 @@ export interface Condition;
 - Kind: class
 - Source: `packages/core/src/conditions/controller.ts`
 
-Public class exported by @dynamic-forms/core.
+Public class exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export class ConditionController;
@@ -63,7 +63,7 @@ export class ConditionController;
 - Kind: interface
 - Source: `packages/core/src/conditions/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface ConditionGroup;
@@ -74,7 +74,7 @@ export interface ConditionGroup;
 - Kind: type
 - Source: `packages/core/src/conditions/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type ConditionOperator;
@@ -85,7 +85,7 @@ export type ConditionOperator;
 - Kind: function
 - Source: `packages/core/src/validation/schemaValidators.ts`
 
-Public function exported by @dynamic-forms/core.
+Public function exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare function createFieldValidators(field: FieldSchema, overrides?: FieldValidationOverrides): Validator[]
@@ -107,7 +107,7 @@ export declare function createFormValidator(schema: FormSchema): FormValidator
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface CurrencyFieldConfig;
@@ -118,7 +118,7 @@ export interface CurrencyFieldConfig;
 - Kind: type
 - Source: `packages/core/src/datasource/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type DataSource;
@@ -129,7 +129,7 @@ export type DataSource;
 - Kind: interface
 - Source: `packages/core/src/datasource/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DataSourceConfig;
@@ -140,7 +140,7 @@ export interface DataSourceConfig;
 - Kind: interface
 - Source: `packages/core/src/datasource/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DataSourceContext;
@@ -151,7 +151,7 @@ export interface DataSourceContext;
 - Kind: interface
 - Source: `packages/core/src/datasource/datasource.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DataSourceLoadOptions;
@@ -162,7 +162,7 @@ export interface DataSourceLoadOptions;
 - Kind: class
 - Source: `packages/core/src/datasource/datasource.ts`
 
-Public class exported by @dynamic-forms/core.
+Public class exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export class DataSourceManager;
@@ -173,7 +173,7 @@ export class DataSourceManager;
 - Kind: interface
 - Source: `packages/core/src/datasource/datasource.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DataSourceManagerOptions;
@@ -184,7 +184,7 @@ export interface DataSourceManagerOptions;
 - Kind: interface
 - Source: `packages/core/src/datasource/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DataSourceResult;
@@ -195,7 +195,7 @@ export interface DataSourceResult;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DateTimeFieldConfig;
@@ -206,7 +206,7 @@ export interface DateTimeFieldConfig;
 - Kind: function
 - Source: `packages/core/src/store/paths.ts`
 
-Public function exported by @dynamic-forms/core.
+Public function exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare function deleteByPath(obj: any, path: string): any
@@ -217,7 +217,7 @@ export declare function deleteByPath(obj: any, path: string): any
 - Kind: class
 - Source: `packages/core/src/dependencies/controller.ts`
 
-Public class exported by @dynamic-forms/core.
+Public class exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export class DependencyController;
@@ -228,7 +228,7 @@ export class DependencyController;
 - Kind: interface
 - Source: `packages/core/src/dependencies/controller.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface DependencyControllerOptions;
@@ -239,7 +239,7 @@ export interface DependencyControllerOptions;
 - Kind: class
 - Source: `packages/core/src/dependencies/graph.ts`
 
-Public class exported by @dynamic-forms/core.
+Public class exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export class DependencyGraph;
@@ -250,7 +250,7 @@ export class DependencyGraph;
 - Kind: function
 - Source: `packages/core/src/conditions/evaluate.ts`
 
-Public function exported by @dynamic-forms/core.
+Public function exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare function evaluateCondition(condition: FieldCondition, values: Record<string, unknown>): boolean
@@ -261,7 +261,7 @@ export declare function evaluateCondition(condition: FieldCondition, values: Rec
 - Kind: type
 - Source: `packages/core/src/conditions/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FieldCondition;
@@ -272,7 +272,7 @@ export type FieldCondition;
 - Kind: interface
 - Source: `packages/core/src/conditions/controller.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FieldConditionState;
@@ -283,7 +283,7 @@ export interface FieldConditionState;
 - Kind: type
 - Source: `packages/core/src/schema/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FieldConfig;
@@ -294,7 +294,7 @@ export type FieldConfig;
 - Kind: interface
 - Source: `packages/core/src/registry/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FieldDefinition;
@@ -305,7 +305,7 @@ export interface FieldDefinition;
 - Kind: interface
 - Source: `packages/core/src/dependencies/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FieldDependency;
@@ -316,7 +316,7 @@ export interface FieldDependency;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FieldOption;
@@ -327,7 +327,7 @@ export interface FieldOption;
 - Kind: class
 - Source: `packages/core/src/registry/registry.ts`
 
-Public class exported by @dynamic-forms/core.
+Public class exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export class FieldRegistry;
@@ -349,7 +349,7 @@ export interface FieldSchema;
 - Kind: type
 - Source: `packages/core/src/schema/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FieldType;
@@ -360,7 +360,7 @@ export type FieldType;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FieldValidation;
@@ -371,7 +371,7 @@ export interface FieldValidation;
 - Kind: interface
 - Source: `packages/core/src/validation/schemaValidators.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FieldValidationOverrides;
@@ -382,7 +382,7 @@ export interface FieldValidationOverrides;
 - Kind: type
 - Source: `packages/core/src/schema/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FieldValue;
@@ -393,7 +393,7 @@ export type FieldValue;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FileFieldConfig;
@@ -404,7 +404,7 @@ export interface FileFieldConfig;
 - Kind: type
 - Source: `packages/core/src/store/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormErrors;
@@ -415,7 +415,7 @@ export type FormErrors;
 - Kind: interface
 - Source: `packages/core/src/events/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FormEvent;
@@ -426,7 +426,7 @@ export interface FormEvent;
 - Kind: class
 - Source: `packages/core/src/events/emitter.ts`
 
-Public class exported by @dynamic-forms/core.
+Public class exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export class FormEventEmitter;
@@ -437,7 +437,7 @@ export class FormEventEmitter;
 - Kind: type
 - Source: `packages/core/src/events/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormEventListener;
@@ -448,7 +448,7 @@ export type FormEventListener;
 - Kind: type
 - Source: `packages/core/src/events/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormEventType;
@@ -459,7 +459,7 @@ export type FormEventType;
 - Kind: type
 - Source: `packages/core/src/store/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormListener;
@@ -481,7 +481,7 @@ export interface FormSchema;
 - Kind: interface
 - Source: `packages/core/src/store/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface FormState;
@@ -503,7 +503,7 @@ export class FormStore;
 - Kind: type
 - Source: `packages/core/src/store/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormSubmitHandler;
@@ -514,7 +514,7 @@ export type FormSubmitHandler;
 - Kind: type
 - Source: `packages/core/src/store/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormValidator;
@@ -525,7 +525,7 @@ export type FormValidator;
 - Kind: type
 - Source: `packages/core/src/store/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type FormValues;
@@ -558,7 +558,7 @@ export type InferSchemaType;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface MaskFieldConfig;
@@ -569,7 +569,7 @@ export interface MaskFieldConfig;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface NumericFieldConfig;
@@ -591,7 +591,7 @@ export interface RangeFieldConfig;
 - Kind: interface
 - Source: `packages/core/src/registry/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface RegistryOptions;
@@ -602,7 +602,7 @@ export interface RegistryOptions;
 - Kind: interface
 - Source: `packages/core/src/store/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface ResetOptions;
@@ -613,7 +613,7 @@ export interface ResetOptions;
 - Kind: interface
 - Source: `packages/core/src/schema/validation.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface SchemaValidationError;
@@ -624,7 +624,7 @@ export interface SchemaValidationError;
 - Kind: interface
 - Source: `packages/core/src/schema/validation.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface SchemaValidationResult;
@@ -646,7 +646,7 @@ export interface SegmentedFieldConfig;
 - Kind: function
 - Source: `packages/core/src/store/paths.ts`
 
-Public function exported by @dynamic-forms/core.
+Public function exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare function setByPath(obj: any, path: string, value: any): any
@@ -657,7 +657,7 @@ export declare function setByPath(obj: any, path: string, value: any): any
 - Kind: interface
 - Source: `packages/core/src/store/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface SetValueOptions;
@@ -668,7 +668,7 @@ export interface SetValueOptions;
 - Kind: interface
 - Source: `packages/core/src/schema/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface TextFieldConfig;
@@ -679,7 +679,7 @@ export interface TextFieldConfig;
 - Kind: function
 - Source: `packages/core/src/validation/validator.ts`
 
-Public function exported by @dynamic-forms/core.
+Public function exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare function validateField<T>(field: string, value: T, values: Record<string, unknown>, validators?: Validator<T>[]): Promise<ValidationResult>
@@ -690,7 +690,7 @@ export declare function validateField<T>(field: string, value: T, values: Record
 - Kind: function
 - Source: `packages/core/src/schema/validation.ts`
 
-Public function exported by @dynamic-forms/core.
+Public function exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare function validateSchema(schema: FormSchema): SchemaValidationResult
@@ -701,7 +701,7 @@ export declare function validateSchema(schema: FormSchema): SchemaValidationResu
 - Kind: interface
 - Source: `packages/core/src/validation/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface ValidationError;
@@ -712,7 +712,7 @@ export interface ValidationError;
 - Kind: interface
 - Source: `packages/core/src/validation/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface ValidationIssue;
@@ -723,7 +723,7 @@ export interface ValidationIssue;
 - Kind: interface
 - Source: `packages/core/src/validation/types.ts`
 
-Public interface exported by @dynamic-forms/core.
+Public interface exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export interface ValidationResult;
@@ -734,7 +734,7 @@ export interface ValidationResult;
 - Kind: type
 - Source: `packages/core/src/validation/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type Validator;
@@ -745,7 +745,7 @@ export type Validator;
 - Kind: type
 - Source: `packages/core/src/validation/types.ts`
 
-Public type exported by @dynamic-forms/core.
+Public type exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export type ValidatorResult;
@@ -756,7 +756,7 @@ export type ValidatorResult;
 - Kind: const
 - Source: `packages/core/src/index.ts`
 
-Public const exported by @dynamic-forms/core.
+Public const exported by @lourthuxavierm/dynamic-forms-core.
 
 ```ts
 export declare const VERSION: "0.1.0";

@@ -2,7 +2,7 @@
 
 ## Objective
 
-Bring `@dynamic-forms/core` to a stable, testable baseline that can support React and renderer packages without framework-specific logic.
+Bring `@lourthuxavierm/dynamic-forms-core` to a stable, testable baseline that can support React and renderer packages without framework-specific logic.
 
 ## Scope
 
@@ -80,7 +80,7 @@ Bring `@dynamic-forms/core` to a stable, testable baseline that can support Reac
 
 ## Verification Note
 
-Core verification is complete: its typecheck, build, and 51-test suite pass. At the time of this plan, repository-wide verification remained blocked outside `@dynamic-forms/core` by application TypeScript errors and placeholder adapter packages with no test files.
+Core verification is complete: its typecheck, build, and 51-test suite pass. At the time of this plan, repository-wide verification remained blocked outside `@lourthuxavierm/dynamic-forms-core` by application TypeScript errors and placeholder adapter packages with no test files.
 
 ## Definition of Done
 

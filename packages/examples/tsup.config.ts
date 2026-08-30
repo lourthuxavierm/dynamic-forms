@@ -20,5 +20,5 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   target: 'es2022',
-  external: ['@dynamic-forms/core'],
+  external: ['@lourthuxavierm/dynamic-forms-core'],
 });

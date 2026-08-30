@@ -1,5 +1,5 @@
 {
-  "name": "@dynamic-forms/react",
+  "name": "@lourthuxavierm/dynamic-forms-react",
   "version": "0.1.0",
   "description": "React adapter for Dynamic Forms",
   "license": "MIT",
@@ -22,7 +22,7 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@dynamic-forms/core": "workspace:*"
+    "@lourthuxavierm/dynamic-forms-core": "workspace:*"
   },
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",

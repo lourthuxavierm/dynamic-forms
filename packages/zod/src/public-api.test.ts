@@ -9,7 +9,7 @@ import {
 } from './index';
 import type { ZodAdapterOptions, ZodFieldValidatorOptions, ZodSchemaLike } from './index';
 
-describe('@dynamic-forms/zod Phase 1 public surface', () => {
+describe('@lourthuxavierm/dynamic-forms-zod Phase 1 public surface', () => {
   it('exports form and field validation factories', () => {
     expect(adapter).not.toHaveProperty('ZOD_ADAPTER');
     expect(createZodFieldValidator).toBeTypeOf('function');

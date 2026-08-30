@@ -8,5 +8,5 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   target: 'es2022',
-  external: ['@angular/core', '@angular/forms', 'rxjs', '@dynamic-forms/core'],
+  external: ['@angular/core', '@angular/forms', 'rxjs', '@lourthuxavierm/dynamic-forms-core'],
 });

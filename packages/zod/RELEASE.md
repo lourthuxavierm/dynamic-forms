@@ -19,12 +19,12 @@ from a local result alone when that matrix is failing or incomplete.
 
 ## Publication sequence
 
-1. Publish the matching `@dynamic-forms/core` version first.
+1. Publish the matching `@lourthuxavierm/dynamic-forms-core` version first.
 2. Set the Zod adapter version and update the lockfile.
 3. Review generated API, compatibility, migration, and release notes.
 4. Run `pnpm verify:zod-release` from a clean checkout.
 5. Confirm the four compatibility cells and dependent release-gate job passed.
-6. Publish `@dynamic-forms/zod` with public access.
+6. Publish `@lourthuxavierm/dynamic-forms-zod` with public access.
 
 The packed manifest must contain the exact released Core dependency rather than
 an unresolved `workspace:` protocol. Zod remains a peer dependency so an

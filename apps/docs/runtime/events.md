@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 
 ## Event types
 
@@ -18,7 +18,7 @@
 ## Subscribe
 
 ```ts verify
-import { FormStore } from '@dynamic-forms/core';
+import { FormStore } from '@lourthuxavierm/dynamic-forms-core';
 
 const store = new FormStore({ email: '' });
 const unsubscribe = store.on('valueChange', (event) => {

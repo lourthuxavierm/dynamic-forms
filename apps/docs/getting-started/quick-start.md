@@ -7,15 +7,15 @@ This walkthrough renders a validated form with accessible browser-native control
 Follow [Installation](./installation.md), then import the optional stylesheet:
 
 ```ts
-import '@dynamic-forms/react-html/styles.css';
+import '@lourthuxavierm/dynamic-forms-react-html/styles.css';
 ```
 
 ## 2. Add the form
 
 ```tsx
-import type { FormSchema } from '@dynamic-forms/core';
-import { FormProvider } from '@dynamic-forms/react';
-import { HtmlForm } from '@dynamic-forms/react-html';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
+import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
 
 const schema: FormSchema = {
   id: 'profile',

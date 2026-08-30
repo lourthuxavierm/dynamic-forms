@@ -1,14 +1,14 @@
-# @dynamic-forms/react-html
+# @lourthuxavierm/dynamic-forms-react-html
 
 The HTML package renders Dynamic Forms schemas with accessible browser-native controls. It depends on Core and React, has no third-party component-library runtime, and ships optional static CSS.
 
 ## Install
 
 ```sh
-pnpm add @dynamic-forms/core @dynamic-forms/react @dynamic-forms/react-html react react-dom
+pnpm add @lourthuxavierm/dynamic-forms-core @lourthuxavierm/dynamic-forms-react @lourthuxavierm/dynamic-forms-react-html react react-dom
 ```
 
-Import `@dynamic-forms/react-html/styles.css` once if you want the default styling layer.
+Import `@lourthuxavierm/dynamic-forms-react-html/styles.css` once if you want the default styling layer.
 
 ## Capabilities
 
@@ -22,4 +22,4 @@ The package-local `packages/react-html/README.md` and `packages/react-html/docs/
 
 ## Legacy package name
 
-`@dynamic-forms/html` remains available as a thin compatibility package. It forwards the same root API, control subpaths, and stylesheet to `@dynamic-forms/react-html`. New applications should use the canonical package name directly.
+`@lourthuxavierm/dynamic-forms-html` remains available as a thin compatibility package. It forwards the same root API, control subpaths, and stylesheet to `@lourthuxavierm/dynamic-forms-react-html`. New applications should use the canonical package name directly.

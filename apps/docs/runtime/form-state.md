@@ -21,7 +21,7 @@
 ## React selection
 
 ```tsx verify
-import { useFormState } from '@dynamic-forms/react';
+import { useFormState } from '@lourthuxavierm/dynamic-forms-react';
 
 export function SubmitStatus() {
   const submitting = useFormState((state) => state.submitting);

@@ -3,10 +3,10 @@
 - Status: Implemented and documented
 - Owner: React HTML maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/react-html` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-react-html` 0.1.0
 
-`@dynamic-forms/react-html` renders browser-native controls through React. It
-consumes `@dynamic-forms/react` for lifecycle and field bindings, then adds
+`@lourthuxavierm/dynamic-forms-react-html` renders browser-native controls through React. It
+consumes `@lourthuxavierm/dynamic-forms-react` for lifecycle and field bindings, then adds
 `HtmlForm`, HTML controls, structural rendering, layouts, immutable registries,
 lazy control loading, accessibility markup, and optional CSS.
 

@@ -26,8 +26,8 @@ if (/angular|rxjs|zone\.js/i.test(coreBoundary)) failures.push('Core boundary co
 
 const angularPackage = JSON.parse(readFileSync(resolve(root, 'packages/angular/package.json'), 'utf8'));
 const htmlPackage = JSON.parse(readFileSync(resolve(root, 'packages/angular-html/package.json'), 'utf8'));
-if (angularPackage.name !== '@dynamic-forms/angular') failures.push('Angular adapter package has the wrong name');
-if (htmlPackage.name !== '@dynamic-forms/angular-html') failures.push('Angular HTML package has the wrong name');
+if (angularPackage.name !== '@lourthuxavierm/dynamic-forms-angular') failures.push('Angular adapter package has the wrong name');
+if (htmlPackage.name !== '@lourthuxavierm/dynamic-forms-angular-html') failures.push('Angular HTML package has the wrong name');
 if (!angularPackage.peerDependencies?.['@angular/core']) failures.push('Angular adapter does not declare its Angular peer');
 
 const phase10 = readFileSync(resolve(root, 'apps/docs/project/phase-10-status.md'), 'utf8');

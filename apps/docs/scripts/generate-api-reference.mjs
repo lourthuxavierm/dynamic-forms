@@ -9,11 +9,11 @@ const generatedRoot = resolve(docsRoot, 'api', 'generated');
 const annotations = JSON.parse(readFileSync(resolve(docsRoot, 'api', 'annotations.json'), 'utf8'));
 const check = process.argv.includes('--check');
 const packages = [
-  { slug: 'core', name: '@dynamic-forms/core', entry: 'packages/core/src/index.ts', maturity: 'Implemented' },
-  { slug: 'react', name: '@dynamic-forms/react', entry: 'packages/react/src/index.ts', maturity: 'Documented' },
-  { slug: 'react-html', name: '@dynamic-forms/react-html', entry: 'packages/react-html/src/index.ts', maturity: 'Documented' },
-  { slug: 'html', name: '@dynamic-forms/html', entry: 'packages/html/src/index.ts', maturity: 'Compatibility-only' },
-  { slug: 'zod', name: '@dynamic-forms/zod', entry: 'packages/zod/src/index.ts', maturity: 'Release-ready' },
+  { slug: 'core', name: '@lourthuxavierm/dynamic-forms-core', entry: 'packages/core/src/index.ts', maturity: 'Implemented' },
+  { slug: 'react', name: '@lourthuxavierm/dynamic-forms-react', entry: 'packages/react/src/index.ts', maturity: 'Documented' },
+  { slug: 'react-html', name: '@lourthuxavierm/dynamic-forms-react-html', entry: 'packages/react-html/src/index.ts', maturity: 'Documented' },
+  { slug: 'html', name: '@lourthuxavierm/dynamic-forms-html', entry: 'packages/html/src/index.ts', maturity: 'Compatibility-only' },
+  { slug: 'zod', name: '@lourthuxavierm/dynamic-forms-zod', entry: 'packages/zod/src/index.ts', maturity: 'Release-ready' },
 ];
 
 const entries = packages.map((pkg) => resolve(root, pkg.entry));

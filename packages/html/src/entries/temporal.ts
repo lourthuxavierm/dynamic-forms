@@ -1,1 +1,1 @@
-export * from '@dynamic-forms/react-html/controls/temporal';
+export * from '@lourthuxavierm/dynamic-forms-react-html/controls/temporal';

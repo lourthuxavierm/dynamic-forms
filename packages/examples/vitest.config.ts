@@ -4,7 +4,7 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   resolve: {
     alias: {
-      '@dynamic-forms/core': fileURLToPath(new URL('../core/src/index.ts', import.meta.url)),
+      '@lourthuxavierm/dynamic-forms-core': fileURLToPath(new URL('../core/src/index.ts', import.meta.url)),
     },
   },
 });

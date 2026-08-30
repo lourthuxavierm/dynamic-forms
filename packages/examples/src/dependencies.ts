@@ -1,4 +1,4 @@
-import { DependencyGraph } from '@dynamic-forms/core';
+import { DependencyGraph } from '@lourthuxavierm/dynamic-forms-core';
 
 export type LocationField = 'country' | 'state' | 'city';
 export type ValuePolicy = 'clear' | 'preserve';

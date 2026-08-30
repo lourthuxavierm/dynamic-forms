@@ -3,7 +3,7 @@
 - Status: Implemented primitives; application controls remain responsible
 - Owner: React and accessibility maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/react` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-react` 0.1.0
 
 The headless adapter supplies accessibility IDs, ARIA relationships, field data
 attributes, `FormErrorSummary`, `LiveRegion`, invalid-submit focus, and focus

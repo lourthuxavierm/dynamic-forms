@@ -1,5 +1,5 @@
 {
-    "name":  "@dynamic-forms/zod",
+    "name":  "@lourthuxavierm/dynamic-forms-zod",
     "version":  "0.1.0",
     "description":  "Zod validation adapter for Dynamic Forms",
     "license":  "MIT",
@@ -24,7 +24,7 @@
                              "zod":  "^3.25.5 || ^4.0.0"
                          },
     "dependencies":  {
-                         "@dynamic-forms/core":  "workspace:*"
+                         "@lourthuxavierm/dynamic-forms-core":  "workspace:*"
                      },
     "scripts":  {
                     "build":  "tsup && tsc -p tsconfig.build.json",

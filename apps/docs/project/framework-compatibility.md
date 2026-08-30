@@ -8,11 +8,11 @@
 ## Current architecture
 
 ```text
-                         @dynamic-forms/core
+                         @lourthuxavierm/dynamic-forms-core
                            /             \
-              @dynamic-forms/react   @dynamic-forms/angular
+              @lourthuxavierm/dynamic-forms-react   @lourthuxavierm/dynamic-forms-angular
                        |                       |
-       @dynamic-forms/react-html   @dynamic-forms/angular-html
+       @lourthuxavierm/dynamic-forms-react-html   @lourthuxavierm/dynamic-forms-angular-html
 ```
 
 Core remains framework-independent. React HTML is the complete documented
@@ -35,11 +35,11 @@ renderer. Angular and Angular HTML now exist as Experimental Angular 22 packages
 
 ## Angular boundary
 
-`@dynamic-forms/angular` depends on Core and never on Angular HTML.
-`@dynamic-forms/angular-html` depends on the headless Angular adapter. Neither
+`@lourthuxavierm/dynamic-forms-angular` depends on Core and never on Angular HTML.
+`@lourthuxavierm/dynamic-forms-angular-html` depends on the headless Angular adapter. Neither
 dependency is allowed to enter Core. See [Angular compatibility](./angular-compatibility.md).
 
 ## Compatibility package
 
-`@dynamic-forms/html` still forwards React HTML. It is unrelated to Angular HTML
+`@lourthuxavierm/dynamic-forms-html` still forwards React HTML. It is unrelated to Angular HTML
 and is not a standalone DOM renderer.

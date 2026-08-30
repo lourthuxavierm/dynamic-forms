@@ -11,11 +11,11 @@ contains no installation command or invented package name.
 
 ## Do not confuse the compatibility package with a DOM renderer
 
-`@dynamic-forms/html` depends on `@dynamic-forms/react-html` and declares
-`react`, `react-dom`, `@dynamic-forms/react`, and `@dynamic-forms/core` as peer
-dependencies. Its root source re-exports `@dynamic-forms/react-html`.
+`@lourthuxavierm/dynamic-forms-html` depends on `@lourthuxavierm/dynamic-forms-react-html` and declares
+`react`, `react-dom`, `@lourthuxavierm/dynamic-forms-react`, and `@lourthuxavierm/dynamic-forms-core` as peer
+dependencies. Its root source re-exports `@lourthuxavierm/dynamic-forms-react-html`.
 
-Consequently, installing `@dynamic-forms/html` does not provide framework-free
+Consequently, installing `@lourthuxavierm/dynamic-forms-html` does not provide framework-free
 rendering. It exists for old imports during the v1 compatibility window; new
 React applications should use the canonical React HTML package directly.
 

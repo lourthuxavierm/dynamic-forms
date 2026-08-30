@@ -3,7 +3,7 @@
 - Status: Verified subscription behavior
 - Owner: React maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/react` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-react` 0.1.0
 
 Field hooks subscribe to their field, and `useWatch` subscribes to requested
 paths. Phase 8 integration tests verify that changing one field does not rerender

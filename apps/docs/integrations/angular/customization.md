@@ -3,7 +3,7 @@
 - Status: Experimental headless composition
 - Owner: Angular maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/angular` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-angular` 0.1.0
 
 Design-system controls consume `DynamicFieldSignals` and render their own
 markup. They must preserve Core values, touch semantics, conditions, disabled

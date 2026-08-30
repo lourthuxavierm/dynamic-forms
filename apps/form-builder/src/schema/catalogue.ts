@@ -1,4 +1,4 @@
-import type { FieldSchema, FieldType } from '@dynamic-forms/core';
+import type { FieldSchema, FieldType } from '@lourthuxavierm/dynamic-forms-core';
 export interface PaletteItem { type: FieldType; label: string; group: string }
 const groups: Record<string, readonly FieldType[]> = {
   Text: ['text','textarea','password','email','url','hidden'],

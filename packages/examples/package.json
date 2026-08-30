@@ -69,7 +69,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@dynamic-forms/core": "workspace:*"
+    "@lourthuxavierm/dynamic-forms-core": "workspace:*"
   },
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",

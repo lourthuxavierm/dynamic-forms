@@ -1,5 +1,5 @@
 {
-    "name":  "@dynamic-forms/rhf",
+    "name":  "@lourthuxavierm/dynamic-forms-rhf",
     "version":  "0.1.0",
     "description":  "React Hook Form adapter for Dynamic Forms",
     "license":  "MIT",
@@ -21,7 +21,7 @@
                              "react-hook-form":  "^7.0.0"
                          },
     "dependencies":  {
-                         "@dynamic-forms/core":  "workspace:*"
+                         "@lourthuxavierm/dynamic-forms-core":  "workspace:*"
                      },
     "scripts":  {
                     "build":  "tsup",

@@ -1,4 +1,4 @@
-import { validateSchema, type FormSchema, type SchemaValidationError } from '@dynamic-forms/core';
+import { validateSchema, type FormSchema, type SchemaValidationError } from '@lourthuxavierm/dynamic-forms-core';
 export function validateBuilderSchema(schema: FormSchema): SchemaValidationError[] {
   const errors = [...validateSchema(schema).errors];
   if (!schema.id.trim()) errors.unshift({ path: 'id', message: 'Schema ID is required' });

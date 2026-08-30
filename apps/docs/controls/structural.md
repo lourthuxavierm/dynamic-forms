@@ -20,7 +20,7 @@ An `array` stores a plain array. Object item paths use indexes such as
 `metadata: { primitiveItems: true }` or a single child named `$value`.
 
 ```ts verify
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export const structuralSchema: FormSchema = {
   id: 'structural-fields',

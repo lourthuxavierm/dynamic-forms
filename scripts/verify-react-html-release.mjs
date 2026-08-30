@@ -53,16 +53,16 @@ function verifyFiles(label, files, required) {
 }
 
 try {
-  runPnpm(['--filter', '@dynamic-forms/react-html...', 'build']);
-  runPnpm(['--filter', '@dynamic-forms/html', 'build']);
+  runPnpm(['--filter', '@lourthuxavierm/dynamic-forms-react-html...', 'build']);
+  runPnpm(['--filter', '@lourthuxavierm/dynamic-forms-html', 'build']);
 
-  const canonical = pack('@dynamic-forms/react-html');
-  const compatibility = pack('@dynamic-forms/html');
+  const canonical = pack('@lourthuxavierm/dynamic-forms-react-html');
+  const compatibility = pack('@lourthuxavierm/dynamic-forms-html');
 
-  assert.equal(canonical.manifest.name, '@dynamic-forms/react-html');
-  assert.equal(compatibility.manifest.name, '@dynamic-forms/html');
+  assert.equal(canonical.manifest.name, '@lourthuxavierm/dynamic-forms-react-html');
+  assert.equal(compatibility.manifest.name, '@lourthuxavierm/dynamic-forms-html');
   assert.equal(compatibility.manifest.version, canonical.manifest.version, 'Canonical and compatibility versions must match');
-  assert.equal(compatibility.manifest.dependencies['@dynamic-forms/react-html'], canonical.manifest.version);
+  assert.equal(compatibility.manifest.dependencies['@lourthuxavierm/dynamic-forms-react-html'], canonical.manifest.version);
   assert.equal(canonical.manifest.publishConfig?.access, 'public');
   assert.equal(compatibility.manifest.publishConfig?.access, 'public');
   assert.ok(!JSON.stringify(canonical.manifest).includes('workspace:'), 'Canonical manifest contains an unresolved workspace protocol');

@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: React and React HTML maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/react` and `@dynamic-forms/react-html` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-react` and `@lourthuxavierm/dynamic-forms-react-html` 0.1.0
 - Prerequisites: React 18 or 19 and a completed schema
 
 ## Outcome
@@ -18,15 +18,15 @@ processed by the application bundler rather than the standalone snippet
 compiler used by this documentation site.
 
 ```ts
-import '@dynamic-forms/react-html/styles.css';
+import '@lourthuxavierm/dynamic-forms-react-html/styles.css';
 ```
 
 ## Render the form
 
 ```tsx verify
-import type { FormSchema } from '@dynamic-forms/core';
-import { FormProvider } from '@dynamic-forms/react';
-import { HtmlForm } from '@dynamic-forms/react-html';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { FormProvider } from '@lourthuxavierm/dynamic-forms-react';
+import { HtmlForm } from '@lourthuxavierm/dynamic-forms-react-html';
 
 const schema: FormSchema = {
   id: 'employee-profile',

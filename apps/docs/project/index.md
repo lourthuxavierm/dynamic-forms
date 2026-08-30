@@ -22,7 +22,7 @@ placeholders, and future framework plans.
   registries, and automated tests.
 - React HTML is identified as the current React-rendered browser-native UI
   integration.
-- `@dynamic-forms/html` is identified as a compatibility package rather than a
+- `@lourthuxavierm/dynamic-forms-html` is identified as a compatibility package rather than a
   standalone DOM renderer.
 - Standalone Native HTML/DOM, Angular, and Angular HTML remain Planned.
 - Undeclared Node.js and browser-version policies are recorded as gaps rather

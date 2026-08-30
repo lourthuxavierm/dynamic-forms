@@ -3,7 +3,7 @@
 A form schema has a stable `id` and an ordered `fields` array. Each field needs a unique `name` path and a renderer `type`.
 
 ```ts verify
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export const accountSchema: FormSchema = {
   id: 'account',

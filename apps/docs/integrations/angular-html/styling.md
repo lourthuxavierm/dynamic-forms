@@ -3,7 +3,7 @@
 - Status: Experimental
 - Owner: Angular HTML and design-system maintainers
 - Last verified: 2026-08-27
-- Applies to: `@dynamic-forms/angular-html/styles.css`
+- Applies to: `@lourthuxavierm/dynamic-forms-angular-html/styles.css`
 
 The optional stylesheet defines form/field spacing, input surfaces, focus
 indicators, error colors, and submit-button placement. Tokens currently use the

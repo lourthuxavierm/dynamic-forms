@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 
 Conditions express framework-neutral decisions from current form values.
 
@@ -19,7 +19,7 @@ Conditions express framework-neutral decisions from current form values.
 ## Field condition
 
 ```ts verify
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export const businessSchema: FormSchema = {
   id: 'business',

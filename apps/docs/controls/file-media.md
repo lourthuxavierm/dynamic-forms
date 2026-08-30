@@ -16,7 +16,7 @@
 ## Schema example
 
 ```ts verify
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export const mediaSchema: FormSchema = {
   id: 'media-controls',

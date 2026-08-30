@@ -1,5 +1,5 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import type { FieldConditionState, FormState } from '@dynamic-forms/core';
+import type { FieldConditionState, FormState } from '@lourthuxavierm/dynamic-forms-core';
 import { useFormContext } from '../context';
 
 const defaultConditionState: FieldConditionState = { visible: true, disabled: false, required: false, readOnly: false };

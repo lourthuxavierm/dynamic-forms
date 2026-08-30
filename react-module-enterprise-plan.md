@@ -2,17 +2,17 @@
 
 ## Objective
 
-Bring `@dynamic-forms/react` to a production-ready adapter for `@dynamic-forms/core`, with fine-grained rendering, predictable form lifecycle behavior, typed APIs, accessibility support, and strong automated test coverage.
+Bring `@lourthuxavierm/dynamic-forms-react` to a production-ready adapter for `@lourthuxavierm/dynamic-forms-core`, with fine-grained rendering, predictable form lifecycle behavior, typed APIs, accessibility support, and strong automated test coverage.
 
 ## Scope
 
 - Package: `packages/react`
-- Uses `@dynamic-forms/core` as the single source of form state, validation, conditions, dependencies, data sources, and events.
+- Uses `@lourthuxavierm/dynamic-forms-core` as the single source of form state, validation, conditions, dependencies, data sources, and events.
 - Excludes visual rendering; those responsibilities remain in renderer packages.
 
 ## Phase 0 � Baseline and Package Health
 
-- [ ] Make `pnpm --filter @dynamic-forms/react typecheck`, `test`, and `build` pass.
+- [ ] Make `pnpm --filter @lourthuxavierm/dynamic-forms-react typecheck`, `test`, and `build` pass.
 - [ ] Add a React test environment and ensure `vitest run` succeeds when no component tests previously existed.
 - [ ] Confirm public entry points only expose intentional APIs.
 - [ ] Document React and React DOM peer-dependency support.

@@ -7,8 +7,8 @@
 
 No standalone Native HTML stylesheet, class contract, CSS custom-property set,
 or theming package exists. The stylesheet exported by
-`@dynamic-forms/react-html` belongs to the React HTML renderer; the
-`@dynamic-forms/html/styles.css` path only forwards that compatibility surface.
+`@lourthuxavierm/dynamic-forms-react-html` belongs to the React HTML renderer; the
+`@lourthuxavierm/dynamic-forms-html/styles.css` path only forwards that compatibility surface.
 
 ## Required styling contract
 

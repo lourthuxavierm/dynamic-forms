@@ -3,7 +3,7 @@
 - Status: Implemented and verified
 - Owner: Core and documentation maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 
 ## Delivered
 

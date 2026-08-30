@@ -19,17 +19,17 @@
 
 | Package | Maturity | Evidence and boundary |
 | --- | --- | --- |
-| `@dynamic-forms/core` | Implemented | Framework-independent schema, store, validation, conditions, dependencies, data sources, events |
-| `@dynamic-forms/react` | Documented | Provider, hooks, subscriptions, headless components, integration tests |
-| `@dynamic-forms/react-html` | Documented | 42-control v1 renderer, structures, layouts, CSS, accessibility and performance references |
-| `@dynamic-forms/html` | Compatibility-only | Forwards React HTML; no second renderer |
-| `@dynamic-forms/angular` | Experimental | Angular 22 facade, readonly signals, DI, RxJS, validation, CVA, tests and build |
-| `@dynamic-forms/angular-html` | Experimental | Angular 22 OnPush native form and 15-type baseline renderer |
+| `@lourthuxavierm/dynamic-forms-core` | Implemented | Framework-independent schema, store, validation, conditions, dependencies, data sources, events |
+| `@lourthuxavierm/dynamic-forms-react` | Documented | Provider, hooks, subscriptions, headless components, integration tests |
+| `@lourthuxavierm/dynamic-forms-react-html` | Documented | 42-control v1 renderer, structures, layouts, CSS, accessibility and performance references |
+| `@lourthuxavierm/dynamic-forms-html` | Compatibility-only | Forwards React HTML; no second renderer |
+| `@lourthuxavierm/dynamic-forms-angular` | Experimental | Angular 22 facade, readonly signals, DI, RxJS, validation, CVA, tests and build |
+| `@lourthuxavierm/dynamic-forms-angular-html` | Experimental | Angular 22 OnPush native form and 15-type baseline renderer |
 | `@dynamic-forms/examples` | Implemented, private | Shared schemas and rules |
-| `@dynamic-forms/zod` | Release-ready | Validators, pinned dual-major matrix, cross-renderer playground with deterministic visual evidence and browser release gate, integration/API/migration guidance, and packed-artifact release gate |
-| `@dynamic-forms/rhf` | Placeholder | Marker only |
-| `@dynamic-forms/json-schema` | Placeholder | Marker only |
-| `@dynamic-forms/devtools` | Placeholder | Marker only |
+| `@lourthuxavierm/dynamic-forms-zod` | Release-ready | Validators, pinned dual-major matrix, cross-renderer playground with deterministic visual evidence and browser release gate, integration/API/migration guidance, and packed-artifact release gate |
+| `@lourthuxavierm/dynamic-forms-rhf` | Placeholder | Marker only |
+| `@lourthuxavierm/dynamic-forms-json-schema` | Placeholder | Marker only |
+| `@lourthuxavierm/dynamic-forms-devtools` | Placeholder | Marker only |
 
 ## Angular maturity boundary
 

@@ -11,7 +11,7 @@ entry and below 2 KB for the independently importable text control, plus a
 because CI hardware varies.
 
 For production composition, import registry primitives from
-`@dynamic-forms/react-html/core` and controls from `controls/*`. Merge
+`@lourthuxavierm/dynamic-forms-react-html/core` and controls from `controls/*`. Merge
 `createLazyHtmlRegistry()` for uncommon heavy controls. Array virtualization is
 application-owned through `arrayItemsRenderer`; tests exercise a 1,000-row
 collection with only its viewport mounted.

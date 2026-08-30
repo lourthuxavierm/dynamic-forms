@@ -61,7 +61,7 @@ test('Zod compatibility links to the generated API', async ({ page }) => {
   await page.goto('/project/zod-compatibility');
   const article = page.locator('main');
   await expect(article.getByRole('heading', { level: 2, name: 'Phase 7 generated API reference' })).toBeVisible();
-  await expect(article.getByRole('link', { name: '@dynamic-forms/zod API reference' })).toHaveAttribute('href', '/api/generated/zod');
+  await expect(article.getByRole('link', { name: '@lourthuxavierm/dynamic-forms-zod API reference' })).toHaveAttribute('href', '/api/generated/zod');
 });
 
 test('Zod migration documents transformed output, stop conditions, and rollback', async ({ page }) => {

@@ -1,7 +1,7 @@
 /** @vitest-environment happy-dom */
 import { fireEvent, render, screen } from '@testing-library/react';
-import { FormStore, type FormSchema } from '@dynamic-forms/core';
-import { FormProvider, type FieldComponentProps } from '@dynamic-forms/react';
+import { FormStore, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
+import { FormProvider, type FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
 import { describe, expect, it, vi } from 'vitest';
 import {
   HtmlFieldRenderer,

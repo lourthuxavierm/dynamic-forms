@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { evaluateCondition, validateSchema } from '@dynamic-forms/core';
+import { evaluateCondition, validateSchema } from '@lourthuxavierm/dynamic-forms-core';
 import { basicFormSchema } from './basic';
 import { approvalCondition, conditionalSchema } from './conditions';
 import { createLocationDependencyGraph } from './dependencies';

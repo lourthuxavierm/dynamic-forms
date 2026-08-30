@@ -10,8 +10,8 @@ test('Native HTML landing page states the architecture decision', async ({ page 
 test('installation page does not misrepresent the compatibility package', async ({ page }) => {
   await page.goto('/integrations/native-html/installation');
   await expect(page.getByText('There is nothing to install for standalone Native HTML/DOM today.')).toBeVisible();
-  await expect(page.getByText('@dynamic-forms/html depends on @dynamic-forms/react-html')).toBeVisible();
-  await expect(page.getByText('installing @dynamic-forms/html does not provide framework-free rendering')).toBeVisible();
+  await expect(page.getByText('@lourthuxavierm/dynamic-forms-html depends on @lourthuxavierm/dynamic-forms-react-html')).toBeVisible();
+  await expect(page.getByText('installing @lourthuxavierm/dynamic-forms-html does not provide framework-free rendering')).toBeVisible();
 });
 
 test('complete example remains gated on implementation evidence', async ({ page }) => {

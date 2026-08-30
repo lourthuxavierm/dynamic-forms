@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import * as reactAdapter from './index';
 
-describe('@dynamic-forms/react public API', () => {
+describe('@lourthuxavierm/dynamic-forms-react public API', () => {
   it('exports the supported React adapter APIs', () => {
     expect(reactAdapter.FormProvider).toBeTypeOf('function');
     expect(reactAdapter.useFormContext).toBeTypeOf('function');

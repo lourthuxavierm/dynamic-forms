@@ -1,4 +1,4 @@
-import type { ValidationIssue, Validator } from '@dynamic-forms/core';
+import type { ValidationIssue, Validator } from '@lourthuxavierm/dynamic-forms-core';
 import { zodIssueToValidationIssue } from './issues';
 import type { ZodFieldValidatorOptions, ZodSchemaLike } from './types';
 

@@ -24,7 +24,7 @@ import {
   type FormSchema,
   type FieldConditionState,
   validateField,
-} from '@dynamic-forms/core';
+} from '@lourthuxavierm/dynamic-forms-core';
 import { warnInDevelopment } from '../development';
 import { findFieldByPath } from '../schemaPaths';
 

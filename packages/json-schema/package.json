@@ -1,5 +1,5 @@
 {
-    "name":  "@dynamic-forms/json-schema",
+    "name":  "@lourthuxavierm/dynamic-forms-json-schema",
     "version":  "0.1.0",
     "description":  "JSON Schema adapter for Dynamic Forms",
     "license":  "MIT",
@@ -17,7 +17,7 @@
                   "dist"
               ],
     "dependencies":  {
-                         "@dynamic-forms/core":  "workspace:*"
+                         "@lourthuxavierm/dynamic-forms-core":  "workspace:*"
                      },
     "scripts":  {
                     "build":  "tsup",

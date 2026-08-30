@@ -1,4 +1,4 @@
-# @dynamic-forms/react API
+# @lourthuxavierm/dynamic-forms-react API
 
 <!-- GENERATED FILE. Run pnpm docs:api to update. -->
 
@@ -19,7 +19,7 @@ This page contains 39 exports. Signatures are regenerated from the package entry
 - Kind: function
 - Source: `packages/react/src/components/DynamicField.tsx`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function DynamicField({ field: explicitField, name, type, render }: DynamicFieldProps): import("react").JSX.Element | null
@@ -30,7 +30,7 @@ export declare function DynamicField({ field: explicitField, name, type, render 
 - Kind: interface
 - Source: `packages/react/src/components/DynamicField.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface DynamicFieldProps;
@@ -41,7 +41,7 @@ export interface DynamicFieldProps;
 - Kind: function
 - Source: `packages/react/src/components/DynamicForm.tsx`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function DynamicForm({ schema: explicitSchema, children, submitLabel, errorSummary, onSubmit }: DynamicFormProps): import("react").JSX.Element
@@ -52,7 +52,7 @@ export declare function DynamicForm({ schema: explicitSchema, children, submitLa
 - Kind: interface
 - Source: `packages/react/src/components/DynamicForm.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface DynamicFormProps;
@@ -63,7 +63,7 @@ export interface DynamicFormProps;
 - Kind: interface
 - Source: `packages/react/src/components/DynamicField.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface FieldAccessibilityProps;
@@ -74,7 +74,7 @@ export interface FieldAccessibilityProps;
 - Kind: interface
 - Source: `packages/react/src/hooks/useFieldArray.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface FieldArrayItem;
@@ -96,7 +96,7 @@ export interface FieldComponentProps;
 - Kind: function
 - Source: `packages/react/src/components/FormErrorSummary.tsx`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function fieldId(name: string): string
@@ -118,7 +118,7 @@ export type FieldPath;
 - Kind: interface
 - Source: `packages/react/src/context/FormContext.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface FormContextValue;
@@ -140,7 +140,7 @@ export declare function FormErrorSummary({ title, focusOnChange, className }: Fo
 - Kind: interface
 - Source: `packages/react/src/components/FormErrorSummary.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface FormErrorSummaryProps;
@@ -162,7 +162,7 @@ export declare function FormProvider<T extends FormValues = FormValues>({ store,
 - Kind: interface
 - Source: `packages/react/src/context/FormContext.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface FormProviderProps;
@@ -184,7 +184,7 @@ export declare function LiveRegion({ children, mode, atomic, className }: LiveRe
 - Kind: interface
 - Source: `packages/react/src/components/LiveRegion.tsx`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface LiveRegionProps;
@@ -206,7 +206,7 @@ export declare function registerReactField<TValue = unknown>(registry: FieldRegi
 - Kind: type
 - Source: `packages/react/src/types.ts`
 
-Public type exported by @dynamic-forms/react.
+Public type exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export type TypedFieldPath;
@@ -217,7 +217,7 @@ export type TypedFieldPath;
 - Kind: function
 - Source: `packages/react/src/hooks/useDataSource.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useDataSource<T = unknown>(fieldName: string, options?: UseDataSourceOptions<T>): UseDataSourceResult<T>
@@ -228,7 +228,7 @@ export declare function useDataSource<T = unknown>(fieldName: string, options?: 
 - Kind: interface
 - Source: `packages/react/src/hooks/useDataSource.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface UseDataSourceOptions;
@@ -239,7 +239,7 @@ export interface UseDataSourceOptions;
 - Kind: interface
 - Source: `packages/react/src/hooks/useDataSource.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface UseDataSourceResult;
@@ -261,7 +261,7 @@ export declare function useField<T = unknown>(name: string): { name: string; val
 - Kind: function
 - Source: `packages/react/src/hooks/useFieldArray.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useFieldArray<T = unknown>(name: string): UseFieldArrayReturn<T>
@@ -272,7 +272,7 @@ export declare function useFieldArray<T = unknown>(name: string): UseFieldArrayR
 - Kind: interface
 - Source: `packages/react/src/hooks/useFieldArray.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface UseFieldArrayReturn;
@@ -283,7 +283,7 @@ export interface UseFieldArrayReturn;
 - Kind: function
 - Source: `packages/react/src/hooks/useFieldState.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useFieldState(name: string): { visible: boolean; disabled: boolean; required: boolean; readOnly: boolean; error: string; touched: boolean; dirty: boolean; isValidating: boolean; }
@@ -305,10 +305,10 @@ export declare function useForm<TValues extends FormValues = FormValues>(options
 - Kind: function
 - Source: `packages/react/src/hooks/useFormState.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
-export declare function useFormActions<T extends FormValues = FormValues>(): { setValue: (path: string, value: unknown, options?: import("@dynamic-forms/core").SetValueOptions) => void; setValues: (values: Partial<T>, options?: import("@dynamic-forms/core").SetValueOptions) => void; setError: (path: string, message: string) => void; clearError: (path: string) => void; validateField: (name: string) => Promise<boolean>; validateForm: () => Promise<boolean>; submit: <TResult = unknown>() => Promise<TResult | undefined>; reset: () => void; resetField: (name: string) => void; }
+export declare function useFormActions<T extends FormValues = FormValues>(): { setValue: (path: string, value: unknown, options?: import("@lourthuxavierm/dynamic-forms-core").SetValueOptions) => void; setValues: (values: Partial<T>, options?: import("@lourthuxavierm/dynamic-forms-core").SetValueOptions) => void; setError: (path: string, message: string) => void; clearError: (path: string) => void; validateField: (name: string) => Promise<boolean>; validateForm: () => Promise<boolean>; submit: <TResult = unknown>() => Promise<TResult | undefined>; reset: () => void; resetField: (name: string) => void; }
 ```
 
 ### useFormContext
@@ -316,7 +316,7 @@ export declare function useFormActions<T extends FormValues = FormValues>(): { s
 - Kind: function
 - Source: `packages/react/src/context/FormContext.tsx`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useFormContext<T extends FormValues = FormValues>(): FormContextValue<T>
@@ -338,7 +338,7 @@ export declare function useFormEvent(type: FormEventType, listener: FormEventLis
 - Kind: interface
 - Source: `packages/react/src/hooks/useForm.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface UseFormOptions;
@@ -360,7 +360,7 @@ export declare function useFormState<TSelected = FormState<FormValues>>(selector
 - Kind: function
 - Source: `packages/react/src/subscriptions/useFormStore.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useFormStore(store: FormStore): FormState
@@ -371,7 +371,7 @@ export declare function useFormStore(store: FormStore): FormState
 - Kind: function
 - Source: `packages/react/src/hooks/useSection.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useSection(id: string, options?: UseSectionOptions): { id: string; expanded: boolean; disabled: boolean; expand: () => void; collapse: () => void; toggle: () => void; }
@@ -382,7 +382,7 @@ export declare function useSection(id: string, options?: UseSectionOptions): { i
 - Kind: interface
 - Source: `packages/react/src/hooks/useSection.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface UseSectionOptions;
@@ -393,7 +393,7 @@ export interface UseSectionOptions;
 - Kind: function
 - Source: `packages/react/src/hooks/useWatch.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useWatch<T = unknown>(path: string): T
@@ -405,7 +405,7 @@ export declare function useWatch<T = unknown>(paths: readonly string[]): T[]
 - Kind: function
 - Source: `packages/react/src/hooks/useWizard.ts`
 
-Public function exported by @dynamic-forms/react.
+Public function exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export declare function useWizard(steps: readonly WizardStep[], options?: UseWizardOptions): { steps: readonly WizardStep[]; activeIndex: number; activeStep: WizardStep; isFirst: boolean; isLast: boolean; goTo: (index: number) => void; next: () => void; previous: () => void; }
@@ -416,7 +416,7 @@ export declare function useWizard(steps: readonly WizardStep[], options?: UseWiz
 - Kind: interface
 - Source: `packages/react/src/hooks/useWizard.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface UseWizardOptions;
@@ -427,7 +427,7 @@ export interface UseWizardOptions;
 - Kind: type
 - Source: `packages/react/src/context/FormContext.tsx`
 
-Public type exported by @dynamic-forms/react.
+Public type exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export type ValidationMode;
@@ -438,7 +438,7 @@ export type ValidationMode;
 - Kind: interface
 - Source: `packages/react/src/hooks/useWizard.ts`
 
-Public interface exported by @dynamic-forms/react.
+Public interface exported by @lourthuxavierm/dynamic-forms-react.
 
 ```ts
 export interface WizardStep;

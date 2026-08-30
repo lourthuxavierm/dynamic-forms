@@ -1,1 +1,1 @@
-export * from '@dynamic-forms/react-html/controls/composites';
+export * from '@lourthuxavierm/dynamic-forms-react-html/controls/composites';

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { FormStore, validateField } from '@dynamic-forms/core';
+import { FormStore, validateField } from '@lourthuxavierm/dynamic-forms-core';
 import { z } from 'zod';
 import { createZodFieldValidator } from './fieldValidator';
 import { createZodFormValidator } from './formValidator';

@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { FieldComponentProps } from '@dynamic-forms/react';
+import type { FieldComponentProps } from '@lourthuxavierm/dynamic-forms-react';
 
 export type HtmlFieldComponent = ComponentType<any>;
 export type TypedHtmlFieldComponent<T = unknown> = ComponentType<FieldComponentProps<T>>;

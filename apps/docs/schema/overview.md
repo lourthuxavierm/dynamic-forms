@@ -3,7 +3,7 @@
 - Status: Documented
 - Owner: Core maintainers
 - Last verified: 2026-08-26
-- Applies to: `@dynamic-forms/core` 0.1.0
+- Applies to: `@lourthuxavierm/dynamic-forms-core` 0.1.0
 - Prerequisites: Basic TypeScript
 
 ## Contract layers
@@ -24,7 +24,7 @@ field type and configuration is supported by the target renderer.
 ## Minimal schema
 
 ```ts verify
-import { validateSchema, type FormSchema } from '@dynamic-forms/core';
+import { validateSchema, type FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 
 export const profileSchema: FormSchema = {
   id: 'profile',

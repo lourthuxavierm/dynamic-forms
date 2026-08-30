@@ -17,7 +17,7 @@ It does not require one person to write every page.
 | Headless React | React maintainers | Core and documentation maintainers as applicable | Public React API or lifecycle change |
 | React HTML controls and values | React HTML maintainers | Accessibility reviewer for interaction changes | Registry, value, validation, or interaction change |
 | React HTML layouts and styles | React HTML maintainers | Accessibility and documentation reviewers | Layout, CSS token, or semantic change |
-| `@dynamic-forms/html` compatibility | React HTML maintainers | Release maintainer | Forwarded export, lifecycle, or migration change |
+| `@lourthuxavierm/dynamic-forms-html` compatibility | React HTML maintainers | Release maintainer | Forwarded export, lifecycle, or migration change |
 | Example schemas and playgrounds | Example maintainers | Relevant package owner | Example behavior or supported workflow change |
 | Getting started | Documentation maintainers | Core, React, and renderer owners | Every release or installation change |
 | Accessibility | Accessibility reviewer | Relevant package owner | Semantic, keyboard, focus, or error behavior change |

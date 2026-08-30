@@ -33,16 +33,16 @@ const landing = documents.get('index') ?? '';
 const example = documents.get('complete-example') ?? '';
 const combined = [...documents.values()].join('\n');
 
-if (packageManifest.description !== 'Compatibility package forwarding to @dynamic-forms/react-html') {
+if (packageManifest.description !== 'Compatibility package forwarding to @lourthuxavierm/dynamic-forms-react-html') {
   failures.push('packages/html/package.json: compatibility description changed; review Native HTML docs');
 }
-if (packageManifest.dependencies?.['@dynamic-forms/react-html'] !== 'workspace:*') {
-  failures.push('packages/html/package.json: expected direct @dynamic-forms/react-html dependency');
+if (packageManifest.dependencies?.['@lourthuxavierm/dynamic-forms-react-html'] !== 'workspace:*') {
+  failures.push('packages/html/package.json: expected direct @lourthuxavierm/dynamic-forms-react-html dependency');
 }
-for (const peer of ['@dynamic-forms/core', '@dynamic-forms/react', 'react', 'react-dom']) {
+for (const peer of ['@lourthuxavierm/dynamic-forms-core', '@lourthuxavierm/dynamic-forms-react', 'react', 'react-dom']) {
   if (!packageManifest.peerDependencies?.[peer]) failures.push(`packages/html/package.json: missing ${peer} peer dependency`);
 }
-if (packageIndex !== "export * from '@dynamic-forms/react-html';") {
+if (packageIndex !== "export * from '@lourthuxavierm/dynamic-forms-react-html';") {
   failures.push('packages/html/src/index.ts: forwarding boundary changed; review Native HTML docs');
 }
 if (!landing.includes('There is currently no framework-independent renderer')) failures.push('index.md: missing current availability statement');

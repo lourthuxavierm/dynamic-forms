@@ -26,7 +26,7 @@ Always call the returned unsubscribe function.
 | `useFieldState(path)` | Field and conditional state |
 
 ```tsx verify
-import { useWatch } from '@dynamic-forms/react';
+import { useWatch } from '@lourthuxavierm/dynamic-forms-react';
 
 export function CountrySummary() {
   const country = useWatch<string>('address.country');

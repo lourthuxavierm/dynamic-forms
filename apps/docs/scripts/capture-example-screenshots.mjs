@@ -12,8 +12,8 @@ const examplesBuild = spawnSync('pnpm --filter @dynamic-forms/examples build', [
 if (examplesBuild.status !== 0) throw new Error('Failed to build the shared example catalogue before screenshot capture');
 const command = process.platform === 'win32' ? process.env.ComSpec ?? 'cmd.exe' : 'pnpm';
 const args = process.platform === 'win32'
-  ? ['/d', '/s', '/c', 'pnpm.cmd', '--filter', '@dynamic-forms/react-html-playground', 'dev', '--host', '127.0.0.1', '--port', '4185']
-  : ['--filter', '@dynamic-forms/react-html-playground', 'dev', '--host', '127.0.0.1', '--port', '4185'];
+  ? ['/d', '/s', '/c', 'pnpm.cmd', '--filter', '@lourthuxavierm/dynamic-forms-react-html-playground', 'dev', '--host', '127.0.0.1', '--port', '4185']
+  : ['--filter', '@lourthuxavierm/dynamic-forms-react-html-playground', 'dev', '--host', '127.0.0.1', '--port', '4185'];
 const server = spawn(command, args, {
   cwd: root, stdio: 'inherit', shell: false, windowsHide: true,
 });

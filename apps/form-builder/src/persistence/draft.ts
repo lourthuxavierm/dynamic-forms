@@ -1,4 +1,4 @@
-import type { FormSchema } from '@dynamic-forms/core';
+import type { FormSchema } from '@lourthuxavierm/dynamic-forms-core';
 const KEY = 'dynamic-forms:builder:draft';
 interface Draft { version: 1; schema: FormSchema; selectedPath?: string; updatedAt: string }
 export const starterSchema: FormSchema = { id: 'customer-intake', version: '1.0.0', fields: [

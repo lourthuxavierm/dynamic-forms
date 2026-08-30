@@ -11,11 +11,11 @@ the relevant integration, runtime, controls, and examples documentation.
 
 ## Package references
 
-- [`@dynamic-forms/core`](./generated/core)
-- [`@dynamic-forms/react`](./generated/react)
-- [`@dynamic-forms/react-html`](./generated/react-html)
-- [`@dynamic-forms/html`](./generated/html) compatibility surface
-- [`@dynamic-forms/zod`](./generated/zod) Release-ready validation adapter
+- [`@lourthuxavierm/dynamic-forms-core`](./generated/core)
+- [`@lourthuxavierm/dynamic-forms-react`](./generated/react)
+- [`@lourthuxavierm/dynamic-forms-react-html`](./generated/react-html)
+- [`@lourthuxavierm/dynamic-forms-html`](./generated/html) compatibility surface
+- [`@lourthuxavierm/dynamic-forms-zod`](./generated/zod) Release-ready validation adapter
 
 The Zod API is included because its public factories, dual-major matrix, and
 publish-artifact release gate are implemented; its generated page retains a
