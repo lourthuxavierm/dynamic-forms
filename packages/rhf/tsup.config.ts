@@ -7,5 +7,11 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   treeshake: true,
-  target: "es2022"
+  target: "es2022",
+  external: [
+    "react",
+    "react-hook-form",
+    "@dynamic-form-engine/core",
+    "@dynamic-form-engine/react"
+  ]
 });

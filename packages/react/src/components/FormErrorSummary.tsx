@@ -40,5 +40,6 @@ function focusField(name: string): void {
   if (typeof document === 'undefined') return;
   const id = fieldId(name);
   const escaped = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(name) : name.replace(/(["\\])/g, '\\$1');
-  document.getElementById(id)?.focus() ?? document.querySelector<HTMLElement>(`[name="${escaped}"]`)?.focus();
+  const field = document.getElementById(id) ?? document.querySelector<HTMLElement>(`[name="${escaped}"]`);
+  field?.focus();
 }

@@ -106,7 +106,7 @@ export function FormProvider<T extends FormValues = FormValues>({
     else if (isLatest) resolvedStore.setError(name, result.errors[0].message);
     if (isLatest) setValidatingFields((current) => { const next = new Set(current); next.delete(name); return next; });
     return result.valid;
-  }, [resolvedStore, schema]);
+  }, [conditionController, resolvedStore, schema]);
 
   const handleInvalidSubmit = useCallback((errors: Readonly<Record<string, string>>) => {
     onInvalidSubmit?.(errors);

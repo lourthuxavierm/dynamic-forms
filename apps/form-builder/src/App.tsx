@@ -114,7 +114,7 @@ function DropZone({ label, onAdd, onDrop }: { label: string; onAdd: () => void; 
 interface InspectorProps { schema: FormSchema; path?: string; field?: FieldSchema; errors: readonly { message: string }[]; onPatch: (patch: Partial<FieldSchema>) => void; onReparent: (parent: string) => void }
 function Inspector({ schema, path, field, errors, onPatch, onReparent }: InspectorProps) {
   const [metadata, setMetadata] = useState(''); const [config, setConfig] = useState('');
-  useEffect(() => { setMetadata(field?.metadata ? JSON.stringify(field.metadata, null, 2) : ''); setConfig(field?.config ? JSON.stringify(field.config, null, 2) : ''); }, [path]);
+  useEffect(() => { setMetadata(field?.metadata ? JSON.stringify(field.metadata, null, 2) : ''); setConfig(field?.config ? JSON.stringify(field.config, null, 2) : ''); }, [field?.config, field?.metadata, path]);
   if (!field) return <aside className="inspector"><h2>Properties</h2><p>Select a field to edit it.</p></aside>;
   const parent = path?.split('.').slice(0, -1).join('.') ?? ''; const siblings = fieldsAt(schema, parent);
   const patchJson = (key: 'metadata' | 'config', text: string) => { try { onPatch({ [key]: text.trim() ? JSON.parse(text) : undefined }); } catch { /* retain working text */ } };

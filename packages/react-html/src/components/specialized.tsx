@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent, type ClipboardEvent, type KeyboardEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type ChangeEvent, type ClipboardEvent, type KeyboardEvent } from 'react';
 import type { FieldComponentProps } from '@dynamic-form-engine/react';
 import { HtmlFieldShell } from './HtmlFieldShell';
 import { formatCurrency, formatPercentage, normalizeNumericValue, parseLocaleNumber } from './numericFormat';
@@ -27,14 +27,14 @@ function LocalizedNumericField({ props, percentage }: { props: FieldComponentPro
   const locale = config?.locale ?? 'en-US';
   const currency = config?.currency ?? 'USD';
   const numericValue = typeof props.value === 'number' ? props.value : undefined;
-  const format = (value: number) => percentage
+  const format = useCallback((value: number) => percentage
     ? formatPercentage(value, locale, config?.precision)
-    : formatCurrency(value, locale, currency, config?.precision);
+    : formatCurrency(value, locale, currency, config?.precision), [config?.precision, currency, locale, percentage]);
   const [display, setDisplay] = useState(() => numericValue === undefined ? '' : format(numericValue));
   const [focused, setFocused] = useState(false);
   useEffect(() => {
     if (!focused) setDisplay(numericValue === undefined ? '' : format(numericValue));
-  }, [numericValue, focused, locale, currency, config?.precision]);
+  }, [focused, format, numericValue]);
 
   const blur = () => {
     setFocused(false);

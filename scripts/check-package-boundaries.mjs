@@ -23,9 +23,13 @@ const policies = {
     name: '@dynamic-form-engine/zod',
     dependencies: ['@dynamic-form-engine/core'],
   },
+  rhf: {
+    name: '@dynamic-form-engine/rhf',
+    dependencies: ['@dynamic-form-engine/core', '@dynamic-form-engine/react'],
+  },
 };
 const extensions = new Set(['.js', '.jsx', '.mjs', '.cjs', '.ts', '.tsx']);
-const importPattern = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"](@dynamic-forms\/[^'"]+)['"]/g;
+const importPattern = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|\brequire\s*\(\s*)['"](@dynamic-(?:forms|form-engine)\/[^'"]+)['"]/g;
 const errors = [];
 
 async function readOptional(file) {
