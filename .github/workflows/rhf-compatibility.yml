@@ -1,4 +1,4 @@
-﻿name: RHF compatibility
+name: RHF compatibility
 
 on:
   workflow_dispatch:
@@ -45,6 +45,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Build workspace dependencies
+        run: pnpm --filter @dynamic-form-engine/react... build
       - name: Select compatibility versions
         run: pnpm --filter @dynamic-form-engine/rhf add --save-dev --lockfile=false react@${{ matrix.react }} react-dom@${{ matrix.react }} react-hook-form@${{ matrix.rhf }}
       - run: pnpm --filter @dynamic-form-engine/rhf typecheck
@@ -65,6 +67,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @dynamic-form-engine/rhf... build
       - run: pnpm --filter @dynamic-forms/rhf-playground build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm rhf:e2e
