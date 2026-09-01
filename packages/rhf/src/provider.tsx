@@ -26,11 +26,13 @@ import {
   type UseFormReturn,
 } from 'react-hook-form';
 import type { RHFHiddenFieldPolicy } from './contract';
+import { warnRHF } from './development';
 
 export interface DynamicFormRHFContextValue<TFieldValues extends FieldValues = FieldValues> {
   methods: UseFormReturn<TFieldValues>;
   store: FormStore<TFieldValues>;
   hiddenFieldPolicy: RHFHiddenFieldPolicy;
+  schema?: FormSchema;
 }
 
 const DynamicFormRHFContext = createContext<DynamicFormRHFContextValue<any> | null>(null);
@@ -56,12 +58,17 @@ export function DynamicFormRHFProvider<TFieldValues extends FieldValues = FieldV
   hiddenFieldPolicy = 'retain',
   onDataSourceRefresh,
 }: DynamicFormRHFProviderProps<TFieldValues>) {
+  const parentProvider = useContext(DynamicFormRHFContext);
   const internalMethods = useReactHookForm<TFieldValues>(formOptions);
   const methods = externalMethods ?? internalMethods;
   const [store] = useState(() => new FormStore<TFieldValues>(methods.getValues()));
   const { errors } = useReactHookFormState({ control: methods.control });
   const syncingFromRHF = useRef(false);
   const syncingFromCore = useRef(false);
+
+  useEffect(() => {
+    if (parentProvider) warnRHF('Nested DynamicFormRHFProvider detected. Use one adapter provider per form.');
+  }, [parentProvider]);
 
   useEffect(() => {
     syncingFromRHF.current = true;
@@ -104,8 +111,8 @@ useEffect(() => {
   }), [methods, store]);
 
   const value = useMemo<DynamicFormRHFContextValue<TFieldValues>>(
-    () => ({ methods, store, hiddenFieldPolicy }),
-    [hiddenFieldPolicy, methods, store],
+    () => ({ methods, store, hiddenFieldPolicy, schema }),
+    [hiddenFieldPolicy, methods, schema, store],
   );
 
   return (

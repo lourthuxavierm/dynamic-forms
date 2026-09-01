@@ -32,6 +32,8 @@ test-results/
 apps/playground/.docs-snippet-check/
 /ENTERPRISE_*.md
 /apps/docs/**/*.md
+!/apps/docs/integrations/rhf.md
+!/apps/docs/api/generated/rhf.md
 apps/docs/.vitepress/cache/
 apps/docs/.vitepress/.temp/
 apps/docs/.vitepress/.snippet-check/

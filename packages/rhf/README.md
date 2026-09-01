@@ -1,6 +1,6 @@
 # @dynamic-form-engine/rhf
 
-Headless React Hook Form 7 adapter for Dynamic Forms. Phases 1-4 provide the typed field bridge, guarded Core projection, schema resolver, nested error conversion, validation modes, conditional field state, dependency resets, stale-safe data sources, nested field arrays, lifecycle actions, and explicit file serialization.
+Headless React Hook Form 7 adapter for Dynamic Forms. Phases 1-6 provide the typed field bridge, guarded Core projection, schema resolver, nested error conversion, validation modes, conditional field state, dependency resets, stale-safe data sources, nested field arrays, lifecycle actions, explicit file serialization, schema rendering, typed registries, and development diagnostics.
 
 ## Ownership
 
@@ -54,6 +54,14 @@ Current exports:
 - `CreateRHFResolverOptions`
 - `toRHFErrors`
 - `RHFErrorInput`
+- `RHFForm`
+- `RHFFormProps`
+- `RHFControlRegistry`
+- `RHFArrayActionsProps`
+- `RHFControlProps`
+- `defineRHFSchema`
+- `TypedRHFFormSchema`
+- `InferRHFValues`
 
 `RHFForm` and higher-level schema rendering are introduced in later phases.
 
@@ -94,6 +102,24 @@ export function ProfileForm() {
 
 Pass `methods={useForm(...)}` to use an externally owned RHF instance. The provider exposes a Core projection for Dynamic Forms behavior, but RHF remains authoritative.
 
+
+## Schema rendering and Controller migration
+
+Use defineRHFSchema<TValues> to bind an explicit values type to a runtime schema. RHFForm recursively renders object and array fields through an RHFControlRegistry and submits native forms through RHF. Registry controls receive the schema, Controller field and state, RHF form state, and Dynamic Forms condition state.
+
+Existing Controller integrations can migrate incrementally: replace individual Controller instances with RHFField to inherit the provider control and dynamicState. When all schema field types have registry controls, replace the hand-written form with RHFForm. Pass methods={useForm(...)} when the RHF instance must remain externally owned.
+
+See the complete [React Hook Form integration guide](../../apps/docs/integrations/rhf.md).
+
+## Browser E2E playground
+
+The private apps/rhf-playground application exercises the adapter in Chromium with deterministic fixtures for values, validation, conditions, nested objects, arrays, resets, async races, dependencies, external RHF instances, keyboard operation, Strict Mode, and axe accessibility checks.
+
+Run it with:
+
+~~~bash
+pnpm --filter @dynamic-forms/rhf-playground test:e2e
+~~~
 ## Package boundaries
 
 The adapter may import `@dynamic-form-engine/core` and `@dynamic-form-engine/react`. It remains renderer-neutral and does not import `@dynamic-form-engine/react-html`. React HTML belongs only in private examples and E2E applications.

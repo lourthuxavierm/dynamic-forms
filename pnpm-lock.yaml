@@ -179,6 +179,49 @@ importers:
         specifier: latest
         version: 6.1.1(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.1)(less@4.9.0)(sass@1.101.0))
 
+  apps/rhf-playground:
+    dependencies:
+      '@dynamic-form-engine/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@dynamic-form-engine/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@dynamic-form-engine/rhf':
+        specifier: workspace:*
+        version: link:../../packages/rhf
+      react:
+        specifier: ^19.2.8
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.2.8
+        version: 19.2.8(react@19.2.8)
+      react-hook-form:
+        specifier: ^7.85.0
+        version: 7.85.0(react@19.2.8)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.2.18
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.2.4
+        version: 19.2.4(@types/react@19.2.18)
+      '@vitejs/plugin-react':
+        specifier: latest
+        version: 6.1.1(vite@8.2.2(@types/node@26.2.0)(esbuild@0.28.1)(less@4.9.0)(sass@1.101.0))
+      axe-core:
+        specifier: ^4.13.0
+        version: 4.13.0
+      playwright:
+        specifier: latest
+        version: 1.62.1
+      typescript:
+        specifier: 6.0.2
+        version: 6.0.2
+      vite:
+        specifier: latest
+        version: 8.2.2(@types/node@26.2.0)(esbuild@0.28.1)(less@4.9.0)(sass@1.101.0)
+
   packages/angular:
     dependencies:
       '@dynamic-form-engine/core':

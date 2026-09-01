@@ -1,0 +1,29 @@
+{
+  "name": "@dynamic-forms/rhf-playground",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test --config playwright.config.ts"
+  },
+  "dependencies": {
+    "@dynamic-form-engine/core": "workspace:*",
+    "@dynamic-form-engine/react": "workspace:*",
+    "@dynamic-form-engine/rhf": "workspace:*",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-hook-form": "^7.85.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "latest",
+    "axe-core": "^4.13.0",
+    "playwright": "latest",
+    "typescript": "6.0.2",
+    "vite": "latest"
+  }
+}

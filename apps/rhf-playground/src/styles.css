@@ -1,0 +1,11 @@
+:root { font-family: system-ui, sans-serif; color: #172033; background: #f5f7fb; }
+body { margin: 0; }
+main { max-width: 920px; margin: 0 auto; padding: 2rem; }
+form, aside { background: white; border: 1px solid #ccd4e0; border-radius: .75rem; padding: 1rem; margin-block: 1rem; }
+fieldset { border: 1px solid #d8deea; margin-block: .75rem; }
+.field { display: grid; gap: .3rem; margin-block: .75rem; }
+input, select, button { font: inherit; padding: .55rem; }
+button { margin: .2rem; }
+[aria-invalid="true"] { border-color: #b42318; }
+[role="status"], [role="alert"] { color: #8a1c13; }
+output { display: block; overflow-wrap: anywhere; margin-block: .35rem; }

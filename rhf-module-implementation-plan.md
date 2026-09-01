@@ -147,20 +147,20 @@ Nested structures, arrays, and lifecycle operations remain internally consistent
 
 ### Deliverables
 
-- [ ] Implement `RHFForm` for schema rendering and native submission.
-- [ ] Support custom registries and renderer-neutral controls.
-- [ ] Add typed examples for inferred and explicit form-value types.
-- [ ] Add development diagnostics for conflicting providers and invalid fields.
-- [ ] Add public API and type-contract tests.
-- [ ] Document migration from direct RHF `Controller` usage.
-- [ ] Include the adapter in API-reference generation.
+- [x] Implement `RHFForm` for schema rendering and native submission.
+- [x] Support custom registries and renderer-neutral controls.
+- [x] Add typed examples for inferred and explicit form-value types.
+- [x] Add development diagnostics for conflicting providers and invalid fields.
+- [x] Add public API and type-contract tests.
+- [x] Document migration from direct RHF `Controller` usage.
+- [x] Include the adapter in API-reference generation.
 
 ### Tests
 
-- [ ] Public exports match documentation.
-- [ ] Type tests cover nested paths, arrays, inferred schemas, and external instances.
-- [ ] Custom controls receive correct state and mutations.
-- [ ] Diagnostics appear only in development.
+- [x] Public exports match documentation.
+- [x] Type tests cover nested paths, arrays, inferred schemas, and external instances.
+- [x] Custom controls receive correct state and mutations.
+- [x] Diagnostics appear only in development.
 
 ### Exit criteria
 
@@ -170,27 +170,27 @@ Consumers can build a complete typed schema-driven RHF form using documented API
 
 ### Deliverables
 
-- [ ] Create private `apps/rhf-playground` workspace application.
-- [ ] Add deterministic basic, conditional, nested, async, dependent, and array fixtures.
-- [ ] Display submitted JSON, watched values, errors, dirty/touched fields, validity, and submit count.
-- [ ] Add an isolated Playwright configuration and Vite port.
-- [ ] Use accessible selectors as the primary test interface.
-- [ ] Mock async validation and data sources deterministically.
+- [x] Create private `apps/rhf-playground` workspace application.
+- [x] Add deterministic basic, conditional, nested, async, dependent, and array fixtures.
+- [x] Display submitted JSON, watched values, errors, dirty/touched fields, validity, and submit count.
+- [x] Add an isolated Playwright configuration and Vite port.
+- [x] Use accessible selectors as the primary test interface.
+- [x] Mock async validation and data sources deterministically.
 
 ### Browser scenarios
 
-- [ ] Typed basic-value submission.
-- [ ] Required errors, correction, and resubmission.
-- [ ] Conditional visibility and required validation.
-- [ ] Nested object editing and submission.
-- [ ] Array append, edit, reorder, remove, and submission.
-- [ ] Field and form resets.
-- [ ] Async validation race suppression.
-- [ ] Dependent data-source refresh and stale-request suppression.
-- [ ] Programmatic updates through an external RHF instance.
-- [ ] Keyboard-only completion and error-summary focus.
-- [ ] Strict Mode update and submit counts.
-- [ ] Axe checks for initial, invalid, conditional, and array states.
+- [x] Typed basic-value submission.
+- [x] Required errors, correction, and resubmission.
+- [x] Conditional visibility and required validation.
+- [x] Nested object editing and submission.
+- [x] Array append, edit, reorder, remove, and submission.
+- [x] Field and form resets.
+- [x] Async validation race suppression.
+- [x] Dependent data-source refresh and stale-request suppression.
+- [x] Programmatic updates through an external RHF instance.
+- [x] Keyboard-only completion and error-summary focus.
+- [x] Strict Mode update and submit counts.
+- [x] Axe checks for initial, invalid, conditional, and array states.
 
 ### Exit criteria
 

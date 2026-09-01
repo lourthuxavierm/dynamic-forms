@@ -1821,6 +1821,176 @@
         }
       ]
     },
+    "@dynamic-form-engine/rhf": {
+      "maturity": "Implemented",
+      "exports": [
+        {
+          "name": "createRHFResolver",
+          "kind": "function",
+          "source": "packages/rhf/src/resolver.ts"
+        },
+        {
+          "name": "CreateRHFResolverOptions",
+          "kind": "interface",
+          "source": "packages/rhf/src/resolver.ts"
+        },
+        {
+          "name": "defineRHFSchema",
+          "kind": "function",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "DynamicFormRHFContextValue",
+          "kind": "interface",
+          "source": "packages/rhf/src/provider.tsx"
+        },
+        {
+          "name": "DynamicFormRHFProvider",
+          "kind": "function",
+          "source": "packages/rhf/src/provider.tsx"
+        },
+        {
+          "name": "DynamicFormRHFProviderProps",
+          "kind": "interface",
+          "source": "packages/rhf/src/provider.tsx"
+        },
+        {
+          "name": "InferRHFValues",
+          "kind": "type",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHF_ADAPTER_CONTRACT",
+          "kind": "const",
+          "source": "packages/rhf/src/contract.ts"
+        },
+        {
+          "name": "RHFAdapterContract",
+          "kind": "interface",
+          "source": "packages/rhf/src/contract.ts"
+        },
+        {
+          "name": "RHFArrayActionsProps",
+          "kind": "interface",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHFControlComponent",
+          "kind": "type",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHFControlProps",
+          "kind": "interface",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHFControlRegistry",
+          "kind": "type",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHFDynamicFieldState",
+          "kind": "interface",
+          "source": "packages/rhf/src/RHFField.tsx"
+        },
+        {
+          "name": "RHFErrorInput",
+          "kind": "type",
+          "source": "packages/rhf/src/resolver.ts"
+        },
+        {
+          "name": "RHFField",
+          "kind": "function",
+          "source": "packages/rhf/src/RHFField.tsx"
+        },
+        {
+          "name": "RHFFieldProps",
+          "kind": "type",
+          "source": "packages/rhf/src/RHFField.tsx"
+        },
+        {
+          "name": "RHFForm",
+          "kind": "function",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHFFormActions",
+          "kind": "interface",
+          "source": "packages/rhf/src/useRHFFormActions.ts"
+        },
+        {
+          "name": "RHFFormProps",
+          "kind": "interface",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "RHFHiddenFieldPolicy",
+          "kind": "type",
+          "source": "packages/rhf/src/contract.ts"
+        },
+        {
+          "name": "SerializedRHFFile",
+          "kind": "interface",
+          "source": "packages/rhf/src/serialization.ts"
+        },
+        {
+          "name": "serializeRHFValues",
+          "kind": "function",
+          "source": "packages/rhf/src/serialization.ts"
+        },
+        {
+          "name": "SerializeRHFValuesOptions",
+          "kind": "interface",
+          "source": "packages/rhf/src/serialization.ts"
+        },
+        {
+          "name": "toRHFErrors",
+          "kind": "function",
+          "source": "packages/rhf/src/resolver.ts"
+        },
+        {
+          "name": "TypedRHFFormSchema",
+          "kind": "type",
+          "source": "packages/rhf/src/RHFForm.tsx"
+        },
+        {
+          "name": "useDynamicFormRHF",
+          "kind": "function",
+          "source": "packages/rhf/src/provider.tsx"
+        },
+        {
+          "name": "useRHFDataSource",
+          "kind": "function",
+          "source": "packages/rhf/src/useRHFDataSource.ts"
+        },
+        {
+          "name": "UseRHFDataSourceOptions",
+          "kind": "interface",
+          "source": "packages/react/dist/hooks/useDataSource.d.ts"
+        },
+        {
+          "name": "UseRHFDataSourceResult",
+          "kind": "interface",
+          "source": "packages/react/dist/hooks/useDataSource.d.ts"
+        },
+        {
+          "name": "useRHFFieldArray",
+          "kind": "function",
+          "source": "packages/rhf/src/useRHFFieldArray.ts"
+        },
+        {
+          "name": "UseRHFFieldArrayProps",
+          "kind": "type",
+          "source": "packages/rhf/src/useRHFFieldArray.ts"
+        },
+        {
+          "name": "useRHFFormActions",
+          "kind": "function",
+          "source": "packages/rhf/src/useRHFFormActions.ts"
+        }
+      ]
+    },
     "@dynamic-form-engine/zod": {
       "maturity": "Release-ready",
       "exports": [

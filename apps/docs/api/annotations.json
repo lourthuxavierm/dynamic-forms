@@ -20,6 +20,11 @@
       "guide": "../../integrations/native-html/",
       "example": "../../playground/"
     },
+    "rhf": {
+      "summary": "React Hook Form 7 adapter with typed schema rendering, validation, conditions, dependencies, arrays, and lifecycle integration.",
+      "guide": "../../integrations/rhf",
+      "example": "../../integrations/rhf#typed-schema-and-renderer-neutral-registry"
+    },
     "zod": {
       "summary": "Release-ready validation-only adapter mapping Zod form and field issues into framework-neutral Core contracts.",
       "guide": "../../integrations/zod",
@@ -37,6 +42,9 @@
     "react-html.HtmlForm": "Renders a schema with native HTML controls and owns normal browser-form submission.",
     "react-html.HtmlField": "Renders one field through the React HTML registry.",
     "html.HTML_ADAPTER_VERSION": "Compatibility-package version marker; this does not identify a separate native DOM renderer.",
+    "rhf.RHFForm": "Renders a complete typed schema through an application-owned renderer-neutral control registry and submits through RHF.",
+    "rhf.DynamicFormRHFProvider": "Makes React Hook Form authoritative while projecting values into Dynamic Forms runtime behavior.",
+    "rhf.defineRHFSchema": "Attaches a compile-time values type to a runtime FormSchema without changing its runtime representation.",
     "zod.createZodFormValidator": "Adapts a complete Zod object schema to the Core FormValidator contract; use this for cross-field and root rules.",
     "zod.createZodFieldValidator": "Adapts one Zod schema to the Core Validator contract; Core associates its issue with the owning field.",
     "zod.zodIssuesToFormErrors": "Maps ordered Zod issues to Core field paths and deterministic first-or-all messages.",
