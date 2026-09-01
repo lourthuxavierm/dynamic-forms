@@ -39,7 +39,7 @@ for (const expectation of [
 ]) {
   if (!template.includes(expectation)) failures.push(`pull request template missing: ${expectation}`);
 }
-for (const pattern of ['/apps/docs/', '/packages/core/', '/packages/react/', '/packages/react-html/']) {
+for (const pattern of ['/apps/docs/', '/packages/core/', '/packages/react/', '/packages/react-html/', '/packages/rhf/']) {
   if (!owners.includes(pattern)) failures.push(`CODEOWNERS missing boundary: ${pattern}`);
 }
 for (const expectation of ['Every pull request', 'Every release', 'Quarterly', 'Twice yearly', 'Before each major release']) {

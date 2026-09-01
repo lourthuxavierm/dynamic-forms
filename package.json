@@ -24,6 +24,8 @@
     "docs:verify": "pnpm --filter @dynamic-forms/docs verify",
     "docs:test": "pnpm --filter @dynamic-forms/docs test:smoke",
     "builder:e2e": "pnpm --filter @dynamic-forms/form-builder test:e2e",
+    "rhf:e2e": "pnpm --filter @dynamic-forms/rhf-playground test:e2e",
+    "verify:rhf": "node scripts/verify-rhf-release.mjs",
     "verify:react-html-release": "node scripts/verify-react-html-release.mjs",
     "verify:zod-architecture": "pnpm --filter @dynamic-forms/docs zod:architecture",
     "verify:zod-release": "node scripts/verify-zod-release.mjs"

@@ -2,7 +2,7 @@
 
 <!-- GENERATED FILE. Run pnpm docs:api to update. -->
 
-- Maturity: Implemented
+- Maturity: Release-ready
 - Source: TypeScript public exports
 - Internal symbols: excluded
 

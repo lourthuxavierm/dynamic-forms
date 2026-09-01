@@ -18,7 +18,7 @@ Version `0.1.0` is published under the `@dynamic-form-engine` npm organization. 
 | [`@dynamic-form-engine/angular-html`](https://www.npmjs.com/package/@dynamic-form-engine/angular-html) | Accessible native HTML renderer for Angular | Implemented |
 | [`@dynamic-form-engine/html`](https://www.npmjs.com/package/@dynamic-form-engine/html) | Compatibility forwarding package for existing HTML consumers | Compatibility |
 | [`@dynamic-form-engine/zod`](https://www.npmjs.com/package/@dynamic-form-engine/zod) | Zod field and form validation adapter | Implemented |
-| [`@dynamic-form-engine/rhf`](https://www.npmjs.com/package/@dynamic-form-engine/rhf) | React Hook Form adapter | Placeholder |
+| [`@dynamic-form-engine/rhf`](https://www.npmjs.com/package/@dynamic-form-engine/rhf) | React Hook Form adapter | Release-ready |
 | [`@dynamic-form-engine/json-schema`](https://www.npmjs.com/package/@dynamic-form-engine/json-schema) | JSON Schema adapter | Placeholder |
 | [`@dynamic-form-engine/devtools`](https://www.npmjs.com/package/@dynamic-form-engine/devtools) | Developer tooling | Placeholder |
 

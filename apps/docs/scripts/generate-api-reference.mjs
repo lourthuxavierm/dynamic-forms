@@ -13,7 +13,7 @@ const packages = [
   { slug: 'react', name: '@dynamic-form-engine/react', entry: 'packages/react/src/index.ts', maturity: 'Documented' },
   { slug: 'react-html', name: '@dynamic-form-engine/react-html', entry: 'packages/react-html/src/index.ts', maturity: 'Documented' },
   { slug: 'html', name: '@dynamic-form-engine/html', entry: 'packages/html/src/index.ts', maturity: 'Compatibility-only' },
-  { slug: 'rhf', name: '@dynamic-form-engine/rhf', entry: 'packages/rhf/src/index.ts', maturity: 'Implemented' },
+  { slug: 'rhf', name: '@dynamic-form-engine/rhf', entry: 'packages/rhf/src/index.ts', maturity: 'Release-ready' },
   { slug: 'zod', name: '@dynamic-form-engine/zod', entry: 'packages/zod/src/index.ts', maturity: 'Release-ready' },
 ];
 

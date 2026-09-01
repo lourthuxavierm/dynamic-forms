@@ -200,27 +200,27 @@ All supported workflows pass in Chromium against built workspace packages withou
 
 ### Deliverables
 
-- [ ] Add React 18 and React 19 compatibility jobs.
-- [ ] Test the oldest and newest supported RHF 7 versions.
-- [ ] Run browser E2E on the primary supported version set.
-- [ ] Add a packed-package consumer smoke test.
-- [ ] Add CI path filters for RHF, Core, React, React HTML, the playground, and lockfile.
-- [ ] Upload Playwright traces and reports on failure.
-- [ ] Add root `rhf:e2e` and `verify:rhf` commands.
-- [ ] Include RHF in documentation governance and release verification.
-- [ ] Replace placeholder maturity labels and add release notes.
+- [x] Add React 18 and React 19 compatibility jobs.
+- [x] Test the oldest and newest supported RHF 7 versions.
+- [x] Run browser E2E on the primary supported version set.
+- [x] Add a packed-package consumer smoke test.
+- [x] Add CI path filters for RHF, Core, React, React HTML, the playground, and lockfile.
+- [x] Upload Playwright traces and reports on failure.
+- [x] Add root `rhf:e2e` and `verify:rhf` commands.
+- [x] Include RHF in documentation governance and release verification.
+- [x] Replace placeholder maturity labels and add release notes.
 
 ### Required gates
 
-- [ ] Frozen installation
-- [ ] Package boundaries
-- [ ] Lint
-- [ ] Typecheck
-- [ ] Unit and integration tests
-- [ ] Package and playground builds
-- [ ] Playwright and accessibility tests
-- [ ] Packed-package smoke test
-- [ ] Documentation verification
+- [x] Frozen installation
+- [x] Package boundaries
+- [x] Lint
+- [x] Typecheck
+- [x] Unit and integration tests
+- [x] Package and playground builds
+- [x] Playwright and accessibility tests
+- [x] Packed-package smoke test
+- [x] Documentation verification
 
 ### Exit criteria
 
