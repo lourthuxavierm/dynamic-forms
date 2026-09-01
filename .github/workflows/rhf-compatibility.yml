@@ -1,0 +1,96 @@
+﻿name: RHF compatibility
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: &rhf_paths
+      - "packages/rhf/**"
+      - "packages/core/**"
+      - "packages/react/**"
+      - "packages/react-html/**"
+      - "apps/rhf-playground/**"
+      - "apps/docs/**"
+      - "scripts/verify-rhf-release.mjs"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/rhf-compatibility.yml"
+  push:
+    branches: [main]
+    paths: *rhf_paths
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rhf-compatibility-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compatibility:
+    name: React ${{ matrix.react }} / RHF ${{ matrix.rhf }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        react: ["18.3.1", "19.2.0"]
+        rhf: ["7.0.0", "7.85.0"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Select compatibility versions
+        run: pnpm --filter @dynamic-form-engine/rhf add --save-dev --lockfile=false react@${{ matrix.react }} react-dom@${{ matrix.react }} react-hook-form@${{ matrix.rhf }}
+      - run: pnpm --filter @dynamic-form-engine/rhf typecheck
+      - run: pnpm --filter @dynamic-form-engine/rhf test
+      - run: pnpm --filter @dynamic-form-engine/rhf build
+
+  browser:
+    name: Primary Chromium E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @dynamic-forms/rhf-playground build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm rhf:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: rhf-playwright-report
+          path: |
+            apps/rhf-playground/playwright-report/
+            apps/rhf-playground/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  release:
+    name: Frozen install and release gate
+    needs: [compatibility, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify:rhf

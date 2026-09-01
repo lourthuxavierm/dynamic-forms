@@ -8,6 +8,10 @@ const failures = [];
 const manifestPath = resolve(generated, 'manifest.json');
 if (!existsSync(manifestPath)) failures.push('generated API manifest is missing');
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : { packages: {} };
+const rhf = manifest.packages['@dynamic-form-engine/rhf'];
+if (!rhf) failures.push('@dynamic-form-engine/rhf: generated manifest entry is missing');
+else if (rhf.maturity !== 'Release-ready') failures.push('@dynamic-form-engine/rhf: maturity must be Release-ready');
+
 const zod = manifest.packages['@dynamic-form-engine/zod'];
 if (!zod) failures.push('@dynamic-form-engine/zod: generated manifest entry is missing');
 else {

@@ -1822,7 +1822,7 @@
       ]
     },
     "@dynamic-form-engine/rhf": {
-      "maturity": "Implemented",
+      "maturity": "Release-ready",
       "exports": [
         {
           "name": "createRHFResolver",

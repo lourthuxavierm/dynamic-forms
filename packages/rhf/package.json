@@ -15,7 +15,8 @@
     },
     "files": [
         "dist",
-        "README.md"
+        "README.md",
+        "RELEASE.md"
     ],
     "peerDependencies": {
         "react": "^18.0.0 || ^19.0.0",
