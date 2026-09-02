@@ -12,12 +12,12 @@ Version `0.1.0` is published under the `@dynamic-form-engine` npm organization. 
 | Package | Purpose | Maturity |
 | --- | --- | --- |
 | [`@dynamic-form-engine/core`](https://www.npmjs.com/package/@dynamic-form-engine/core) | Schema, store, conditions, dependencies, data sources, events, and validation | Implemented |
-| [`@dynamic-form-engine/react`](https://www.npmjs.com/package/@dynamic-form-engine/react) | React provider, hooks, subscriptions, and renderer-neutral components | Implemented |
-| [`@dynamic-form-engine/react-html`](https://www.npmjs.com/package/@dynamic-form-engine/react-html) | Accessible native HTML renderer for React | Implemented |
-| [`@dynamic-form-engine/angular`](https://www.npmjs.com/package/@dynamic-form-engine/angular) | Angular signals, forms, dependency injection, and lifecycle adapter | Implemented |
-| [`@dynamic-form-engine/angular-html`](https://www.npmjs.com/package/@dynamic-form-engine/angular-html) | Accessible native HTML renderer for Angular | Implemented |
-| [`@dynamic-form-engine/html`](https://www.npmjs.com/package/@dynamic-form-engine/html) | Compatibility forwarding package for existing HTML consumers | Compatibility |
-| [`@dynamic-form-engine/zod`](https://www.npmjs.com/package/@dynamic-form-engine/zod) | Zod field and form validation adapter | Implemented |
+| [`@dynamic-form-engine/react`](https://www.npmjs.com/package/@dynamic-form-engine/react) | React provider, hooks, subscriptions, and renderer-neutral components | Documented |
+| [`@dynamic-form-engine/react-html`](https://www.npmjs.com/package/@dynamic-form-engine/react-html) | Accessible native HTML renderer for React | Documented |
+| [`@dynamic-form-engine/angular`](https://www.npmjs.com/package/@dynamic-form-engine/angular) | Angular signals, forms, dependency injection, and lifecycle adapter | Experimental |
+| [`@dynamic-form-engine/angular-html`](https://www.npmjs.com/package/@dynamic-form-engine/angular-html) | Accessible native HTML renderer for Angular | Experimental |
+| [`@dynamic-form-engine/html`](https://www.npmjs.com/package/@dynamic-form-engine/html) | Compatibility forwarding package for existing HTML consumers | Compatibility-only |
+| [`@dynamic-form-engine/zod`](https://www.npmjs.com/package/@dynamic-form-engine/zod) | Zod field and form validation adapter | Release-ready |
 | [`@dynamic-form-engine/rhf`](https://www.npmjs.com/package/@dynamic-form-engine/rhf) | React Hook Form adapter | Release-ready |
 | [`@dynamic-form-engine/json-schema`](https://www.npmjs.com/package/@dynamic-form-engine/json-schema) | JSON Schema adapter | Placeholder |
 | [`@dynamic-form-engine/devtools`](https://www.npmjs.com/package/@dynamic-form-engine/devtools) | Developer tooling | Placeholder |

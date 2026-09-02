@@ -1,4 +1,4 @@
-﻿import assert from 'node:assert/strict';
+import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -21,9 +21,9 @@ function runPnpm(args) {
 try {
   runPnpm(['check:boundaries']);
   runPnpm(['lint']);
+  runPnpm(['--filter', '@dynamic-form-engine/rhf...', 'build']);
   runPnpm(['--filter', '@dynamic-form-engine/rhf', 'typecheck']);
   runPnpm(['--filter', '@dynamic-form-engine/rhf', 'test']);
-  runPnpm(['--filter', '@dynamic-form-engine/rhf...', 'build']);
   runPnpm(['--filter', '@dynamic-forms/rhf-playground', 'build']);
   runPnpm(['docs:verify']);
 
@@ -44,7 +44,7 @@ try {
   assert.equal(manifest.publishConfig?.access, 'public');
   assert.equal(manifest.sideEffects, false);
   assert.equal(manifest.peerDependencies?.react, '^18.0.0 || ^19.0.0');
-  assert.equal(manifest.peerDependencies?.['react-hook-form'], '^7.0.0');
+  assert.equal(manifest.peerDependencies?.['react-hook-form'], '^7.52.0');
   assert.ok(!JSON.stringify(manifest).includes('workspace:'), 'Packed manifest contains an unresolved workspace protocol');
 
   const esm = run(process.execPath, ['--input-type=module', '--eval', "import('./packages/rhf/dist/index.mjs').then(api => console.log(Object.keys(api)))"]);

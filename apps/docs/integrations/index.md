@@ -9,7 +9,7 @@
 | --- | --- | --- |
 | Framework-independent Core | Implemented | Schemas, state, validation, conditions, dependencies, data sources, and events |
 | [Headless React](/integrations/react/) | Documented | React lifecycle, context, hooks, and renderer-neutral components |
-| [React Hook Form](/integrations/rhf) | Implemented | RHF-owned state with Dynamic Forms schemas, validation, conditions, arrays, and custom controls |
+| [React Hook Form](/integrations/rhf) | Release-ready | RHF-owned state with Dynamic Forms schemas, validation, conditions, arrays, and custom controls |
 | [React HTML](/integrations/react-html/) | Documented | Complete browser-native controls rendered through React |
 | [Headless Angular](/integrations/angular/) | Experimental | Angular 22 readonly signals, DI lifecycle, events, validation, and Forms interop |
 | [Angular HTML](/integrations/angular-html/) | Experimental | Angular 22 browser-native 15-type baseline renderer |

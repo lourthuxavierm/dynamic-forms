@@ -27,7 +27,7 @@
 | `@dynamic-form-engine/angular-html` | Experimental | Angular 22 OnPush native form and 15-type baseline renderer |
 | `@dynamic-forms/examples` | Implemented, private | Shared schemas and rules |
 | `@dynamic-form-engine/zod` | Release-ready | Validators, pinned dual-major matrix, cross-renderer playground with deterministic visual evidence and browser release gate, integration/API/migration guidance, and packed-artifact release gate |
-| `@dynamic-form-engine/rhf` | Placeholder | Marker only |
+| `@dynamic-form-engine/rhf` | Release-ready | Typed RHF-owned state integration, resolver, conditions, arrays, async behavior, React 18/19 matrix, Chromium accessibility suite, and packed-artifact gate |
 | `@dynamic-form-engine/json-schema` | Placeholder | Marker only |
 | `@dynamic-form-engine/devtools` | Placeholder | Marker only |
 
