@@ -13,6 +13,7 @@
     "test:e2e": "playwright test",
     "lint": "eslint packages apps scripts --max-warnings=0",
     "typecheck": "turbo run typecheck",
+    "verify": "pnpm check:boundaries && pnpm lint && pnpm build && pnpm typecheck && pnpm test",
     "docs:dev": "pnpm --filter @dynamic-forms/docs dev",
     "docs:build": "pnpm --filter @dynamic-forms/docs build",
     "docs:preview": "pnpm --filter @dynamic-forms/docs preview",
