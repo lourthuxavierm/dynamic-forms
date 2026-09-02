@@ -1,4 +1,4 @@
-﻿import assert from 'node:assert/strict';
+import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -21,9 +21,9 @@ function runPnpm(args) {
 try {
   runPnpm(['check:boundaries']);
   runPnpm(['lint']);
+  runPnpm(['--filter', '@dynamic-form-engine/rhf...', 'build']);
   runPnpm(['--filter', '@dynamic-form-engine/rhf', 'typecheck']);
   runPnpm(['--filter', '@dynamic-form-engine/rhf', 'test']);
-  runPnpm(['--filter', '@dynamic-form-engine/rhf...', 'build']);
   runPnpm(['--filter', '@dynamic-forms/rhf-playground', 'build']);
   runPnpm(['docs:verify']);
 

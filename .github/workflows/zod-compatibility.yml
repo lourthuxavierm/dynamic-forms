@@ -85,8 +85,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground... build
-      - run: pnpm --filter @lourthuxavierm/dynamic-forms-angular-html-playground... build
+      - run: pnpm --filter @dynamic-forms/react-html-playground... build
+      - run: pnpm --filter @dynamic-forms/angular-html-playground... build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm --filter @dynamic-forms/docs exec playwright test --config zod-playground.config.ts --grep Zod
 

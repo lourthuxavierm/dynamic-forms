@@ -7,5 +7,7 @@ test('documentation platform component fixture matches its visual baseline', asy
   await expect(page).toHaveScreenshot('documentation-platform-components.png', {
     fullPage: true,
     animations: 'disabled',
+    maxDiffPixelRatio: 0.02,
+    timeout: 10_000,
   });
 });

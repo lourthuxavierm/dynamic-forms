@@ -36,7 +36,7 @@ Use the package-level scripts while iterating:
 pnpm --filter @dynamic-form-engine/core test
 pnpm --filter @dynamic-form-engine/react test
 pnpm --filter @dynamic-form-engine/react-html test
-pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground dev
+pnpm --filter @dynamic-forms/react-html-playground dev
 ```
 
 ## Architecture rules

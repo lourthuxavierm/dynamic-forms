@@ -10,13 +10,13 @@ export default defineConfig({
   projects: [{ name: 'chromium', use: { browserName: 'chromium', trace: 'on-first-retry' } }],
   webServer: [
     {
-      command: 'pnpm --filter @lourthuxavierm/dynamic-forms-react-html-playground dev --host 127.0.0.1 --port 4175',
+      command: 'pnpm --filter @dynamic-forms/react-html-playground dev --host 127.0.0.1 --port 4175',
       url: 'http://127.0.0.1:4175/?example=zod-validation',
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
     },
     {
-      command: 'pnpm --filter @lourthuxavierm/dynamic-forms-angular-html-playground dev --host 127.0.0.1 --port 4176',
+      command: 'pnpm --filter @dynamic-forms/angular-html-playground dev --host 127.0.0.1 --port 4176',
       url: 'http://127.0.0.1:4176/?example=zod-validation',
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
