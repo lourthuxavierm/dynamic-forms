@@ -46,6 +46,31 @@ for (const expectation of ['Every pull request', 'Every release', 'Quarterly', '
   if (!governance.includes(expectation)) failures.push(`governance cadence missing: ${expectation}`);
 }
 
+const packageMaturity = {
+  '@dynamic-form-engine/core': 'Implemented',
+  '@dynamic-form-engine/react': 'Documented',
+  '@dynamic-form-engine/react-html': 'Documented',
+  '@dynamic-form-engine/html': 'Compatibility-only',
+  '@dynamic-form-engine/angular': 'Experimental',
+  '@dynamic-form-engine/angular-html': 'Experimental',
+  '@dynamic-form-engine/zod': 'Release-ready',
+  '@dynamic-form-engine/rhf': 'Release-ready',
+  '@dynamic-form-engine/json-schema': 'Placeholder',
+  '@dynamic-form-engine/devtools': 'Placeholder',
+};
+for (const file of ['README.md', 'apps/docs/documentation-inventory.md', 'apps/docs/project/feature-maturity.md']) {
+  const lines = read(file).split(/\r?\n/);
+  for (const [packageName, maturity] of Object.entries(packageMaturity)) {
+    const declaration = lines.find((line) => line.includes(`\`${packageName}\``));
+    if (!declaration) failures.push(`${file}: missing maturity declaration for ${packageName}`);
+    else if (!declaration.includes(`| ${maturity} |`)) {
+      failures.push(`${file}: ${packageName} maturity must be ${maturity}`);
+    }
+  }
+}
+if (!read('apps/docs/packages/react-hook-form.md').includes('Status: Release-ready')) {
+  failures.push('React Hook Form package page must be Release-ready');
+}
 const base = process.env.DOCS_BASE_SHA?.trim();
 if (base && !/^0+$/.test(base)) {
   try {

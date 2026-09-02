@@ -1,6 +1,6 @@
 # React Hook Form adapter
 
-- Status: Implemented through public API and developer-experience phases
+- Status: Release-ready
 - Owner: React adapter maintainers
 - Last verified: 2026-09-01
 - Applies to: @dynamic-form-engine/rhf 0.1.0, React Hook Form 7.52.0 or newer
