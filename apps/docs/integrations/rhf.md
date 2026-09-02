@@ -3,11 +3,14 @@
 - Status: Implemented through public API and developer-experience phases
 - Owner: React adapter maintainers
 - Last verified: 2026-09-01
-- Applies to: @dynamic-form-engine/rhf 0.1.0, React Hook Form 7.x
+- Applies to: @dynamic-form-engine/rhf 0.1.0, React Hook Form 7.52.0 or newer
 
 The adapter keeps React Hook Form authoritative for values, field state, errors,
 resets, and submission while Dynamic Forms evaluates schemas, conditions,
 dependencies, validation, and data sources.
+
+The supported RHF range starts at 7.52.0. Earlier RHF 7 releases either lack
+required controller behavior or do not declare React 19 compatibility.
 
 ## Typed schema and renderer-neutral registry
 

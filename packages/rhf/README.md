@@ -127,10 +127,12 @@ The adapter may import `@dynamic-form-engine/core` and `@dynamic-form-engine/rea
 ## Compatibility target
 
 - React 18 and 19
-- React Hook Form 7.x
+- React Hook Form 7.52.0 or newer
 - The repository-supported TypeScript version
 
-The oldest and newest RHF 7 releases will be verified by the Phase 7 compatibility matrix before release-ready status.
+RHF 7.52.0 is the minimum because it is the first supported release that combines
+the adapter's required controller behavior with RHF's declared React 19 support.
+The minimum and current RHF 7 releases are verified by the compatibility matrix.
 
 ## Development
 

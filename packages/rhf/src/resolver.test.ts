@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { FormSchema } from '@dynamic-form-engine/core';
+import type { FieldErrors, FieldValues } from 'react-hook-form';
 import { createRHFResolver, toRHFErrors } from './resolver';
 
 const resolverOptions = {
@@ -8,6 +9,10 @@ const resolverOptions = {
   names: [],
   shouldUseNativeValidation: false,
 };
+
+function resolverErrors<TFieldValues extends FieldValues>(result: { errors: unknown }): FieldErrors<TFieldValues> {
+  return result.errors as FieldErrors<TFieldValues>;
+}
 
 describe('toRHFErrors', () => {
   it('creates nested object and array errors with stable codes', () => {
@@ -56,8 +61,9 @@ describe('createRHFResolver', () => {
     const result = await createRHFResolver<{ name: string }>(schema)(
       { name: '' }, undefined, resolverOptions,
     );
-    expect(result.errors.name).toMatchObject({ type: 'required', message: 'Name is required' });
-    expect(result.errors.name?.types).toMatchObject({
+    const errors = resolverErrors<{ name: string }>(result);
+    expect(errors.name).toMatchObject({ type: 'required', message: 'Name is required' });
+    expect(errors.name?.types).toMatchObject({
       required: 'Name is required', minLength: 'Name must be at least 3 characters', pattern: 'Name has an invalid format',
     });
   });
@@ -73,8 +79,9 @@ describe('createRHFResolver', () => {
     };
     const resolver = createRHFResolver<{ kind: string; company: string; secret: string }>(schema);
     const business = await resolver({ kind: 'business', company: '', secret: '' }, undefined, resolverOptions);
-    expect(business.errors.company?.type).toBe('required');
-    expect(business.errors.secret).toBeUndefined();
+    const businessErrors = resolverErrors<{ kind: string; company: string; secret: string }>(business);
+    expect(businessErrors.company?.type).toBe('required');
+    expect(businessErrors.secret).toBeUndefined();
     const personal = await resolver({ kind: 'personal', company: '', secret: '' }, undefined, resolverOptions);
     expect(personal.errors).toEqual({});
   });
@@ -103,7 +110,7 @@ describe('createRHFResolver', () => {
     const result = await createRHFResolver<{ contacts: Array<{ email: string }> }>(schema)(
       { contacts: [{ email: '' }] }, undefined, resolverOptions,
     );
-    expect(result.errors.contacts?.[0]?.email?.type).toBe('required');
+    expect(resolverErrors<{ contacts: Array<{ email: string }> }>(result).contacts?.[0]?.email?.type).toBe('required');
   });
 
   it('merges cross-field, custom, and root form errors', async () => {
@@ -114,9 +121,11 @@ describe('createRHFResolver', () => {
         : { confirm: 'Passwords must match' },
     });
     const mismatch = await resolver({ password: 'one', confirm: 'two' }, undefined, resolverOptions);
-    expect(mismatch.errors.confirm).toMatchObject({ type: 'custom', message: 'Passwords must match' });
+    expect(resolverErrors<{ password: string; confirm: string }>(mismatch).confirm)
+      .toMatchObject({ type: 'custom', message: 'Passwords must match' });
     const root = await resolver({ password: 'same', confirm: 'same' }, undefined, resolverOptions);
-    expect(root.errors.root).toMatchObject({ type: 'custom', message: 'Password is reserved' });
+    expect(resolverErrors<{ password: string; confirm: string }>(root).root)
+      .toMatchObject({ type: 'custom', message: 'Password is reserved' });
   });
 
   it('makes concurrent stale runs resolve to the latest validation result', async () => {

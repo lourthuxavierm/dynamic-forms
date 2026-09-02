@@ -44,7 +44,7 @@ try {
   assert.equal(manifest.publishConfig?.access, 'public');
   assert.equal(manifest.sideEffects, false);
   assert.equal(manifest.peerDependencies?.react, '^18.0.0 || ^19.0.0');
-  assert.equal(manifest.peerDependencies?.['react-hook-form'], '^7.0.0');
+  assert.equal(manifest.peerDependencies?.['react-hook-form'], '^7.52.0');
   assert.ok(!JSON.stringify(manifest).includes('workspace:'), 'Packed manifest contains an unresolved workspace protocol');
 
   const esm = run(process.execPath, ['--input-type=module', '--eval', "import('./packages/rhf/dist/index.mjs').then(api => console.log(Object.keys(api)))"]);

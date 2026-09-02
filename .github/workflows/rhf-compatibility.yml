@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         react: ["18.3.1", "19.2.0"]
-        rhf: ["7.0.0", "7.85.0"]
+        rhf: ["7.52.0", "7.85.0"]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
