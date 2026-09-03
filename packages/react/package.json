@@ -11,11 +11,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
@@ -33,5 +37,53 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "happy-dom": "^20.11.6"
-  }
+  },
+  "keywords": [
+    "dynamic-forms",
+    "dynamic-form",
+    "form-engine",
+    "schema-form",
+    "schema-driven",
+    "dynamic-ui",
+    "form-builder",
+    "headless-form",
+    "typescript",
+    "form-validation",
+    "conditional-fields",
+    "form-state"
+  ],
+  "author": {
+    "name": "Lourthu Xavier M",
+    "url": "https://github.com/lourthuxavierm"
+  },
+  "contributors": [],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/lourthuxavierm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lourthuxavierm/dynamic-forms.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/lourthuxavierm/dynamic-forms#readme",
+  "bugs": {
+    "url": "https://github.com/lourthuxavierm/dynamic-forms/issues"
+  },
+  "type": "module",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@10.15.0"
 }

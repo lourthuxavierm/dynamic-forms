@@ -1,10 +1,96 @@
 {
-  "name": "@dynamic-form-engine/angular", "version": "0.1.0", "description": "Angular signals and lifecycle adapter for Dynamic Forms", "license": "MIT", "type": "module",
-  "main": "./dist/fesm2022/dynamic-form-engine-angular.mjs", "module": "./dist/fesm2022/dynamic-form-engine-angular.mjs", "types": "./dist/types/dynamic-form-engine-angular.d.ts",
-  "exports": { ".": { "types": "./dist/types/dynamic-form-engine-angular.d.ts", "import": "./dist/fesm2022/dynamic-form-engine-angular.mjs", "default": "./dist/fesm2022/dynamic-form-engine-angular.mjs" } },
-  "sideEffects": false, "files": ["dist", "README.md"],
-  "dependencies": { "@dynamic-form-engine/core": "workspace:*", "tslib": "^2.8.1" },
-  "peerDependencies": { "@angular/core": "^22.0.0", "@angular/forms": "^22.0.0", "rxjs": "^7.4.0" },
-  "scripts": { "build": "ng-packagr -p ng-package.json", "test": "vitest run", "typecheck": "tsc --noEmit -p tsconfig.json" },
-  "devDependencies": { "@angular/compiler": "22.1.3", "@angular/compiler-cli": "22.1.3", "@angular/core": "22.1.3", "@angular/forms": "22.1.3", "happy-dom": "^20.11.6", "ng-packagr": "22.1.1", "rxjs": "7.8.2", "typescript": "6.0.2" }
+  "name": "@dynamic-form-engine/angular",
+  "version": "0.1.0",
+  "description": "Angular signals and lifecycle adapter for Dynamic Forms",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/fesm2022/dynamic-form-engine-angular.mjs",
+  "module": "./dist/fesm2022/dynamic-form-engine-angular.mjs",
+  "types": "./dist/types/dynamic-form-engine-angular.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/dynamic-form-engine-angular.d.ts",
+      "import": "./dist/fesm2022/dynamic-form-engine-angular.mjs",
+      "default": "./dist/fesm2022/dynamic-form-engine-angular.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "dependencies": {
+    "@dynamic-form-engine/core": "workspace:*",
+    "tslib": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "rxjs": "^7.4.0"
+  },
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@angular/compiler": "22.1.3",
+    "@angular/compiler-cli": "22.1.3",
+    "@angular/core": "22.1.3",
+    "@angular/forms": "22.1.3",
+    "happy-dom": "^20.11.6",
+    "ng-packagr": "22.1.1",
+    "rxjs": "7.8.2",
+    "typescript": "6.0.2"
+  },
+  "keywords": [
+    "dynamic-forms",
+    "dynamic-form",
+    "form-engine",
+    "schema-form",
+    "schema-driven",
+    "dynamic-ui",
+    "form-builder",
+    "headless-form",
+    "typescript",
+    "form-validation",
+    "conditional-fields",
+    "form-state"
+  ],
+  "author": {
+    "name": "Lourthu Xavier M",
+    "url": "https://github.com/lourthuxavierm"
+  },
+  "contributors": [],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/lourthuxavierm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lourthuxavierm/dynamic-forms.git",
+    "directory": "packages/angular"
+  },
+  "homepage": "https://github.com/lourthuxavierm/dynamic-forms#readme",
+  "bugs": {
+    "url": "https://github.com/lourthuxavierm/dynamic-forms/issues"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/types/dynamic-form-engine-angular.d.ts"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@10.15.0"
 }
