@@ -39,9 +39,9 @@ function verifyPublishedFiles(files) {
 
 try {
   runPnpm(['check:boundaries']);
+  runPnpm(['--filter', '@dynamic-form-engine/zod...', 'build']);
   runPnpm(['--filter', '@dynamic-form-engine/zod', 'typecheck']);
   runPnpm(['--filter', '@dynamic-form-engine/zod', 'test']);
-  runPnpm(['--filter', '@dynamic-form-engine/zod...', 'build']);
   runPnpm(['docs:api:check']);
   runPnpm(['verify:zod-architecture']);
 
