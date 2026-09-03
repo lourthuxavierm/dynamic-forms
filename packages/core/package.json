@@ -1,24 +1,77 @@
 {
-    "name":  "@dynamic-form-engine/core",
-    "version":  "0.1.0",
-    "description":  "Framework-independent dynamic forms core",
-    "license":  "MIT",
-    "main":  "./dist/index.js",
-    "module":  "./dist/index.mjs",
-    "types":  "./dist/index.d.ts",
-    "exports":  {
-                    ".":  {
-                              "types":  "./dist/index.d.ts",
-                              "import":  "./dist/index.mjs",
-                              "require":  "./dist/index.js"
-                          }
-                },
-    "files":  [
-                  "dist"
-              ],
-    "scripts":  {
-                    "build":  "tsup \u0026\u0026 tsc -p tsconfig.build.json",
-                    "test":  "vitest run",
-                    "typecheck":  "tsc --noEmit"
-                }
+  "name": "@dynamic-form-engine/core",
+  "version": "0.1.0",
+  "description": "Framework-independent dynamic forms core",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "dynamic-forms",
+    "dynamic-form",
+    "form-engine",
+    "schema-form",
+    "schema-driven",
+    "dynamic-ui",
+    "form-builder",
+    "headless-form",
+    "typescript",
+    "form-validation",
+    "conditional-fields",
+    "form-state"
+  ],
+  "author": {
+    "name": "Lourthu Xavier M",
+    "url": "https://github.com/lourthuxavierm"
+  },
+  "contributors": [],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/lourthuxavierm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lourthuxavierm/dynamic-forms.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/lourthuxavierm/dynamic-forms#readme",
+  "bugs": {
+    "url": "https://github.com/lourthuxavierm/dynamic-forms/issues"
+  },
+  "type": "module",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@10.15.0"
 }

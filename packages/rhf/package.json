@@ -1,47 +1,95 @@
 {
-    "name": "@dynamic-form-engine/rhf",
-    "version": "0.1.0",
-    "description": "React Hook Form adapter for Dynamic Forms",
-    "license": "MIT",
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
-        }
+  "name": "@dynamic-form-engine/rhf",
+  "version": "0.1.0",
+  "description": "React Hook Form adapter for Dynamic Forms",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
-    "files": [
-        "dist",
-        "README.md",
-        "RELEASE.md"
-    ],
-    "peerDependencies": {
-        "react": "^18.0.0 || ^19.0.0",
-        "react-hook-form": "^7.52.0"
-    },
-    "dependencies": {
-        "@dynamic-form-engine/core": "workspace:*",
-        "@dynamic-form-engine/react": "workspace:*"
-    },
-    "scripts": {
-        "build": "tsup && tsc -p tsconfig.build.json",
-        "test": "vitest run",
-        "typecheck": "tsc --noEmit -p tsconfig.json"
-    },
-    "devDependencies": {
-        "@testing-library/react": "^16.3.3",
-        "@types/react": "^19.2.18",
-        "@types/react-dom": "^19.2.4",
-        "happy-dom": "^20.11.6",
-        "react": "^19.2.8",
-        "react-dom": "^19.2.8",
-        "react-hook-form": "^7.85.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "sideEffects": false
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "RELEASE.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-hook-form": "^7.52.0"
+  },
+  "dependencies": {
+    "@dynamic-form-engine/core": "workspace:*",
+    "@dynamic-form-engine/react": "workspace:*"
+  },
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "happy-dom": "^20.11.6",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-hook-form": "^7.85.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "sideEffects": false,
+  "keywords": [
+    "dynamic-forms",
+    "dynamic-form",
+    "form-engine",
+    "schema-form",
+    "schema-driven",
+    "dynamic-ui",
+    "form-builder",
+    "headless-form",
+    "typescript",
+    "form-validation",
+    "conditional-fields",
+    "form-state"
+  ],
+  "author": {
+    "name": "Lourthu Xavier M",
+    "url": "https://github.com/lourthuxavierm"
+  },
+  "contributors": [],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/lourthuxavierm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lourthuxavierm/dynamic-forms.git",
+    "directory": "packages/rhf"
+  },
+  "homepage": "https://github.com/lourthuxavierm/dynamic-forms#readme",
+  "bugs": {
+    "url": "https://github.com/lourthuxavierm/dynamic-forms/issues"
+  },
+  "type": "module",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "packageManager": "pnpm@10.15.0"
 }

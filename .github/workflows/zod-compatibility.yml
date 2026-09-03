@@ -66,6 +66,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Select Zod ${{ matrix.zod }}
         run: pnpm --filter @dynamic-form-engine/zod add --save-dev --lockfile=false zod@${{ matrix.zod }}
+      - run: pnpm --filter @dynamic-form-engine/core build
       - run: pnpm --filter @dynamic-form-engine/zod typecheck
       - run: pnpm --filter @dynamic-form-engine/zod test
       - run: pnpm --filter @dynamic-form-engine/zod build
