@@ -325,7 +325,7 @@ export declare function useRHFDataSource<T = unknown>(fieldName: string, options
 ### UseRHFDataSourceOptions
 
 - Kind: interface
-- Source: `packages/react/dist/hooks/useDataSource.d.ts`
+- Source: `packages/react/src/hooks/useDataSource.ts`
 
 Public interface exported by @dynamic-form-engine/rhf.
 
@@ -336,7 +336,7 @@ export interface UseDataSourceOptions;
 ### UseRHFDataSourceResult
 
 - Kind: interface
-- Source: `packages/react/dist/hooks/useDataSource.d.ts`
+- Source: `packages/react/src/hooks/useDataSource.ts`
 
 Public interface exported by @dynamic-form-engine/rhf.
 

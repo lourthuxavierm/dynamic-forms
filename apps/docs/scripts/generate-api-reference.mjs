@@ -21,7 +21,15 @@ const entries = packages.map((pkg) => resolve(root, pkg.entry));
 const program = ts.createProgram(entries, {
   target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext,
   moduleResolution: ts.ModuleResolutionKind.Bundler, jsx: ts.JsxEmit.ReactJSX,
-  skipLibCheck: true, allowJs: false,
+  skipLibCheck: true, allowJs: false, baseUrl: root,
+  paths: {
+    '@dynamic-form-engine/core': ['packages/core/src/index.ts'],
+    '@dynamic-form-engine/react': ['packages/react/src/index.ts'],
+    '@dynamic-form-engine/react-html': ['packages/react-html/src/index.ts'],
+    '@dynamic-form-engine/html': ['packages/html/src/index.ts'],
+    '@dynamic-form-engine/rhf': ['packages/rhf/src/index.ts'],
+    '@dynamic-form-engine/zod': ['packages/zod/src/index.ts'],
+  },
 });
 const checker = program.getTypeChecker();
 const failures = [];

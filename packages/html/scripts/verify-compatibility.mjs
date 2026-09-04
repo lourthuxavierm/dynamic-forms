@@ -14,7 +14,7 @@ const compatibilityExports = Object.keys(compatibilityManifest.exports).sort();
 const canonicalExports = Object.keys(canonicalManifest.exports).sort();
 assert.deepEqual(compatibilityExports, canonicalExports, 'Public export subpaths must remain identical');
 
-const runtimeSubpaths = compatibilityExports.filter((subpath) => subpath !== './styles.css');
+const runtimeSubpaths = compatibilityExports.filter((subpath) => subpath !== './styles.css' && subpath !== './package.json');
 for (const subpath of runtimeSubpaths) {
   const suffix = subpath === '.' ? '' : subpath.slice(1);
   const compatibilitySpecifier = `@dynamic-form-engine/html${suffix}`;

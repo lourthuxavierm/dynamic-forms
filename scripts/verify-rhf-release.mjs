@@ -30,7 +30,7 @@ try {
   const output = runPnpm(['--filter', '@dynamic-form-engine/rhf', 'pack', '--json', '--pack-destination', verificationRoot]);
   const packed = JSON.parse(output.slice(output.indexOf('{')));
   const paths = packed.files.map((file) => file.path);
-  for (const path of ['dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'README.md', 'RELEASE.md', 'package.json']) {
+  for (const path of ['dist/index.js', 'dist/index.cjs', 'dist/index.d.ts', 'README.md', 'RELEASE.md', 'package.json']) {
     assert.ok(paths.includes(path), `Packed RHF adapter is missing ${path}`);
   }
   for (const path of paths) {
@@ -47,8 +47,8 @@ try {
   assert.equal(manifest.peerDependencies?.['react-hook-form'], '^7.52.0');
   assert.ok(!JSON.stringify(manifest).includes('workspace:'), 'Packed manifest contains an unresolved workspace protocol');
 
-  const esm = run(process.execPath, ['--input-type=module', '--eval', "import('./packages/rhf/dist/index.mjs').then(api => console.log(Object.keys(api)))"]);
-  const cjs = run(process.execPath, ['--eval', "console.log(Object.keys(require('./packages/rhf/dist/index.js')))"]);
+  const esm = run(process.execPath, ['--input-type=module', '--eval', "import('./packages/rhf/dist/index.js').then(api => console.log(Object.keys(api)))"]);
+  const cjs = run(process.execPath, ['--eval', "console.log(Object.keys(require('./packages/rhf/dist/index.cjs')))"]);
   for (const name of ['DynamicFormRHFProvider', 'RHFForm', 'RHFField', 'createRHFResolver']) {
     assert.ok(esm.includes(name), `ESM consumer is missing ${name}`);
     assert.ok(cjs.includes(name), `CommonJS consumer is missing ${name}`);

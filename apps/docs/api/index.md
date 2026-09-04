@@ -2,7 +2,7 @@
 
 - Status: Generated and curated
 - Owner: Package owners and documentation maintainers
-- Last verified: 2026-09-05
+- Last verified: 2026-08-27
 - Applies to: Generated `@dynamic-forms/*` package exports with explicit maturity labels
 
 The generated reference records the compiler-visible public surface. Generated
