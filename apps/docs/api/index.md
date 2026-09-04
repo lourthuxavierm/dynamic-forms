@@ -2,7 +2,7 @@
 
 - Status: Generated and curated
 - Owner: Package owners and documentation maintainers
-- Last verified: 2026-08-27
+- Last verified: 2026-09-05
 - Applies to: Generated `@dynamic-forms/*` package exports with explicit maturity labels
 
 The generated reference records the compiler-visible public surface. Generated
@@ -33,6 +33,14 @@ and links live in `api/annotations.json` and survive regeneration.
 `pnpm docs:verify` runs drift mode. It fails when a public export is missing from
 the reference, a documented export no longer exists, or generated artifacts are
 stale.
+
+## Package distribution contract
+
+Packages built with tsup publish ESM as `dist/*.js` and CommonJS as
+`dist/*.cjs`. Their `module` and `exports.import` entries target the ESM files,
+while `main` and `exports.require` target the CommonJS files. The public
+`./package.json` subpath is metadata-only and is not treated as a JavaScript
+runtime entry point by compatibility checks.
 
 ## Deprecation policy
 
