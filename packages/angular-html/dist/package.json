@@ -24,7 +24,9 @@
   "files": [
     "dist",
     "styles.css",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "dependencies": {
     "@dynamic-form-engine/angular": "workspace:*",
@@ -36,5 +38,52 @@
     "@angular/forms": "^22.0.0",
     "@dynamic-form-engine/core": "workspace:*"
   },
+  "keywords": [
+    "dynamic-forms",
+    "dynamic-form",
+    "form-engine",
+    "schema-form",
+    "schema-driven",
+    "dynamic-ui",
+    "form-builder",
+    "headless-form",
+    "typescript",
+    "form-validation",
+    "conditional-fields",
+    "form-state"
+  ],
+  "author": {
+    "name": "Lourthu Xavier M",
+    "url": "https://github.com/lourthuxavierm"
+  },
+  "contributors": [],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/lourthuxavierm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lourthuxavierm/dynamic-forms.git",
+    "directory": "packages/angular-html"
+  },
+  "homepage": "https://github.com/lourthuxavierm/dynamic-forms#readme",
+  "bugs": {
+    "url": "https://github.com/lourthuxavierm/dynamic-forms/issues"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/types/dynamic-form-engine-angular-html.d.ts"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@10.15.0",
   "typings": "types/dynamic-form-engine-angular-html.d.ts"
 }

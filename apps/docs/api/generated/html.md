@@ -17,7 +17,7 @@ This page contains 126 exports. Signatures are regenerated from the package entr
 ### applyMask
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Mask syntax: 0 digit, A letter, and * alphanumeric. Other characters are literals.
 
@@ -28,7 +28,7 @@ export declare function applyMask(value: string, mask: string): string
 ### createDefaultHtmlRegistry
 
 - Kind: function
-- Source: `packages/react-html/dist/registry/defaultRegistry.d.ts`
+- Source: `packages/react-html/src/registry/defaultRegistry.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -39,7 +39,7 @@ export declare function createDefaultHtmlRegistry(overrides?: HtmlFieldRegistryO
 ### createHtmlLayoutRegistry
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -50,7 +50,7 @@ export declare function createHtmlLayoutRegistry(overrides?: HtmlLayoutRegistryO
 ### createHtmlRegistry
 
 - Kind: function
-- Source: `packages/react-html/dist/registry/registry.d.ts`
+- Source: `packages/react-html/src/registry/registry.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -61,7 +61,7 @@ export declare function createHtmlRegistry(initial?: HtmlFieldRegistryOverrides 
 ### createHtmlTemporalField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -72,7 +72,7 @@ export declare function createHtmlTemporalField(kind: TemporalKind, enhance?: Ht
 ### createLazyHtmlRegistry
 
 - Kind: function
-- Source: `packages/react-html/dist/registry/lazyRegistry.d.ts`
+- Source: `packages/react-html/src/registry/lazyRegistry.ts`
 
 Opt-in code-split overrides for costly or uncommon controls.
 
@@ -83,7 +83,7 @@ export declare function createLazyHtmlRegistry(): HtmlFieldRegistryOverrides
 ### createSafeFileSnapshot
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -94,7 +94,7 @@ export declare function createSafeFileSnapshot(files: readonly File[]): Readonly
 ### EXPERIMENTAL_HTML_FIELD_TYPES
 
 - Kind: const
-- Source: `packages/react-html/dist/registry/v1.d.ts`
+- Source: `packages/react-html/src/registry/v1.ts`
 
 Supported compatibility extensions that are not covered by the v1 stability guarantee.
 
@@ -105,7 +105,7 @@ export declare const EXPERIMENTAL_HTML_FIELD_TYPES: readonly ["searchable-select
 ### ExperimentalHtmlFieldType
 
 - Kind: type
-- Source: `packages/react-html/dist/registry/v1.d.ts`
+- Source: `packages/react-html/src/registry/v1.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -116,7 +116,7 @@ export type ExperimentalHtmlFieldType;
 ### extractMaskValue
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -127,7 +127,7 @@ export declare function extractMaskValue(input: string, mask: string): string
 ### formatCurrency
 
 - Kind: function
-- Source: `packages/react-html/dist/components/numericFormat.d.ts`
+- Source: `packages/react-html/src/components/numericFormat.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -138,7 +138,7 @@ export declare function formatCurrency(value: number, locale: string, currency: 
 ### formatPercentage
 
 - Kind: function
-- Source: `packages/react-html/dist/components/numericFormat.d.ts`
+- Source: `packages/react-html/src/components/numericFormat.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -149,7 +149,7 @@ export declare function formatPercentage(value: number, locale: string, precisio
 ### HTML_ADAPTER_VERSION
 
 - Kind: const
-- Source: `packages/react-html/dist/index.d.ts`
+- Source: `packages/react-html/src/index.ts`
 
 Compatibility-package version marker; this does not identify a separate native DOM renderer.
 
@@ -160,7 +160,7 @@ export declare const HTML_ADAPTER_VERSION: "0.1.0";
 ### HTML_DEFAULT_STYLESHEET
 
 - Kind: const
-- Source: `packages/react-html/dist/styles/index.d.ts`
+- Source: `packages/react-html/src/styles/index.ts`
 
 Opt-in stylesheet subpath. Import once from your application entry point.
 
@@ -171,7 +171,7 @@ export declare const HTML_DEFAULT_STYLESHEET: "@dynamic-form-engine/react-html/s
 ### HTML_TOKEN_PREFIX
 
 - Kind: const
-- Source: `packages/react-html/dist/styles/index.d.ts`
+- Source: `packages/react-html/src/styles/index.ts`
 
 Stable prefix for default HTML adapter CSS custom properties.
 
@@ -182,7 +182,7 @@ export declare const HTML_TOKEN_PREFIX: "--df-";
 ### HtmlAccessibilityAttributes
 
 - Kind: interface
-- Source: `packages/react-html/dist/accessibility/index.d.ts`
+- Source: `packages/react-html/src/accessibility/index.ts`
 
 Shared native-control accessibility attributes used by HTML renderers.
 
@@ -193,7 +193,7 @@ export interface HtmlAccessibilityAttributes;
 ### HtmlAccordion
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -204,7 +204,7 @@ export declare function HtmlAccordion({ node, children }: HtmlLayoutComponentPro
 ### HtmlArrayItemsRenderer
 
 - Kind: type
-- Source: `packages/react-html/dist/components/structural.d.ts`
+- Source: `packages/react-html/src/components/structural.tsx`
 
 Extension point for windowing large collections without coupling the adapter to a virtualization library.
 
@@ -215,7 +215,7 @@ export type HtmlArrayItemsRenderer;
 ### HtmlArrayItemsRendererProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/structural.d.ts`
+- Source: `packages/react-html/src/components/structural.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -226,7 +226,7 @@ export interface HtmlArrayItemsRendererProps;
 ### HtmlArrayRenderItem
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/structural.d.ts`
+- Source: `packages/react-html/src/components/structural.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -237,7 +237,7 @@ export interface HtmlArrayRenderItem;
 ### HtmlAsyncAutocomplete
 
 - Kind: const
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -248,7 +248,7 @@ export declare const HtmlAsyncAutocomplete: (props: FieldComponentProps) => impo
 ### HtmlAutocomplete
 
 - Kind: const
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -259,7 +259,7 @@ export declare const HtmlAutocomplete: (props: FieldComponentProps) => import("r
 ### HtmlCameraCapture
 
 - Kind: const
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -270,7 +270,7 @@ export declare const HtmlCameraCapture: (props: FieldComponentProps) => import("
 ### HtmlCardSection
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -281,7 +281,7 @@ export declare function HtmlCardSection({ node, children }: HtmlLayoutComponentP
 ### HtmlCheckbox
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -292,7 +292,7 @@ export declare function HtmlCheckbox(props: FieldComponentProps): import("react"
 ### HtmlCheckboxGroup
 
 - Kind: function
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -303,7 +303,7 @@ export declare function HtmlCheckboxGroup(props: FieldComponentProps): import("r
 ### HtmlColorScheme
 
 - Kind: type
-- Source: `packages/react-html/dist/styles/index.d.ts`
+- Source: `packages/react-html/src/styles/index.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -314,7 +314,7 @@ export type HtmlColorScheme;
 ### HtmlCurrencyField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -325,7 +325,7 @@ export declare const HtmlCurrencyField: (props: FieldComponentProps) => import("
 ### HtmlDateField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -336,7 +336,7 @@ export declare const HtmlDateField: (props: FieldComponentProps) => import("reac
 ### HtmlDateRangeField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -347,7 +347,7 @@ export declare const HtmlDateRangeField: (props: FieldComponentProps) => import(
 ### HtmlDateTimeField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -358,7 +358,7 @@ export declare const HtmlDateTimeField: (props: FieldComponentProps) => import("
 ### HtmlDateTimeRangeField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -369,7 +369,7 @@ export declare const HtmlDateTimeRangeField: (props: FieldComponentProps) => imp
 ### HtmlDecimalField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -380,7 +380,7 @@ export declare const HtmlDecimalField: (props: FieldComponentProps) => import("r
 ### HtmlDensity
 
 - Kind: type
-- Source: `packages/react-html/dist/styles/index.d.ts`
+- Source: `packages/react-html/src/styles/index.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -391,7 +391,7 @@ export type HtmlDensity;
 ### HtmlDocumentPreview
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -402,7 +402,7 @@ export declare function HtmlDocumentPreview(props: FieldComponentProps): import(
 ### HtmlEmailField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -413,7 +413,7 @@ export declare const HtmlEmailField: (props: FieldComponentProps) => import("rea
 ### HtmlFieldComponent
 
 - Kind: type
-- Source: `packages/react-html/dist/components/index.d.ts`
+- Source: `packages/react-html/src/components/index.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -424,7 +424,7 @@ export type HtmlFieldComponent;
 ### HtmlFieldErrorBoundary
 
 - Kind: class
-- Source: `packages/react-html/dist/components/HtmlFieldErrorBoundary.d.ts`
+- Source: `packages/react-html/src/components/HtmlFieldErrorBoundary.tsx`
 
 Public class exported by @dynamic-form-engine/html.
 
@@ -435,7 +435,7 @@ export class HtmlFieldErrorBoundary;
 ### HtmlFieldErrorBoundaryProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/HtmlFieldErrorBoundary.d.ts`
+- Source: `packages/react-html/src/components/HtmlFieldErrorBoundary.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -446,7 +446,7 @@ export interface HtmlFieldErrorBoundaryProps;
 ### HtmlFieldRegistration
 
 - Kind: interface
-- Source: `packages/react-html/dist/registry/types.d.ts`
+- Source: `packages/react-html/src/registry/types.ts`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -457,7 +457,7 @@ export interface HtmlFieldRegistration;
 ### HtmlFieldRegistry
 
 - Kind: type
-- Source: `packages/react-html/dist/registry/types.d.ts`
+- Source: `packages/react-html/src/registry/types.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -468,7 +468,7 @@ export type HtmlFieldRegistry;
 ### HtmlFieldRegistryOverrides
 
 - Kind: type
-- Source: `packages/react-html/dist/registry/types.d.ts`
+- Source: `packages/react-html/src/registry/types.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -479,7 +479,7 @@ export type HtmlFieldRegistryOverrides;
 ### HtmlFieldRenderer
 
 - Kind: const
-- Source: `packages/react-html/dist/renderer/HtmlFieldRenderer.d.ts`
+- Source: `packages/react-html/src/renderer/HtmlFieldRenderer.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -490,7 +490,7 @@ export declare const HtmlFieldRenderer: import("react").MemoExoticComponent<({ f
 ### HtmlFieldRendererProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/renderer/HtmlFieldRenderer.d.ts`
+- Source: `packages/react-html/src/renderer/HtmlFieldRenderer.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -501,7 +501,7 @@ export interface HtmlFieldRendererProps;
 ### HtmlFieldsetLayout
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -512,7 +512,7 @@ export declare function HtmlFieldsetLayout({ node, children }: HtmlLayoutCompone
 ### HtmlFieldShell
 
 - Kind: function
-- Source: `packages/react-html/dist/components/HtmlFieldShell.d.ts`
+- Source: `packages/react-html/src/components/HtmlFieldShell.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -523,7 +523,7 @@ export declare function HtmlFieldShell({ props, children, hideLabel }: HtmlField
 ### HtmlFieldShellProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/HtmlFieldShell.d.ts`
+- Source: `packages/react-html/src/components/HtmlFieldShell.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -534,7 +534,7 @@ export interface HtmlFieldShellProps;
 ### HtmlFileControlConfig
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -545,7 +545,7 @@ export interface HtmlFileControlConfig;
 ### HtmlFileField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -556,7 +556,7 @@ export declare function HtmlFileField(props: FieldComponentProps): import("react
 ### HtmlFileUpload
 
 - Kind: const
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -567,7 +567,7 @@ export declare const HtmlFileUpload: (props: FieldComponentProps) => import("rea
 ### HtmlFileUploadProvider
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -578,7 +578,7 @@ export declare function HtmlFileUploadProvider({ upload, children }: { upload: H
 ### HtmlForm
 
 - Kind: function
-- Source: `packages/react-html/dist/components/HtmlForm.d.ts`
+- Source: `packages/react-html/src/components/HtmlForm.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -589,7 +589,7 @@ export declare function HtmlForm({ schema: explicitSchema, registry, submitLabel
 ### HtmlFormProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/HtmlForm.d.ts`
+- Source: `packages/react-html/src/components/HtmlForm.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -600,7 +600,7 @@ export interface HtmlFormProps;
 ### HtmlGrid
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -611,7 +611,7 @@ export declare function HtmlGrid({ node, children }: HtmlLayoutComponentProps): 
 ### HtmlHiddenField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -622,7 +622,7 @@ export declare function HtmlHiddenField(props: FieldComponentProps): import("rea
 ### HtmlInlineGroup
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -633,7 +633,7 @@ export declare function HtmlInlineGroup({ node, children }: HtmlLayoutComponentP
 ### HtmlIntegerField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -644,7 +644,7 @@ export declare const HtmlIntegerField: (props: FieldComponentProps) => import("r
 ### HtmlLayoutComponent
 
 - Kind: type
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -655,7 +655,7 @@ export type HtmlLayoutComponent;
 ### HtmlLayoutComponentProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -666,7 +666,7 @@ export interface HtmlLayoutComponentProps;
 ### HtmlLayoutNode
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -677,7 +677,7 @@ export interface HtmlLayoutNode;
 ### HtmlLayoutRegistry
 
 - Kind: type
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -688,7 +688,7 @@ export type HtmlLayoutRegistry;
 ### HtmlLayoutRegistryOverrides
 
 - Kind: type
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -699,7 +699,7 @@ export type HtmlLayoutRegistryOverrides;
 ### HtmlLayoutRendererProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/renderer/HtmlLayoutRenderer.d.ts`
+- Source: `packages/react-html/src/renderer/HtmlLayoutRenderer.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -710,7 +710,7 @@ export interface HtmlLayoutRendererProps;
 ### HtmlLayoutRenderResult
 
 - Kind: interface
-- Source: `packages/react-html/dist/renderer/HtmlLayoutRenderer.d.ts`
+- Source: `packages/react-html/src/renderer/HtmlLayoutRenderer.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -721,7 +721,7 @@ export interface HtmlLayoutRenderResult;
 ### HtmlLayoutType
 
 - Kind: type
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -732,7 +732,7 @@ export type HtmlLayoutType;
 ### HtmlMaskField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -743,7 +743,7 @@ export declare function HtmlMaskField(props: FieldComponentProps): import("react
 ### HtmlMonthField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -754,7 +754,7 @@ export declare const HtmlMonthField: (props: FieldComponentProps) => import("rea
 ### HtmlMultiFileUpload
 
 - Kind: const
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -765,7 +765,7 @@ export declare const HtmlMultiFileUpload: (props: FieldComponentProps) => import
 ### HtmlMultiSelect
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -776,7 +776,7 @@ export declare function HtmlMultiSelect(props: FieldComponentProps): import("rea
 ### HtmlNumberField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -787,7 +787,7 @@ export declare const HtmlNumberField: (props: FieldComponentProps) => import("re
 ### HtmlOtpField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -798,7 +798,7 @@ export declare const HtmlOtpField: (props: FieldComponentProps) => import("react
 ### HtmlPasswordField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -809,7 +809,7 @@ export declare const HtmlPasswordField: (props: FieldComponentProps) => import("
 ### HtmlPercentageField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -820,7 +820,7 @@ export declare const HtmlPercentageField: (props: FieldComponentProps) => import
 ### HtmlPhoneField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -831,7 +831,7 @@ export declare function HtmlPhoneField(props: FieldComponentProps): import("reac
 ### HtmlPinField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -842,7 +842,7 @@ export declare const HtmlPinField: (props: FieldComponentProps) => import("react
 ### HtmlRadio
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -853,7 +853,7 @@ export declare function HtmlRadio(props: FieldComponentProps): import("react").J
 ### HtmlRadioGroup
 
 - Kind: const
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -864,7 +864,7 @@ export declare const HtmlRadioGroup: (props: FieldComponentProps) => import("rea
 ### HtmlRangeSlider
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -875,7 +875,7 @@ export declare function HtmlRangeSlider(props: FieldComponentProps): import("rea
 ### HtmlRating
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -886,7 +886,7 @@ export declare function HtmlRating(props: FieldComponentProps): import("react").
 ### HtmlReadOnlySummary
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -897,7 +897,7 @@ export declare function HtmlReadOnlySummary({ node }: HtmlLayoutComponentProps):
 ### HtmlSearchableSelect
 
 - Kind: const
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -908,7 +908,7 @@ export declare const HtmlSearchableSelect: (props: FieldComponentProps) => impor
 ### HtmlSection
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -919,7 +919,7 @@ export declare function HtmlSection({ node, children }: HtmlLayoutComponentProps
 ### HtmlSelect
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -930,7 +930,7 @@ export declare function HtmlSelect(props: FieldComponentProps): import("react").
 ### HtmlSignatureField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -941,7 +941,7 @@ export declare function HtmlSignatureField(props: FieldComponentProps): import("
 ### HtmlSignatureProvider
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -952,7 +952,7 @@ export declare function HtmlSignatureProvider({ renderSignature, children }: { r
 ### HtmlSignatureRenderer
 
 - Kind: type
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -963,7 +963,7 @@ export type HtmlSignatureRenderer;
 ### HtmlSignatureRendererProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -974,7 +974,7 @@ export interface HtmlSignatureRendererProps;
 ### HtmlSlider
 
 - Kind: function
-- Source: `packages/react-html/dist/components/specialized.d.ts`
+- Source: `packages/react-html/src/components/specialized.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -985,7 +985,7 @@ export declare function HtmlSlider(props: FieldComponentProps): import("react").
 ### HtmlStack
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -996,7 +996,7 @@ export declare function HtmlStack({ node, children }: HtmlLayoutComponentProps):
 ### HtmlStickyActions
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1007,7 +1007,7 @@ export declare function HtmlStickyActions({ node, children }: HtmlLayoutComponen
 ### HtmlStructuralField
 
 - Kind: function
-- Source: `packages/react-html/dist/components/structural.d.ts`
+- Source: `packages/react-html/src/components/structural.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1018,7 +1018,7 @@ export declare function HtmlStructuralField(props: HtmlStructuralFieldProps): im
 ### HtmlStructuralFieldProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/structural.d.ts`
+- Source: `packages/react-html/src/components/structural.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -1029,7 +1029,7 @@ export interface HtmlStructuralFieldProps;
 ### HtmlSwitch
 
 - Kind: function
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1040,7 +1040,7 @@ export declare function HtmlSwitch(props: FieldComponentProps): import("react").
 ### HtmlTabDescriptor
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -1051,7 +1051,7 @@ export interface HtmlTabDescriptor;
 ### HtmlTabs
 
 - Kind: function
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1062,7 +1062,7 @@ export declare function HtmlTabs({ node, children, renderer }: HtmlLayoutCompone
 ### HtmlTabsRenderer
 
 - Kind: type
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -1073,7 +1073,7 @@ export type HtmlTabsRenderer;
 ### HtmlTabsRendererProps
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/layout.d.ts`
+- Source: `packages/react-html/src/components/layout.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -1084,7 +1084,7 @@ export interface HtmlTabsRendererProps;
 ### HtmlTemporalEnhancementContext
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -1095,7 +1095,7 @@ export interface HtmlTemporalEnhancementContext;
 ### HtmlTemporalEnhancer
 
 - Kind: type
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -1106,7 +1106,7 @@ export type HtmlTemporalEnhancer;
 ### HtmlTextarea
 
 - Kind: function
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1117,7 +1117,7 @@ export declare function HtmlTextarea(props: FieldComponentProps): import("react"
 ### HtmlTextField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -1128,7 +1128,7 @@ export declare const HtmlTextField: (props: FieldComponentProps) => import("reac
 ### HtmlTimeField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -1139,7 +1139,7 @@ export declare const HtmlTimeField: (props: FieldComponentProps) => import("reac
 ### HtmlTimeRangeField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/temporal.d.ts`
+- Source: `packages/react-html/src/components/temporal.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -1150,7 +1150,7 @@ export declare const HtmlTimeRangeField: (props: FieldComponentProps) => import(
 ### HtmlToggleButtonGroup
 
 - Kind: function
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1161,7 +1161,7 @@ export declare function HtmlToggleButtonGroup(props: FieldComponentProps): impor
 ### HtmlTreeCheckbox
 
 - Kind: function
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1172,7 +1172,7 @@ export declare function HtmlTreeCheckbox(props: FieldComponentProps): import("re
 ### HtmlTreeSelect
 
 - Kind: function
-- Source: `packages/react-html/dist/components/composites.d.ts`
+- Source: `packages/react-html/src/components/composites.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1183,7 +1183,7 @@ export declare function HtmlTreeSelect(props: FieldComponentProps): import("reac
 ### HtmlUploadHandler
 
 - Kind: type
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -1194,7 +1194,7 @@ export type HtmlUploadHandler;
 ### HtmlUploadRequest
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -1205,7 +1205,7 @@ export interface HtmlUploadRequest;
 ### HtmlUrlField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Public const exported by @dynamic-form-engine/html.
 
@@ -1216,7 +1216,7 @@ export declare const HtmlUrlField: (props: FieldComponentProps) => import("react
 ### HtmlYearField
 
 - Kind: const
-- Source: `packages/react-html/dist/components/baseline.d.ts`
+- Source: `packages/react-html/src/components/baseline.tsx`
 
 Stores a numeric Gregorian year and uses native min/max/step constraints.
 
@@ -1227,7 +1227,7 @@ export declare const HtmlYearField: (props: FieldComponentProps) => import("reac
 ### LocaleNumberOptions
 
 - Kind: interface
-- Source: `packages/react-html/dist/components/numericFormat.d.ts`
+- Source: `packages/react-html/src/components/numericFormat.ts`
 
 Public interface exported by @dynamic-form-engine/html.
 
@@ -1238,7 +1238,7 @@ export interface LocaleNumberOptions;
 ### mergeHtmlRegistries
 
 - Kind: function
-- Source: `packages/react-html/dist/registry/registry.d.ts`
+- Source: `packages/react-html/src/registry/registry.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1249,7 +1249,7 @@ export declare function mergeHtmlRegistries(...registries: readonly HtmlFieldReg
 ### normalizeDateOnly
 
 - Kind: function
-- Source: `packages/react-html/dist/components/temporalValues.d.ts`
+- Source: `packages/react-html/src/components/temporalValues.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1260,7 +1260,7 @@ export declare function normalizeDateOnly(value: string | Date | undefined | nul
 ### normalizeLocalDateTime
 
 - Kind: function
-- Source: `packages/react-html/dist/components/temporalValues.d.ts`
+- Source: `packages/react-html/src/components/temporalValues.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1271,7 +1271,7 @@ export declare function normalizeLocalDateTime(value: string | Date | undefined 
 ### normalizeNumericValue
 
 - Kind: function
-- Source: `packages/react-html/dist/components/numericFormat.d.ts`
+- Source: `packages/react-html/src/components/numericFormat.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1282,7 +1282,7 @@ export declare function normalizeNumericValue(value: number, options?: LocaleNum
 ### normalizeTemporalValue
 
 - Kind: function
-- Source: `packages/react-html/dist/components/temporalValues.d.ts`
+- Source: `packages/react-html/src/components/temporalValues.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1293,7 +1293,7 @@ export declare function normalizeTemporalValue(kind: TemporalKind, value: string
 ### normalizeTimeOnly
 
 - Kind: function
-- Source: `packages/react-html/dist/components/temporalValues.d.ts`
+- Source: `packages/react-html/src/components/temporalValues.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1304,7 +1304,7 @@ export declare function normalizeTimeOnly(value: string | undefined | null): str
 ### parseLocalDateTime
 
 - Kind: function
-- Source: `packages/react-html/dist/components/temporalValues.d.ts`
+- Source: `packages/react-html/src/components/temporalValues.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1315,7 +1315,7 @@ export declare function parseLocalDateTime(value: string): Date | undefined
 ### parseLocaleNumber
 
 - Kind: function
-- Source: `packages/react-html/dist/components/numericFormat.d.ts`
+- Source: `packages/react-html/src/components/numericFormat.ts`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1326,7 +1326,7 @@ export declare function parseLocaleNumber(input: string, locale?: string): numbe
 ### renderHtmlLayout
 
 - Kind: function
-- Source: `packages/react-html/dist/renderer/HtmlLayoutRenderer.d.ts`
+- Source: `packages/react-html/src/renderer/HtmlLayoutRenderer.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1337,7 +1337,7 @@ export declare function renderHtmlLayout({ layout, fields, registry, renderField
 ### TemporalKind
 
 - Kind: type
-- Source: `packages/react-html/dist/components/temporalValues.d.ts`
+- Source: `packages/react-html/src/components/temporalValues.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -1348,7 +1348,7 @@ export type TemporalKind;
 ### TypedHtmlFieldComponent
 
 - Kind: type
-- Source: `packages/react-html/dist/components/index.d.ts`
+- Source: `packages/react-html/src/components/index.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -1359,7 +1359,7 @@ export type TypedHtmlFieldComponent;
 ### useObjectUrl
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 
@@ -1370,7 +1370,7 @@ export declare function useObjectUrl(file: File | undefined): string | undefined
 ### V1_HTML_FIELD_TYPES
 
 - Kind: const
-- Source: `packages/react-html/dist/registry/v1.d.ts`
+- Source: `packages/react-html/src/registry/v1.ts`
 
 The stable Native HTML v1 leaf-control contract. Structural fields are separate.
 
@@ -1381,7 +1381,7 @@ export declare const V1_HTML_FIELD_TYPES: readonly ["text", "textarea", "passwor
 ### V1HtmlFieldType
 
 - Kind: type
-- Source: `packages/react-html/dist/registry/v1.d.ts`
+- Source: `packages/react-html/src/registry/v1.ts`
 
 Public type exported by @dynamic-form-engine/html.
 
@@ -1392,7 +1392,7 @@ export type V1HtmlFieldType;
 ### validateSelectedFiles
 
 - Kind: function
-- Source: `packages/react-html/dist/components/fileMedia.d.ts`
+- Source: `packages/react-html/src/components/fileMedia.tsx`
 
 Public function exported by @dynamic-form-engine/html.
 

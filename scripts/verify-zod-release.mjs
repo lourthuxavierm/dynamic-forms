@@ -26,7 +26,7 @@ function runPnpm(args) {
 function verifyPublishedFiles(files) {
   const paths = files.map((file) => file.path);
   for (const path of [
-    'dist/index.js', 'dist/index.mjs', 'dist/index.d.ts',
+    'dist/index.js', 'dist/index.cjs', 'dist/index.d.ts',
     'README.md', 'RELEASE.md', 'package.json',
   ]) assert.ok(paths.includes(path), `Packed Zod adapter is missing ${path}`);
 
@@ -46,10 +46,10 @@ try {
   runPnpm(['verify:zod-architecture']);
 
   const esm = run(process.execPath, ['--input-type=module', '--eval',
-    `import('./packages/zod/dist/index.mjs').then((api) => console.log(Object.keys(api).sort().join(',')))`,
+    `import('./packages/zod/dist/index.js').then((api) => console.log(Object.keys(api).sort().join(',')))`,
   ]);
   const cjs = run(process.execPath, ['--eval',
-    `console.log(Object.keys(require('./packages/zod/dist/index.js')).sort().join(','))`,
+    `console.log(Object.keys(require('./packages/zod/dist/index.cjs')).sort().join(','))`,
   ]);
   for (const factory of publicFactories) {
     assert.ok(esm.includes(factory), `ESM bundle is missing ${factory}`);
@@ -71,7 +71,7 @@ try {
   assert.equal(manifest.dependencies?.['@dynamic-form-engine/core'], manifest.version);
   assert.ok(!JSON.stringify(manifest).includes('workspace:'), 'Packed manifest contains an unresolved workspace protocol');
   assert.deepEqual(manifest.exports?.['.'], {
-    types: './dist/index.d.ts', import: './dist/index.mjs', require: './dist/index.js',
+    types: './dist/index.d.ts', import: './dist/index.js', require: './dist/index.cjs',
   });
 
   console.log(`Zod release verified at ${manifest.version}: package, ESM/CommonJS, declarations, tests, docs/API, and publish artifact passed.`);

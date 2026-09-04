@@ -34,6 +34,14 @@ and links live in `api/annotations.json` and survive regeneration.
 the reference, a documented export no longer exists, or generated artifacts are
 stale.
 
+## Package distribution contract
+
+Packages built with tsup publish ESM as `dist/*.js` and CommonJS as
+`dist/*.cjs`. Their `module` and `exports.import` entries target the ESM files,
+while `main` and `exports.require` target the CommonJS files. The public
+`./package.json` subpath is metadata-only and is not treated as a JavaScript
+runtime entry point by compatibility checks.
+
 ## Deprecation policy
 
 Add `@deprecated` to the exported declaration with a replacement and removal
