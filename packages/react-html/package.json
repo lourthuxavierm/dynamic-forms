@@ -73,7 +73,7 @@
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
     "test": "vitest run --passWithNoTests && node scripts/verify-styles.mjs",
-    "performance": "pnpm build && node scripts/verify-performance.mjs",
+    "performance": "pnpm --filter @dynamic-form-engine/react-html... build && node scripts/verify-performance.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

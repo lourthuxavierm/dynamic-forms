@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { performance } from 'node:perf_hooks';
 
 const gzipBytes = (file) => gzipSync(readFileSync(new URL('../dist/' + file, import.meta.url))).byteLength;
-const sizes = { core: gzipBytes('core.mjs'), text: gzipBytes('text.mjs'), compatibility: gzipBytes('index.mjs') };
+const sizes = { core: gzipBytes('core.js'), text: gzipBytes('text.js'), compatibility: gzipBytes('index.js') };
 if (sizes.core >= 10 * 1024) throw new Error(`Core entry is ${sizes.core} bytes gzip; budget is < 10240.`);
 if (sizes.text >= 2 * 1024) throw new Error(`Text control is ${sizes.text} bytes gzip; budget is < 2048.`);
 const iterations = 100_000;
