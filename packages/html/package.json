@@ -7,49 +7,49 @@
     "access": "public",
     "provenance": true
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./core": {
       "types": "./dist/entries/core.d.ts",
-      "import": "./dist/core.mjs",
-      "require": "./dist/core.js"
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs"
     },
     "./controls/baseline": {
       "types": "./dist/entries/baseline.d.ts",
-      "import": "./dist/baseline.mjs",
-      "require": "./dist/baseline.js"
+      "import": "./dist/baseline.js",
+      "require": "./dist/baseline.cjs"
     },
     "./controls/text": {
       "types": "./dist/entries/text.d.ts",
-      "import": "./dist/text.mjs",
-      "require": "./dist/text.js"
+      "import": "./dist/text.js",
+      "require": "./dist/text.cjs"
     },
     "./controls/composites": {
       "types": "./dist/entries/composites.d.ts",
-      "import": "./dist/composites.mjs",
-      "require": "./dist/composites.js"
+      "import": "./dist/composites.js",
+      "require": "./dist/composites.cjs"
     },
     "./controls/specialized": {
       "types": "./dist/entries/specialized.d.ts",
-      "import": "./dist/specialized.mjs",
-      "require": "./dist/specialized.js"
+      "import": "./dist/specialized.js",
+      "require": "./dist/specialized.cjs"
     },
     "./controls/temporal": {
       "types": "./dist/entries/temporal.d.ts",
-      "import": "./dist/temporal.mjs",
-      "require": "./dist/temporal.js"
+      "import": "./dist/temporal.js",
+      "require": "./dist/temporal.cjs"
     },
     "./controls/media": {
       "types": "./dist/entries/media.d.ts",
-      "import": "./dist/media.mjs",
-      "require": "./dist/media.js"
+      "import": "./dist/media.js",
+      "require": "./dist/media.cjs"
     },
     "./styles.css": "./styles.css",
     "./package.json": "./package.json"
