@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-form-engine/rhf",
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
   "description": "React Hook Form adapter for Dynamic Forms",
   "license": "MIT",
   "main": "./dist/index.cjs",

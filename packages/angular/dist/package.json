@@ -1,6 +1,6 @@
 {
   "name": "@dynamic-form-engine/angular",
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
   "description": "Angular signals and lifecycle adapter for Dynamic Forms",
   "license": "MIT",
   "type": "module",
