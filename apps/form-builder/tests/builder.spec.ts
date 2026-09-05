@@ -6,8 +6,8 @@ test('edits fields, options, history, and restores the draft', async ({ page }) 
   await expect(page.getByText('Annual revenue', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Select', exact: true }).click();
   await page.getByLabel('Option 1 label').fill('Enterprise');
-  await page.getByRole('button', { name: 'Undo' }).click();
-  await page.getByRole('button', { name: 'Redo' }).click();
+  await page.getByRole('button', { name: 'Undo', exact: true }).click();
+  await page.getByRole('button', { name: 'Redo', exact: true }).click();
   await page.waitForTimeout(450); await page.reload();
   await expect(page.getByText('Annual revenue', { exact: true })).toBeVisible();
 });
@@ -15,7 +15,8 @@ test('creates nested fields with keyboard-accessible controls', async ({ page })
   await page.getByRole('button', { name: 'Object', exact: true }).click();
   await expect(page.getByText('object / object')).toBeVisible();
   await page.getByRole('button', { name: /Add child to Object/ }).click();
-  await expect(page.getByText('text / object.text')).toBeVisible();
+  await expect(page.getByText('text / object.text')).toBeAttached();
+  await expect(page.getByRole('button', { name: 'Select Text' })).toBeVisible();
 });
 test('validates JSON before applying and previews the production form', async ({ page }) => {
   await page.getByRole('button', { name: 'json', exact: true }).click();
@@ -45,8 +46,8 @@ test('exposes keyboard-operable builder landmarks and controls', async ({ page }
   await expect(page.getByRole('banner')).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Builder view' })).toBeVisible();
   await expect(page.getByRole('tree', { name: 'Form fields' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Undo' })).toBeDisabled();
-  await expect(page.getByRole('button', { name: 'Redo' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Undo', exact: true })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Redo', exact: true })).toBeDisabled();
   await expect(page.locator('[aria-live="polite"]')).toHaveCount(1);
   await page.getByRole('button', { name: 'Number', exact: true }).focus();
   await expect(page.getByRole('button', { name: 'Number', exact: true })).toBeFocused();
@@ -133,4 +134,32 @@ test('searches fields and persists palette view and category preferences', async
   await expect(page.getByRole('button', { name: 'List view' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('details.palette-group').filter({ hasText: 'Basic Inputs' })).not.toHaveAttribute('open', '');
 });
+
+
+test('persists section layout, field spans, cross-section placement, and layout history', async ({ page }) => {
+  await expect(page.getByLabel('Personal Details columns')).toHaveValue('2');
+  await page.getByLabel('Full name column span').selectOption('2');
+  await expect(page.getByLabel('Full name column span')).toHaveValue('2');
+
+  await page.getByRole('button', { name: 'Add section' }).click();
+  await page.getByLabel('Move Work email to section').selectOption('section-2');
+  await expect(page.getByRole('region', { name: 'Section 2' }).locator('.field-summary strong')).toContainText('Work email');
+
+  await page.getByRole('button', { name: 'Undo layout' }).click();
+  await expect(page.getByLabel('Move Work email to section')).toHaveValue('personal-details');
+  await page.getByRole('button', { name: 'Redo layout' }).click();
+  await expect(page.getByLabel('Move Work email to section')).toHaveValue('section-2');
+
+  await page.reload();
+  await expect(page.getByLabel('Full name column span')).toHaveValue('2');
+  await expect(page.getByLabel('Move Work email to section')).toHaveValue('section-2');
+});
+
+test('switches the design canvas viewport without changing the schema', async ({ page }) => {
+  await page.getByRole('button', { name: 'mobile canvas' }).click();
+  await expect(page.getByRole('button', { name: 'mobile canvas' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.visual-canvas')).toHaveClass(/visual-canvas--mobile/);
+  await expect(page.getByRole('tree', { name: 'Form fields' })).toBeVisible();
+});
+
 

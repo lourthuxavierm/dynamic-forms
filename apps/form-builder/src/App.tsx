@@ -6,12 +6,13 @@ import { initialState, reducer } from './builder/reducer';
 import { clearDraft, loadDraft, saveDraft, starterSchema } from './persistence/draft';
 import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
-import { DropZone, FieldNode, Inspector } from './builder/BuilderParts';
+import { Inspector } from './builder/BuilderParts';
+import { FormCanvas } from './builder/canvas/FormCanvas';
 import { FieldPalette } from './builder/palette/FieldPalette';
 import { Preview } from './preview/Preview';
 import { NavigationRail, TopBar } from './app/Shell';
 import { Tabs } from './ui/Primitives';
-import { allPaths, duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName, updateField } from './schema/operations';
+import { duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName, updateField } from './schema/operations';
 
 const loaded = loadDraft();
 export default function App() {
@@ -87,12 +88,10 @@ export default function App() {
     <Tabs items={['design','preview','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
-      <main className="canvas" onDragOver={(event) => event.preventDefault()} onDrop={(event) => onDrop(event, '')}>
-        <div className="canvas-heading"><div><p className="eyebrow">Form canvas</p><h1>{humanize(state.schema.id)}</h1></div><span>{allPaths(state.schema).length} fields</span></div>
-        {errors.length ? <details className="error-list"><summary>{errors.length} schema issues</summary><ul>{errors.map((error, index) => <li key={index}><button onClick={() => dispatch({ type: 'select', path: error.path })}>{error.path}</button>: {error.message}</li>)}</ul></details> : null}
-        <div className="tree" role="tree" aria-label="Form fields">{state.schema.fields.map((field) => <FieldNode key={field.name} field={field} path={field.name} selectedPath={state.selectedPath} onSelect={(path) => dispatch({ type: 'select', path })} onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent} onDuplicate={duplicate} onRemove={remove} />)}</div>
-        <DropZone label="Drop or add a root field" onAdd={() => add('text')} onDrop={(event) => onDrop(event, '')} />
-      </main>
+      <FormCanvas schema={state.schema} selectedPath={state.selectedPath} errors={errors}
+        onSelect={(path) => dispatch({ type: 'select', path })}
+        onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent}
+        onDuplicate={duplicate} onRemove={remove} />
       <Inspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
     </div> : null}
     {state.view === 'preview' ? <Preview schema={state.schema} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
@@ -105,6 +104,7 @@ export default function App() {
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
 function humanize(value: string) { return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form'; }
+
 
 
 

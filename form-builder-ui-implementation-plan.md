@@ -173,3 +173,17 @@ Completed on 2026-09-06.
 - Added catalogue unit tests and browser coverage for search and preference persistence.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 15 unit tests passed; production build passed; 13 Playwright tests passed.
+
+## Phase 4 completion record
+
+Completed on 2026-09-06.
+
+- Added a typed builder-owned layout model with backward-compatible defaults and schema normalization in `apps/form-builder/src/builder/layout.ts`.
+- Added immutable section, placement, column-span, section removal/relocation, and layout history operations.
+- Added a persisted WYSIWYG canvas in `apps/form-builder/src/builder/canvas/FormCanvas.tsx`.
+- Added editable sections, 1–4 column grids, field spans, cross-section placement, add/delete section controls, and layout undo/redo.
+- Added realistic field previews, selected states, section drop zones, responsive desktop/tablet/mobile canvas modes, and fullscreen support.
+- Preserved nested-field keyboard selection and all existing schema mutation workflows.
+- Added layout unit tests and browser coverage for persistence, field spans, section movement, history, and viewport switching.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 18 unit tests passed; production build passed; 15 Playwright tests passed.
