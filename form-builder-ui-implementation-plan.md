@@ -187,3 +187,18 @@ Completed on 2026-09-06.
 - Added layout unit tests and browser coverage for persistence, field spans, section movement, history, and viewport switching.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 18 unit tests passed; production build passed; 15 Playwright tests passed.
+
+## Phase 5 completion record
+
+Completed on 2026-09-06.
+
+- Extracted a dedicated tabbed field inspector into `apps/form-builder/src/builder/inspector/FieldInspector.tsx`.
+- Added Properties, Validation, Logic, and Appearance tabs with controls tailored to each field type.
+- Added typed default values, validation constraints and messages, conditional visibility/state rules, dependencies, data-source configuration, option editing, and structural controls.
+- Added appearance metadata for label/help placement, input density, and custom CSS classes.
+- Added confirmation before destructive type changes and preserved advanced JSON editing for metadata and type configuration.
+- Made field patches atomic in the builder reducer so rapid inspector edits cannot overwrite one another.
+- Restored the saved selected field with drafts so the inspector resumes on the correct field after reload.
+- Added browser coverage for typed defaults, validation, logic, data sources, appearance, and persistence.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 18 unit tests passed; production build passed; 16 Playwright tests passed.

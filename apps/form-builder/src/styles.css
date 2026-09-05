@@ -238,3 +238,30 @@ input,select,textarea{color:var(--color-text)}
 
 .visual-field .children,.visual-field .children .field-summary small{visibility:visible;opacity:1}
 .visual-field .children .field-summary small{display:block}
+
+/* Phase 5 tabbed field inspector */
+.inspector{padding:0;background:var(--color-surface)}
+.inspector-heading{min-height:61px;display:flex;align-items:center;padding:10px 14px;margin:0;border-bottom:1px solid var(--color-border)}
+.inspector-heading>div{min-width:0}
+.inspector-heading small{display:block;margin-bottom:3px;color:var(--color-text-muted);font-size:.61rem}
+.inspector-heading h2{overflow:hidden;margin:0;text-overflow:ellipsis;white-space:nowrap;font-size:.9rem}
+.inspector-heading>span{flex-shrink:0;color:var(--color-primary-700);background:var(--color-primary-100)}
+.inspector-empty{padding:18px}
+.inspector-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:0 7px;border-bottom:1px solid var(--color-border)}
+.inspector-tabs .ui-button{position:relative;min-width:0;height:42px;padding:0 4px;border-radius:0;color:var(--color-text-muted);font-size:.64rem;text-transform:capitalize}
+.inspector-tabs .ui-button.active{color:var(--color-primary-700);font-weight:750}
+.inspector-tabs .ui-button.active::after{position:absolute;inset:auto 3px -1px;height:2px;content:"";background:var(--color-primary-600)}
+.inspector>.field-error{margin:10px 12px 0}
+.inspector>.property-list{display:block;padding:5px 13px 20px}
+.inspector .property-list details{padding-bottom:7px}
+.inspector .property-list summary{padding:10px 0}
+.inspector .section-body{gap:11px}
+.inspector .ui-switch{min-height:30px;color:#46514a;font-size:.72rem}
+.inspector .ui-switch input{width:18px;height:18px}
+.inspector .control-label input,.inspector .control-label select,.inspector .control-label textarea{min-height:35px;padding:8px 9px;background:#fff}
+.inspector .control-label textarea{resize:vertical}
+.inspector .condition{gap:8px;background:#fbfcfe}
+.inspector .condition>.ui-switch{min-height:24px}
+@media(max-width:1100px){
+  .inspector>.property-list{display:block}
+}

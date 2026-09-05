@@ -1,15 +1,15 @@
-﻿import { expect, test } from 'playwright/test';
+import { expect, test } from 'playwright/test';
 test.beforeEach(async ({ page }) => { await page.goto('/'); await page.evaluate(() => localStorage.clear()); await page.reload(); });
 test('edits fields, options, history, and restores the draft', async ({ page }) => {
   await page.getByRole('button', { name: 'Number', exact: true }).click();
   await page.getByLabel('Label', { exact: true }).fill('Annual revenue');
-  await expect(page.getByText('Annual revenue', { exact: true })).toBeVisible();
+  await expect(page.locator('.field-summary strong', { hasText: 'Annual revenue' }).first()).toBeVisible();
   await page.getByRole('button', { name: 'Select', exact: true }).click();
   await page.getByLabel('Option 1 label').fill('Enterprise');
   await page.getByRole('button', { name: 'Undo', exact: true }).click();
   await page.getByRole('button', { name: 'Redo', exact: true }).click();
   await page.waitForTimeout(450); await page.reload();
-  await expect(page.getByText('Annual revenue', { exact: true })).toBeVisible();
+  await expect(page.locator('.field-summary strong', { hasText: 'Annual revenue' }).first()).toBeVisible();
 });
 test('creates nested fields with keyboard-accessible controls', async ({ page }) => {
   await page.getByRole('button', { name: 'Object', exact: true }).click();
@@ -57,11 +57,12 @@ test('exposes keyboard-operable builder landmarks and controls', async ({ page }
 
 test('persists conditional logic and data-source configuration', async ({ page }) => {
   await page.getByRole('button', { name: 'Select', exact: true }).click();
+  await page.getByRole('tab', { name: 'logic' }).click();
   const logic = page.locator('details').filter({ hasText: 'Conditions & dependencies' });
-  await logic.locator('summary').click();
   await logic.getByText('Enabled', { exact: true }).first().click();
   await logic.getByLabel('Visible when field').selectOption('fullName');
   await logic.getByLabel('Visible when value').fill('Ada');
+  await page.getByRole('tab', { name: 'properties' }).click();
   const dataSource = page.locator('details').filter({ hasText: 'Data source' });
   await dataSource.locator('summary').click();
   await dataSource.getByText('Source type').locator('..').getByRole('combobox').selectOption('url');
@@ -163,3 +164,36 @@ test('switches the design canvas viewport without changing the schema', async ({
 });
 
 
+
+
+
+test('edits validation, typed defaults, logic, and appearance through inspector tabs', async ({ page }) => {
+  await page.getByRole('button', { name: 'Number', exact: true }).click();
+  const tabs = page.getByRole('tablist', { name: 'Field inspector' });
+  await expect(tabs.getByRole('tab')).toHaveCount(4);
+
+  await tabs.getByRole('tab', { name: 'properties' }).click();
+  const defaultValue = page.getByLabel('Default value');
+  await expect(defaultValue).toHaveAttribute('type', 'number');
+  await defaultValue.fill('42');
+
+  await tabs.getByRole('tab', { name: 'validation' }).click();
+  await page.getByLabel('Minimum', { exact: true }).fill('1');
+  await page.getByLabel('Maximum', { exact: true }).fill('100');
+  await page.getByLabel('Multiple of').fill('1');
+
+  await tabs.getByRole('tab', { name: 'logic' }).click();
+  const readOnlyRule = page.locator('fieldset').filter({ hasText: 'Read only when' });
+  await readOnlyRule.getByText('Enabled', { exact: true }).click();
+  await readOnlyRule.getByLabel('Read only when field').selectOption('fullName');
+
+  await tabs.getByRole('tab', { name: 'appearance' }).click();
+  await page.getByLabel('Label position').selectOption('left');
+  await page.getByLabel('Input density').selectOption('compact');
+
+  await page.waitForTimeout(450);
+  await page.reload();
+  await page.getByRole('tab', { name: 'appearance' }).click();
+  await expect(page.getByLabel('Label position')).toHaveValue('left');
+  await expect(page.getByLabel('Input density')).toHaveValue('compact');
+});

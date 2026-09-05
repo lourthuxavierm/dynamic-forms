@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useReducer, useRef, useState, type ChangeEvent, type DragEvent } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState, type ChangeEvent, type DragEvent } from 'react';
 import type { FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/core';
 import { FormProvider } from '@dynamic-form-engine/react';
 import { HtmlForm } from '@dynamic-form-engine/react-html';
@@ -6,17 +6,17 @@ import { initialState, reducer } from './builder/reducer';
 import { clearDraft, loadDraft, saveDraft, starterSchema } from './persistence/draft';
 import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
-import { Inspector } from './builder/BuilderParts';
+import { FieldInspector } from './builder/inspector/FieldInspector';
 import { FormCanvas } from './builder/canvas/FormCanvas';
 import { FieldPalette } from './builder/palette/FieldPalette';
 import { Preview } from './preview/Preview';
 import { NavigationRail, TopBar } from './app/Shell';
 import { Tabs } from './ui/Primitives';
-import { duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName, updateField } from './schema/operations';
+import { duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName } from './schema/operations';
 
 const loaded = loadDraft();
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, loaded.schema, initialState);
+  const [state, dispatch] = useReducer(reducer, loaded.schema, (schema) => initialState(schema, loaded.selectedPath));
   const [jsonText, setJsonText] = useState(() => JSON.stringify(loaded.schema, null, 2));
   const [jsonErrors, setJsonErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState<Readonly<Record<string, unknown>>>();
@@ -47,11 +47,7 @@ export default function App() {
     commit(schema, path, `${type} field added`);
   };
   const patchSelected = (patch: Partial<FieldSchema>) => {
-    if (!state.selectedPath || !selected) return;
-    const oldPath = state.selectedPath;
-    const schema = updateField(state.schema, oldPath, patch);
-    const path = patch.name ? [...oldPath.split('.').slice(0, -1), patch.name].join('.') : oldPath;
-    commit(schema, path, 'Field updated');
+    if (state.selectedPath) dispatch({ type: 'patch-field', path: state.selectedPath, patch, message: 'Field updated' });
   };
   const remove = (path: string) => { const location = findField(state.schema, path); if (!location) return; const siblings = fieldsAt(state.schema, location.parentPath); const fallback = siblings[location.index + 1] ?? siblings[location.index - 1]; commit(removeField(state.schema, path), fallback ? (location.parentPath ? `${location.parentPath}.${fallback.name}` : fallback.name) : location.parentPath || undefined, 'Field deleted'); };
   const duplicate = (path: string) => { const result = duplicateField(state.schema, path); commit(result.schema, result.path, 'Field duplicated'); };
@@ -92,7 +88,7 @@ export default function App() {
         onSelect={(path) => dispatch({ type: 'select', path })}
         onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent}
         onDuplicate={duplicate} onRemove={remove} />
-      <Inspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
+      <FieldInspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
     </div> : null}
     {state.view === 'preview' ? <Preview schema={state.schema} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
@@ -104,9 +100,3 @@ export default function App() {
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
 function humanize(value: string) { return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form'; }
-
-
-
-
-
-
