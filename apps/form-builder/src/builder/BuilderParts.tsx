@@ -2,11 +2,6 @@
 import type { ConditionOperator, DataSourceConfig, FieldCondition, FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/core';
 import { hasOptions, isNumeric, isTextual, palette } from '../schema/catalogue';
 import { allPaths, fieldsAt, findField, normalizeType, structural } from '../schema/operations';
-export function Palette({ onAdd }: { onAdd: (type: FieldType) => void }) {
-  const groups = [...new Set(palette.map((item) => item.group))];
-  return <aside className="palette-panel"><h2>Fields</h2><p>Drag or click to add</p>{groups.map((group) => <section key={group}><h3>{group}</h3><div className="palette-grid">{palette.filter((item) => item.group === group).map((item) => <button key={item.type} aria-label={item.label} draggable onDragStart={(event) => event.dataTransfer.setData('application/x-builder-field', item.type)} onClick={() => onAdd(item.type)}><span aria-hidden="true">{item.label.slice(0, 2)}</span>{item.label}</button>)}</div></section>)}</aside>;
-}
-
 interface NodeProps {
   field: FieldSchema; path: string; selectedPath?: string;
   onSelect: (path: string) => void; onAdd: (type: FieldType, parentPath?: string) => void; onDrop: (event: DragEvent, parentPath: string) => void;
@@ -71,3 +66,4 @@ function DataSourceEditor({ value, onChange }: { value?: DataSourceConfig; onCha
 
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
+

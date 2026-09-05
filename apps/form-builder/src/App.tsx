@@ -6,7 +6,8 @@ import { initialState, reducer } from './builder/reducer';
 import { clearDraft, loadDraft, saveDraft, starterSchema } from './persistence/draft';
 import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
-import { DropZone, FieldNode, Inspector, Palette } from './builder/BuilderParts';
+import { DropZone, FieldNode, Inspector } from './builder/BuilderParts';
+import { FieldPalette } from './builder/palette/FieldPalette';
 import { Preview } from './preview/Preview';
 import { NavigationRail, TopBar } from './app/Shell';
 import { Tabs } from './ui/Primitives';
@@ -85,7 +86,7 @@ export default function App() {
       <div className="app-content">
     <Tabs items={['design','preview','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
-      <Palette onAdd={add} />
+      <FieldPalette onAdd={add} />
       <main className="canvas" onDragOver={(event) => event.preventDefault()} onDrop={(event) => onDrop(event, '')}>
         <div className="canvas-heading"><div><p className="eyebrow">Form canvas</p><h1>{humanize(state.schema.id)}</h1></div><span>{allPaths(state.schema).length} fields</span></div>
         {errors.length ? <details className="error-list"><summary>{errors.length} schema issues</summary><ul>{errors.map((error, index) => <li key={index}><button onClick={() => dispatch({ type: 'select', path: error.path })}>{error.path}</button>: {error.message}</li>)}</ul></details> : null}
@@ -104,6 +105,7 @@ export default function App() {
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
 function humanize(value: string) { return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form'; }
+
 
 
 

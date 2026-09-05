@@ -160,3 +160,16 @@ Completed on 2026-09-06.
 - Added primitive unit tests and responsive browser assertions.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 12 unit tests passed; production build passed; 12 Playwright tests passed.
+
+## Phase 3 completion record
+
+Completed on 2026-09-06.
+
+- Extracted the field library into `apps/form-builder/src/builder/palette/FieldPalette.tsx`.
+- Reorganized all existing field types into Basic Inputs, Selection, Date & Time, Advanced, Structure, and Layout & Utilities.
+- Added searchable labels/types/categories, field icons, and category accent colours.
+- Added persistent collapsible-category and grid/list preferences.
+- Added keyboard/click insertion, drag-copy metadata, empty search feedback, clear search, and a Phase 4 layout-controls placeholder.
+- Added catalogue unit tests and browser coverage for search and preference persistence.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 15 unit tests passed; production build passed; 13 Playwright tests passed.

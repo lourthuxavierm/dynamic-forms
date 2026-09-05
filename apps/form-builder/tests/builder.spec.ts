@@ -110,3 +110,27 @@ test('keeps three workspace panels at medium desktop and stacks the inspector be
   expect(narrow.inspectorTop).toBeGreaterThanOrEqual(narrow.canvasBottom - 2);
 });
 
+
+
+test('searches fields and persists palette view and category preferences', async ({ page }) => {
+  const search = page.getByRole('searchbox', { name: 'Search fields' });
+  await search.fill('currency');
+  await expect(page.getByRole('button', { name: 'Currency', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Text', exact: true })).toHaveCount(0);
+
+  await search.fill('not-a-real-field');
+  await expect(page.getByRole('status')).toContainText('No fields found');
+  await page.getByRole('button', { name: 'Clear search' }).click();
+
+  await page.getByRole('button', { name: 'List view' }).click();
+  await expect(page.getByRole('button', { name: 'List view' })).toHaveAttribute('aria-pressed', 'true');
+
+  const basicInputs = page.locator('details.palette-group').filter({ hasText: 'Basic Inputs' });
+  await basicInputs.locator('summary').click();
+  await expect(basicInputs).not.toHaveAttribute('open', '');
+
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'List view' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('details.palette-group').filter({ hasText: 'Basic Inputs' })).not.toHaveAttribute('open', '');
+});
+
