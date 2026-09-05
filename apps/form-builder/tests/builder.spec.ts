@@ -89,3 +89,24 @@ test('exposes the Phase 1 application shell without activating future destinatio
   await expect(page.getByRole('button', { name: 'Copy JSON' })).toBeVisible();
 });
 
+
+
+test('keeps three workspace panels at medium desktop and stacks the inspector below 900px', async ({ page }) => {
+  await page.setViewportSize({ width: 1050, height: 900 });
+  const medium = await page.locator('.workspace').evaluate((workspace) => {
+    const canvas = workspace.querySelector('.canvas')!.getBoundingClientRect();
+    const inspector = workspace.querySelector('.inspector')!.getBoundingClientRect();
+    return { canvasTop: canvas.top, inspectorTop: inspector.top, canvasLeft: canvas.left, inspectorLeft: inspector.left };
+  });
+  expect(Math.abs(medium.canvasTop - medium.inspectorTop)).toBeLessThan(2);
+  expect(medium.inspectorLeft).toBeGreaterThan(medium.canvasLeft);
+
+  await page.setViewportSize({ width: 800, height: 900 });
+  const narrow = await page.locator('.workspace').evaluate((workspace) => {
+    const canvas = workspace.querySelector('.canvas')!.getBoundingClientRect();
+    const inspector = workspace.querySelector('.inspector')!.getBoundingClientRect();
+    return { canvasBottom: canvas.bottom, inspectorTop: inspector.top };
+  });
+  expect(narrow.inspectorTop).toBeGreaterThanOrEqual(narrow.canvasBottom - 2);
+});
+

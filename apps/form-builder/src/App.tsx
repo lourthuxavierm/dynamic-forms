@@ -9,6 +9,7 @@ import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
 import { DropZone, FieldNode, Inspector, Palette } from './builder/BuilderParts';
 import { Preview } from './preview/Preview';
 import { NavigationRail, TopBar } from './app/Shell';
+import { Tabs } from './ui/Primitives';
 import { allPaths, duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName, updateField } from './schema/operations';
 
 const loaded = loadDraft();
@@ -82,7 +83,7 @@ export default function App() {
     <div className="app-body">
       <NavigationRail onNavigate={(label) => label !== 'Builder' && dispatch({ type: 'message', message: label + ' is planned for a later phase' })} />
       <div className="app-content">
-    <nav className="tabs" aria-label="Builder view">{(['design','preview','json'] as const).map((view) => <button key={view} className={state.view === view ? 'active' : ''} onClick={() => chooseView(view)}>{view}</button>)}</nav>
+    <Tabs items={['design','preview','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <Palette onAdd={add} />
       <main className="canvas" onDragOver={(event) => event.preventDefault()} onDrop={(event) => onDrop(event, '')}>
@@ -103,6 +104,7 @@ export default function App() {
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
 function humanize(value: string) { return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form'; }
+
 
 
 

@@ -147,3 +147,16 @@ Completed on 2026-09-06.
 - Added compact desktop and mobile navigation/header behaviours with accessible control names.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 9 unit tests passed; production build passed; 11 Playwright tests passed.
+
+## Phase 2 completion record
+
+Completed on 2026-09-06.
+
+- Added centralized design tokens in `apps/form-builder/src/styles/tokens.css`.
+- Added typed Button, IconButton, Badge, Tabs, Switch, and PanelHeader primitives in `apps/form-builder/src/ui/Primitives.tsx`.
+- Migrated the application shell buttons/status and builder view tabs to shared primitives.
+- Added token-driven canvas, control, selection, and responsive workspace styling.
+- Kept the palette, canvas, and inspector in three columns through 901px; stacked the inspector below that breakpoint and retained the mobile layout.
+- Added primitive unit tests and responsive browser assertions.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 12 unit tests passed; production build passed; 12 Playwright tests passed.
