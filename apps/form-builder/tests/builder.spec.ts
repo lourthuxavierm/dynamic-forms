@@ -71,3 +71,21 @@ test('persists conditional logic and data-source configuration', async ({ page }
   await expect(page.getByText('data', { exact: true })).toBeVisible();
 });
 
+
+
+
+
+
+test('exposes the Phase 1 application shell without activating future destinations', async ({ page }) => {
+  const primary = page.getByRole('navigation', { name: 'Primary navigation' });
+  await expect(primary.getByRole('button', { name: 'Builder' })).toHaveAttribute('aria-current', 'page');
+  await primary.getByRole('button', { name: 'Playground' }).click();
+  await expect(page.locator('.live-region')).toHaveText('Playground is planned for a later phase');
+  await expect(page.getByRole('button', { name: 'Save & Publish' })).toBeDisabled();
+  await expect(page.getByLabel('Form ID')).toHaveValue('customer-intake');
+  await expect(page.getByLabel('Version')).toHaveValue('1.0.0');
+  await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Export' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Copy JSON' })).toBeVisible();
+});
+

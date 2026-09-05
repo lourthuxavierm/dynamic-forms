@@ -136,3 +136,14 @@ Completed on 2026-09-05.
 - Added committed Chromium visual baselines for desktop (1536×1024), tablet (900×1024), and mobile (390×844).
 - Verification: typecheck passed; 9 unit tests passed; production build passed; 10 Playwright tests passed.
 
+## Phase 1 completion record
+
+Completed on 2026-09-06.
+
+- Added `apps/form-builder/src/app/Shell.tsx` with the reference-style top bar and primary navigation rail.
+- Wired form ID/version, schema status, undo/redo, new form, import, export, clipboard copy, and local save state into the shell.
+- Kept Save & Publish explicitly disabled pending Phase 8 persistence.
+- Added non-destructive feedback for future navigation destinations.
+- Added compact desktop and mobile navigation/header behaviours with accessible control names.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 9 unit tests passed; production build passed; 11 Playwright tests passed.

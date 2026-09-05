@@ -64,13 +64,25 @@ export default function App() {
   const newForm = () => { if (!state.saved && !confirm('Discard the current unsaved form?')) return; clearDraft(); const schema = { ...starterSchema, id: 'untitled-form', fields: [] }; commit(schema, undefined, 'New form created'); };
 
   return <div className="app">
-    <header className="topbar">
-      <div className="brand"><span>DF</span><div><strong>Dynamic Forms</strong><small>Schema builder</small></div></div>
-      <label className="document-field"><span>Form ID</span><input value={state.schema.id} onChange={(event) => commit({ ...state.schema, id: event.target.value }, state.selectedPath)} /></label>
-      <label className="version-field"><span>Version</span><input value={state.schema.version ?? ''} onChange={(event) => commit({ ...state.schema, version: event.target.value || undefined }, state.selectedPath)} /></label>
-      <span className={errors.length ? 'schema-status invalid' : 'schema-status valid'}>{errors.length ? `${errors.length} issue${errors.length === 1 ? '' : 's'}` : state.saved ? 'Saved' : 'Saving...'}</span>
-      <div className="header-actions"><button onClick={() => dispatch({ type: 'undo' })} disabled={!state.past.length} aria-label="Undo">Undo</button><button onClick={() => dispatch({ type: 'redo' })} disabled={!state.future.length} aria-label="Redo">Redo</button><button onClick={newForm}>New</button><button onClick={() => uploadRef.current?.click()}>Import</button><input ref={uploadRef} hidden type="file" accept=".json,application/json" onChange={(event) => void importFile(event)} /><button onClick={download}>Download</button><button className="primary" onClick={() => void copy()}>Copy JSON</button></div>
-    </header>    <nav className="tabs" aria-label="Builder view">{(['design','preview','json'] as const).map((view) => <button key={view} className={state.view === view ? 'active' : ''} onClick={() => chooseView(view)}>{view}</button>)}</nav>
+    <TopBar
+      schema={state.schema}
+      issueCount={errors.length}
+      saved={state.saved}
+      canUndo={Boolean(state.past.length)}
+      canRedo={Boolean(state.future.length)}
+      uploadRef={uploadRef}
+      onSchemaChange={(schema) => commit(schema, state.selectedPath)}
+      onUndo={() => dispatch({ type: 'undo' })}
+      onRedo={() => dispatch({ type: 'redo' })}
+      onNew={newForm}
+      onImport={(event) => void importFile(event)}
+      onExport={download}
+      onCopy={() => void copy()}
+    />
+    <div className="app-body">
+      <NavigationRail onNavigate={(label) => label !== 'Builder' && dispatch({ type: 'message', message: label + ' is planned for a later phase' })} />
+      <div className="app-content">
+    <nav className="tabs" aria-label="Builder view">{(['design','preview','json'] as const).map((view) => <button key={view} className={state.view === view ? 'active' : ''} onClick={() => chooseView(view)}>{view}</button>)}</nav>
     {state.view === 'design' ? <div className="workspace">
       <Palette onAdd={add} />
       <main className="canvas" onDragOver={(event) => event.preventDefault()} onDrop={(event) => onDrop(event, '')}>
@@ -83,13 +95,14 @@ export default function App() {
     </div> : null}
     {state.view === 'preview' ? <Preview schema={state.schema} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
+      </div>
+    </div>
     <div className="live-region" aria-live="polite">{state.message}</div>
   </div>;
 }
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
 function humanize(value: string) { return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form'; }
-
 
 
 
