@@ -96,7 +96,7 @@ test('exposes the Phase 1 application shell without activating future destinatio
 test('keeps three workspace panels at medium desktop and stacks the inspector below 900px', async ({ page }) => {
   await page.setViewportSize({ width: 1050, height: 900 });
   const medium = await page.locator('.workspace').evaluate((workspace) => {
-    const canvas = workspace.querySelector('.canvas')!.getBoundingClientRect();
+    const canvas = workspace.querySelector('.builder-center')!.getBoundingClientRect();
     const inspector = workspace.querySelector('.inspector')!.getBoundingClientRect();
     return { canvasTop: canvas.top, inspectorTop: inspector.top, canvasLeft: canvas.left, inspectorLeft: inspector.left };
   });
@@ -105,7 +105,7 @@ test('keeps three workspace panels at medium desktop and stacks the inspector be
 
   await page.setViewportSize({ width: 800, height: 900 });
   const narrow = await page.locator('.workspace').evaluate((workspace) => {
-    const canvas = workspace.querySelector('.canvas')!.getBoundingClientRect();
+    const canvas = workspace.querySelector('.builder-center')!.getBoundingClientRect();
     const inspector = workspace.querySelector('.inspector')!.getBoundingClientRect();
     return { canvasBottom: canvas.bottom, inspectorTop: inspector.top };
   });
@@ -196,4 +196,25 @@ test('edits validation, typed defaults, logic, and appearance through inspector 
   await page.getByRole('tab', { name: 'appearance' }).click();
   await expect(page.getByLabel('Label position')).toHaveValue('left');
   await expect(page.getByLabel('Input density')).toHaveValue('compact');
+});
+
+test('builds and previews a three-step wizard without JSON', async ({ page }) => {
+  await page.getByLabel('Mode').selectOption('wizard');
+  await page.getByRole('button', { name: '+ Step' }).click();
+  await page.getByLabel('Step title').fill('Contact details');
+  await page.getByRole('button', { name: '+ Step' }).click();
+  await page.getByLabel('Step title').fill('Review');
+  await page.getByText('Review step').click();
+  await page.getByLabel('Move Work email to step').selectOption({ label: 'Contact details' });
+  await expect(page.getByRole('tab', { name: /Review/ })).toHaveAttribute('aria-selected', 'true');
+  await page.getByRole('navigation', { name: 'Builder view' }).getByRole('button', { name: 'preview' }).click();
+  await expect(page.getByRole('list', { name: 'Form progress' }).getByRole('listitem')).toHaveCount(3);
+  await page.getByLabel('Full name').fill('Ada Lovelace');
+  await page.getByRole('button', { name: 'Next' }).click();
+  await page.getByLabel('Work email').fill('ada@example.com');
+  await page.getByRole('button', { name: 'Next' }).click();
+  await expect(page.getByRole('heading', { name: 'Review' })).toBeVisible();
+  await expect(page.getByText('Ada Lovelace')).toBeVisible();
+  await page.getByRole('button', { name: 'Previous' }).click();
+  await expect(page.getByLabel('Work email')).toHaveValue('ada@example.com');
 });

@@ -1,0 +1,13 @@
+import type { FormSchema } from '@dynamic-form-engine/core';
+export type WizardValidationPolicy = 'onNext' | 'onSubmit';
+export interface WizardStep { id: string; title: string; description?: string; icon?: string; optional?: boolean; review?: boolean; fieldPaths: readonly string[] }
+export interface WizardConfig { mode: 'single' | 'wizard'; validationPolicy: WizardValidationPolicy; steps: readonly WizardStep[] }
+export type WizardSchema = FormSchema & { builder?: { wizard?: WizardConfig } };
+export function wizardConfig(schema: FormSchema): WizardConfig { const saved=(schema as WizardSchema).builder?.wizard; return saved?.steps?.length ? saved : { mode:'single', validationPolicy:'onNext', steps:[{ id:'step-1', title:'Form details', fieldPaths:schema.fields.map(f=>f.name) }] }; }
+export function setWizardConfig(schema: FormSchema, wizard: WizardConfig): FormSchema { const current=schema as WizardSchema; return { ...current, builder:{ ...current.builder, wizard } } as FormSchema; }
+export function addWizardStep(config: WizardConfig): WizardConfig { const n=config.steps.length+1; return { ...config, mode:'wizard', steps:[...config.steps,{ id:`step-${Date.now()}`, title:`Step ${n}`, fieldPaths:[] }] }; }
+export function updateWizardStep(config: WizardConfig,id:string,patch:Partial<WizardStep>):WizardConfig { return {...config,steps:config.steps.map(s=>s.id===id?{...s,...patch}:s)}; }
+export function duplicateWizardStep(config:WizardConfig,id:string):WizardConfig { const i=config.steps.findIndex(s=>s.id===id); if(i<0)return config; const s=config.steps[i]; const copy={...s,id:`step-${Date.now()}`,title:`${s.title} copy`,fieldPaths:[]}; return {...config,steps:[...config.steps.slice(0,i+1),copy,...config.steps.slice(i+1)]}; }
+export function moveWizardStep(config:WizardConfig,id:string,direction:-1|1):WizardConfig { const i=config.steps.findIndex(s=>s.id===id),t=i+direction;if(i<0||t<0||t>=config.steps.length)return config;const steps=[...config.steps];[steps[i],steps[t]]=[steps[t],steps[i]];return {...config,steps}; }
+export function removeWizardStep(config:WizardConfig,id:string):WizardConfig { if(config.steps.length===1)return config;const removed=config.steps.find(s=>s.id===id);const steps=config.steps.filter(s=>s.id!==id);if(removed&&steps[0])steps[0]={...steps[0],fieldPaths:[...steps[0].fieldPaths,...removed.fieldPaths]};return {...config,steps}; }
+export function moveFieldToStep(config:WizardConfig,path:string,stepId:string):WizardConfig { return {...config,steps:config.steps.map(s=>({...s,fieldPaths:s.id===stepId?[...s.fieldPaths.filter(x=>x!==path),path]:s.fieldPaths.filter(x=>x!==path)}))}; }

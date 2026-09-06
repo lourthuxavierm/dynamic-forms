@@ -8,6 +8,8 @@ import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
 import { FieldInspector } from './builder/inspector/FieldInspector';
 import { FormCanvas } from './builder/canvas/FormCanvas';
+import { WizardDesigner } from './builder/wizard/WizardDesigner';
+import { setWizardConfig, wizardConfig } from './builder/wizard';
 import { FieldPalette } from './builder/palette/FieldPalette';
 import { Preview } from './preview/Preview';
 import { NavigationRail, TopBar } from './app/Shell';
@@ -22,8 +24,11 @@ export default function App() {
   const [submitted, setSubmitted] = useState<Readonly<Record<string, unknown>>>();
   const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [density, setDensity] = useState<'compact' | 'standard' | 'comfortable'>('standard');
+  const [activeStep, setActiveStep] = useState('step-1');
   const [scheme, setScheme] = useState<'light' | 'dark' | 'auto'>('light');
   const uploadRef = useRef<HTMLInputElement>(null);
+  const wizard = wizardConfig(state.schema);
+  const currentStep = wizard.steps.find((step) => step.id === activeStep) ?? wizard.steps[0];
   const errors = useMemo(() => validateBuilderSchema(state.schema), [state.schema]);
   const selected = state.selectedPath ? findField(state.schema, state.selectedPath)?.field : undefined;
   const commit = (schema: FormSchema, selectedPath?: string, message?: string) => dispatch({ type: 'commit', schema, selectedPath, message });
@@ -84,13 +89,16 @@ export default function App() {
     <Tabs items={['design','preview','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
-      <FormCanvas schema={state.schema} selectedPath={state.selectedPath} errors={errors}
-        onSelect={(path) => dispatch({ type: 'select', path })}
-        onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent}
-        onDuplicate={duplicate} onRemove={remove} />
+      <div className="builder-center">
+        <WizardDesigner schema={state.schema} config={wizard} activeId={currentStep.id} onActive={setActiveStep} onChange={(next) => commit(setWizardConfig(state.schema, next), state.selectedPath, 'Form flow updated')} />
+        <FormCanvas schema={state.schema} visiblePaths={wizard.mode === 'wizard' && !currentStep.review ? currentStep.fieldPaths : undefined} selectedPath={state.selectedPath} errors={errors}
+          onSelect={(path) => dispatch({ type: 'select', path })}
+          onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent}
+          onDuplicate={duplicate} onRemove={remove} />
+      </div>
       <FieldInspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
     </div> : null}
-    {state.view === 'preview' ? <Preview schema={state.schema} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
+    {state.view === 'preview' ? <Preview schema={state.schema} wizard={wizard} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
       </div>
     </div>

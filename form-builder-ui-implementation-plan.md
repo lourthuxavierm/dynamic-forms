@@ -1,4 +1,4 @@
-﻿# Form Builder UI — Phase-wise Implementation Plan
+# Form Builder UI — Phase-wise Implementation Plan
 
 ## Objective
 
@@ -202,3 +202,16 @@ Completed on 2026-09-06.
 - Added browser coverage for typed defaults, validation, logic, data sources, appearance, and persistence.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 18 unit tests passed; production build passed; 16 Playwright tests passed.
+## Phase 6 completion record
+
+Completed on 2026-09-06.
+
+- Added backward-compatible single-page and wizard configuration embedded in the serialized form schema.
+- Added visual step creation, rename, duplication, reordering, safe deletion, and cross-step field assignment.
+- Added step title, description, icon, optional/review flags, and validation-policy controls.
+- Filtered the Design canvas by the active step while preserving the existing field and layout workflows.
+- Added Preview step progress with active, complete, invalid, and optional states.
+- Added Previous/Next navigation, per-step validation with invalid focus, preserved values, final submission, reset, and review-step summaries.
+- Added wizard model unit coverage and a browser acceptance flow that builds and runs a three-step form without JSON.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 19 unit tests passed; production build passed; 17 Playwright tests passed.

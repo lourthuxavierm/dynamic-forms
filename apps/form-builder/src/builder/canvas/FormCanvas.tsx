@@ -18,6 +18,7 @@ function loadLayout(schema: FormSchema): BuilderLayout {
 
 interface FormCanvasProps {
   schema: FormSchema;
+  visiblePaths?: readonly string[];
   selectedPath?: string;
   errors: readonly { path: string; message: string }[];
   onSelect: (path: string) => void;
@@ -74,7 +75,7 @@ export function FormCanvas(props: FormCanvasProps) {
         <div className="section-grid" role="tree" aria-label="Form fields" style={{ '--section-columns': section.columns } as CSSProperties}>
           {section.placements.map((placement) => {
             const field = fields.get(placement.fieldPath);
-            if (!field) return null;
+            if (!field || (props.visiblePaths && !props.visiblePaths.includes(placement.fieldPath))) return null;
             return <div className="visual-field" key={placement.fieldPath} style={{ '--field-span': placement.columnSpan } as CSSProperties}>
               <FieldPreview field={field} />
               <FieldNode field={field} path={field.name} selectedPath={props.selectedPath} onSelect={props.onSelect} onAdd={props.onAdd} onDrop={props.onDrop} onMove={props.onMove} onReparent={props.onReparent} onDuplicate={props.onDuplicate} onRemove={props.onRemove} />
