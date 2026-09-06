@@ -227,3 +227,16 @@ Completed on 2026-09-06.
 - Added rule graph unit tests and browser coverage for filters and issue-to-field navigation.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 20 unit tests passed; production build passed; 18 Playwright tests passed.
+## Phase 8 completion record
+
+Completed on 2026-09-06.
+
+- Replaced single-draft storage with a versioned local repository supporting multiple forms, activation, search, duplication, archive, autosave, and legacy migration.
+- Added explicit Save and Publish actions with blocking validation and user-visible success/failure feedback.
+- Added snapshots and restore, immutable releases with stable IDs/URLs, retained editable drafts, and release rollback into a new draft state.
+- Added the `Draft -> Validated -> Published -> Archived` lifecycle model plus ownership, permissions, submissions, and audit-history entities behind a replaceable persistence boundary.
+- Included persisted canvas layout in published releases and kept import/export compatibility through the form schema.
+- Added a responsive Forms & Versions panel for forms, snapshots, releases, rollback, and audit history.
+- Added migration and release-immutability unit tests plus browser coverage for save, publish, snapshot, and version management.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 22 unit tests passed; production build passed; 19 Playwright tests passed.

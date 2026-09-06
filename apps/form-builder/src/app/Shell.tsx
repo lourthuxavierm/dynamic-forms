@@ -1,4 +1,4 @@
-﻿import type { ChangeEvent, RefObject } from 'react';
+import type { ChangeEvent, RefObject } from 'react';
 import type { FormSchema } from '@dynamic-form-engine/core';
 import { Badge, Button } from '../ui/Primitives';
 
@@ -16,6 +16,9 @@ interface TopBarProps {
   onImport: (event: ChangeEvent<HTMLInputElement>) => void;
   onExport: () => void;
   onCopy: () => void;
+  onSave: () => void;
+  onPublish: () => void;
+  onManage: () => void;
 }
 
 export function TopBar(props: TopBarProps) {
@@ -43,7 +46,7 @@ export function TopBar(props: TopBarProps) {
       <input ref={props.uploadRef} hidden type="file" accept=".json,application/json" onChange={(event) => props.onImport(event)} />
       <Button className="toolbar-action" onClick={props.onExport} aria-label="Export"><span aria-hidden="true">⇩</span><span>Export</span></Button>
       <Button className="toolbar-action" onClick={props.onCopy} aria-label="Copy JSON"><span aria-hidden="true">⧉</span><span>Copy</span></Button>
-      <Button className="publish-action" disabled title="Publishing will be enabled with persistent storage">Save &amp; Publish <span aria-hidden="true">⌄</span></Button>
+      <Button className="toolbar-action" onClick={props.onSave}>Save</Button><Button className="publish-action" disabled={props.issueCount > 0} onClick={props.onPublish}>Publish</Button><Button className="icon-action" aria-label="Manage form repository" onClick={props.onManage}>☰</Button>
       <Button className="icon-action" aria-label="Settings" title="Settings"><span aria-hidden="true">⚙</span></Button>
       <Button className="icon-action" aria-label="Help" title="Help"><span aria-hidden="true">?</span></Button>
       <Button className="profile-action" aria-label="User profile" title="User profile">XM</Button>

@@ -3,7 +3,8 @@ import type { FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/co
 import { FormProvider } from '@dynamic-form-engine/react';
 import { HtmlForm } from '@dynamic-form-engine/react-html';
 import { initialState, reducer } from './builder/reducer';
-import { clearDraft, loadDraft, saveDraft, starterSchema } from './persistence/draft';
+import { loadDraft, publish, saveDraft, starterSchema } from './persistence/draft';
+import { PersistencePanel } from './persistence/PersistencePanel';
 import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
 import { FieldInspector } from './builder/inspector/FieldInspector';
@@ -26,6 +27,7 @@ export default function App() {
   const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [density, setDensity] = useState<'compact' | 'standard' | 'comfortable'>('standard');
   const [activeStep, setActiveStep] = useState('step-1');
+  const [manageOpen, setManageOpen] = useState(false);
   const [scheme, setScheme] = useState<'light' | 'dark' | 'auto'>('light');
   const uploadRef = useRef<HTMLInputElement>(null);
   const wizard = wizardConfig(state.schema);
@@ -66,7 +68,9 @@ export default function App() {
   const copy = async () => { await navigator.clipboard.writeText(JSON.stringify(state.schema, null, 2)); dispatch({ type: 'message', message: errors.length ? 'Invalid schema copied with warnings' : 'Schema copied' }); };
   const download = () => { const url = URL.createObjectURL(new Blob([JSON.stringify(state.schema, null, 2)], { type: 'application/json' })); const anchor = document.createElement('a'); anchor.href = url; anchor.download = `${state.schema.id || 'form'}.json`; anchor.click(); URL.revokeObjectURL(url); dispatch({ type: 'message', message: 'Schema downloaded' }); };
   const importFile = async (event: ChangeEvent<HTMLInputElement>) => { const file = event.target.files?.[0]; if (!file) return; const text = await file.text(); const result = parseSchema(text); if (!result.schema || result.errors.length) { dispatch({ type: 'message', message: result.errors.map((error) => error.message).join(', ') }); return; } if (!state.saved && !confirm('Replace the current unsaved form?')) return; commit(result.schema, result.schema.fields[0]?.name, 'Schema imported'); event.target.value = ''; };
-  const newForm = () => { if (!state.saved && !confirm('Discard the current unsaved form?')) return; clearDraft(); const schema = { ...starterSchema, id: 'untitled-form', fields: [] }; commit(schema, undefined, 'New form created'); };
+  const loadSchema = (schema: FormSchema) => commit(schema, schema.fields[0]?.name, 'Form loaded');
+  const newForm = () => { if (!state.saved && !confirm('Discard the current unsaved form?')) return; const schema = { ...starterSchema, id: `untitled-form-${Date.now()}`, fields: [] }; saveDraft(schema); commit(schema, undefined, 'New form created'); };
+  const publishForm = () => { if (errors.length) { dispatch({ type: 'message', message: 'Resolve blocking issues before publishing' }); return; } const storedLayout = localStorage.getItem(`dynamic-forms:builder:layout:${state.schema.id}`); const release = publish(state.schema, storedLayout ? JSON.parse(storedLayout) : undefined); dispatch({ type: 'saved' }); dispatch({ type: 'message', message: `Published ${release.id} at ${release.url}` }); };
 
   return <div className="app">
     <TopBar
@@ -83,6 +87,9 @@ export default function App() {
       onImport={(event) => void importFile(event)}
       onExport={download}
       onCopy={() => void copy()}
+      onSave={() => { saveDraft(state.schema, state.selectedPath); dispatch({ type: 'saved' }); dispatch({ type: 'message', message: 'Draft saved' }); }}
+      onPublish={publishForm}
+      onManage={() => setManageOpen(true)}
     />
     <div className="app-body">
       <NavigationRail onNavigate={(label) => label !== 'Builder' && dispatch({ type: 'message', message: label + ' is planned for a later phase' })} />
@@ -104,6 +111,7 @@ export default function App() {
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
       </div>
     </div>
+    {manageOpen ? <PersistencePanel schema={state.schema} onLoad={(schema) => { loadSchema(schema); setManageOpen(false); }} onClose={() => setManageOpen(false)} /> : null}
     <div className="live-region" aria-live="polite">{state.message}</div>
   </div>;
 }

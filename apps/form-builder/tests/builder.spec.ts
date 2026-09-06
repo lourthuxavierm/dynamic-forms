@@ -83,7 +83,8 @@ test('exposes the Phase 1 application shell without activating future destinatio
   await expect(primary.getByRole('button', { name: 'Builder' })).toHaveAttribute('aria-current', 'page');
   await primary.getByRole('button', { name: 'Playground' }).click();
   await expect(page.locator('.live-region')).toHaveText('Playground is planned for a later phase');
-  await expect(page.getByRole('button', { name: 'Save & Publish' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Publish', exact: true })).toBeEnabled();
   await expect(page.getByLabel('Form ID')).toHaveValue('customer-intake');
   await expect(page.getByLabel('Version')).toHaveValue('1.0.0');
   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
@@ -229,4 +230,16 @@ test('filters rules and jumps from an issue to its field', async ({ page }) => {
   await expect(page.getByText('Depends on missingField')).toBeVisible();
   await page.getByRole('button', { name: /fullName Unknown dependency/ }).click();
   await expect(page.getByRole('heading', { name: 'Full name' })).toBeVisible();
+});
+test('saves, publishes immutable releases, and exposes version management', async ({ page }) => {
+  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(page.getByText('Draft saved')).toBeVisible();
+  await page.getByRole('button', { name: 'Publish', exact: true }).click();
+  await expect(page.getByText(/Published customer-intake-v1/)).toBeVisible();
+  await page.getByRole('button', { name: 'Manage form repository' }).click();
+  const dialog=page.getByRole('dialog',{name:'Forms and versions'});
+  await expect(dialog.getByText('Immutable releases')).toBeVisible();
+  await expect(dialog.getByText('v1',{exact:true})).toBeVisible();
+  await dialog.getByRole('button',{name:'Create snapshot'}).click();
+  await expect(dialog.getByText('Restore snapshot')).toBeVisible();
 });
