@@ -1,5 +1,6 @@
 import type { FormSchema } from '@dynamic-form-engine/core';
 const KEY='dynamic-forms:builder:workspace-v2',LEGACY='dynamic-forms:builder:draft';
+let recoveryNotice: string | undefined;
 export type FormLifecycle='Draft'|'Validated'|'Published'|'Archived';
 export interface Snapshot{id:string;createdAt:string;schema:FormSchema}
 export interface Release{id:string;version:number;url:string;publishedAt:string;schema:FormSchema;layout?:unknown}
@@ -9,7 +10,7 @@ const clone=<T,>(value:T):T=>value === undefined ? value : JSON.parse(JSON.strin
 const now=()=>new Date().toISOString();
 export const starterSchema:FormSchema={id:'customer-intake',version:'1.0.0',fields:[{name:'fullName',type:'text',label:'Full name',placeholder:'Ada Lovelace',validation:{required:true}},{name:'email',type:'email',label:'Work email',placeholder:'ada@example.com',validation:{required:true}},{name:'requestType',type:'select',label:'How can we help?',options:[{label:'Product question',value:'product'},{label:'Support',value:'support'}]}]};
 function record(schema:FormSchema,selectedPath?:string):FormRecord{const at=now();return{id:schema.id,title:schema.id,status:'Draft',owner:'local-user',permissions:['owner'],draft:clone(schema),selectedPath,updatedAt:at,snapshots:[],releases:[],submissions:[],audit:[{at,action:'Draft created'}]}}
-export function loadDatabase():Database{try{const saved=JSON.parse(localStorage.getItem(KEY)??'') as Database;if(saved.version===2&&saved.forms?.length)return saved}catch{}try{const old=JSON.parse(localStorage.getItem(LEGACY)??'') as {schema:FormSchema;selectedPath?:string};if(old.schema?.fields){const migrated={version:2 as const,activeId:old.schema.id,forms:[record(old.schema,old.selectedPath)]};write(migrated);return migrated}}catch{}const first=record(starterSchema,starterSchema.fields[0]?.name);return{version:2,activeId:first.id,forms:[first]}}
+export function loadDatabase():Database{try{const raw=localStorage.getItem(KEY);const saved=JSON.parse(raw??'') as Database;if(saved.version===2&&saved.forms?.length)return saved}catch{recoveryNotice='A corrupt workspace draft was recovered safely.'}try{const old=JSON.parse(localStorage.getItem(LEGACY)??'') as {schema:FormSchema;selectedPath?:string};if(old.schema?.fields){const migrated={version:2 as const,activeId:old.schema.id,forms:[record(old.schema,old.selectedPath)]};write(migrated);return migrated}}catch{}const first=record(starterSchema,starterSchema.fields[0]?.name);return{version:2,activeId:first.id,forms:[first]}}
 function write(db:Database){localStorage.setItem(KEY,JSON.stringify(db))}
 export function loadDraft(){const db=loadDatabase(),form=db.forms.find(f=>f.id===db.activeId)??db.forms[0];return{schema:form.draft,selectedPath:form.selectedPath}}
 export function saveDraft(schema:FormSchema,selectedPath?:string):void{const db=loadDatabase(),at=now(),i=db.forms.findIndex(f=>f.id===db.activeId);const current=i>=0?db.forms[i]:record(schema,selectedPath);const next={...current,id:schema.id,title:schema.id,draft:clone(schema),selectedPath,updatedAt:at,status:current.status==='Archived'?'Archived':'Draft' as FormLifecycle,audit:[...current.audit,{at,action:'Draft saved'}]};if(i>=0)db.forms[i]=next;else db.forms.push(next);db.activeId=schema.id;write(db)}
@@ -22,3 +23,5 @@ export function archiveForm(id:string){const db=loadDatabase(),form=db.forms.fin
 export function restoreSnapshot(id:string):FormSchema|undefined{const db=loadDatabase(),form=db.forms.find(f=>f.id===db.activeId),snap=form?.snapshots.find(s=>s.id===id);if(!form||!snap)return;form.draft=clone(snap.schema);form.status='Draft';write(db);return clone(snap.schema)}
 export function rollbackRelease(id:string):FormSchema|undefined{const db=loadDatabase(),form=db.forms.find(f=>f.id===db.activeId),release=form?.releases.find(r=>r.id===id);if(!form||!release)return;form.draft=clone(release.schema);form.status='Draft';form.audit=[...form.audit,{at:now(),action:`Rolled back from v${release.version}`}];write(db);return clone(release.schema)}
 export function clearDraft(){localStorage.removeItem(KEY);localStorage.removeItem(LEGACY)}
+
+export function consumeRecoveryNotice(){const message=recoveryNotice;recoveryNotice=undefined;return message}

@@ -240,3 +240,16 @@ Completed on 2026-09-06.
 - Added migration and release-immutability unit tests plus browser coverage for save, publish, snapshot, and version management.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 22 unit tests passed; production build passed; 19 Playwright tests passed.
+## Phase 9 completion record
+
+Completed on 2026-09-06.
+
+- Added skip navigation, programmatically focusable main content, directly keyboard-operable field cards, visible focus treatment, and focused/scrolling issue navigation.
+- Added reduced-motion overrides, minimum high-density control sizing, responsive checks, and preserved existing drag/drop keyboard alternatives and live announcements.
+- Added explicit corrupt-workspace recovery with user-visible feedback while retaining legacy migration and unknown field-type data.
+- Replaced quadratic dependency-cycle scanning with a linear graph traversal for large forms.
+- Added 100, 500, and 1,000-field performance coverage plus corrupt-draft and unknown-type recovery tests.
+- Added opt-in Chromium, Firefox, and WebKit Playwright projects; installed and verified the Phase 9 hardening scenarios in all three engines.
+- Added browser coverage for skip navigation, keyboard selection, reduced motion, focus behavior, and recovery reporting.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 27 unit/performance tests passed; production build passed; 21 Chromium Playwright tests passed; 6 focused cross-browser tests passed.

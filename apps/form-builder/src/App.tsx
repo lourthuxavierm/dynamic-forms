@@ -3,7 +3,7 @@ import type { FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/co
 import { FormProvider } from '@dynamic-form-engine/react';
 import { HtmlForm } from '@dynamic-form-engine/react-html';
 import { initialState, reducer } from './builder/reducer';
-import { loadDraft, publish, saveDraft, starterSchema } from './persistence/draft';
+import { consumeRecoveryNotice, loadDraft, publish, saveDraft, starterSchema } from './persistence/draft';
 import { PersistencePanel } from './persistence/PersistencePanel';
 import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
@@ -19,8 +19,9 @@ import { Tabs } from './ui/Primitives';
 import { duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName } from './schema/operations';
 
 const loaded = loadDraft();
+const recoveryMessage = consumeRecoveryNotice();
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, loaded.schema, (schema) => initialState(schema, loaded.selectedPath));
+  const [state, dispatch] = useReducer(reducer, loaded.schema, (schema) => ({ ...initialState(schema, loaded.selectedPath), message: recoveryMessage }));
   const [jsonText, setJsonText] = useState(() => JSON.stringify(loaded.schema, null, 2));
   const [jsonErrors, setJsonErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState<Readonly<Record<string, unknown>>>();
@@ -72,7 +73,7 @@ export default function App() {
   const newForm = () => { if (!state.saved && !confirm('Discard the current unsaved form?')) return; const schema = { ...starterSchema, id: `untitled-form-${Date.now()}`, fields: [] }; saveDraft(schema); commit(schema, undefined, 'New form created'); };
   const publishForm = () => { if (errors.length) { dispatch({ type: 'message', message: 'Resolve blocking issues before publishing' }); return; } const storedLayout = localStorage.getItem(`dynamic-forms:builder:layout:${state.schema.id}`); const release = publish(state.schema, storedLayout ? JSON.parse(storedLayout) : undefined); dispatch({ type: 'saved' }); dispatch({ type: 'message', message: `Published ${release.id} at ${release.url}` }); };
 
-  return <div className="app">
+  return <div className="app"><a className="skip-link" href="#builder-content">Skip to builder content</a>
     <TopBar
       schema={state.schema}
       issueCount={errors.length}
@@ -93,7 +94,7 @@ export default function App() {
     />
     <div className="app-body">
       <NavigationRail onNavigate={(label) => label !== 'Builder' && dispatch({ type: 'message', message: label + ' is planned for a later phase' })} />
-      <div className="app-content">
+      <div className="app-content" id="builder-content" tabIndex={-1}>
     <Tabs items={['design','preview','rules','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
@@ -107,7 +108,7 @@ export default function App() {
       <FieldInspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
     </div> : null}
     {state.view === 'preview' ? <Preview schema={state.schema} wizard={wizard} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
-    {state.view === 'rules' ? <RulesView schema={state.schema} issues={errors} onJump={(path) => { dispatch({ type: 'select', path }); dispatch({ type: 'view', view: 'design' }); }} /> : null}
+    {state.view === 'rules' ? <RulesView schema={state.schema} issues={errors} onJump={(path) => { dispatch({ type: 'select', path }); dispatch({ type: 'view', view: 'design' }); window.setTimeout(() => { const node = document.querySelector<HTMLElement>('[data-field-path="' + path + '"]'); node?.scrollIntoView({ block: 'center' }); node?.focus(); }, 0); }} /> : null}
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
       </div>
     </div>

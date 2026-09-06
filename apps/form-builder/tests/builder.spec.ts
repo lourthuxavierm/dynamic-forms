@@ -243,3 +243,22 @@ test('saves, publishes immutable releases, and exposes version management', asyn
   await dialog.getByRole('button',{name:'Create snapshot'}).click();
   await expect(dialog.getByText('Restore snapshot')).toBeVisible();
 });
+test('supports skip navigation, keyboard field selection, focus routing, and reduced motion', async ({ page }) => {
+  await page.getByRole('link', { name: 'Skip to builder content' }).focus();
+  await expect(page.getByRole('link', { name: 'Skip to builder content' })).toBeFocused();
+  await page.getByRole('link', { name: 'Skip to builder content' }).press('Enter');
+  await expect(page.locator('#builder-content')).toBeFocused();
+  const field=page.locator('[data-field-path="fullName"]');
+  await field.focus();
+  await field.press('Enter');
+  await expect(field).toHaveClass(/selected/);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(field).toBeVisible();
+});
+
+test('recovers from a corrupt saved workspace', async ({ page }) => {
+  await page.evaluate(() => localStorage.setItem('dynamic-forms:builder:workspace-v2','{bad'));
+  await page.reload();
+  await expect(page.locator('.live-region')).toContainText('recovered safely');
+  await expect(page.getByLabel('Form ID')).toHaveValue('customer-intake');
+});
