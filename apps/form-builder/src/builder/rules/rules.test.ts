@@ -1,0 +1,2 @@
+import {describe,expect,it} from 'vitest';import type {FormSchema}from '@dynamic-form-engine/core';import{circularDependencyIssues,rulesFor}from './rules';
+describe('rule graph',()=>{it('summarizes rules and detects cycles',()=>{const schema:FormSchema={id:'x',fields:[{name:'a',type:'text',dependsOn:['b']},{name:'b',type:'text',dependsOn:['a']}]};expect(rulesFor(schema)).toHaveLength(2);expect(circularDependencyIssues(schema)[0].message).toContain('Circular dependency')})})

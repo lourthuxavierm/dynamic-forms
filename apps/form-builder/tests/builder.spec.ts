@@ -218,3 +218,15 @@ test('builds and previews a three-step wizard without JSON', async ({ page }) =>
   await page.getByRole('button', { name: 'Previous' }).click();
   await expect(page.getByLabel('Work email')).toHaveValue('ada@example.com');
 });
+test('filters rules and jumps from an issue to its field', async ({ page }) => {
+  await page.locator('.field-node').filter({ hasText: 'Full name' }).first().click();
+  await page.getByRole('tab', { name: 'logic' }).click();
+  await page.getByLabel('Dependencies (comma-separated)').fill('missingField');
+  await page.getByRole('navigation', { name: 'Builder view' }).getByRole('button', { name: 'rules' }).click();
+  await expect(page.getByRole('heading', { name: 'Rules & issues' })).toBeVisible();
+  await expect(page.getByText('Unknown dependency field: missingField')).toBeVisible();
+  await page.getByLabel('Filter').selectOption('dependency');
+  await expect(page.getByText('Depends on missingField')).toBeVisible();
+  await page.getByRole('button', { name: /fullName Unknown dependency/ }).click();
+  await expect(page.getByRole('heading', { name: 'Full name' })).toBeVisible();
+});

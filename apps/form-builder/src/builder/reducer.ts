@@ -1,6 +1,6 @@
 import type { FieldSchema, FormSchema } from '@dynamic-form-engine/core';
 import { updateField } from '../schema/operations';
-export type View = 'design' | 'preview' | 'json';
+export type View = 'design' | 'preview' | 'rules' | 'json';
 export interface BuilderState { schema: FormSchema; selectedPath?: string; view: View; past: readonly FormSchema[]; future: readonly FormSchema[]; saved: boolean; message?: string }
 export type Action = { type: 'commit'; schema: FormSchema; selectedPath?: string; message?: string } | { type: 'patch-field'; path: string; patch: Partial<FieldSchema>; message?: string } | { type: 'select'; path?: string } | { type: 'view'; view: View } | { type: 'undo' } | { type: 'redo' } | { type: 'saved' } | { type: 'message'; message?: string };
 export const initialState = (schema: FormSchema, selectedPath?: string): BuilderState => ({ schema, selectedPath: selectedPath ?? schema.fields[0]?.name, view: 'design', past: [], future: [], saved: true });

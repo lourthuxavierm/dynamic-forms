@@ -12,6 +12,7 @@ import { WizardDesigner } from './builder/wizard/WizardDesigner';
 import { setWizardConfig, wizardConfig } from './builder/wizard';
 import { FieldPalette } from './builder/palette/FieldPalette';
 import { Preview } from './preview/Preview';
+import { RulesView } from './builder/rules/RulesView';
 import { NavigationRail, TopBar } from './app/Shell';
 import { Tabs } from './ui/Primitives';
 import { duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName } from './schema/operations';
@@ -86,7 +87,7 @@ export default function App() {
     <div className="app-body">
       <NavigationRail onNavigate={(label) => label !== 'Builder' && dispatch({ type: 'message', message: label + ' is planned for a later phase' })} />
       <div className="app-content">
-    <Tabs items={['design','preview','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
+    <Tabs items={['design','preview','rules','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
       <div className="builder-center">
@@ -99,6 +100,7 @@ export default function App() {
       <FieldInspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
     </div> : null}
     {state.view === 'preview' ? <Preview schema={state.schema} wizard={wizard} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
+    {state.view === 'rules' ? <RulesView schema={state.schema} issues={errors} onJump={(path) => { dispatch({ type: 'select', path }); dispatch({ type: 'view', view: 'design' }); }} /> : null}
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
       </div>
     </div>

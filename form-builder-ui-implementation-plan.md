@@ -215,3 +215,15 @@ Completed on 2026-09-06.
 - Added wizard model unit coverage and a browser acceptance flow that builds and runs a three-step form without JSON.
 - Updated desktop, tablet, and mobile visual baselines.
 - Verification: typecheck passed; 19 unit tests passed; production build passed; 17 Playwright tests passed.
+## Phase 7 completion record
+
+Completed on 2026-09-06.
+
+- Added a dedicated Rules view with all/condition/dependency filters and readable rule summaries.
+- Added issue cards and rule actions that return to Design with the affected field selected and its inspector available.
+- Added missing-reference reporting through the shared schema validator and circular dependency graph detection.
+- Kept the shell, canvas, Rules view, JSON validation, and Preview gate driven by the same issue collection.
+- Kept Preview blocked only when the shared validator reports blocking schema errors.
+- Added rule graph unit tests and browser coverage for filters and issue-to-field navigation.
+- Updated desktop, tablet, and mobile visual baselines.
+- Verification: typecheck passed; 20 unit tests passed; production build passed; 18 Playwright tests passed.
