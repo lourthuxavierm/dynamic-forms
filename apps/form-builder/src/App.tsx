@@ -29,6 +29,7 @@ export default function App() {
   const [density, setDensity] = useState<'compact' | 'standard' | 'comfortable'>('standard');
   const [activeStep, setActiveStep] = useState('step-1');
   const [manageOpen, setManageOpen] = useState(false);
+  const [layoutOpen, setLayoutOpen] = useState(false);
   const [scheme, setScheme] = useState<'light' | 'dark' | 'auto'>('light');
   const uploadRef = useRef<HTMLInputElement>(null);
   const wizard = wizardConfig(state.schema);
@@ -91,15 +92,16 @@ export default function App() {
       onSave={() => { saveDraft(state.schema, state.selectedPath); dispatch({ type: 'saved' }); dispatch({ type: 'message', message: 'Draft saved' }); }}
       onPublish={publishForm}
       onManage={() => setManageOpen(true)}
+      onPreview={() => chooseView('preview')}
     />
     <div className="app-body">
-      <NavigationRail onNavigate={(label) => label !== 'Builder' && dispatch({ type: 'message', message: label + ' is planned for a later phase' })} />
+      <NavigationRail onNavigate={(label) => { if (label === 'Layout') setLayoutOpen((open) => !open); else if (label === 'Rules') chooseView('rules'); else if (label !== 'Builder') dispatch({ type: 'message', message: label + ' is planned for a later phase' }); }} />
       <div className="app-content" id="builder-content" tabIndex={-1}>
     <Tabs items={['design','preview','rules','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
       <div className="builder-center">
-        <WizardDesigner schema={state.schema} config={wizard} activeId={currentStep.id} onActive={setActiveStep} onChange={(next) => commit(setWizardConfig(state.schema, next), state.selectedPath, 'Form flow updated')} />
+        {layoutOpen || wizard.mode === 'wizard' ? <WizardDesigner schema={state.schema} config={wizard} activeId={currentStep.id} onActive={setActiveStep} onChange={(next) => commit(setWizardConfig(state.schema, next), state.selectedPath, 'Form flow updated')} /> : null}
         <FormCanvas schema={state.schema} visiblePaths={wizard.mode === 'wizard' && !currentStep.review ? currentStep.fieldPaths : undefined} selectedPath={state.selectedPath} errors={errors}
           onSelect={(path) => dispatch({ type: 'select', path })}
           onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent}

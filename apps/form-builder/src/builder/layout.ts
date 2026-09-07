@@ -1,4 +1,4 @@
-﻿import type { FormSchema } from '@dynamic-form-engine/core';
+import type { FormSchema } from '@dynamic-form-engine/core';
 
 export type LayoutColumns = 1 | 2 | 3 | 4;
 export type LayoutSpan = 1 | 2 | 3 | 4;
@@ -7,10 +7,16 @@ export interface FieldPlacement { fieldPath: string; columnSpan: LayoutSpan }
 export interface FormSection { id: string; title: string; description?: string; columns: LayoutColumns; placements: readonly FieldPlacement[] }
 export interface BuilderLayout { version: 1; sections: readonly FormSection[] }
 
-export const defaultLayout = (schema: FormSchema): BuilderLayout => ({
-  version: 1,
-  sections: [{ id: 'personal-details', title: 'Personal Details', description: 'Basic information about the customer', columns: 2, placements: schema.fields.map((field) => ({ fieldPath: field.name, columnSpan: 1 })) }],
-});
+export const defaultLayout = (schema: FormSchema): BuilderLayout => {
+  const paths = new Set(schema.fields.map((field) => field.name));
+  const placement = (names: string[]) => names.filter((name) => paths.has(name)).map((fieldPath) => ({ fieldPath, columnSpan: 1 as LayoutSpan }));
+  const reference = ['fullName','email','phone','company','requestType','contactMethod','message','subscribe'].every((name) => paths.has(name));
+  return { version: 1, sections: reference ? [
+    { id: 'personal-details', title: 'Personal Details', description: 'Basic information about the customer', columns: 2, placements: placement(['fullName','email','phone','company']) },
+    { id: 'contact-preferences', title: 'Contact & Preferences', description: 'How can we reach you', columns: 2, placements: placement(['requestType','contactMethod']) },
+    { id: 'additional-information', title: 'Additional Information', description: 'Any other details (optional)', columns: 2, placements: placement(['message','subscribe']) },
+  ] : [{ id: 'personal-details', title: 'Personal Details', description: 'Basic information about the customer', columns: 2, placements: schema.fields.map((field) => ({ fieldPath: field.name, columnSpan: 1 })) }] };
+};
 
 export function normalizeLayout(schema: FormSchema, layout?: BuilderLayout): BuilderLayout {
   const paths = schema.fields.map((field) => field.name);

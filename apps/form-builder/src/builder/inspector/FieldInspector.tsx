@@ -63,14 +63,14 @@ export function FieldInspector({ schema, path, field, errors, onPatch, onReparen
   };
 
   return <aside className="inspector">
-    <div className="inspector-heading"><div><small>Field configuration</small><h2>{field.label ?? field.name}</h2></div><span>{field.type}</span></div>
+
     <div className="inspector-tabs" role="tablist" aria-label="Field inspector">
-      {(['properties','validation','logic','appearance'] as const).map((item) => <Button key={item} size="small" variant="ghost" role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item}</Button>)}
+      {(['properties','validation','logic','appearance'] as const).map((item) => <Button key={item} size="small" variant="ghost" role="tab" aria-selected={tab === item} className={tab === item ? 'active' : ''} onClick={() => setTab(item)}>{item === 'properties' ? 'Field' : item === 'appearance' ? 'Styles' : item}</Button>)}
     </div>
     {errors.map((error) => <p className="field-error" role="alert" key={error.message}>{error.message}</p>)}
     <div className="property-list">
       {tab === 'properties' ? <>
-        <Section title="General" open>
+        <Section title="Basic" open>
           <Control label="Field type"><select value={field.type} onChange={(event) => changeType(event.target.value)}>{palette.map((item) => <option key={item.type} value={item.type}>{item.label}</option>)}</select></Control>
           <Control label="Label"><input value={field.label ?? ''} onChange={(event) => onPatch({ label: event.target.value })} /></Control>
           <Control label="Name"><input required aria-invalid={!field.name} value={field.name} onChange={(event) => onPatch({ name: safeName(event.target.value) })} /></Control>

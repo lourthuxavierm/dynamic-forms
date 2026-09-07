@@ -26,7 +26,7 @@ test('validates JSON before applying and previews the production form', async ({
   await editor.fill(original.replace('customer-intake', 'e2e-form')); await page.getByRole('button', { name: 'Apply JSON' }).click();
   await page.getByRole('button', { name: 'preview', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'E2e form' })).toBeVisible();
-  await page.getByLabel('Full name').fill('Ada Lovelace'); await page.getByLabel('Work email').fill('ada@example.com');
+  await page.getByLabel('Full name').fill('Ada Lovelace'); await page.getByLabel('Work email').fill('ada@example.com'); await page.getByLabel('How can we help?').selectOption({ label: 'Product question' });
   await page.getByRole('button', { name: 'Submit form' }).click(); await expect(page.getByText('Submitted values')).toBeVisible();
 });
 test('has no page overflow at mobile width', async ({ page }) => { await page.setViewportSize({ width: 320, height: 900 }); const dimensions = await page.locator('html').evaluate((element) => ({ clientWidth: element.clientWidth, scrollWidth: element.scrollWidth })); expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1); });
@@ -45,7 +45,7 @@ test('supports keyboard duplication and deletion with accessible status feedback
 test('exposes keyboard-operable builder landmarks and controls', async ({ page }) => {
   await expect(page.getByRole('banner')).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Builder view' })).toBeVisible();
-  await expect(page.getByRole('tree', { name: 'Form fields' })).toBeVisible();
+  await expect(page.getByRole('tree', { name: 'Form fields' })).toHaveCount(3);
   await expect(page.getByRole('button', { name: 'Undo', exact: true })).toBeDisabled();
   await expect(page.getByRole('button', { name: 'Redo', exact: true })).toBeDisabled();
   await expect(page.locator('[aria-live="polite"]')).toHaveCount(1);
@@ -62,7 +62,7 @@ test('persists conditional logic and data-source configuration', async ({ page }
   await logic.getByText('Enabled', { exact: true }).first().click();
   await logic.getByLabel('Visible when field').selectOption('fullName');
   await logic.getByLabel('Visible when value').fill('Ada');
-  await page.getByRole('tab', { name: 'properties' }).click();
+  await page.getByRole('tab', { name: 'Field' }).click();
   const dataSource = page.locator('details').filter({ hasText: 'Data source' });
   await dataSource.locator('summary').click();
   await dataSource.getByText('Source type').locator('..').getByRole('combobox').selectOption('url');
@@ -81,15 +81,15 @@ test('persists conditional logic and data-source configuration', async ({ page }
 test('exposes the Phase 1 application shell without activating future destinations', async ({ page }) => {
   const primary = page.getByRole('navigation', { name: 'Primary navigation' });
   await expect(primary.getByRole('button', { name: 'Builder' })).toHaveAttribute('aria-current', 'page');
-  await primary.getByRole('button', { name: 'Playground' }).click();
-  await expect(page.locator('.live-region')).toHaveText('Playground is planned for a later phase');
-  await expect(page.getByRole('button', { name: 'Save', exact: true })).toBeEnabled();
+  await primary.getByRole('button', { name: 'Themes' }).click();
+  await expect(page.locator('.live-region')).toHaveText('Themes is planned for a later phase');
+  await expect(page.getByRole('button', { name: 'Saved', exact: true })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Publish', exact: true })).toBeEnabled();
   await expect(page.getByLabel('Form ID')).toHaveValue('customer-intake');
   await expect(page.getByLabel('Version')).toHaveValue('1.0.0');
   await expect(page.getByRole('button', { name: 'Import' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Export' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Copy JSON' })).toBeVisible();
+  await expect(page.locator('.preview-action')).toBeVisible();
 });
 
 
@@ -139,29 +139,30 @@ test('searches fields and persists palette view and category preferences', async
 
 
 test('persists section layout, field spans, cross-section placement, and layout history', async ({ page }) => {
+  await page.getByRole('navigation', { name: 'Primary navigation' }).getByRole('button', { name: 'Layout' }).click();
   await expect(page.getByLabel('Personal Details columns')).toHaveValue('2');
   await page.getByLabel('Full name column span').selectOption('2');
   await expect(page.getByLabel('Full name column span')).toHaveValue('2');
 
   await page.getByRole('button', { name: 'Add section' }).click();
-  await page.getByLabel('Move Work email to section').selectOption('section-2');
-  await expect(page.getByRole('region', { name: 'Section 2' }).locator('.field-summary strong')).toContainText('Work email');
+  await page.getByLabel('Move Work email to section').selectOption('section-4');
+  await expect(page.getByRole('region', { name: 'Section 4' }).locator('.field-summary strong')).toContainText('Work email');
 
   await page.getByRole('button', { name: 'Undo layout' }).click();
   await expect(page.getByLabel('Move Work email to section')).toHaveValue('personal-details');
   await page.getByRole('button', { name: 'Redo layout' }).click();
-  await expect(page.getByLabel('Move Work email to section')).toHaveValue('section-2');
+  await expect(page.getByLabel('Move Work email to section')).toHaveValue('section-4');
 
   await page.reload();
   await expect(page.getByLabel('Full name column span')).toHaveValue('2');
-  await expect(page.getByLabel('Move Work email to section')).toHaveValue('section-2');
+  await expect(page.getByLabel('Move Work email to section')).toHaveValue('section-4');
 });
 
 test('switches the design canvas viewport without changing the schema', async ({ page }) => {
   await page.getByRole('button', { name: 'mobile canvas' }).click();
   await expect(page.getByRole('button', { name: 'mobile canvas' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.visual-canvas')).toHaveClass(/visual-canvas--mobile/);
-  await expect(page.getByRole('tree', { name: 'Form fields' })).toBeVisible();
+  await expect(page.getByRole('tree', { name: 'Form fields' })).toHaveCount(3);
 });
 
 
@@ -173,7 +174,7 @@ test('edits validation, typed defaults, logic, and appearance through inspector 
   const tabs = page.getByRole('tablist', { name: 'Field inspector' });
   await expect(tabs.getByRole('tab')).toHaveCount(4);
 
-  await tabs.getByRole('tab', { name: 'properties' }).click();
+  await tabs.getByRole('tab', { name: 'Field' }).click();
   const defaultValue = page.getByLabel('Default value');
   await expect(defaultValue).toHaveAttribute('type', 'number');
   await defaultValue.fill('42');
@@ -188,18 +189,19 @@ test('edits validation, typed defaults, logic, and appearance through inspector 
   await readOnlyRule.getByText('Enabled', { exact: true }).click();
   await readOnlyRule.getByLabel('Read only when field').selectOption('fullName');
 
-  await tabs.getByRole('tab', { name: 'appearance' }).click();
+  await tabs.getByRole('tab', { name: 'Styles' }).click();
   await page.getByLabel('Label position').selectOption('left');
   await page.getByLabel('Input density').selectOption('compact');
 
   await page.waitForTimeout(450);
   await page.reload();
-  await page.getByRole('tab', { name: 'appearance' }).click();
+  await page.getByRole('tab', { name: 'Styles' }).click();
   await expect(page.getByLabel('Label position')).toHaveValue('left');
   await expect(page.getByLabel('Input density')).toHaveValue('compact');
 });
 
 test('builds and previews a three-step wizard without JSON', async ({ page }) => {
+  await page.getByRole('navigation', { name: 'Primary navigation' }).getByRole('button', { name: 'Layout' }).click();
   await page.getByLabel('Mode').selectOption('wizard');
   await page.getByRole('button', { name: '+ Step' }).click();
   await page.getByLabel('Step title').fill('Contact details');
@@ -211,6 +213,7 @@ test('builds and previews a three-step wizard without JSON', async ({ page }) =>
   await page.getByRole('navigation', { name: 'Builder view' }).getByRole('button', { name: 'preview' }).click();
   await expect(page.getByRole('list', { name: 'Form progress' }).getByRole('listitem')).toHaveCount(3);
   await page.getByLabel('Full name').fill('Ada Lovelace');
+  await page.getByLabel('How can we help?').selectOption({ label: 'Product question' });
   await page.getByRole('button', { name: 'Next' }).click();
   await page.getByLabel('Work email').fill('ada@example.com');
   await page.getByRole('button', { name: 'Next' }).click();
@@ -229,10 +232,10 @@ test('filters rules and jumps from an issue to its field', async ({ page }) => {
   await page.getByLabel('Filter').selectOption('dependency');
   await expect(page.getByText('Depends on missingField')).toBeVisible();
   await page.getByRole('button', { name: /fullName Unknown dependency/ }).click();
-  await expect(page.getByRole('heading', { name: 'Full name' })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Field' })).toHaveAttribute('aria-selected','true');
 });
 test('saves, publishes immutable releases, and exposes version management', async ({ page }) => {
-  await page.getByRole('button', { name: 'Save', exact: true }).click();
+  await page.getByRole('button', { name: 'Saved', exact: true }).click();
   await expect(page.getByText('Draft saved')).toBeVisible();
   await page.getByRole('button', { name: 'Publish', exact: true }).click();
   await expect(page.getByText(/Published customer-intake-v1/)).toBeVisible();

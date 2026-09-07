@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useReducer, useRef, useState, type CSSProperties, type DragEvent } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState, type CSSProperties, type DragEvent } from 'react';
 import type { FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/core';
 import { Button, IconButton } from '../../ui/Primitives';
 import { allPaths } from '../../schema/operations';
@@ -47,7 +47,7 @@ export function FormCanvas(props: FormCanvasProps) {
   const commit = (layout: BuilderLayout) => dispatch({ type: 'commit', layout });
 
   return <main ref={canvasRef} className={`canvas visual-canvas visual-canvas--${viewport}`}>
-    <div className="canvas-toolbar">
+    <div className="canvas-toolbar"><span className="layout-label">Form Layout</span>
       <div className="canvas-heading"><div><p className="eyebrow">Form canvas</p><h1>{humanize(props.schema.id)}</h1><p>Collect and manage customer information</p></div><span>{allPaths(props.schema).length} fields</span></div>
       <div className="canvas-viewport" aria-label="Canvas viewport">
         {(['desktop','tablet','mobile'] as const).map((item) => <Button key={item} size="small" variant="ghost" aria-label={`${item} canvas`} aria-pressed={viewport === item} className={viewport === item ? 'active' : ''} onClick={() => setViewport(item)}>{item === 'desktop' ? '▱' : item === 'tablet' ? '▯' : '▯'}</Button>)}
@@ -61,7 +61,7 @@ export function FormCanvas(props: FormCanvasProps) {
       <Button size="small" onClick={() => commit(addSection(history.present))}>＋ Add section</Button>
     </div>
     <div className="form-surface">
-      <div className="form-surface-header"><span aria-hidden="true">👥</span><div><h2>{humanize(props.schema.id)}</h2><p>Collect and manage customer information</p></div></div>
+      <div className="form-surface-header"><span aria-hidden="true">👥</span><div><h2>{humanize(props.schema.id)}</h2><p>Collect and manage customer information</p></div><div className="surface-badges"><b>{props.schema.fields.length} fields</b>{props.errors.length ? <strong>{props.errors.length} issue</strong> : null}<i>⋮</i></div></div>
       {history.present.sections.map((section) => <section className="form-section" key={section.id} aria-label={section.title}>
         <header className="form-section-header">
           <span className="section-icon" aria-hidden="true">♟</span>
@@ -69,7 +69,7 @@ export function FormCanvas(props: FormCanvasProps) {
             <input aria-label={`${section.title} section title`} value={section.title} onChange={(event) => commit(updateSection(history.present, section.id, { title: event.target.value }))} />
             <input aria-label={`${section.title} section description`} value={section.description ?? ''} placeholder="Section description" onChange={(event) => commit(updateSection(history.present, section.id, { description: event.target.value || undefined }))} />
           </div>
-          <label className="section-columns"><span>Columns</span><select aria-label={`${section.title} columns`} value={section.columns} onChange={(event) => commit(updateSection(history.present, section.id, { columns: Number(event.target.value) as LayoutColumns }))}>{[1,2,3,4].map((count) => <option key={count} value={count}>{count}</option>)}</select></label>
+          <span className="section-count">{section.placements.length} fields</span><label className="section-columns"><span>Columns</span><select aria-label={`${section.title} columns`} value={section.columns} onChange={(event) => commit(updateSection(history.present, section.id, { columns: Number(event.target.value) as LayoutColumns }))}>{[1,2,3,4].map((count) => <option key={count} value={count}>{count}</option>)}</select></label>
           <IconButton size="small" aria-label={`Delete ${section.title} section`} disabled={history.present.sections.length === 1} onClick={() => commit(removeSection(history.present, section.id))}>⌫</IconButton>
         </header>
         <div className="section-grid" role="tree" aria-label="Form fields" style={{ '--section-columns': section.columns } as CSSProperties}>

@@ -8,7 +8,16 @@ export interface FormRecord{id:string;title:string;status:FormLifecycle;owner:st
 interface Database{version:2;activeId:string;forms:FormRecord[]}
 const clone=<T,>(value:T):T=>value === undefined ? value : JSON.parse(JSON.stringify(value)) as T;
 const now=()=>new Date().toISOString();
-export const starterSchema:FormSchema={id:'customer-intake',version:'1.0.0',fields:[{name:'fullName',type:'text',label:'Full name',placeholder:'Ada Lovelace',validation:{required:true}},{name:'email',type:'email',label:'Work email',placeholder:'ada@example.com',validation:{required:true}},{name:'requestType',type:'select',label:'How can we help?',options:[{label:'Product question',value:'product'},{label:'Support',value:'support'}]}]};
+export const starterSchema:FormSchema={id:'customer-intake',version:'1.0.0',fields:[
+{name:'fullName',type:'text',label:'Full name',placeholder:'Enter full name',description:"Customer's legal full name",validation:{required:true}},
+{name:'email',type:'email',label:'Work email',placeholder:'Enter work email',validation:{required:true}},
+{name:'phone',type:'phone',label:'Phone number',placeholder:'Enter phone number'},
+{name:'company',type:'text',label:'Company name',placeholder:'Enter company name'},
+{name:'requestType',type:'select',label:'How can we help?',placeholder:'Select an option',validation:{required:true},options:[{label:'Product question',value:'product'},{label:'Support',value:'support'}]},
+{name:'contactMethod',type:'radio',label:'Preferred contact method',options:[{label:'Email',value:'email'},{label:'Phone',value:'phone'},{label:'WhatsApp',value:'whatsapp'}]},
+{name:'message',type:'textarea',label:'Message',placeholder:'Enter additional details...'},
+{name:'subscribe',type:'switch',label:'Subscribe to updates',defaultValue:true,description:'Yes, I would like to receive product updates'}
+]};
 function record(schema:FormSchema,selectedPath?:string):FormRecord{const at=now();return{id:schema.id,title:schema.id,status:'Draft',owner:'local-user',permissions:['owner'],draft:clone(schema),selectedPath,updatedAt:at,snapshots:[],releases:[],submissions:[],audit:[{at,action:'Draft created'}]}}
 export function loadDatabase():Database{try{const raw=localStorage.getItem(KEY);const saved=JSON.parse(raw??'') as Database;if(saved.version===2&&saved.forms?.length)return saved}catch{recoveryNotice='A corrupt workspace draft was recovered safely.'}try{const old=JSON.parse(localStorage.getItem(LEGACY)??'') as {schema:FormSchema;selectedPath?:string};if(old.schema?.fields){const migrated={version:2 as const,activeId:old.schema.id,forms:[record(old.schema,old.selectedPath)]};write(migrated);return migrated}}catch{}const first=record(starterSchema,starterSchema.fields[0]?.name);return{version:2,activeId:first.id,forms:[first]}}
 function write(db:Database){localStorage.setItem(KEY,JSON.stringify(db))}

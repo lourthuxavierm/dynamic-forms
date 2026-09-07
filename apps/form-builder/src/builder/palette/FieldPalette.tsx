@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { FieldType } from '@dynamic-form-engine/core';
 import { palette, paletteGroups, type PaletteGroupName } from '../../schema/catalogue';
 import { Button, IconButton, PanelHeader } from '../../ui/Primitives';
@@ -50,7 +50,7 @@ export function FieldPalette({ onAdd }: { onAdd: (type: FieldType) => void }) {
   };
 
   return <aside className="palette-panel" aria-label="Field library">
-    <PanelHeader title="Add Fields" actions={<IconButton size="small" aria-label={allExpanded ? 'Collapse all field groups' : 'Expand all field groups'} onClick={toggleAll}>•••</IconButton>} />
+    <PanelHeader title="Components" actions={<IconButton size="small" aria-label={allExpanded ? 'Collapse all field groups' : 'Expand all field groups'} onClick={toggleAll}>•••</IconButton>} />
     <div className="palette-tools">
       <label className="palette-search">
         <span aria-hidden="true">⌕</span>
@@ -62,7 +62,7 @@ export function FieldPalette({ onAdd }: { onAdd: (type: FieldType) => void }) {
         <Button size="small" variant="ghost" className={view === 'list' ? 'active' : ''} aria-label="List view" aria-pressed={view === 'list'} onClick={() => changeView('list')}>☷</Button>
       </div>
     </div>
-    {visibleGroups.length ? <div className="palette-groups">
+    <div className="palette-filters" aria-label="Component filters"><button className="active">All</button><button>Inputs</button><button>Selection</button><button>Date &amp; Time</button></div>    {visibleGroups.length ? <div className="palette-groups">
       {visibleGroups.map((group) => {
         const items = matches.filter((item) => item.group === group);
         const open = normalized ? true : expanded[group];
