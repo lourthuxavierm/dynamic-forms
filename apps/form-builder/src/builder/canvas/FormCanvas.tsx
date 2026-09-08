@@ -62,7 +62,12 @@ export function FormCanvas(props: FormCanvasProps) {
     </div>
     <div className="form-surface">
       <div className="form-surface-header"><span aria-hidden="true">👥</span><div><h2>{humanize(props.schema.id)}</h2><p>Collect and manage customer information</p></div><div className="surface-badges"><b>{props.schema.fields.length} fields</b>{props.errors.length ? <strong>{props.errors.length} issue</strong> : null}<i>⋮</i></div></div>
-      {history.present.sections.map((section) => <section className="form-section" key={section.id} aria-label={section.title}>
+      <div className="form-steps" aria-label="Form steps">
+        <div className="form-step active"><b>1</b><span><strong>Personal Details</strong><small>Basic information</small></span></div>
+        <div className="form-step"><b>2</b><span><strong>Contact &amp; Preferences</strong><small>How to reach you</small></span></div>
+        <div className="form-step"><b>3</b><span><strong>Additional Info</strong><small>Optional details</small></span></div>
+      </div>
+      {props.errors.length ? <button className="surface-issue" onClick={() => props.onSelect(props.errors[0].path)}><span>&#9888;&nbsp;&nbsp; {props.errors.length} schema issue found</span><strong>View details&nbsp;&nbsp; &#8594;</strong></button> : null}      {history.present.sections.map((section) => <section className="form-section" key={section.id} aria-label={section.title}>
         <header className="form-section-header">
           <span className="section-icon" aria-hidden="true">♟</span>
           <div className="section-copy">

@@ -97,7 +97,7 @@ export default function App() {
     <div className="app-body">
       <NavigationRail onNavigate={(label) => { if (label === 'Layout') setLayoutOpen((open) => !open); else if (label === 'Rules') chooseView('rules'); else if (label !== 'Builder') dispatch({ type: 'message', message: label + ' is planned for a later phase' }); }} />
       <div className="app-content" id="builder-content" tabIndex={-1}>
-    <Tabs items={['design','preview','rules','json'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
+    <Tabs items={['design','preview','json','rules'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
       <div className="builder-center">
