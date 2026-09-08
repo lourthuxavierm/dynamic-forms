@@ -43,7 +43,33 @@ describe('conditions and dependencies', () => {
 
     expect(store.getValue('state')).toBe('TN');
     expect(store.getValue('city')).toBe('Chennai');
-    expect(refresh).toHaveBeenCalledWith(expect.objectContaining({ name: 'state' }), expect.any(Object), store.getValues());
+    expect(refresh).toHaveBeenCalledWith(expect.objectContaining({ name: 'state' }), expect.any(Object), store.getValues(), expect.objectContaining({ signal: expect.any(AbortSignal) }));
     controller.dispose();
+  });
+
+  it('cancels superseded dependency refreshes and active work on disposal', async () => {
+    const schema: FormSchema = {
+      id: 'location-race',
+      fields: [
+        { name: 'country', type: 'select' },
+        { name: 'state', type: 'select', dependsOn: ['country'], dataSource: { type: 'url', url: '/states' } },
+      ],
+    };
+    const store = new FormStore({ country: 'IN', state: '' });
+    const signals: AbortSignal[] = [];
+    const refresh = vi.fn((_field, _dataSource, _values, context) => {
+      signals.push(context.signal);
+      return new Promise<void>(() => undefined);
+    });
+    const controller = new DependencyController(store, schema, { onDataSourceRefresh: refresh });
+
+    store.setValue('country', 'US');
+    store.setValue('country', 'CA');
+    expect(signals).toHaveLength(2);
+    expect(signals[0].aborted).toBe(true);
+    expect(signals[1].aborted).toBe(false);
+
+    controller.dispose();
+    expect(signals[1].aborted).toBe(true);
   });
 });

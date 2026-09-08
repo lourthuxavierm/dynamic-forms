@@ -5,13 +5,16 @@ import type {
   FormListener,
   FormSelector,
   FormState,
+  FormStoreOptions,
   SelectorListener,
   FormSubmitHandler,
   FormValidator,
   FormValues,
   ResetOptions,
   SetValueOptions,
+  ValidateOptions,
 } from './types';
+import { AsyncRequestManager, isAbortError, normalizeAsyncError } from '../async';
 import { FormEventEmitter, type FormEvent, type FormEventListener, type FormEventType } from '../events';
 import { deleteByPath, dynamicPath, getByPath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
@@ -27,6 +30,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
   private readonly selectorSubscriptions = new Set<SelectorSubscription<T>>();
   private readonly events = new FormEventEmitter<unknown, T>();
+  private readonly asyncRequests: AsyncRequestManager<'validation'>;
   private readonly pendingEvents = new Map<string, FormEvent<unknown, T>>();
   private readonly pendingPaths = new Set<string>();
   private batchDepth = 0;
@@ -34,7 +38,8 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   private pendingNotifyAll = false;
   private initialValues: T;
 
-  constructor(initialValues: T = {} as T) {
+  constructor(initialValues: T = {} as T, options: FormStoreOptions = {}) {
+    this.asyncRequests = new AsyncRequestManager({ onError: options.onAsyncError });
     this.initialValues = clone(initialValues);
     this.state = createState(this.initialValues);
   }
@@ -200,12 +205,51 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     this.notify();
   }
 
-  async validate(validator: FormValidator<T>): Promise<boolean> {
-    const errors = await validator(this.getValues());
-    this.updateState({ errors: { ...errors }, valid: Object.keys(errors).length === 0 });
-    this.emitEvent({ type: 'validate', payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values } });
-    this.notifyAll();
-    return this.state.valid;
+  async validate(validator: FormValidator<T>, options: ValidateOptions = {}): Promise<boolean> {
+    const values = this.getValues();
+    const request = this.asyncRequests.run(
+      'validation',
+      (context) => validator(values, context),
+      options,
+    );
+    const requestId = this.asyncRequests.getState('validation')!.requestId;
+    this.updateState({ validating: true, validationError: undefined });
+    this.notify();
+
+    try {
+      const result = await request;
+      if (!result.current) return this.state.valid;
+      const errors = result.value;
+      this.updateState({
+        errors: { ...errors },
+        valid: Object.keys(errors).length === 0,
+        validating: false,
+        validationError: undefined,
+      });
+      this.emitEvent({
+        type: 'validate',
+        payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values },
+      });
+      this.notifyAll();
+      return this.state.valid;
+    } catch (error) {
+      const normalized = normalizeAsyncError(error);
+      if (this.asyncRequests.getState('validation')?.requestId === requestId) {
+        this.updateState({
+          validating: false,
+          validationError: isAbortError(normalized) ? undefined : normalized,
+        });
+        this.notify();
+      }
+      throw normalized;
+    }
+  }
+
+  cancelValidation(): void {
+    this.asyncRequests.cancel('validation');
+    if (!this.state.validating) return;
+    this.updateState({ validating: false, validationError: undefined });
+    this.notify();
   }
 
   async submit<TResult>(
@@ -231,6 +275,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   }
 
   reset(newInitialValues?: T, options: ResetOptions = {}): void {
+    this.asyncRequests.cancel('validation');
     if (newInitialValues) {
       this.initialValues = clone(newInitialValues);
     }
@@ -453,6 +498,8 @@ function createState<T extends FormValues>(initialValues: T): FormState<T> {
     submitting: false,
     disabled: false,
     loading: false,
+    validating: false,
+    validationError: undefined,
   });
 }
 

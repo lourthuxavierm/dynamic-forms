@@ -107,3 +107,29 @@ store.batch(() => {
 ```
 
 To validate once, call `store.validate(...)` at the end of an async batch or immediately after a synchronous batch. A failed callback does not roll state back: completed mutations are committed and notified once before the error is rethrown. This keeps the v1 transaction contract small and deterministic without introducing partial rollback semantics.
+
+## Asynchronous operations and cancellation
+
+Core async work uses monotonic request IDs and last-write-wins state. Starting a request for an existing key aborts the previous signal; responses from code that does not honor cancellation are still marked stale and cannot replace current state or populate caches.
+
+`DataSourceManager` applies this contract to registered sources, remote options, pagination, and rapid search. Each source receives `signal` and `requestId` in its context. `getState(name)` consistently exposes `status`, `loading`, `requestId`, `data`, and the current non-cancellation `error`. Use `cancel(name)` when a field becomes hidden and `unregister(name)` when it is removed; both invalidate active work. `clear()` cancels all active requests.
+
+```ts
+const sources = new DataSourceManager({
+  onError: (error, name, requestId) => report(error, { name, requestId }),
+});
+
+const options = await sources.loadConfig(
+  'customers',
+  {
+    type: 'function',
+    load: async ({ signal }) => fetch('/customers', { signal }).then(response => response.json()),
+  },
+  { values: store.getValues() },
+  { search: 'ada' },
+);
+```
+
+Form validation follows the same rule. Validators receive an optional `{ signal, requestId }` context, while `FormState.validating` and `validationError` expose current status. A newer `validate()` call aborts and invalidates the older call; `cancelValidation()` and `reset()` cancel active validation. Dependency refresh callbacks receive the same context, cancel superseded refreshes per dependent field, and are cancelled by `cancelRefresh(field)` or `dispose()`.
+
+`AsyncRequestManager` is exported for custom remote controls and future plugins. Cancellation errors are not reported as failures. Current non-cancellation failures are normalized to `Error` and routed through the relevant `onError`/`onAsyncError` hook. Operations that ignore their abort signal may still resolve to their original caller, but their result has `current: false` and is never committed by Core.

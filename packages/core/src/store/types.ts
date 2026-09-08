@@ -1,3 +1,5 @@
+import type { AsyncRequestContext } from '../async';
+
 export type FormValues = object;
 export type DynamicFormValues = Record<string, unknown>;
 export type FormErrors = Record<string, string>;
@@ -11,6 +13,8 @@ export interface FormState<T extends FormValues = DynamicFormValues> {
   submitting: boolean;
   disabled: boolean;
   loading: boolean;
+  validating: boolean;
+  validationError?: Error;
 }
 
 export type FormListener<T extends FormValues = DynamicFormValues> = (state: FormState<T>) => void;
@@ -27,7 +31,8 @@ export type SelectorListener<TSelected> = (
 export type EqualityFn<TSelected> = (left: TSelected, right: TSelected) => boolean;
 
 export type FormValidator<T extends FormValues = DynamicFormValues> = (
-  values: Readonly<T>
+  values: Readonly<T>,
+  context?: AsyncRequestContext,
 ) => FormErrors | Promise<FormErrors>;
 
 export type FormSubmitHandler<T extends FormValues = DynamicFormValues, TResult = unknown> = (
@@ -45,4 +50,12 @@ export interface ResetOptions {
   keepErrors?: boolean;
   keepTouched?: boolean;
   keepDirty?: boolean;
+}
+
+export interface FormStoreOptions {
+  onAsyncError?: (error: Error, operation: 'validation', requestId: number) => void;
+}
+
+export interface ValidateOptions {
+  signal?: AbortSignal;
 }

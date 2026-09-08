@@ -1,12 +1,17 @@
-export interface DataSourceContext {
+import type { AsyncRequestContext, AsyncRequestStatus } from '../async';
+
+export interface DataSourceContext extends Partial<AsyncRequestContext> {
   values: Record<string, unknown>;
   field?: string;
-  signal?: AbortSignal;
 }
 
 export interface DataSourceResult<T = unknown> {
   data: T[];
   loading: boolean;
+  /** Present on manager-owned request state; optional for adapter-local initial state. */
+  status?: AsyncRequestStatus;
+  /** Present on manager-owned request state; optional for adapter-local initial state. */
+  requestId?: number;
   error?: Error;
 }
 

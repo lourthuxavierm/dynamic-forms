@@ -1,5 +1,6 @@
 export const VERSION = "0.1.0";
 
+export * from "./async";
 export * from "./schema";
 export * from "./registry";
 export * from "./store";

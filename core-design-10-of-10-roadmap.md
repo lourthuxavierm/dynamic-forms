@@ -16,7 +16,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | 2 | Typed Path System | P0 | [x] | Compile-time safe nested paths/values |
 | 3 | Selector-Based Subscriptions | P1 | [x] | Fine-grained state subscriptions |
 | 4 | Transactions / Batch Updates | P0 | [x] | One atomic update/notification cycle |
-| 5 | Async Race & Cancellation Management | P0 | [ ] | Stale-safe async operations |
+| 5 | Async Race & Cancellation Management | P0 | [x] | Stale-safe async operations |
 | 6 | Unified Runtime Lifecycle | P0 | [ ] | Deterministic processing pipeline |
 | 7 | Plugin / Middleware Contract | P1 | [ ] | Stable Core extension API |
 | 8 | Performance Guarantees | P1 | [ ] | Benchmarked large-form performance |
@@ -211,18 +211,18 @@ Make all asynchronous Core operations stale-safe.
 
 ### Required work
 
-- [ ] Standardize `AbortSignal` support.
-- [ ] Add request generation/request IDs.
-- [ ] Ignore stale responses.
-- [ ] Implement last-write-wins semantics where appropriate.
-- [ ] Cancel superseded requests.
-- [ ] Centralize async error handling.
-- [ ] Track loading state consistently.
-- [ ] Track async errors consistently.
-- [ ] Define behavior when fields are removed/hidden while requests are active.
-- [ ] Add race-condition regression tests.
-- [ ] Add rapid-input/search tests.
-- [ ] Add dependency-chain cancellation tests.
+- [x] Standardize `AbortSignal` support.
+- [x] Add request generation/request IDs.
+- [x] Ignore stale responses.
+- [x] Implement last-write-wins semantics where appropriate.
+- [x] Cancel superseded requests.
+- [x] Centralize async error handling.
+- [x] Track loading state consistently.
+- [x] Track async errors consistently.
+- [x] Define behavior when fields are removed/hidden while requests are active.
+- [x] Add race-condition regression tests.
+- [x] Add rapid-input/search tests.
+- [x] Add dependency-chain cancellation tests.
 
 ### Done when
 
@@ -481,7 +481,7 @@ These requirements apply across all ten areas.
 - [ ] Integration tests across subsystems.
 - [ ] Nested object tests.
 - [ ] Nested array tests.
-- [ ] Async race tests.
+- [x] Async race tests.
 - [ ] Lifecycle-order tests.
 - [ ] Batch/transaction tests.
 - [ ] Type-level tests.
@@ -500,7 +500,7 @@ These requirements apply across all ten areas.
 - [ ] Validation contract.
 - [ ] Events.
 - [ ] Plugins.
-- [ ] Async behavior.
+- [x] Async behavior.
 - [ ] Performance guidance.
 - [ ] Migration/versioning policy.
 
@@ -513,7 +513,7 @@ These requirements apply across all ten areas.
 - [x] Strong public type safety.
 - [x] Typed paths.
 - [x] Transactions/batching.
-- [ ] Async race/cancellation management.
+- [x] Async race/cancellation management.
 
 **Target Core score: ~9/10**
 
@@ -546,7 +546,7 @@ The Core can be considered complete for a stable enterprise-quality `1.0.0` when
 - [ ] Nested-path safe.
 - [ ] Deterministic.
 - [ ] Transaction-safe.
-- [ ] Async race-safe.
+- [x] Async race-safe.
 - [ ] Extensible without modifying Core.
 - [ ] Fine-grained and performant.
 - [ ] Schema-version aware.

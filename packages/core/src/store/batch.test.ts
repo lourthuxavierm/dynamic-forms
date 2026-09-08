@@ -88,7 +88,7 @@ describe('FormStore batches', () => {
     });
 
     expect(validator).toHaveBeenCalledOnce();
-    expect(validator).toHaveBeenCalledWith({ first: 'Ada', last: 'Lovelace' });
+    expect(validator).toHaveBeenCalledWith({ first: 'Ada', last: 'Lovelace' }, expect.objectContaining({ signal: expect.any(AbortSignal) }));
   });
 
   it('settles hidden-value conditions before subscriber notification', () => {
