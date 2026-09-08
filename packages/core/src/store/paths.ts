@@ -1,60 +1,73 @@
-/**
- * Simple path utilities for getting and setting values in nested objects.
- * This avoids a heavy dependency like lodash if we only need these basic operations.
- */
+/** Immutable utilities for dynamic runtime paths. Typed paths are layered on these primitives. */
+type PathContainer = Record<string, unknown> | unknown[];
 
-export function getByPath(obj: any, path: string): any {
+function pathKeys(path: string): string[] {
+  return path.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean);
+}
+
+function isContainer(value: unknown): value is PathContainer {
+  return value !== null && typeof value === 'object';
+}
+
+function read(container: PathContainer, key: string): unknown {
+  return Array.isArray(container) ? container[Number(key)] : container[key];
+}
+
+function write(container: PathContainer, key: string, value: unknown): void {
+  if (Array.isArray(container)) container[Number(key)] = value;
+  else container[key] = value;
+}
+
+function cloneContainer(value: unknown, arrayFallback = false): PathContainer {
+  if (Array.isArray(value)) return [...value];
+  if (isContainer(value)) return { ...value };
+  return arrayFallback ? [] : {};
+}
+
+export function getByPath(obj: unknown, path: string): unknown {
   if (!path) return obj;
-  const keys = path.replace(/\[(\d+)\]/g, '.$1').split('.');
-  let result = obj;
-  for (const key of keys) {
-    if (result == null) return undefined;
-    result = result[key];
+  let result: unknown = obj;
+  for (const key of pathKeys(path)) {
+    if (!isContainer(result)) return undefined;
+    result = read(result, key);
   }
   return result;
 }
 
-export function setByPath(obj: any, path: string, value: any): any {
+export function setByPath(obj: unknown, path: string, value: unknown): unknown {
   if (!path) return value;
-  const keys = path.replace(/\[(\d+)\]/g, '.$1').split('.');
-  const newObj = { ...obj };
-  let current = newObj;
+  const keys = pathKeys(path);
+  const root = cloneContainer(obj, /^\d+$/.test(keys[0]));
+  let current = root;
 
-  for (let i = 0; i < keys.length - 1; i++) {
-    const key = keys[i];
-    const nextKey = keys[i + 1];
-    const isNextKeyArrayIndex = /^\d+$/.test(nextKey);
-
-    if (current[key] == null || typeof current[key] !== 'object') {
-      current[key] = isNextKeyArrayIndex ? [] : {};
-    } else {
-      current[key] = isNextKeyArrayIndex ? [...current[key]] : { ...current[key] };
-    }
-    current = current[key];
+  for (let index = 0; index < keys.length - 1; index++) {
+    const key = keys[index];
+    const cloned = cloneContainer(read(current, key), /^\d+$/.test(keys[index + 1]));
+    write(current, key, cloned);
+    current = cloned;
   }
 
-  current[keys[keys.length - 1]] = value;
-  return newObj;
+  write(current, keys[keys.length - 1], value);
+  return root;
 }
 
-export function deleteByPath(obj: any, path: string): any {
+export function deleteByPath(obj: unknown, path: string): unknown {
   if (!path) return obj;
-  const keys = path.replace(/\[(\d+)\]/g, '.$1').split('.');
-  const newObj = { ...obj };
-  let current = newObj;
+  const keys = pathKeys(path);
+  const root = cloneContainer(obj, Array.isArray(obj));
+  let current = root;
 
-  for (let i = 0; i < keys.length - 1; i++) {
-    const key = keys[i];
-    if (current[key] == null) return newObj;
-    current[key] = Array.isArray(current[key]) ? [...current[key]] : { ...current[key] };
-    current = current[key];
+  for (let index = 0; index < keys.length - 1; index++) {
+    const key = keys[index];
+    const existing = read(current, key);
+    if (!isContainer(existing)) return root;
+    const cloned = cloneContainer(existing);
+    write(current, key, cloned);
+    current = cloned;
   }
 
   const lastKey = keys[keys.length - 1];
-  if (Array.isArray(current)) {
-    current.splice(Number(lastKey), 1);
-  } else {
-    delete current[lastKey];
-  }
-  return newObj;
+  if (Array.isArray(current)) current.splice(Number(lastKey), 1);
+  else delete current[lastKey];
+  return root;
 }

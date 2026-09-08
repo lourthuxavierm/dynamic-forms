@@ -1,47 +1,38 @@
-import type {
-  FormEvent,
-  FormEventListener,
-  FormEventType
-} from "./types";
+import type { FormValues } from '../store/types';
+import type { FormEvent, FormEventListener, FormEventType } from './types';
 
-export class FormEventEmitter {
+export class FormEventEmitter<
+  TValue = unknown,
+  TValues extends FormValues = FormValues,
+  TResult = unknown,
+> {
   private readonly listeners = new Map<
     FormEventType,
-    Set<FormEventListener>
+    Set<FormEventListener<TValue, TValues, TResult>>
   >();
 
   on(
     type: FormEventType,
-    listener: FormEventListener
+    listener: FormEventListener<TValue, TValues, TResult>,
   ): () => void {
     let listeners = this.listeners.get(type);
 
     if (!listeners) {
-      listeners = new Set<FormEventListener>();
+      listeners = new Set<FormEventListener<TValue, TValues, TResult>>();
       this.listeners.set(type, listeners);
     }
 
     listeners.add(listener);
-
     return () => {
       listeners?.delete(listener);
-
-      if (listeners?.size === 0) {
-        this.listeners.delete(type);
-      }
+      if (listeners?.size === 0) this.listeners.delete(type);
     };
   }
 
-  emit(event: FormEvent): void {
+  emit(event: FormEvent<TValue, TValues, TResult>): void {
     const listeners = this.listeners.get(event.type);
-
-    if (!listeners) {
-      return;
-    }
-
-    for (const listener of listeners) {
-      listener(event);
-    }
+    if (!listeners) return;
+    for (const listener of listeners) listener(event);
   }
 
   clear(): void {

@@ -15,7 +15,7 @@ export class FormStore<T extends FormValues = FormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
-  private readonly events = new FormEventEmitter();
+  private readonly events = new FormEventEmitter<unknown, T>();
   private initialValues: T;
 
   constructor(initialValues: T = {} as T) {
@@ -212,7 +212,7 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyPaths([path]);
   }
 
-  on(type: FormEventType, listener: FormEventListener): () => void {
+  on(type: FormEventType, listener: FormEventListener<unknown, T>): () => void {
     return this.events.on(type, listener);
   }
 

@@ -51,3 +51,16 @@ Use `store.on(type, listener)` to observe `valueChange`, `fieldChange`, `validat
 ## Data sources
 
 `DataSourceManager.loadConfig()` supports static options, async functions, and URL sources. URL parameters may reference form values with `$path` syntax, for example `{ country: '$country' }`.
+
+## Type-safe values and extensions
+
+`FieldValueMap` defines the value produced by every built-in field. Use `FieldValue<'number'>` for a built-in value or supply a custom map for an extension:
+
+```ts
+type CustomValues = { color: `#${string}` };
+type ColorValue = FieldValue<'color', CustomValues>;
+
+const registry = new FieldRegistry<Renderer, Metadata, 'text' | 'color'>();
+```
+
+`InferSchemaType<typeof schema>` preserves literal field names and derives nested object, array, scalar, selection, and boolean values. Dynamic runtime schemas remain supported: unknown custom controls resolve to `unknown`, requiring consumers to narrow their values instead of receiving an unsafe `any`.
