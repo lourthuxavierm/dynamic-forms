@@ -94,3 +94,16 @@ const unsubscribe = store.subscribeSelector(
 ```
 
 `subscribeToValue`, `subscribeToError`, `subscribeToTouched`, and `subscribeToDirty` provide typed shortcuts for common field slices. Existing `subscribe` and `subscribeToField` behavior remains compatible. `ConditionController.subscribeSelector` provides the same change-only behavior for derived condition state.
+## Transactions and batch updates
+
+`store.batch()` groups sync or async mutations into one atomic observer cycle. State reads inside the callback see each mutation immediately, while events and subscribers are deferred until the outermost batch completes. Nested batches are safe, repeated field events are consolidated, and condition/dependency effects settle before the final notification.
+
+```ts
+store.batch(() => {
+  store.setValue('country', 'IN');
+  store.setValue('state', null);
+  store.setValue('city', null);
+});
+```
+
+To validate once, call `store.validate(...)` at the end of an async batch or immediately after a synchronous batch. A failed callback does not roll state back: completed mutations are committed and notified once before the error is rethrown. This keeps the v1 transaction contract small and deterministic without introducing partial rollback semantics.

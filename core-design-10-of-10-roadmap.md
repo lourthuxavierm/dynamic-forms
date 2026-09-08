@@ -15,7 +15,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | 1 | Strong Public Type Safety | P0 | [x] | No unnecessary public `any` |
 | 2 | Typed Path System | P0 | [x] | Compile-time safe nested paths/values |
 | 3 | Selector-Based Subscriptions | P1 | [x] | Fine-grained state subscriptions |
-| 4 | Transactions / Batch Updates | P0 | [ ] | One atomic update/notification cycle |
+| 4 | Transactions / Batch Updates | P0 | [x] | One atomic update/notification cycle |
 | 5 | Async Race & Cancellation Management | P0 | [ ] | Stale-safe async operations |
 | 6 | Unified Runtime Lifecycle | P0 | [ ] | Deterministic processing pipeline |
 | 7 | Plugin / Middleware Contract | P1 | [ ] | Stable Core extension API |
@@ -165,16 +165,16 @@ Allow multiple related mutations to become one deterministic state transition.
 
 ### Required work
 
-- [ ] Add `batch()` or transaction API.
-- [ ] Suppress intermediate notifications inside a batch.
-- [ ] Consolidate field notifications.
-- [ ] Consolidate form notifications.
-- [ ] Define event behavior during transactions.
-- [ ] Ensure validation can run once after a batch.
-- [ ] Ensure conditions can settle before notification.
-- [ ] Ensure dependency chains can settle before notification.
-- [ ] Support nested transactions safely.
-- [ ] Add rollback strategy only if genuinely required.
+- [x] Add `batch()` or transaction API.
+- [x] Suppress intermediate notifications inside a batch.
+- [x] Consolidate field notifications.
+- [x] Consolidate form notifications.
+- [x] Define event behavior during transactions.
+- [x] Ensure validation can run once after a batch.
+- [x] Ensure conditions can settle before notification.
+- [x] Ensure dependency chains can settle before notification.
+- [x] Support nested transactions safely.
+- [x] Add rollback strategy only if genuinely required.
 
 ### Example
 
@@ -512,7 +512,7 @@ These requirements apply across all ten areas.
 
 - [x] Strong public type safety.
 - [x] Typed paths.
-- [ ] Transactions/batching.
+- [x] Transactions/batching.
 - [ ] Async race/cancellation management.
 
 **Target Core score: ~9/10**

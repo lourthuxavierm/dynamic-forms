@@ -12,7 +12,7 @@ import type {
   ResetOptions,
   SetValueOptions,
 } from './types';
-import { FormEventEmitter, type FormEventListener, type FormEventType } from '../events';
+import { FormEventEmitter, type FormEvent, type FormEventListener, type FormEventType } from '../events';
 import { deleteByPath, dynamicPath, getByPath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
 interface SelectorSubscription<T extends FormValues> {
@@ -27,6 +27,11 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
   private readonly selectorSubscriptions = new Set<SelectorSubscription<T>>();
   private readonly events = new FormEventEmitter<unknown, T>();
+  private readonly pendingEvents = new Map<string, FormEvent<unknown, T>>();
+  private readonly pendingPaths = new Set<string>();
+  private batchDepth = 0;
+  private pendingNotify = false;
+  private pendingNotifyAll = false;
   private initialValues: T;
 
   constructor(initialValues: T = {} as T) {
@@ -40,6 +45,28 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
 
   getValues(): T {
     return this.state.values;
+  }
+
+  /** Runs related mutations as one atomic notification and event cycle. */
+  batch<TResult>(operation: () => Promise<TResult>): Promise<TResult>;
+  batch<TResult>(operation: () => TResult): TResult;
+  batch<TResult>(operation: () => TResult | Promise<TResult>): TResult | Promise<TResult> {
+    this.batchDepth += 1;
+    let result: TResult | Promise<TResult>;
+    try {
+      result = operation();
+    } catch (error) {
+      this.finishBatch();
+      throw error;
+    }
+    if (isPromiseLike(result)) {
+      return result.then(
+        (value) => { this.finishBatch(); return value; },
+        (error: unknown) => { this.finishBatch(); throw error; },
+      );
+    }
+    this.finishBatch();
+    return result;
   }
 
   getValue<TPath extends Path<T>>(path: TPath): PathValue<T, TPath>;
@@ -69,8 +96,8 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       : this.state.touched;
 
     this.updateState({ values, dirty, touched });
-    this.events.emit({ type: 'valueChange', field: path, value, previousValue, payload: { values: this.state.values } });
-    this.events.emit({ type: 'fieldChange', field: path, value, previousValue });
+    this.emitEvent({ type: 'valueChange', field: path, value, previousValue, payload: { values: this.state.values } });
+    this.emitEvent({ type: 'fieldChange', field: path, value, previousValue });
     this.notifyPaths([path]);
   }
 
@@ -115,8 +142,8 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       touched: nextTouched,
     });
     for (const path of changedPaths) {
-      this.events.emit({ type: 'valueChange', field: path, value: getByPath(nextValues, dynamicPath(path)), previousValue: getByPath(previousValues, dynamicPath(path)), payload: { values: this.state.values } });
-      this.events.emit({ type: 'fieldChange', field: path, value: getByPath(nextValues, dynamicPath(path)) });
+      this.emitEvent({ type: 'valueChange', field: path, value: getByPath(nextValues, dynamicPath(path)), previousValue: getByPath(previousValues, dynamicPath(path)), payload: { values: this.state.values } });
+      this.emitEvent({ type: 'fieldChange', field: path, value: getByPath(nextValues, dynamicPath(path)) });
     }
     this.notifyPaths(changedPaths);
   }
@@ -176,7 +203,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   async validate(validator: FormValidator<T>): Promise<boolean> {
     const errors = await validator(this.getValues());
     this.updateState({ errors: { ...errors }, valid: Object.keys(errors).length === 0 });
-    this.events.emit({ type: 'validate', payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values } });
+    this.emitEvent({ type: 'validate', payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values } });
     this.notifyAll();
     return this.state.valid;
   }
@@ -196,7 +223,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     this.setSubmitting(true);
     try {
       const result = await onSubmit(this.getValues());
-      this.events.emit({ type: 'submit', payload: { values: this.state.values, result } });
+      this.emitEvent({ type: 'submit', payload: { values: this.state.values, result } });
       return result;
     } finally {
       this.setSubmitting(false);
@@ -217,7 +244,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       submitting: false,
       loading: false,
     });
-    this.events.emit({ type: 'reset', payload: { values: this.state.values } });
+    this.emitEvent({ type: 'reset', payload: { values: this.state.values } });
     this.notifyAll();
   }
 
@@ -311,7 +338,62 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     this.state = freezeState({ ...this.state, ...patch });
   }
 
-private notify(): void {
+  private emitEvent(event: FormEvent<unknown, T>): void {
+    if (this.batchDepth === 0) {
+      this.events.emit(event);
+      return;
+    }
+    const key = event.field && (event.type === 'valueChange' || event.type === 'fieldChange')
+      ? `${event.type}:${event.field}`
+      : event.type;
+    const previous = this.pendingEvents.get(key);
+    this.pendingEvents.set(key, previous
+      ? { ...previous, ...event, previousValue: previous.previousValue }
+      : event);
+  }
+
+  private finishBatch(): void {
+    this.batchDepth -= 1;
+    if (this.batchDepth > 0) return;
+    this.batchDepth = 1;
+    let processed = 0;
+    while (this.pendingEvents.size > 0) {
+      const events = [...this.pendingEvents.values()];
+      this.pendingEvents.clear();
+      for (const event of events) {
+        if (++processed > 10_000) {
+          this.batchDepth = 0;
+          throw new Error('Batch event processing exceeded the safety limit.');
+        }
+        if ((event.type === 'valueChange' || event.type === 'fieldChange')
+          && Object.is(event.previousValue, event.value)) continue;
+        this.events.emit(event.payload
+          ? { ...event, payload: { ...event.payload, values: this.state.values } }
+          : event);
+      }
+    }
+    this.batchDepth = 0;
+    const notify = this.pendingNotify;
+    const notifyAll = this.pendingNotifyAll;
+    const paths = [...this.pendingPaths];
+    this.pendingNotify = false;
+    this.pendingNotifyAll = false;
+    this.pendingPaths.clear();
+    if (!notify) return;
+    this.notifyNow();
+    if (notifyAll) this.notifyAllFieldsNow();
+    else this.notifyFieldsNow(paths);
+  }
+
+  private notify(): void {
+    if (this.batchDepth > 0) {
+      this.pendingNotify = true;
+      return;
+    }
+    this.notifyNow();
+  }
+
+  private notifyNow(): void {
     for (const listener of this.listeners) listener(this.state);
     for (const subscription of this.selectorSubscriptions) {
       const selected = subscription.selector(this.state);
@@ -323,20 +405,36 @@ private notify(): void {
   }
 
   private notifyPaths(paths: string[]): void {
-    this.notify();
+    if (this.batchDepth > 0) {
+      this.pendingNotify = true;
+      for (const path of paths) this.pendingPaths.add(path);
+      return;
+    }
+    this.notifyNow();
+    this.notifyFieldsNow(paths);
+  }
+
+  private notifyFieldsNow(paths: readonly string[]): void {
     const notified = new Set<FormListener<T>>();
     for (const path of paths) {
       for (const affectedPath of getAffectedPaths(path)) {
-        for (const listener of this.fieldListeners.get(affectedPath) ?? []) {
-          notified.add(listener);
-        }
+        for (const listener of this.fieldListeners.get(affectedPath) ?? []) notified.add(listener);
       }
     }
     for (const listener of notified) listener(this.state);
   }
 
   private notifyAll(): void {
-    this.notify();
+    if (this.batchDepth > 0) {
+      this.pendingNotify = true;
+      this.pendingNotifyAll = true;
+      return;
+    }
+    this.notifyNow();
+    this.notifyAllFieldsNow();
+  }
+
+  private notifyAllFieldsNow(): void {
     const notified = new Set<FormListener<T>>();
     for (const listeners of this.fieldListeners.values()) {
       for (const listener of listeners) notified.add(listener);
@@ -407,4 +505,9 @@ function deepFreeze<TValue>(value: TValue, seen = new WeakSet<object>()): TValue
     deepFreeze(nestedValue, seen);
   }
   return Object.freeze(value);
+}
+
+function isPromiseLike<TValue>(value: TValue | Promise<TValue>): value is Promise<TValue> {
+  return typeof value === 'object' && value !== null && 'then' in value
+    && typeof (value as { then?: unknown }).then === 'function';
 }
