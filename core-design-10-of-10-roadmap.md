@@ -13,7 +13,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | # | Area | Priority | Status | Target |
 |---|---|---|---|---|
 | 1 | Strong Public Type Safety | P0 | [x] | No unnecessary public `any` |
-| 2 | Typed Path System | P0 | [ ] | Compile-time safe nested paths/values |
+| 2 | Typed Path System | P0 | [x] | Compile-time safe nested paths/values |
 | 3 | Selector-Based Subscriptions | P1 | [ ] | Fine-grained state subscriptions |
 | 4 | Transactions / Batch Updates | P0 | [ ] | One atomic update/notification cycle |
 | 5 | Async Race & Cancellation Management | P0 | [ ] | Stale-safe async operations |
@@ -82,17 +82,17 @@ Make nested form paths and their values compile-time safe.
 
 ### Required work
 
-- [ ] Introduce `Path<TValues>`.
-- [ ] Introduce `PathValue<TValues, TPath>`.
-- [ ] Type `getValue()`.
-- [ ] Type `setValue()`.
-- [ ] Type `resetField()`.
-- [ ] Type `setError()` and field errors where practical.
-- [ ] Support nested objects.
-- [ ] Support array paths.
-- [ ] Support array indices.
-- [ ] Keep an escape hatch for dynamic runtime schemas.
-- [ ] Add type-level regression tests.
+- [x] Introduce `Path<TValues>`.
+- [x] Introduce `PathValue<TValues, TPath>`.
+- [x] Type `getValue()`.
+- [x] Type `setValue()`.
+- [x] Type `resetField()`.
+- [x] Type `setError()` and field errors where practical.
+- [x] Support nested objects.
+- [x] Support array paths.
+- [x] Support array indices.
+- [x] Keep an escape hatch for dynamic runtime schemas.
+- [x] Add type-level regression tests.
 
 ### Target behavior
 
@@ -511,7 +511,7 @@ These requirements apply across all ten areas.
 ## Phase 1 — Core Safety
 
 - [x] Strong public type safety.
-- [ ] Typed paths.
+- [x] Typed paths.
 - [ ] Transactions/batching.
 - [ ] Async race/cancellation management.
 

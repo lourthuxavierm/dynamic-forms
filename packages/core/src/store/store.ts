@@ -1,4 +1,5 @@
 import type {
+  DynamicFormValues,
   FormErrors,
   FormListener,
   FormState,
@@ -9,9 +10,9 @@ import type {
   SetValueOptions,
 } from './types';
 import { FormEventEmitter, type FormEventListener, type FormEventType } from '../events';
-import { deleteByPath, getByPath, setByPath } from './paths';
+import { deleteByPath, dynamicPath, getByPath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
-export class FormStore<T extends FormValues = FormValues> {
+export class FormStore<T extends FormValues = DynamicFormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
@@ -31,22 +32,26 @@ export class FormStore<T extends FormValues = FormValues> {
     return this.state.values;
   }
 
+  getValue<TPath extends Path<T>>(path: TPath): PathValue<T, TPath>;
+  getValue(path: DynamicPath): unknown;
   getValue(path: string): unknown {
-    return getByPath(this.state.values, path);
+    return getByPath(this.state.values, dynamicPath(path));
   }
 
+  setValue<TPath extends Path<T>>(path: TPath, value: PathValue<T, TPath>, options?: SetValueOptions): void;
+  setValue(path: DynamicPath, value: unknown, options?: SetValueOptions): void;
   setValue(path: string, value: unknown, options: SetValueOptions = {}): void {
-    const previousValue = this.getValue(path);
+    const previousValue = this.getValue(dynamicPath(path));
     if (Object.is(previousValue, value)) {
       return;
     }
 
-    const values = setByPath(this.state.values, path, value) as T;
+    const values = setByPath(this.state.values, dynamicPath(path), value) as T;
     const dirty = updateDirtyState(
       this.state.dirty,
       path,
       value,
-      getByPath(this.initialValues, path),
+      getByPath(this.initialValues, dynamicPath(path)),
       options.shouldDirty,
     );
     const touched = options.shouldTouch
@@ -72,16 +77,16 @@ export class FormStore<T extends FormValues = FormValues> {
     const changedPaths: string[] = [];
 
     for (const [path, value] of entries) {
-      if (Object.is(getByPath(nextValues, path), value)) {
+      if (Object.is(getByPath(nextValues, dynamicPath(path)), value)) {
         continue;
       }
 
-      nextValues = setByPath(nextValues, path, value) as T;
+      nextValues = setByPath(nextValues, dynamicPath(path), value) as T;
       nextDirty = updateDirtyState(
         nextDirty,
         path,
         value,
-        getByPath(this.initialValues, path),
+        getByPath(this.initialValues, dynamicPath(path)),
         options.shouldDirty,
       );
       if (options.shouldTouch) {
@@ -100,12 +105,14 @@ export class FormStore<T extends FormValues = FormValues> {
       touched: nextTouched,
     });
     for (const path of changedPaths) {
-      this.events.emit({ type: 'valueChange', field: path, value: getByPath(nextValues, path), previousValue: getByPath(previousValues, path), payload: { values: this.state.values } });
-      this.events.emit({ type: 'fieldChange', field: path, value: getByPath(nextValues, path) });
+      this.events.emit({ type: 'valueChange', field: path, value: getByPath(nextValues, dynamicPath(path)), previousValue: getByPath(previousValues, dynamicPath(path)), payload: { values: this.state.values } });
+      this.events.emit({ type: 'fieldChange', field: path, value: getByPath(nextValues, dynamicPath(path)) });
     }
     this.notifyPaths(changedPaths);
   }
 
+  setError<TPath extends Path<T>>(path: TPath, message: string): void;
+  setError(path: DynamicPath, message: string): void;
   setError(path: string, message: string): void {
     this.updateState({
       errors: { ...this.state.errors, [path]: message },
@@ -114,6 +121,8 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyPaths([path]);
   }
 
+  clearError<TPath extends Path<T>>(path: TPath): void;
+  clearError(path: DynamicPath): void;
   clearError(path: string): void {
     if (!(path in this.state.errors)) {
       return;
@@ -125,6 +134,8 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyPaths([path]);
   }
 
+  setTouched<TPath extends Path<T>>(path: TPath, touched?: boolean): void;
+  setTouched(path: DynamicPath, touched?: boolean): void;
   setTouched(path: string, touched = true): void {
     if (this.state.touched[path] === touched) {
       return;
@@ -200,8 +211,10 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyAll();
   }
 
+  resetField<TPath extends Path<T>>(path: TPath): void;
+  resetField(path: DynamicPath): void;
   resetField(path: string): void {
-    const values = setByPath(this.state.values, path, getByPath(this.initialValues, path)) as T;
+    const values = setByPath(this.state.values, dynamicPath(path), getByPath(this.initialValues, dynamicPath(path))) as T;
     this.updateState({
       values,
       errors: removePath(this.state.errors, path),
@@ -221,6 +234,8 @@ export class FormStore<T extends FormValues = FormValues> {
     return () => this.listeners.delete(listener);
   }
 
+  subscribeToField<TPath extends Path<T>>(path: TPath, listener: FormListener<T>): () => void;
+  subscribeToField(path: DynamicPath, listener: FormListener<T>): () => void;
   subscribeToField(path: string, listener: FormListener<T>): () => void {
     let listeners = this.fieldListeners.get(path);
     if (!listeners) {
@@ -292,7 +307,7 @@ function updateDirtyState(
 }
 
 function removePath<TValue>(values: Record<string, TValue>, path: string): Record<string, TValue> {
-  return deleteByPath(values, path) as Record<string, TValue>;
+  return deleteByPath(values, dynamicPath(path)) as Record<string, TValue>;
 }
 
 function getAffectedPaths(path: string): string[] {

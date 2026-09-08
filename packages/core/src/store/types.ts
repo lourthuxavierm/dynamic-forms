@@ -1,7 +1,8 @@
-export type FormValues = Record<string, unknown>;
+export type FormValues = object;
+export type DynamicFormValues = Record<string, unknown>;
 export type FormErrors = Record<string, string>;
 
-export interface FormState<T extends FormValues = FormValues> {
+export interface FormState<T extends FormValues = DynamicFormValues> {
   values: T;
   errors: FormErrors;
   touched: Record<string, boolean>;
@@ -12,13 +13,13 @@ export interface FormState<T extends FormValues = FormValues> {
   loading: boolean;
 }
 
-export type FormListener<T extends FormValues = FormValues> = (state: FormState<T>) => void;
+export type FormListener<T extends FormValues = DynamicFormValues> = (state: FormState<T>) => void;
 
-export type FormValidator<T extends FormValues = FormValues> = (
+export type FormValidator<T extends FormValues = DynamicFormValues> = (
   values: Readonly<T>
 ) => FormErrors | Promise<FormErrors>;
 
-export type FormSubmitHandler<T extends FormValues = FormValues, TResult = unknown> = (
+export type FormSubmitHandler<T extends FormValues = DynamicFormValues, TResult = unknown> = (
   values: Readonly<T>
 ) => TResult | Promise<TResult>;
 

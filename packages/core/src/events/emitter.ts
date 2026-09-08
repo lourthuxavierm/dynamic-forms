@@ -1,9 +1,9 @@
-import type { FormValues } from '../store/types';
+import type { DynamicFormValues, FormValues } from '../store/types';
 import type { FormEvent, FormEventListener, FormEventType } from './types';
 
 export class FormEventEmitter<
   TValue = unknown,
-  TValues extends FormValues = FormValues,
+  TValues extends FormValues = DynamicFormValues,
   TResult = unknown,
 > {
   private readonly listeners = new Map<

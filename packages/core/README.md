@@ -64,3 +64,21 @@ const registry = new FieldRegistry<Renderer, Metadata, 'text' | 'color'>();
 ```
 
 `InferSchemaType<typeof schema>` preserves literal field names and derives nested object, array, scalar, selection, and boolean values. Dynamic runtime schemas remain supported: unknown custom controls resolve to `unknown`, requiring consumers to narrow their values instead of receiving an unsafe `any`.
+## Typed paths
+
+`Path<TValues>` lists valid dot and bracket paths, while `PathValue<TValues, TPath>` resolves the value at a path. `FormStore<TValues>` uses both types for `getValue`, `setValue`, `resetField`, field errors, touched state, and field subscriptions.
+
+```ts
+interface CustomerValues {
+  age: number;
+  address: { city: string };
+  contacts: Array<{ name: string }>;
+}
+
+const store = new FormStore<CustomerValues>();
+store.setValue('address.city', 'Chennai');
+store.setValue('contacts[0].name', 'Xavier');
+// store.setValue('age', 'wrong'); // TypeScript error
+```
+
+For a path that only exists at runtime, opt in explicitly with `dynamicPath(runtimeString)`. Stores declared as `FormStore<Record<string, unknown>>` continue to accept arbitrary string paths.

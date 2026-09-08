@@ -1,4 +1,67 @@
-/** Immutable utilities for dynamic runtime paths. Typed paths are layered on these primitives. */
+/** Explicit escape hatch for paths supplied by runtime schemas or external systems. */
+declare const dynamicPathBrand: unique symbol;
+export type DynamicPath = string & { readonly [dynamicPathBrand]: 'DynamicPath' };
+
+export function dynamicPath(path: string): DynamicPath {
+  return path as DynamicPath;
+}
+
+type Atomic = string | number | boolean | bigint | symbol | null | undefined | Date | ((...args: never[]) => unknown);
+type StringKey<T> = Extract<keyof T, string>;
+type ArrayIndex = `${number}`;
+type BracketIndex = `[${number}]`;
+
+type NestedPath<T> = T extends Atomic
+  ? never
+  : T extends readonly (infer TItem)[]
+    ? ArrayItemPath<TItem>
+    : { [TKey in StringKey<T>]: PropertyPath<TKey, T[TKey]> }[StringKey<T>];
+
+type PropertyPath<TKey extends string, TValue> =
+  | TKey
+  | (NonNullable<TValue> extends readonly (infer TItem)[]
+      ? `${TKey}.${ArrayItemPath<TItem>}` | `${TKey}${BracketArrayItemPath<TItem>}`
+      : NonNullable<TValue> extends Atomic
+        ? never
+        : `${TKey}.${NestedPath<NonNullable<TValue>>}`);
+
+type ArrayItemPath<TItem> =
+  | ArrayIndex
+  | (NonNullable<TItem> extends Atomic ? never : `${ArrayIndex}.${NestedPath<NonNullable<TItem>>}`);
+
+type BracketArrayItemPath<TItem> =
+  | BracketIndex
+  | (NonNullable<TItem> extends Atomic ? never : `${BracketIndex}.${NestedPath<NonNullable<TItem>>}`);
+
+/** Dot and bracket paths for known values. Broad runtime records intentionally accept string. */
+export type Path<TValues> = string extends keyof TValues ? string : Extract<NestedPath<TValues>, string>;
+
+type NormalizePath<TPath extends string> = TPath extends `${infer THead}[${infer TIndex}]${infer TTail}`
+  ? NormalizePath<`${THead}.${TIndex}${TTail}`>
+  : TPath extends `.${infer TRest}`
+    ? NormalizePath<TRest>
+    : TPath;
+
+type SegmentValue<TValue, TSegment extends string> = unknown extends TValue
+  ? unknown
+  : TValue extends null | undefined
+  ? undefined
+  : TSegment extends keyof TValue
+    ? TValue[TSegment]
+    : TValue extends readonly (infer TItem)[]
+      ? TSegment extends ArrayIndex ? TItem : never
+      : never;
+
+type ValueAtPath<TValue, TPath extends string> = TPath extends `${infer THead}.${infer TTail}`
+  ? ValueAtPath<SegmentValue<TValue, THead>, TTail>
+  : SegmentValue<TValue, TPath>;
+
+/** Value resolved at a known path. Dynamic strings deliberately resolve to unknown. */
+export type PathValue<TValues, TPath extends string> = string extends TPath
+  ? unknown
+  : ValueAtPath<TValues, NormalizePath<TPath>>;
+
+/** Immutable utilities for dynamic runtime paths. */
 type PathContainer = Record<string, unknown> | unknown[];
 
 function pathKeys(path: string): string[] {
@@ -24,6 +87,11 @@ function cloneContainer(value: unknown, arrayFallback = false): PathContainer {
   return arrayFallback ? [] : {};
 }
 
+export function getByPath<TValues, TPath extends Path<TValues>>(
+  obj: TValues,
+  path: TPath,
+): PathValue<TValues, TPath>;
+export function getByPath(obj: unknown, path: DynamicPath): unknown;
 export function getByPath(obj: unknown, path: string): unknown {
   if (!path) return obj;
   let result: unknown = obj;
@@ -34,6 +102,12 @@ export function getByPath(obj: unknown, path: string): unknown {
   return result;
 }
 
+export function setByPath<TValues, TPath extends Path<TValues>>(
+  obj: TValues,
+  path: TPath,
+  value: PathValue<TValues, TPath>,
+): TValues;
+export function setByPath<TValues>(obj: TValues, path: DynamicPath, value: unknown): TValues;
 export function setByPath(obj: unknown, path: string, value: unknown): unknown {
   if (!path) return value;
   const keys = pathKeys(path);
@@ -51,6 +125,8 @@ export function setByPath(obj: unknown, path: string, value: unknown): unknown {
   return root;
 }
 
+export function deleteByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath): TValues;
+export function deleteByPath<TValues>(obj: TValues, path: DynamicPath): TValues;
 export function deleteByPath(obj: unknown, path: string): unknown {
   if (!path) return obj;
   const keys = pathKeys(path);

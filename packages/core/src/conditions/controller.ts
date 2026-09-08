@@ -1,3 +1,4 @@
+import { dynamicPath } from '../store';
 import type { FormStore, FormValues } from '../store';
 import type { FieldSchema, FormSchema } from '../schema';
 import type { FieldCondition } from './types';
@@ -92,8 +93,8 @@ export class ConditionController<T extends FormValues = FormValues> {
         for (const listener of this.listeners) listener();
       }
       if (!next.visible && (changed || enforceHiddenPolicy)) {
-        if (field.hiddenValuePolicy === 'clear' && this.store.getValue(path) !== undefined) hiddenActions.push(() => this.store.setValue(path, undefined));
-        if (field.hiddenValuePolicy === 'reset') hiddenActions.push(() => this.store.resetField(path));
+        if (field.hiddenValuePolicy === 'clear' && this.store.getValue(dynamicPath(path)) !== undefined) hiddenActions.push(() => this.store.setValue(dynamicPath(path), undefined));
+        if (field.hiddenValuePolicy === 'reset') hiddenActions.push(() => this.store.resetField(dynamicPath(path)));
       }
     }
     for (const action of hiddenActions) action();
