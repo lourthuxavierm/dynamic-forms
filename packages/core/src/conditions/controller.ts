@@ -11,12 +11,25 @@ export interface FieldConditionState {
   readOnly: boolean;
 }
 
+export type ConditionStateSelector<TSelected> = (
+  states: ReadonlyMap<string, FieldConditionState>,
+) => TSelected;
+export type ConditionStateListener<TSelected> = (selected: TSelected, previous: TSelected) => void;
+export type ConditionStateEquality<TSelected> = (left: TSelected, right: TSelected) => boolean;
+
+interface ConditionSelectorSubscription {
+  selector: ConditionStateSelector<unknown>;
+  listener: ConditionStateListener<unknown>;
+  equality: ConditionStateEquality<unknown>;
+  selected: unknown;
+}
 export class ConditionController<T extends FormValues = FormValues> {
   private readonly fields = new Map<string, FieldSchema>();
   private readonly states = new Map<string, FieldConditionState>();
   private readonly dependencies = new Map<string, Set<string>>();
   private readonly listeners = new Set<() => void>();
   private readonly fieldListeners = new Map<string, Set<() => void>>();
+  private readonly selectorSubscriptions = new Set<ConditionSelectorSubscription>();
   private readonly versions = new Map<string, number>();
   private readonly unsubscribers: Array<() => void>;
   private version = 0;
@@ -55,10 +68,25 @@ export class ConditionController<T extends FormValues = FormValues> {
       if (listeners.size === 0) this.fieldListeners.delete(pathOrListener);
     };
   }
+  subscribeSelector<TSelected>(
+    selector: ConditionStateSelector<TSelected>,
+    listener: ConditionStateListener<TSelected>,
+    equality: ConditionStateEquality<TSelected> = Object.is,
+  ): () => void {
+    const subscription: ConditionSelectorSubscription = {
+      selector: (states) => selector(states),
+      listener: (selected, previous) => listener(selected as TSelected, previous as TSelected),
+      equality: (left, right) => equality(left as TSelected, right as TSelected),
+      selected: selector(this.states),
+    };
+    this.selectorSubscriptions.add(subscription);
+    return () => this.selectorSubscriptions.delete(subscription);
+  }
   dispose(): void {
     for (const unsubscribe of this.unsubscribers) unsubscribe();
     this.listeners.clear();
     this.fieldListeners.clear();
+    this.selectorSubscriptions.clear();
   }
 
   private getAffectedFields(changedPath?: string): Iterable<string> {
@@ -91,6 +119,13 @@ export class ConditionController<T extends FormValues = FormValues> {
         this.onChange?.(path, next);
         for (const listener of this.fieldListeners.get(path) ?? []) listener();
         for (const listener of this.listeners) listener();
+        for (const subscription of this.selectorSubscriptions) {
+          const selected = subscription.selector(this.states);
+          if (subscription.equality(subscription.selected, selected)) continue;
+          const previousSelected = subscription.selected;
+          subscription.selected = selected;
+          subscription.listener(selected, previousSelected);
+        }
       }
       if (!next.visible && (changed || enforceHiddenPolicy)) {
         if (field.hiddenValuePolicy === 'clear' && this.store.getValue(dynamicPath(path)) !== undefined) hiddenActions.push(() => this.store.setValue(dynamicPath(path), undefined));

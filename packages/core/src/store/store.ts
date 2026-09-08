@@ -1,8 +1,11 @@
 import type {
   DynamicFormValues,
+  EqualityFn,
   FormErrors,
   FormListener,
+  FormSelector,
   FormState,
+  SelectorListener,
   FormSubmitHandler,
   FormValidator,
   FormValues,
@@ -12,10 +15,17 @@ import type {
 import { FormEventEmitter, type FormEventListener, type FormEventType } from '../events';
 import { deleteByPath, dynamicPath, getByPath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
+interface SelectorSubscription<T extends FormValues> {
+  selector: FormSelector<T, unknown>;
+  listener: SelectorListener<unknown>;
+  equality: EqualityFn<unknown>;
+  selected: unknown;
+}
 export class FormStore<T extends FormValues = DynamicFormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
+  private readonly selectorSubscriptions = new Set<SelectorSubscription<T>>();
   private readonly events = new FormEventEmitter<unknown, T>();
   private initialValues: T;
 
@@ -234,6 +244,53 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     return () => this.listeners.delete(listener);
   }
 
+  subscribeSelector<TSelected>(
+    selector: FormSelector<T, TSelected>,
+    listener: SelectorListener<TSelected>,
+    equality: EqualityFn<TSelected> = Object.is,
+  ): () => void {
+    const subscription: SelectorSubscription<T> = {
+      selector: (state) => selector(state),
+      listener: (selected, previous) => listener(selected as TSelected, previous as TSelected),
+      equality: (left, right) => equality(left as TSelected, right as TSelected),
+      selected: selector(this.state),
+    };
+    this.selectorSubscriptions.add(subscription);
+    return () => this.selectorSubscriptions.delete(subscription);
+  }
+
+  subscribeToValue<TPath extends Path<T>>(
+    path: TPath,
+    listener: SelectorListener<PathValue<T, TPath>>,
+    equality?: EqualityFn<PathValue<T, TPath>>,
+  ): () => void;
+  subscribeToValue(path: DynamicPath, listener: SelectorListener<unknown>, equality?: EqualityFn<unknown>): () => void;
+  subscribeToValue(path: string, listener: SelectorListener<unknown>, equality: EqualityFn<unknown> = Object.is): () => void {
+    return this.subscribeSelector(
+      (state) => getByPath(state.values, dynamicPath(path)),
+      listener,
+      equality,
+    );
+  }
+
+  subscribeToError<TPath extends Path<T>>(path: TPath, listener: SelectorListener<string | undefined>): () => void;
+  subscribeToError(path: DynamicPath, listener: SelectorListener<string | undefined>): () => void;
+  subscribeToError(path: string, listener: SelectorListener<string | undefined>): () => void {
+    return this.subscribeSelector((state) => state.errors[path], listener);
+  }
+
+  subscribeToTouched<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToTouched(path: DynamicPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToTouched(path: string, listener: SelectorListener<boolean>): () => void {
+    return this.subscribeSelector((state) => state.touched[path] ?? false, listener);
+  }
+
+  subscribeToDirty<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToDirty(path: DynamicPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToDirty(path: string, listener: SelectorListener<boolean>): () => void {
+    return this.subscribeSelector((state) => state.dirty[path] ?? false, listener);
+  }
+
   subscribeToField<TPath extends Path<T>>(path: TPath, listener: FormListener<T>): () => void;
   subscribeToField(path: DynamicPath, listener: FormListener<T>): () => void;
   subscribeToField(path: string, listener: FormListener<T>): () => void {
@@ -254,8 +311,15 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     this.state = freezeState({ ...this.state, ...patch });
   }
 
-  private notify(): void {
+private notify(): void {
     for (const listener of this.listeners) listener(this.state);
+    for (const subscription of this.selectorSubscriptions) {
+      const selected = subscription.selector(this.state);
+      if (subscription.equality(subscription.selected, selected)) continue;
+      const previous = subscription.selected;
+      subscription.selected = selected;
+      subscription.listener(selected, previous);
+    }
   }
 
   private notifyPaths(paths: string[]): void {

@@ -1,6 +1,6 @@
 import * as i0 from '@angular/core';
 import { signal, computed, InjectionToken, makeEnvironmentProviders, inject, DestroyRef, input, forwardRef, Directive } from '@angular/core';
-import { FormStore, ConditionController, DependencyController, createFormValidator } from '@dynamic-form-engine/core';
+import { FormStore, ConditionController, DependencyController, dynamicPath, createFormValidator } from '@dynamic-form-engine/core';
 import { Observable } from 'rxjs';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -51,7 +51,7 @@ class DynamicFormFacade {
             return this.conditions.getState(path);
         };
         return {
-            value: computed(() => this.store.getValue(path)),
+            value: computed(() => this.store.getValue(dynamicPath(path))),
             error: computed(() => this.stateSignal().errors[path]),
             touched: computed(() => this.stateSignal().touched[path] ?? false),
             dirty: computed(() => this.stateSignal().dirty[path] ?? false),
@@ -59,15 +59,15 @@ class DynamicFormFacade {
             disabled: computed(() => condition()?.disabled ?? false),
             required: computed(() => condition()?.required ?? false),
             readOnly: computed(() => condition()?.readOnly ?? false),
-            setValue: (value) => this.store.setValue(path, value),
-            setTouched: (touched = true) => this.store.setTouched(path, touched),
-            reset: () => this.store.resetField(path),
+            setValue: (value) => this.store.setValue(dynamicPath(path), value),
+            setTouched: (touched = true) => this.store.setTouched(dynamicPath(path), touched),
+            reset: () => this.store.resetField(dynamicPath(path)),
         };
     }
-    setValue(path, value) { this.store.setValue(path, value); }
+    setValue(path, value) { this.store.setValue(dynamicPath(path), value); }
     setValues(values) { this.store.setValues(values); }
     reset() { this.store.reset(); }
-    resetField(path) { this.store.resetField(path); }
+    resetField(path) { this.store.resetField(dynamicPath(path)); }
     validate() { return this.store.validate(this.validator()); }
     async submit() {
         if (!this.options.onSubmit)

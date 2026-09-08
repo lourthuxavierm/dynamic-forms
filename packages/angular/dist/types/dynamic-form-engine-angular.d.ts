@@ -1,11 +1,11 @@
 import * as _dynamic_form_engine_angular from '@dynamic-form-engine/angular';
 import * as i0 from '@angular/core';
 import { Signal, InjectionToken, Provider, EnvironmentProviders, OnDestroy } from '@angular/core';
-import { FormValues, FormStore, FormSchema, FormState, FormEvent, FormSubmitHandler, FormValidator, FormEventType } from '@dynamic-form-engine/core';
+import { FormValues, DynamicFormValues, FormStore, FormSchema, FormState, FormEvent, FormSubmitHandler, FormValidator, FormEventType } from '@dynamic-form-engine/core';
 import { Observable } from 'rxjs';
 import { ControlValueAccessor } from '@angular/forms';
 
-interface DynamicFormOptions<T extends FormValues = FormValues> {
+interface DynamicFormOptions<T extends FormValues = DynamicFormValues> {
     schema: FormSchema;
     defaultValues?: T;
     store?: FormStore<T>;
@@ -26,15 +26,15 @@ interface DynamicFieldSignals<T = unknown> {
     setTouched(touched?: boolean): void;
     reset(): void;
 }
-declare class DynamicFormFacade<T extends FormValues = FormValues> {
+declare class DynamicFormFacade<T extends FormValues = DynamicFormValues> {
     private readonly options;
     readonly store: FormStore<T>;
     readonly schema: FormSchema;
-    readonly state: Signal<FormState>;
+    readonly state: Signal<FormState<T>>;
     readonly values: Signal<Readonly<T>>;
     readonly valid: Signal<boolean>;
     readonly submitting: Signal<boolean>;
-    readonly events$: Observable<FormEvent>;
+    readonly events$: Observable<FormEvent<unknown, T>>;
     private readonly stateSignal;
     private readonly conditionVersion;
     private readonly conditions;
@@ -49,24 +49,24 @@ declare class DynamicFormFacade<T extends FormValues = FormValues> {
     resetField(path: string): void;
     validate(): Promise<boolean>;
     submit<TResult = unknown>(): Promise<TResult | undefined>;
-    on(type: FormEventType, listener: (event: FormEvent) => void): () => void;
+    on(type: FormEventType, listener: (event: FormEvent<unknown, T>) => void): () => void;
     dispose(): void;
     private validator;
 }
-declare function createDynamicForm<T extends FormValues = FormValues>(options: DynamicFormOptions<T>): DynamicFormFacade<T>;
+declare function createDynamicForm<T extends FormValues = DynamicFormValues>(options: DynamicFormOptions<T>): DynamicFormFacade<T>;
 
 interface DynamicFormsConfig {
     developmentWarnings?: boolean;
 }
 declare const DYNAMIC_FORMS_CONFIG: InjectionToken<DynamicFormsConfig>;
-declare const DYNAMIC_FORM_OPTIONS: InjectionToken<DynamicFormOptions<FormValues>>;
-declare const DYNAMIC_FORM: InjectionToken<DynamicFormFacade<FormValues>>;
+declare const DYNAMIC_FORM_OPTIONS: InjectionToken<DynamicFormOptions<DynamicFormValues>>;
+declare const DYNAMIC_FORM: InjectionToken<DynamicFormFacade<DynamicFormValues>>;
 declare function provideDynamicForms(config?: DynamicFormsConfig): EnvironmentProviders;
 declare function provideDynamicForm<T extends FormValues>(options: DynamicFormOptions<T>): Provider[];
-declare function injectDynamicForm<T extends FormValues = FormValues>(): DynamicFormFacade<T>;
+declare function injectDynamicForm<T extends FormValues = DynamicFormValues>(): DynamicFormFacade<T>;
 declare function injectDynamicField<T = unknown>(path: string): _dynamic_form_engine_angular.DynamicFieldSignals<T>;
 
-declare class DynamicFormsValueAccessor<T extends FormValues = FormValues> implements ControlValueAccessor, OnDestroy {
+declare class DynamicFormsValueAccessor<T extends FormValues = DynamicFormValues> implements ControlValueAccessor, OnDestroy {
     readonly form: i0.InputSignal<DynamicFormFacade<T>>;
     private removeChange?;
     private onChange;

@@ -1,14 +1,7 @@
-import type { FormValues } from '@dynamic-form-engine/core';
+import type { DynamicFormValues, DynamicPath, FormValues, Path } from '@dynamic-form-engine/core';
 
-/** Dot-separated paths accepted by React form hooks. */
-export type FieldPath<TValues extends FormValues = FormValues> = TValues extends object
-  ? {
-      [TKey in Extract<keyof TValues, string>]: TValues[TKey] extends readonly unknown[]
-        ? TKey | `${TKey}.${number}`
-        : TValues[TKey] extends object
-          ? TKey | `${TKey}.${FieldPath<Extract<TValues[TKey], FormValues>>}`
-          : TKey;
-    }[Extract<keyof TValues, string>]
-  : string;
+/** Dot and bracket paths accepted by typed React form hooks. */
+export type FieldPath<TValues extends FormValues = DynamicFormValues> = Path<TValues>;
 
-export type TypedFieldPath<TValues extends FormValues> = FieldPath<TValues> | (string & {});
+/** Explicitly typed or runtime-branded paths accepted by schema-driven hooks. */
+export type TypedFieldPath<TValues extends FormValues> = Path<TValues> | DynamicPath;

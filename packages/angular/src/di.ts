@@ -1,5 +1,5 @@
 import { DestroyRef, InjectionToken, inject, makeEnvironmentProviders, type EnvironmentProviders, type Provider } from '@angular/core';
-import type { FormValues } from '@dynamic-form-engine/core';
+import type { DynamicFormValues, FormValues } from '@dynamic-form-engine/core';
 import { DynamicFormFacade, type DynamicFormOptions } from './facade';
 
 export interface DynamicFormsConfig { developmentWarnings?: boolean; }
@@ -25,7 +25,7 @@ export function provideDynamicForm<T extends FormValues>(options: DynamicFormOpt
   ];
 }
 
-export function injectDynamicForm<T extends FormValues = FormValues>(): DynamicFormFacade<T> {
+export function injectDynamicForm<T extends FormValues = DynamicFormValues>(): DynamicFormFacade<T> {
   return inject(DYNAMIC_FORM) as DynamicFormFacade<T>;
 }
 

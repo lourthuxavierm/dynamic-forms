@@ -15,6 +15,17 @@ export interface FormState<T extends FormValues = DynamicFormValues> {
 
 export type FormListener<T extends FormValues = DynamicFormValues> = (state: FormState<T>) => void;
 
+export type FormSelector<T extends FormValues, TSelected> = (
+  state: Readonly<FormState<T>>,
+) => TSelected;
+
+export type SelectorListener<TSelected> = (
+  selected: TSelected,
+  previous: TSelected,
+) => void;
+
+export type EqualityFn<TSelected> = (left: TSelected, right: TSelected) => boolean;
+
 export type FormValidator<T extends FormValues = DynamicFormValues> = (
   values: Readonly<T>
 ) => FormErrors | Promise<FormErrors>;

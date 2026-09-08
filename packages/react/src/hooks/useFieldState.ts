@@ -1,5 +1,5 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import type { FieldConditionState, FormState } from '@dynamic-form-engine/core';
+import { dynamicPath, type FieldConditionState, type FormState } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
 
 const defaultConditionState: FieldConditionState = { visible: true, disabled: false, required: false, readOnly: false };
@@ -13,7 +13,7 @@ export function useFieldState(name: string) {
   const { store, conditionController, isFieldValidating } = useFormContext();
   const cache = useRef<FieldStateSnapshot | undefined>(undefined);
   const subscribe = useCallback((listener: () => void) => {
-    const unsubscribeField = store.subscribeToField(name, listener);
+    const unsubscribeField = store.subscribeToField(dynamicPath(name), listener);
     const unsubscribeConditions = conditionController?.subscribe(name, listener);
     return () => { unsubscribeField(); unsubscribeConditions?.(); };
   }, [conditionController, name, store]);

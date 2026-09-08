@@ -14,7 +14,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 |---|---|---|---|---|
 | 1 | Strong Public Type Safety | P0 | [x] | No unnecessary public `any` |
 | 2 | Typed Path System | P0 | [x] | Compile-time safe nested paths/values |
-| 3 | Selector-Based Subscriptions | P1 | [ ] | Fine-grained state subscriptions |
+| 3 | Selector-Based Subscriptions | P1 | [x] | Fine-grained state subscriptions |
 | 4 | Transactions / Batch Updates | P0 | [ ] | One atomic update/notification cycle |
 | 5 | Async Race & Cancellation Management | P0 | [ ] | Stale-safe async operations |
 | 6 | Unified Runtime Lifecycle | P0 | [ ] | Deterministic processing pipeline |
@@ -127,16 +127,16 @@ Move beyond field-targeted notifications toward precise state-slice subscription
 
 ### Required work
 
-- [ ] Keep existing `subscribe()` behavior for compatibility.
-- [ ] Keep `subscribeToField()` where useful.
-- [ ] Add selector subscriptions.
-- [ ] Add configurable equality comparison.
-- [ ] Support value-only subscriptions.
-- [ ] Support error-only subscriptions.
-- [ ] Support touched/dirty subscriptions.
-- [ ] Support condition-state subscriptions.
-- [ ] Prevent unrelated state changes from notifying subscribers.
-- [ ] Add render/subscription performance tests.
+- [x] Keep existing `subscribe()` behavior for compatibility.
+- [x] Keep `subscribeToField()` where useful.
+- [x] Add selector subscriptions.
+- [x] Add configurable equality comparison.
+- [x] Support value-only subscriptions.
+- [x] Support error-only subscriptions.
+- [x] Support touched/dirty subscriptions.
+- [x] Support condition-state subscriptions.
+- [x] Prevent unrelated state changes from notifying subscribers.
+- [x] Add render/subscription performance tests.
 
 ### Possible API
 
@@ -520,7 +520,7 @@ These requirements apply across all ten areas.
 ## Phase 2 — Runtime Architecture
 
 - [ ] Unified lifecycle.
-- [ ] Selector subscriptions.
+- [x] Selector subscriptions.
 - [ ] Schema normalization/versioning.
 
 **Target Core score: ~9.5/10**

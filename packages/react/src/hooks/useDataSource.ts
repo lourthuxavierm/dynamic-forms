@@ -49,7 +49,7 @@ export function useDataSource<T = unknown>(fieldName: string, options: UseDataSo
     const currentRun = ++run.current;
     setState((current) => ({ ...current, loading: true, error: undefined }));
     try {
-      const data = await manager.loadConfig(fieldName, config, { values: store.getValues(), field: fieldName }, { search: debouncedSearch, page, pageSize });
+      const data = await manager.loadConfig(fieldName, config, { values: store.getValues() as Record<string, unknown>, field: fieldName }, { search: debouncedSearch, page, pageSize });
       if (run.current === currentRun) {
         const next = manager.getState<T>(fieldName);
         setState(next?.error ? { data: [], loading: false, error: next.error } : { data, loading: false });

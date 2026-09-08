@@ -82,3 +82,15 @@ store.setValue('contacts[0].name', 'Xavier');
 ```
 
 For a path that only exists at runtime, opt in explicitly with `dynamicPath(runtimeString)`. Stores declared as `FormStore<Record<string, unknown>>` continue to accept arbitrary string paths.
+## Selector subscriptions
+
+Use `subscribeSelector` to observe one derived state slice. The listener runs only when that selection changes; pass a third equality function for structural or domain-specific comparison.
+
+```ts
+const unsubscribe = store.subscribeSelector(
+  state => state.values.customer?.name,
+  (name, previousName) => console.log({ name, previousName }),
+);
+```
+
+`subscribeToValue`, `subscribeToError`, `subscribeToTouched`, and `subscribeToDirty` provide typed shortcuts for common field slices. Existing `subscribe` and `subscribeToField` behavior remains compatible. `ConditionController.subscribeSelector` provides the same change-only behavior for derived condition state.

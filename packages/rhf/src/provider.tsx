@@ -9,6 +9,7 @@ import {
 } from 'react';
 import {
   FormStore,
+  dynamicPath,
   type DataSourceConfig,
   type FieldSchema,
   type FormSchema,
@@ -78,7 +79,7 @@ export function DynamicFormRHFProvider<TFieldValues extends FieldValues = FieldV
       if (syncingFromCore.current) return;
       syncingFromRHF.current = true;
       if (info.name) {
-        store.setValue(info.name, cloneForProjection(readPath(values, info.name)), { shouldDirty: false });
+        store.setValue(dynamicPath(info.name), cloneForProjection(readPath(values, info.name)), { shouldDirty: false });
         syncingFromRHF.current = false;
         syncingFromCore.current = true;
         try { reconcileCoreValues(methods, store); } finally { syncingFromCore.current = false; }
@@ -93,10 +94,10 @@ export function DynamicFormRHFProvider<TFieldValues extends FieldValues = FieldV
 useEffect(() => {
     const nextErrors = flattenErrorMessages(errors);
     for (const path of Object.keys(store.getState().errors)) {
-      if (!(path in nextErrors)) store.clearError(path);
+      if (!(path in nextErrors)) store.clearError(dynamicPath(path));
     }
     for (const [path, message] of Object.entries(nextErrors)) {
-      if (store.getState().errors[path] !== message) store.setError(path, message);
+      if (store.getState().errors[path] !== message) store.setError(dynamicPath(path), message);
     }
   }, [errors, store]);
 
