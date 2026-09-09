@@ -53,6 +53,8 @@ export interface ResetOptions {
 }
 
 export interface FormStoreOptions {
+  /** Maximum number of lifecycle events processed by one outer transaction. */
+  maxLifecycleIterations?: number;
   onAsyncError?: (error: Error, operation: 'validation', requestId: number) => void;
 }
 

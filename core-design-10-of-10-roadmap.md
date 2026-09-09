@@ -17,7 +17,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | 3 | Selector-Based Subscriptions | P1 | [x] | Fine-grained state subscriptions |
 | 4 | Transactions / Batch Updates | P0 | [x] | One atomic update/notification cycle |
 | 5 | Async Race & Cancellation Management | P0 | [x] | Stale-safe async operations |
-| 6 | Unified Runtime Lifecycle | P0 | [ ] | Deterministic processing pipeline |
+| 6 | Unified Runtime Lifecycle | P0 | [x] | Deterministic processing pipeline |
 | 7 | Plugin / Middleware Contract | P1 | [ ] | Stable Core extension API |
 | 8 | Performance Guarantees | P1 | [ ] | Benchmarked large-form performance |
 | 9 | Schema Normalization & Versioning | P1 | [ ] | Canonical/versioned schema runtime |
@@ -262,17 +262,17 @@ Subscriber notification
 
 ### Required work
 
-- [ ] Define lifecycle phases.
-- [ ] Define ordering guarantees.
-- [ ] Define sync vs async phases.
-- [ ] Define batching behavior.
-- [ ] Define condition/dependency interaction.
-- [ ] Define validation timing.
-- [ ] Define event timing.
-- [ ] Prevent recursive/infinite dependency loops.
-- [ ] Detect dependency cycles.
-- [ ] Add lifecycle integration tests.
-- [ ] Document lifecycle contract publicly.
+- [x] Define lifecycle phases.
+- [x] Define ordering guarantees.
+- [x] Define sync vs async phases.
+- [x] Define batching behavior.
+- [x] Define condition/dependency interaction.
+- [x] Define validation timing.
+- [x] Define event timing.
+- [x] Prevent recursive/infinite dependency loops.
+- [x] Detect dependency cycles.
+- [x] Add lifecycle integration tests.
+- [x] Document lifecycle contract publicly.
 
 ### Done when
 
@@ -478,12 +478,12 @@ These requirements apply across all ten areas.
 ## Testing
 
 - [ ] Unit tests for every Core subsystem.
-- [ ] Integration tests across subsystems.
+- [x] Integration tests across subsystems.
 - [ ] Nested object tests.
 - [ ] Nested array tests.
 - [x] Async race tests.
-- [ ] Lifecycle-order tests.
-- [ ] Batch/transaction tests.
+- [x] Lifecycle-order tests.
+- [x] Batch/transaction tests.
 - [ ] Type-level tests.
 - [ ] Performance benchmarks.
 - [ ] Memory/disposal tests where applicable.
@@ -491,7 +491,7 @@ These requirements apply across all ten areas.
 ## Documentation
 
 - [ ] Core architecture.
-- [ ] Runtime lifecycle.
+- [x] Runtime lifecycle.
 - [ ] Store contract.
 - [ ] Schema contract.
 - [ ] Conditions.
@@ -519,7 +519,7 @@ These requirements apply across all ten areas.
 
 ## Phase 2 — Runtime Architecture
 
-- [ ] Unified lifecycle.
+- [x] Unified lifecycle.
 - [x] Selector subscriptions.
 - [ ] Schema normalization/versioning.
 
@@ -544,8 +544,8 @@ The Core can be considered complete for a stable enterprise-quality `1.0.0` when
 - [ ] Renderer independent.
 - [ ] Strongly typed.
 - [ ] Nested-path safe.
-- [ ] Deterministic.
-- [ ] Transaction-safe.
+- [x] Deterministic.
+- [x] Transaction-safe.
 - [x] Async race-safe.
 - [ ] Extensible without modifying Core.
 - [ ] Fine-grained and performant.

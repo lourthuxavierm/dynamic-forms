@@ -133,3 +133,35 @@ const options = await sources.loadConfig(
 Form validation follows the same rule. Validators receive an optional `{ signal, requestId }` context, while `FormState.validating` and `validationError` expose current status. A newer `validate()` call aborts and invalidates the older call; `cancelValidation()` and `reset()` cancel active validation. Dependency refresh callbacks receive the same context, cancel superseded refreshes per dependent field, and are cancelled by `cancelRefresh(field)` or `dispose()`.
 
 `AsyncRequestManager` is exported for custom remote controls and future plugins. Cancellation errors are not reported as failures. Current non-cancellation failures are normalized to `Error` and routed through the relevant `onError`/`onAsyncError` hook. Operations that ignore their abort signal may still resolve to their original caller, but their result has `current: false` and is never committed by Core.
+
+## Unified runtime lifecycle
+
+`FormRuntime` is the recommended composed Core entry point when a form uses conditions, dependencies, and data sources together. It owns a `FormStore`, `ConditionController`, `DependencyController`, and `DataSourceManager`, fixes their ordering, and disposes them as one unit.
+
+For a synchronous mutation, the stable order is:
+
+1. The runtime records the mutation phase.
+2. State changes immediately inside an implicit outer transaction.
+3. Dependency resets are evaluated.
+4. Conditions and hidden-value policies are evaluated against the settled dependency state.
+5. Public form events are emitted.
+6. selector, field, and form subscribers receive the final snapshot once.
+7. Datasource effects start asynchronously on the next microtask with cancellation and stale-response protection.
+
+Condition- or dependency-generated mutations join the active transaction. Their events are drained until the state settles before subscribers run. Explicit `batch()` calls use the same pipeline and nested batches join their outer transaction.
+
+Validation is intentionally explicit rather than automatic. Calling `validate()` or `submit()` creates an asynchronous validation phase; only the current request may commit errors, then the validation event is emitted and subscribers are notified. Datasource completion does not implicitly validate the form.
+
+```ts
+const runtime = new FormRuntime(schema, initialValues, {
+  onLifecycle: event => observe(event.phase),
+});
+
+runtime.setValue('country', 'IN');
+await runtime.validate(createFormValidator(schema));
+runtime.dispose();
+```
+
+`RUNTIME_LIFECYCLE_PHASES` and `onLifecycle()` expose phase metadata without field values. Dependency cycles fail during runtime construction. Event-driven mutation loops are stopped by `FormStoreOptions.maxLifecycleIterations` (default 10,000). After `dispose()`, runtime operations throw; active validation and datasource work are cancelled.
+
+Low-level controllers remain available for advanced composition. Consumers that construct them manually own their ordering and disposal; the deterministic composed contract above applies to `FormRuntime`.

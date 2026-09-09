@@ -5,14 +5,19 @@ import type { FormStore, FormValues } from '../store';
 import type { FieldSchema, FormSchema } from '../schema';
 import { DependencyGraph } from './graph';
 
+export interface DependencyRefreshContext extends AsyncRequestContext {
+  field: string;
+}
+
 export interface DependencyControllerOptions<T extends FormValues> {
   onDataSourceRefresh?: (
     field: FieldSchema,
     dataSource: DataSourceConfig,
     values: Readonly<T>,
-    context: AsyncRequestContext,
+    context: DependencyRefreshContext,
   ) => void | Promise<void>;
   onAsyncError?: (error: Error, field: string, requestId: number) => void;
+  onEvaluate?: (paths: readonly string[]) => void;
 }
 
 export class DependencyController<T extends FormValues = FormValues> {
@@ -32,6 +37,7 @@ export class DependencyController<T extends FormValues = FormValues> {
     this.watchedPaths = [...new Set(dependencies.flatMap((dependency) => dependency.dependsOn))];
     const process = (changedFields: readonly string[]) => {
       const affected = new Set(changedFields.flatMap((field) => this.graph.getTransitiveDependents(field)));
+      options.onEvaluate?.([...affected]);
       for (const dependentPath of affected) {
         const dependent = this.fields.get(dependentPath)!;
         if (dependent.resetOnDependencyChange) store.resetField(dynamicPath(dependentPath));
@@ -39,7 +45,7 @@ export class DependencyController<T extends FormValues = FormValues> {
           const values = store.getValues();
           void this.requests.run(
             dependentPath,
-            (context) => options.onDataSourceRefresh!(dependent, dependent.dataSource!, values, context),
+            (context) => options.onDataSourceRefresh!(dependent, dependent.dataSource!, values, { ...context, field: dependentPath }),
           ).catch((error: unknown) => {
             if (!isAbortError(error)) {
               // The centralized onAsyncError callback has already received current failures.

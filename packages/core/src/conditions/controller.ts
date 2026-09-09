@@ -34,7 +34,7 @@ export class ConditionController<T extends FormValues = FormValues> {
   private readonly unsubscribers: Array<() => void>;
   private version = 0;
 
-  constructor(private readonly store: FormStore<T>, schema: FormSchema, private readonly onChange?: (path: string, state: FieldConditionState) => void) {
+  constructor(private readonly store: FormStore<T>, schema: FormSchema, private readonly onChange?: (path: string, state: FieldConditionState) => void, private readonly onEvaluate?: (paths: readonly string[]) => void) {
     collectFields(schema.fields, '', this.fields);
     for (const [path, field] of this.fields) {
       for (const dependency of collectConditionDependencies(field)) {
@@ -99,9 +99,11 @@ export class ConditionController<T extends FormValues = FormValues> {
   }
 
   private recalculate(paths: Iterable<string>, enforceHiddenPolicy = false): void {
+    const pathList = [...paths];
+    this.onEvaluate?.(pathList);
     const values = this.store.getValues();
     const hiddenActions: Array<() => void> = [];
-    for (const path of paths) {
+    for (const path of pathList) {
       const field = this.fields.get(path);
       if (!field) continue;
       const next: FieldConditionState = {

@@ -34,12 +34,17 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   private readonly pendingEvents = new Map<string, FormEvent<unknown, T>>();
   private readonly pendingPaths = new Set<string>();
   private batchDepth = 0;
+  private readonly maxLifecycleIterations: number;
   private pendingNotify = false;
   private pendingNotifyAll = false;
   private initialValues: T;
 
   constructor(initialValues: T = {} as T, options: FormStoreOptions = {}) {
     this.asyncRequests = new AsyncRequestManager({ onError: options.onAsyncError });
+    this.maxLifecycleIterations = options.maxLifecycleIterations ?? 10_000;
+    if (!Number.isInteger(this.maxLifecycleIterations) || this.maxLifecycleIterations < 1) {
+      throw new Error('maxLifecycleIterations must be a positive integer.');
+    }
     this.initialValues = clone(initialValues);
     this.state = createState(this.initialValues);
   }
@@ -83,6 +88,10 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   setValue<TPath extends Path<T>>(path: TPath, value: PathValue<T, TPath>, options?: SetValueOptions): void;
   setValue(path: DynamicPath, value: unknown, options?: SetValueOptions): void;
   setValue(path: string, value: unknown, options: SetValueOptions = {}): void {
+    if (this.batchDepth === 0) {
+      this.batch(() => this.setValue(dynamicPath(path), value, options));
+      return;
+    }
     const previousValue = this.getValue(dynamicPath(path));
     if (Object.is(previousValue, value)) {
       return;
@@ -107,6 +116,10 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   }
 
   setValues(values: Partial<T>, options: SetValueOptions = {}): void {
+    if (this.batchDepth === 0) {
+      this.batch(() => this.setValues(values, options));
+      return;
+    }
     const entries = Object.entries(values);
     if (entries.length === 0) {
       return;
@@ -275,6 +288,10 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   }
 
   reset(newInitialValues?: T, options: ResetOptions = {}): void {
+    if (this.batchDepth === 0) {
+      this.batch(() => this.reset(newInitialValues, options));
+      return;
+    }
     this.asyncRequests.cancel('validation');
     if (newInitialValues) {
       this.initialValues = clone(newInitialValues);
@@ -406,9 +423,9 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       const events = [...this.pendingEvents.values()];
       this.pendingEvents.clear();
       for (const event of events) {
-        if (++processed > 10_000) {
+        if (++processed > this.maxLifecycleIterations) {
           this.batchDepth = 0;
-          throw new Error('Batch event processing exceeded the safety limit.');
+          throw new Error('Lifecycle processing exceeded maxLifecycleIterations.');
         }
         if ((event.type === 'valueChange' || event.type === 'fieldChange')
           && Object.is(event.previousValue, event.value)) continue;
