@@ -5,15 +5,15 @@ import type { FieldSchema, FormSchema } from './types';
 export interface SchemaValidationError { path: string; message: string; }
 export interface SchemaValidationResult { valid: boolean; errors: SchemaValidationError[]; }
 
-export function validateSchema(schema: FormSchema): SchemaValidationResult {
+export function validateSchema(schema: FormSchema<unknown>): SchemaValidationResult {
   const errors: SchemaValidationError[] = [];
-  const fields = new Map<string, FieldSchema>();
+  const fields = new Map<string, FieldSchema<unknown>>();
   collect(schema.fields, '', fields, errors);
   for (const [path, field] of fields) validateField(field, path, fields, errors);
   return { valid: errors.length === 0, errors };
 }
 
-function collect(items: readonly FieldSchema[], parent: string, all: Map<string, FieldSchema>, errors: SchemaValidationError[]): void {
+function collect(items: readonly FieldSchema<unknown>[], parent: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
   const siblingNames = new Set<string>();
   for (const field of items) {
     const path = parent ? `${parent}.${field.name}` : field.name;
@@ -26,7 +26,7 @@ function collect(items: readonly FieldSchema[], parent: string, all: Map<string,
   }
 }
 
-function validateField(field: FieldSchema, path: string, all: Map<string, FieldSchema>, errors: SchemaValidationError[]): void {
+function validateField(field: FieldSchema<unknown>, path: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
   const structural = field.type === 'object' || field.type === 'array';
   if (field.fields && !structural) errors.push({ path, message: 'Only object and array fields may define child fields' });
   if (structural && (!field.fields || field.fields.length === 0)) errors.push({ path, message: `${field.type} fields must define at least one child field` });
@@ -36,7 +36,7 @@ function validateField(field: FieldSchema, path: string, all: Map<string, FieldS
   validateDataSource(field.dataSource, path, errors);
 }
 
-function validateRules(field: FieldSchema, path: string, errors: SchemaValidationError[]): void {
+function validateRules(field: FieldSchema<unknown>, path: string, errors: SchemaValidationError[]): void {
   const rules = field.validation;
   if (!rules) return;
   if (rules.minLength !== undefined && rules.maxLength !== undefined && rules.minLength > rules.maxLength) errors.push({ path, message: 'minLength must not exceed maxLength' });
@@ -46,7 +46,7 @@ function validateRules(field: FieldSchema, path: string, errors: SchemaValidatio
   if (rules.pattern) try { new RegExp(rules.pattern); } catch { errors.push({ path, message: 'pattern must be a valid regular expression' }); }
 }
 
-function validateOptions(field: FieldSchema, path: string, errors: SchemaValidationError[]): void {
+function validateOptions(field: FieldSchema<unknown>, path: string, errors: SchemaValidationError[]): void {
   const values = new Set<string>();
   for (const option of field.options ?? []) {
     const key = String(option.value);
@@ -55,7 +55,7 @@ function validateOptions(field: FieldSchema, path: string, errors: SchemaValidat
   }
 }
 
-function validateReferences(field: FieldSchema, path: string, all: Map<string, FieldSchema>, errors: SchemaValidationError[]): void {
+function validateReferences(field: FieldSchema<unknown>, path: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
   for (const condition of [field.visibleWhen, field.disabledWhen, field.requiredWhen, field.readOnlyWhen]) validateCondition(condition, path, all, errors);
   for (const dependency of field.dependsOn ?? []) {
     if (!hasSchemaPath(all, dependency)) errors.push({ path, message: `Unknown dependency field: ${dependency}` });
@@ -63,13 +63,13 @@ function validateReferences(field: FieldSchema, path: string, all: Map<string, F
   }
 }
 
-function hasSchemaPath(all: Map<string, FieldSchema>, path: string): boolean {
+function hasSchemaPath(all: Map<string, FieldSchema<unknown>>, path: string): boolean {
   if (all.has(path)) return true;
   const schemaPath = path.replace(/\[(?:\d+)\]/g, '').split('.').filter((segment) => !/^\d+$/.test(segment)).join('.');
   return all.has(schemaPath);
 }
 
-function validateCondition(condition: FieldCondition | undefined, path: string, all: Map<string, FieldSchema>, errors: SchemaValidationError[]): void {
+function validateCondition(condition: FieldCondition | undefined, path: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
   if (!condition) return;
   if ('field' in condition) {
     if (!hasSchemaPath(all, condition.field)) errors.push({ path, message: `Unknown condition field: ${condition.field}` });

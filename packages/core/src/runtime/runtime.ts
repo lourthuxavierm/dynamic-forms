@@ -2,7 +2,7 @@ import { ConditionController } from '../conditions';
 import { DataSourceManager } from '../datasource';
 import { DependencyController } from '../dependencies';
 import { CorePluginHost, type CorePluginContext } from '../plugins';
-import type { FormSchema } from '../schema';
+import { createInitialValues, normalizeSchemaOrThrow, type FormSchema, type NormalizedFormSchema } from '../schema';
 import {
   dynamicPath,
   FormStore,
@@ -23,6 +23,7 @@ import type {
 } from './types';
 
 export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
+  readonly schema: NormalizedFormSchema;
   readonly store: FormStore<TValues>;
   readonly dataSources: DataSourceManager;
   readonly dependencies: DependencyController<TValues>;
@@ -36,9 +37,11 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
 
   constructor(schema: FormSchema, initialValues: TValues = {} as TValues, options: FormRuntimeOptions<TValues> = {}) {
     if (options.onLifecycle) this.lifecycleListeners.add(options.onLifecycle);
-    this.store = new FormStore(initialValues, options.store);
+    this.schema = normalizeSchemaOrThrow(schema, options.schema);
+    const normalizedInitialValues = { ...createInitialValues(this.schema), ...initialValues } as TValues;
+    this.store = new FormStore(normalizedInitialValues, options.store);
     this.dataSources = new DataSourceManager(options.dataSources);
-    this.dependencies = new DependencyController(this.store, schema, {
+    this.dependencies = new DependencyController(this.store, this.schema, {
       onEvaluate: (paths) => {
         if (this.ready) this.emitLifecycle({ phase: 'dependencies', paths, async: false });
       },
@@ -63,7 +66,7 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
       },
     );
     const pluginContext: CorePluginContext<TValues> = Object.freeze({
-      schema: cloneReadonly(schema),
+      schema: this.schema,
       getState: () => this.store.getState(),
       getConditionState: (path: string) => {
         const state = this.conditions.getState(path);

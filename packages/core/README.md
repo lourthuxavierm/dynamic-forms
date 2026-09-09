@@ -194,6 +194,11 @@ The plugin context exposes a deeply frozen schema, immutable form snapshots, cop
 
 `createLifecycleAuditPlugin` is the official minimal example. It records phase, operation, paths, and async metadata but excludes field values by default.
 
+## Schema normalization and versioning
+
+`FormRuntime` validates and normalizes public schemas into a deeply frozen canonical representation before constructing Core controllers. Use `normalizeSchema` for diagnostic results or `normalizeSchemaOrThrow` for fail-fast construction. `schemaVersion` tracks the numeric Core format; the existing `version` remains a consumer-defined release label. Missing schema versions default to the current format for compatibility.
+
+See [SCHEMA.md](./SCHEMA.md) for defaults, diagnostics, runtime integration, and the explicit migration contract.
 ## Performance
 
 Core ships repeatable benchmarks and conservative CI budgets. Run `pnpm --filter @dynamic-form-engine/core bench` for the human-readable benchmark matrix, `bench:json` for a machine-readable report. `CORE_PERFORMANCE_BUDGETS` exposes the CI guardrails.

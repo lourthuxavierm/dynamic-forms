@@ -198,9 +198,9 @@ export interface FieldSchema<TCustomValue = never> {
 export interface FormSchema<TCustomValue = never> {
   id: string;
   fields: readonly FieldSchema<TCustomValue>[];
-  /**
-   * Version of the schema.
-   */
+  /** Structural format version used by Core migrations. Defaults to the current version. */
+  schemaVersion?: number;
+  /** Consumer-defined form release label. */
   version?: string;
 }
 
