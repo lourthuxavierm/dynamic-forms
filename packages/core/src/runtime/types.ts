@@ -1,6 +1,7 @@
 import type { DataSourceManagerOptions } from '../datasource';
 import type { FieldConditionState } from '../conditions';
 import type { FormEvent } from '../events';
+import type { CorePlugin, CorePluginError } from '../plugins/types';
 import type { FormStoreOptions, FormValues } from '../store';
 
 export const RUNTIME_LIFECYCLE_PHASES = [
@@ -29,6 +30,8 @@ export type RuntimeLifecycleListener<TValues extends FormValues> = (
 ) => void;
 
 export interface FormRuntimeOptions<TValues extends FormValues> {
+  plugins?: readonly CorePlugin<TValues>[];
+  onPluginError?: (error: CorePluginError) => void;
   store?: FormStoreOptions;
   dataSources?: DataSourceManagerOptions;
   onConditionChange?: (path: string, state: FieldConditionState) => void;

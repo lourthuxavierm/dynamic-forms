@@ -1,8 +1,10 @@
 import { ConditionController } from '../conditions';
 import { DataSourceManager } from '../datasource';
 import { DependencyController } from '../dependencies';
+import { CorePluginHost, type CorePluginContext } from '../plugins';
 import type { FormSchema } from '../schema';
 import {
+  dynamicPath,
   FormStore,
   type DynamicFormValues,
   type FormSubmitHandler,
@@ -26,6 +28,7 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   readonly dependencies: DependencyController<TValues>;
   readonly conditions: ConditionController<TValues>;
 
+  private readonly pluginHost!: CorePluginHost<TValues>;
   private readonly lifecycleListeners = new Set<RuntimeLifecycleListener<TValues>>();
   private readonly unsubscribers: Array<() => void>;
   private disposed = false;
@@ -58,6 +61,25 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
       (paths) => {
         if (this.ready) this.emitLifecycle({ phase: 'conditions', paths, async: false });
       },
+    );
+    const pluginContext: CorePluginContext<TValues> = Object.freeze({
+      schema: cloneReadonly(schema),
+      getState: () => this.store.getState(),
+      getConditionState: (path: string) => {
+        const state = this.conditions.getState(path);
+        return state ? Object.freeze({ ...state }) : undefined;
+      },
+      getDataSourceState: <T = unknown>(name: string) => {
+        const state = this.dataSources.getState<T>(name);
+        return state
+          ? Object.freeze({ ...state, data: cloneReadonly(state.data) })
+          : undefined;
+      },
+    });
+    this.pluginHost = new CorePluginHost(
+      options.plugins ?? [],
+      pluginContext,
+      options.onPluginError,
     );
     this.unsubscribers = [
       this.store.on('valueChange', (formEvent) => {
@@ -92,14 +114,23 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
     options?: SetValueOptions,
   ): void {
     this.assertActive();
-    this.emitLifecycle({ phase: 'mutation', operation: 'setValue', paths: [path], async: false });
-    this.store.setValue(path, value, options);
+    const mutation = this.pluginHost.interceptMutation({ type: 'setValue', path, value, options });
+    if ('cancel' in mutation) return;
+    this.emitLifecycle({ phase: 'mutation', operation: 'setValue', paths: [mutation.path], async: false });
+    this.store.setValue(dynamicPath(mutation.path), mutation.value, mutation.options);
   }
 
   setValues(values: Partial<TValues>, options?: SetValueOptions): void {
     this.assertActive();
-    this.emitLifecycle({ phase: 'mutation', operation: 'setValues', paths: Object.keys(values), async: false });
-    this.store.setValues(values, options);
+    const mutation = this.pluginHost.interceptMutation({ type: 'setValues', values, options });
+    if ('cancel' in mutation) return;
+    this.emitLifecycle({
+      phase: 'mutation',
+      operation: 'setValues',
+      paths: Object.keys(mutation.values),
+      async: false,
+    });
+    this.store.setValues(mutation.values as Partial<TValues>, mutation.options);
   }
 
   batch<TResult>(operation: () => TResult): TResult {
@@ -110,8 +141,10 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
 
   reset(values?: TValues, options?: ResetOptions): void {
     this.assertActive();
+    const mutation = this.pluginHost.interceptMutation({ type: 'reset', values, options });
+    if ('cancel' in mutation) return;
     this.emitLifecycle({ phase: 'mutation', operation: 'reset', async: false });
-    this.store.reset(values, options);
+    this.store.reset(mutation.values as TValues | undefined, mutation.options);
   }
 
   async validate(validator: FormValidator<TValues>, options?: ValidateOptions): Promise<boolean> {
@@ -132,6 +165,7 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.pluginHost.dispose();
     for (const unsubscribe of this.unsubscribers) unsubscribe();
     this.dependencies.dispose();
     this.conditions.dispose();
@@ -142,7 +176,9 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
 
   private emitLifecycle(event: RuntimeLifecycleEvent<TValues>): void {
     if (this.disposed) return;
-    for (const listener of this.lifecycleListeners) listener(Object.freeze(event));
+    const frozenEvent = Object.freeze(event);
+    this.pluginHost.emitLifecycle(frozenEvent);
+    for (const listener of this.lifecycleListeners) listener(frozenEvent);
   }
 
   private assertActive(): void {
@@ -150,3 +186,14 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   }
 }
 
+function cloneReadonly<T>(value: T, seen = new WeakMap<object, unknown>()): T {
+  if (value === null || typeof value !== 'object') return value;
+  const existing = seen.get(value);
+  if (existing) return existing as T;
+  const clone: unknown = Array.isArray(value) ? [] : {};
+  seen.set(value, clone);
+  for (const [key, nested] of Object.entries(value)) {
+    (clone as Record<string, unknown>)[key] = cloneReadonly(nested, seen);
+  }
+  return Object.freeze(clone) as T;
+}

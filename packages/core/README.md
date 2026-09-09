@@ -165,3 +165,31 @@ runtime.dispose();
 `RUNTIME_LIFECYCLE_PHASES` and `onLifecycle()` expose phase metadata without field values. Dependency cycles fail during runtime construction. Event-driven mutation loops are stopped by `FormStoreOptions.maxLifecycleIterations` (default 10,000). After `dispose()`, runtime operations throw; active validation and datasource work are cancelled.
 
 Low-level controllers remain available for advanced composition. Consumers that construct them manually own their ordering and disposal; the deterministic composed contract above applies to `FormRuntime`.
+
+## Plugins and mutation middleware
+
+Plugins are installed through `FormRuntimeOptions.plugins`. Setup, lifecycle hooks, and mutation interceptors run in declaration order; cleanup and disposal run in reverse order. Plugin names must be unique.
+
+```ts
+const trimValues: CorePlugin<CustomerValues> = {
+  name: 'trim-values',
+  interceptMutation(mutation) {
+    if (mutation.type !== 'setValue' || typeof mutation.value !== 'string') return;
+    return { ...mutation, value: mutation.value.trim() };
+  },
+};
+
+const runtime = new FormRuntime(schema, initialValues, {
+  plugins: [
+    trimValues,
+    createLifecycleAuditPlugin(entry => audit(entry)),
+  ],
+  onPluginError: failure => report(failure),
+});
+```
+
+`setup(context)` can return a cleanup function. `onLifecycle(event, context)` observes the stable runtime phases. `interceptMutation(mutation, context)` is synchronous and may return a same-type replacement, return `{ cancel: true }`, or return nothing to preserve the mutation. Interceptors cannot change the mutation kind. Runtime `setValue`, `setValues`, and `reset` calls pass through middleware; direct low-level store calls intentionally do not.
+
+The plugin context exposes a deeply frozen schema, immutable form snapshots, copied condition state, and deeply frozen datasource state. It does not expose mutation methods. Hook failures are normalized, routed to `onPluginError`, and isolated; a failing plugin or error reporter cannot interrupt Core. Plugins whose setup fails are not activated, and duplicate or unnamed plugins are rejected.
+
+`createLifecycleAuditPlugin` is the official minimal example. It records phase, operation, paths, and async metadata but excludes field values by default.

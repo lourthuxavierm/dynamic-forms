@@ -18,7 +18,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | 4 | Transactions / Batch Updates | P0 | [x] | One atomic update/notification cycle |
 | 5 | Async Race & Cancellation Management | P0 | [x] | Stale-safe async operations |
 | 6 | Unified Runtime Lifecycle | P0 | [x] | Deterministic processing pipeline |
-| 7 | Plugin / Middleware Contract | P1 | [ ] | Stable Core extension API |
+| 7 | Plugin / Middleware Contract | P1 | [x] | Stable Core extension API |
 | 8 | Performance Guarantees | P1 | [ ] | Benchmarked large-form performance |
 | 9 | Schema Normalization & Versioning | P1 | [ ] | Canonical/versioned schema runtime |
 | 10 | Diagnostics & Explainability | P1 | [ ] | Core can explain runtime decisions |
@@ -303,16 +303,16 @@ Provide a stable extension mechanism without requiring consumers to modify Core.
 
 ### Required work
 
-- [ ] Define `CorePlugin` interface.
-- [ ] Define plugin lifecycle hooks.
-- [ ] Define plugin initialization/disposal.
-- [ ] Define plugin ordering.
-- [ ] Define error isolation.
-- [ ] Prevent plugins from corrupting internal state.
-- [ ] Provide read-only runtime context where possible.
-- [ ] Define optional middleware/interceptor semantics.
-- [ ] Add plugin tests.
-- [ ] Add one official example plugin.
+- [x] Define `CorePlugin` interface.
+- [x] Define plugin lifecycle hooks.
+- [x] Define plugin initialization/disposal.
+- [x] Define plugin ordering.
+- [x] Define error isolation.
+- [x] Prevent plugins from corrupting internal state.
+- [x] Provide read-only runtime context where possible.
+- [x] Define optional middleware/interceptor semantics.
+- [x] Add plugin tests.
+- [x] Add one official example plugin.
 
 ### Important
 
@@ -499,7 +499,7 @@ These requirements apply across all ten areas.
 - [ ] Data sources.
 - [ ] Validation contract.
 - [ ] Events.
-- [ ] Plugins.
+- [x] Plugins.
 - [x] Async behavior.
 - [ ] Performance guidance.
 - [ ] Migration/versioning policy.
@@ -529,7 +529,7 @@ These requirements apply across all ten areas.
 
 - [ ] Diagnostics/explainability.
 - [ ] Performance benchmarks and budgets.
-- [ ] Small stable plugin contract.
+- [x] Small stable plugin contract.
 - [ ] Complete regression/documentation pass.
 
 **Target Core score: 10/10**
@@ -547,7 +547,7 @@ The Core can be considered complete for a stable enterprise-quality `1.0.0` when
 - [x] Deterministic.
 - [x] Transaction-safe.
 - [x] Async race-safe.
-- [ ] Extensible without modifying Core.
+- [x] Extensible without modifying Core.
 - [ ] Fine-grained and performant.
 - [ ] Schema-version aware.
 - [ ] Observable and diagnosable.
