@@ -1,3 +1,5 @@
+import type { DynamicFormValues, FormValues } from '../store/types';
+
 export interface ValidationIssue {
   code: string;
   message: string;
@@ -14,7 +16,10 @@ export interface ValidationResult {
 
 export type ValidatorResult = string | ValidationIssue | undefined;
 
-export type Validator<T = unknown> = (
-  value: T,
-  values: Record<string, unknown>,
+export type Validator<
+  TValue = unknown,
+  TValues extends FormValues = DynamicFormValues,
+> = (
+  value: TValue,
+  values: Readonly<TValues>,
 ) => ValidatorResult | Promise<ValidatorResult>;

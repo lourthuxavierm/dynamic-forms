@@ -1,13 +1,13 @@
 import { computed, signal, type Signal, type WritableSignal } from '@angular/core';
 import {
-  ConditionController, DependencyController, FormStore, createFormValidator,
-  type FormEvent, type FormEventType, type FormSchema, type FormState,
+  ConditionController, DependencyController, FormStore, createFormValidator, dynamicPath,
+  type DynamicFormValues, type FormEvent, type FormEventType, type FormSchema, type FormState,
   type FormSubmitHandler, type FormValues,
   type FormValidator,
 } from '@dynamic-form-engine/core';
 import { Observable } from 'rxjs';
 
-export interface DynamicFormOptions<T extends FormValues = FormValues> {
+export interface DynamicFormOptions<T extends FormValues = DynamicFormValues> {
   schema: FormSchema;
   defaultValues?: T;
   store?: FormStore<T>;
@@ -30,16 +30,16 @@ export interface DynamicFieldSignals<T = unknown> {
   reset(): void;
 }
 
-export class DynamicFormFacade<T extends FormValues = FormValues> {
+export class DynamicFormFacade<T extends FormValues = DynamicFormValues> {
   readonly store: FormStore<T>;
   readonly schema: FormSchema;
-  readonly state: Signal<FormState>;
+  readonly state: Signal<FormState<T>>;
   readonly values: Signal<Readonly<T>>;
   readonly valid: Signal<boolean>;
   readonly submitting: Signal<boolean>;
-  readonly events$: Observable<FormEvent>;
+  readonly events$: Observable<FormEvent<unknown, T>>;
 
-  private readonly stateSignal: WritableSignal<FormState>;
+  private readonly stateSignal: WritableSignal<FormState<T>>;
   private readonly conditionVersion = signal(0);
   private readonly conditions: ConditionController<T>;
   private readonly dependencies: DependencyController<T>;
@@ -60,7 +60,7 @@ export class DynamicFormFacade<T extends FormValues = FormValues> {
       this.stateSignal.set(state);
       this.conditionVersion.update((value) => value + 1);
     });
-    this.events$ = new Observable<FormEvent>((subscriber) => {
+    this.events$ = new Observable<FormEvent<unknown, T>>((subscriber) => {
       const eventTypes: readonly FormEventType[] = ['valueChange', 'validate', 'submit', 'reset'];
       const removers = eventTypes.map((type) => this.store.on(type, (event) => subscriber.next(event)));
       return () => removers.forEach((remove) => remove());
@@ -73,7 +73,7 @@ export class DynamicFormFacade<T extends FormValues = FormValues> {
       return this.conditions.getState(path);
     };
     return {
-      value: computed(() => this.store.getValue(path) as TValue),
+      value: computed(() => this.store.getValue(dynamicPath(path)) as TValue),
       error: computed(() => this.stateSignal().errors[path]),
       touched: computed(() => this.stateSignal().touched[path] ?? false),
       dirty: computed(() => this.stateSignal().dirty[path] ?? false),
@@ -81,22 +81,22 @@ export class DynamicFormFacade<T extends FormValues = FormValues> {
       disabled: computed(() => condition()?.disabled ?? false),
       required: computed(() => condition()?.required ?? false),
       readOnly: computed(() => condition()?.readOnly ?? false),
-      setValue: (value) => this.store.setValue(path, value),
-      setTouched: (touched = true) => this.store.setTouched(path, touched),
-      reset: () => this.store.resetField(path),
+      setValue: (value) => this.store.setValue(dynamicPath(path), value),
+      setTouched: (touched = true) => this.store.setTouched(dynamicPath(path), touched),
+      reset: () => this.store.resetField(dynamicPath(path)),
     };
   }
 
-  setValue(path: string, value: unknown): void { this.store.setValue(path, value); }
+  setValue(path: string, value: unknown): void { this.store.setValue(dynamicPath(path), value); }
   setValues(values: Partial<T>): void { this.store.setValues(values); }
   reset(): void { this.store.reset(); }
-  resetField(path: string): void { this.store.resetField(path); }
+  resetField(path: string): void { this.store.resetField(dynamicPath(path)); }
   validate(): Promise<boolean> { return this.store.validate(this.validator()); }
   async submit<TResult = unknown>(): Promise<TResult | undefined> {
     if (!this.options.onSubmit) return undefined;
     return this.store.submit(this.options.onSubmit as FormSubmitHandler<T, TResult>, this.validator());
   }
-  on(type: FormEventType, listener: (event: FormEvent) => void): () => void { return this.store.on(type, listener); }
+  on(type: FormEventType, listener: (event: FormEvent<unknown, T>) => void): () => void { return this.store.on(type, listener); }
 
   dispose(): void {
     if (this.disposed) return;
@@ -114,6 +114,6 @@ export class DynamicFormFacade<T extends FormValues = FormValues> {
   }
 }
 
-export function createDynamicForm<T extends FormValues = FormValues>(options: DynamicFormOptions<T>): DynamicFormFacade<T> {
+export function createDynamicForm<T extends FormValues = DynamicFormValues>(options: DynamicFormOptions<T>): DynamicFormFacade<T> {
   return new DynamicFormFacade(options);
 }

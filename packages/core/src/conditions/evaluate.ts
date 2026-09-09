@@ -1,7 +1,7 @@
-import { getByPath } from '../store';
+import { dynamicPath, getByPath } from '../store';
 import type { Condition, FieldCondition } from './types';
 
-export function evaluateCondition(condition: FieldCondition, values: Record<string, unknown>): boolean {
+export function evaluateCondition(condition: FieldCondition, values: object): boolean {
   if ('field' in condition) return evaluateRule(condition, values);
 
   const andMatches = !condition.and || condition.and.every((item) => evaluateCondition(item, values));
@@ -10,8 +10,8 @@ export function evaluateCondition(condition: FieldCondition, values: Record<stri
   return andMatches && orMatches && notMatches;
 }
 
-function evaluateRule(condition: Condition, values: Record<string, unknown>): boolean {
-  const actual = getByPath(values, condition.field);
+function evaluateRule(condition: Condition, values: object): boolean {
+  const actual = getByPath(values, dynamicPath(condition.field));
   switch (condition.operator) {
     case 'equals': return actual === condition.value;
     case 'notEquals': return actual !== condition.value;

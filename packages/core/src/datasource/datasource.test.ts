@@ -23,7 +23,7 @@ describe('DataSourceManager', () => {
   it('exposes success and error state for configured loads', async () => {
     const manager = new DataSourceManager();
     await manager.loadConfig('success', { type: 'static', options: ['ok'] }, { values: {} });
-    expect(manager.getState('success')).toEqual({ data: ['ok'], loading: false });
+    expect(manager.getState('success')).toMatchObject({ data: ['ok'], loading: false, status: 'success' });
     await expect(manager.loadConfig('failure', { type: 'function', load: async () => { throw new Error('unavailable'); } }, { values: {} })).rejects.toThrow('unavailable');
     expect(manager.getState('failure')).toMatchObject({ loading: false, error: expect.objectContaining({ message: 'unavailable' }) });
   });
@@ -42,7 +42,7 @@ describe('DataSourceManager', () => {
     await current;
     resolveFirst(['Delhi']);
     await stale;
-    expect(manager.getState('cities')).toEqual({ data: ['New York'], loading: false });
+    expect(manager.getState('cities')).toMatchObject({ data: ['New York'], loading: false, status: 'success' });
   });
 
   it('aborts an active request and clears loading state', async () => {
@@ -59,5 +59,62 @@ describe('DataSourceManager', () => {
     expect(signal?.aborted).toBe(true);
     await expect(request).rejects.toMatchObject({ name: 'AbortError' });
     expect(manager.getState('abortable')?.loading).toBe(false);
+  });
+
+  it('cancels rapid searches and never caches a stale response', async () => {
+    const signals: AbortSignal[] = [];
+    let resolveFirst!: (value: string[]) => void;
+    const firstResult = new Promise<string[]>((resolve) => { resolveFirst = resolve; });
+    let call = 0;
+    const loader = vi.fn(({ signal }: { signal?: AbortSignal }) => {
+      if (signal) signals.push(signal);
+      return ++call === 1 ? firstResult : Promise.resolve(['new']);
+    });
+    const manager = new DataSourceManager();
+    const config = { type: 'function' as const, load: loader, cache: true };
+
+    const stale = manager.loadConfig('search', config, { values: {} }, { search: 'a' });
+    const current = manager.loadConfig('search', config, { values: {} }, { search: 'ab' });
+    await expect(current).resolves.toEqual(['new']);
+    expect(signals[0].aborted).toBe(true);
+    resolveFirst(['old']);
+    await stale;
+
+    await manager.loadConfig('search', config, { values: {} }, { search: 'a' });
+    expect(loader).toHaveBeenCalledTimes(3);
+    expect(manager.getState('search')).toMatchObject({ data: ['new'], status: 'success' });
+  });
+
+  it('aborts an active request when its field data source is unregistered', async () => {
+    let signal: AbortSignal | undefined;
+    const manager = new DataSourceManager();
+    manager.register('removed-field', (context) => {
+      signal = context.signal;
+      return new Promise<string[]>((_resolve, reject) => {
+        context.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+      });
+    });
+    const request = manager.load<string>('removed-field', { values: {} });
+    manager.unregister('removed-field');
+
+    expect(signal?.aborted).toBe(true);
+    await expect(request).rejects.toMatchObject({ name: 'AbortError' });
+    expect(manager.getState('removed-field')).toBeUndefined();
+  });
+
+  it('reports current failures through the centralized error hook', async () => {
+    const onError = vi.fn();
+    const manager = new DataSourceManager({ onError });
+    await expect(manager.loadConfig(
+      'remote',
+      { type: 'function', load: () => { throw 'offline'; } },
+      { values: {} },
+    )).rejects.toThrow('offline');
+
+    expect(onError).toHaveBeenCalledWith(
+      expect.objectContaining({ message: 'offline' }),
+      'remote',
+      expect.any(Number),
+    );
   });
 });

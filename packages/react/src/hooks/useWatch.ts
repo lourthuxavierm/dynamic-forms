@@ -1,3 +1,4 @@
+import { dynamicPath } from '@dynamic-form-engine/core';
 import { useCallback, useRef, useSyncExternalStore } from 'react';
 import { useFormContext } from '../context';
 
@@ -9,13 +10,13 @@ export function useWatch<T = unknown>(pathOrPaths: string | readonly string[]): 
   const key = paths.join('|');
   const cache = useRef<{ state: object; value: T | T[] } | undefined>(undefined);
   const subscribe = useCallback((listener: () => void) => {
-    const unsubscribers = paths.map((path) => store.subscribeToField(path, listener));
+    const unsubscribers = paths.map((path) => store.subscribeToField(dynamicPath(path), listener));
     return () => unsubscribers.forEach((unsubscribe) => unsubscribe());
   }, [key, store]);
   const getSnapshot = useCallback(() => {
     const state = store.getState();
     if (cache.current?.state === state) return cache.current.value;
-    const values = paths.map((path) => store.getValue(path));
+    const values = paths.map((path) => store.getValue(dynamicPath(path)));
     const value = typeof pathOrPaths === 'string' ? values[0] as T : values as T[];
     cache.current = { state, value };
     return value;

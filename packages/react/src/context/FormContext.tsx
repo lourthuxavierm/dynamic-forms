@@ -10,12 +10,14 @@ import {
 } from 'react';
 import {
   ConditionController,
+  dynamicPath,
   createFieldValidators,
   createFormValidator,
   DependencyController,
   FieldRegistry,
   FormStore,
   type DataSourceConfig,
+  type DynamicFormValues,
   type FieldSchema,
   type FormEvent,
   type FormSubmitHandler,
@@ -30,7 +32,7 @@ import { findFieldByPath } from '../schemaPaths';
 
 export type ValidationMode = 'onChange' | 'onBlur' | 'onSubmit' | 'manual';
 
-export interface FormContextValue<T extends FormValues = FormValues> {
+export interface FormContextValue<T extends FormValues = DynamicFormValues> {
   store: FormStore<T>;
   registry: FieldRegistry;
   schema?: FormSchema;
@@ -46,7 +48,7 @@ export interface FormContextValue<T extends FormValues = FormValues> {
 
 const FormContext = createContext<FormContextValue | null>(null);
 
-export interface FormProviderProps<T extends FormValues = FormValues> {
+export interface FormProviderProps<T extends FormValues = DynamicFormValues> {
   store?: FormStore<T>;
   registry?: FieldRegistry;
   schema?: FormSchema;
@@ -56,7 +58,7 @@ export interface FormProviderProps<T extends FormValues = FormValues> {
   /** Additional form-level validator composed after schema validation. */
   formValidator?: FormValidator<T>;
   onError?: (error: unknown) => void;
-  onChange?: (event: FormEvent) => void;
+  onChange?: (event: FormEvent<unknown, T>) => void;
   onValidate?: (valid: boolean) => void;
   validationMode?: ValidationMode;
   onInvalidSubmit?: (errors: Readonly<Record<string, string>>) => void;
@@ -64,7 +66,7 @@ export interface FormProviderProps<T extends FormValues = FormValues> {
   onDataSourceRefresh?: (field: FieldSchema, dataSource: DataSourceConfig, values: Readonly<T>) => void | Promise<void>;
 }
 
-export function FormProvider<T extends FormValues = FormValues>({
+export function FormProvider<T extends FormValues = DynamicFormValues>({
   store,
   registry,
   schema,
@@ -100,10 +102,10 @@ export function FormProvider<T extends FormValues = FormValues>({
     setValidatingFields((current) => new Set(current).add(name));
     const field = schema ? findFieldByPath(schema.fields, name) : undefined;
     if (!field) { setValidatingFields((current) => { const next = new Set(current); next.delete(name); return next; }); return true; }
-    const result = await validateField(name, resolvedStore.getValue(name), resolvedStore.getValues(), createFieldValidators(field, { required: Boolean(field.validation?.required || conditionController?.getState(name)?.required) }));
+    const result = await validateField(name, resolvedStore.getValue(dynamicPath(name)), resolvedStore.getValues() as Record<string, unknown>, createFieldValidators(field, { required: Boolean(field.validation?.required || conditionController?.getState(name)?.required) }));
     const isLatest = validationRuns.current.get(name) === run;
-    if (isLatest && result.valid) resolvedStore.clearError(name);
-    else if (isLatest) resolvedStore.setError(name, result.errors[0].message);
+    if (isLatest && result.valid) resolvedStore.clearError(dynamicPath(name));
+    else if (isLatest) resolvedStore.setError(dynamicPath(name), result.errors[0].message);
     if (isLatest) setValidatingFields((current) => { const next = new Set(current); next.delete(name); return next; });
     return result.valid;
   }, [conditionController, resolvedStore, schema]);
@@ -136,7 +138,7 @@ export function FormProvider<T extends FormValues = FormValues>({
   }, [handleInvalidSubmit, onError, onSubmit, resolvedFormValidator, resolvedStore]);
 
   const reset = useCallback(() => resolvedStore.reset(), [resolvedStore]);
-  const resetField = useCallback((name: string) => resolvedStore.resetField(name), [resolvedStore]);
+  const resetField = useCallback((name: string) => resolvedStore.resetField(dynamicPath(name)), [resolvedStore]);
 
   useEffect(() => {
     if (!schema) {
@@ -180,10 +182,10 @@ export function FormProvider<T extends FormValues = FormValues>({
     resetField,
   }), [conditionController, resolvedRegistry, resolvedStore, reset, resetField, schema, submit, validateFieldByName, validateForm, validatingFields, validationMode]);
 
-  return <FormContext.Provider value={value}>{children}</FormContext.Provider>;
+  return <FormContext.Provider value={value as unknown as FormContextValue}>{children}</FormContext.Provider>;
 }
 
-export function useFormContext<T extends FormValues = FormValues>(): FormContextValue<T> {
+export function useFormContext<T extends FormValues = DynamicFormValues>(): FormContextValue<T> {
   const context = useContext(FormContext);
   if (!context) throw new Error('useFormContext must be used inside <FormProvider>');
   return context as FormContextValue<T>;

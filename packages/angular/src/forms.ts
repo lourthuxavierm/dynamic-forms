@@ -1,6 +1,6 @@
 import { Directive, forwardRef, input, type OnDestroy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, type ControlValueAccessor } from '@angular/forms';
-import type { FormValues } from '@dynamic-form-engine/core';
+import type { DynamicFormValues, FormValues } from '@dynamic-form-engine/core';
 import type { DynamicFormFacade } from './facade';
 
 @Directive({
@@ -8,7 +8,7 @@ import type { DynamicFormFacade } from './facade';
   standalone: true,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DynamicFormsValueAccessor), multi: true }],
 })
-export class DynamicFormsValueAccessor<T extends FormValues = FormValues> implements ControlValueAccessor, OnDestroy {
+export class DynamicFormsValueAccessor<T extends FormValues = DynamicFormValues> implements ControlValueAccessor, OnDestroy {
   readonly form = input.required<DynamicFormFacade<T>>({ alias: 'dfValueAccessor' });
   private removeChange?: () => void;
   private onChange: (value: T) => void = () => undefined;

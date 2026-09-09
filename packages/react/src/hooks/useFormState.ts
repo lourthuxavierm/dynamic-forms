@@ -1,15 +1,15 @@
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import type { FormState, FormValues } from '@dynamic-form-engine/core';
+import type { DynamicFormValues, FormState, FormValues } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
 
 export function useFormState<TSelected = FormState>(selector: (state: FormState) => TSelected = (state) => state as TSelected): TSelected {
   const { store } = useFormContext();
-  const subscribe = useCallback((listener: () => void) => store.subscribe(listener), [store]);
+  const subscribe = useCallback((listener: () => void) => store.subscribeSelector(selector, listener), [selector, store]);
   const getSnapshot = useCallback(() => selector(store.getState()), [selector, store]);
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
 
-export function useFormActions<T extends FormValues = FormValues>() {
+export function useFormActions<T extends FormValues = DynamicFormValues>() {
   const context = useFormContext<T>();
   return useMemo(() => ({
     setValue: context.store.setValue.bind(context.store),

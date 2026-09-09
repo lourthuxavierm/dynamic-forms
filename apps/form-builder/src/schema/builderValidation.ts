@@ -1,6 +1,7 @@
+import { circularDependencyIssues } from '../builder/rules/rules';
 import { validateSchema, type FormSchema, type SchemaValidationError } from '@dynamic-form-engine/core';
 export function validateBuilderSchema(schema: FormSchema): SchemaValidationError[] {
-  const errors = [...validateSchema(schema).errors];
+  const errors = [...validateSchema(schema).errors, ...circularDependencyIssues(schema)];
   if (!schema.id.trim()) errors.unshift({ path: 'id', message: 'Schema ID is required' });
   return errors;
 }

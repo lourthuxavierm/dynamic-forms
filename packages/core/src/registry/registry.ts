@@ -1,14 +1,14 @@
 import type { FieldDefinition, RegistryOptions } from './types';
 
-export class FieldRegistry<TComponent = any> {
-  private readonly fields = new Map<string, FieldDefinition<TComponent>>();
+export class FieldRegistry<TComponent = unknown, TMetadata extends Record<string, unknown> = Record<string, unknown>, TType extends string = string> {
+  private readonly fields = new Map<TType, FieldDefinition<TComponent, TMetadata, TType>>();
   private readonly options: RegistryOptions;
 
   constructor(options: RegistryOptions = { allowOverrides: true }) {
     this.options = options;
   }
 
-  register(definition: FieldDefinition<TComponent>): void {
+  register(definition: FieldDefinition<TComponent, TMetadata, TType>): void {
     if (!this.options.allowOverrides && this.fields.has(definition.type)) {
       throw new Error(
         `Field type "${definition.type}" is already registered and overrides are disabled.`
@@ -17,23 +17,23 @@ export class FieldRegistry<TComponent = any> {
     this.fields.set(definition.type, definition);
   }
 
-  registerMany(definitions: FieldDefinition<TComponent>[]): void {
+  registerMany(definitions: readonly FieldDefinition<TComponent, TMetadata, TType>[]): void {
     definitions.forEach((def) => this.register(def));
   }
 
-  get(type: string): FieldDefinition<TComponent> | undefined {
+  get(type: TType): FieldDefinition<TComponent, TMetadata, TType> | undefined {
     return this.fields.get(type);
   }
 
-  has(type: string): boolean {
+  has(type: TType): boolean {
     return this.fields.has(type);
   }
 
-  unregister(type: string): void {
+  unregister(type: TType): void {
     this.fields.delete(type);
   }
 
-  override(type: string, definition: FieldDefinition<TComponent>): void {
+  override(type: TType, definition: FieldDefinition<TComponent, TMetadata, TType>): void {
     this.fields.set(type, { ...definition, type });
   }
 
@@ -41,11 +41,11 @@ export class FieldRegistry<TComponent = any> {
     this.fields.clear();
   }
 
-  getTypes(): string[] {
+  getTypes(): TType[] {
     return Array.from(this.fields.keys());
   }
 
-  getAll(): FieldDefinition<TComponent>[] {
+  getAll(): FieldDefinition<TComponent, TMetadata, TType>[] {
     return Array.from(this.fields.values());
   }
 }

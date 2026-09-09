@@ -1,5 +1,5 @@
 import { Children, useState, useSyncExternalStore, type CSSProperties, type ComponentType, type KeyboardEvent, type ReactNode } from 'react';
-import type { FieldSchema, FormSchema } from '@dynamic-form-engine/core';
+import { dynamicPath, type FieldSchema, type FormSchema } from '@dynamic-form-engine/core';
 import { useFormContext } from '@dynamic-form-engine/react';
 
 export type HtmlLayoutType = 'section' | 'fieldset' | 'grid' | 'stack' | 'inline' | 'card' | 'accordion' | 'tabs' | 'actions' | 'summary' | (string & {});
@@ -94,7 +94,7 @@ export function HtmlStickyActions({ node, children }: HtmlLayoutComponentProps) 
 export function HtmlReadOnlySummary({ node }: HtmlLayoutComponentProps) {
   const { store, schema } = useFormContext();
   useSyncExternalStore(store.subscribe.bind(store), store.getState.bind(store), store.getState.bind(store));
-  const fields = (node.fields ?? []).map((name) => ({ name, field: findField(schema?.fields ?? [], name), value: store.getValue(name) }));
+  const fields = (node.fields ?? []).map((name) => ({ name, field: findField(schema?.fields ?? [], name), value: store.getValue(dynamicPath(name)) }));
   return <section id={node.id} className={node.className} data-df-layout="summary" aria-label={typeof node.title === 'string' ? node.title : 'Form summary'}>
     {node.title ? <h2>{node.title}</h2> : null}
     <dl>{fields.map(({ name, field, value }) => <div key={name}><dt>{field?.label ?? humanize(name)}</dt><dd>{formatSummaryValue(value)}</dd></div>)}</dl>

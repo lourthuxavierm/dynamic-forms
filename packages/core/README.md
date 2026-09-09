@@ -51,3 +51,145 @@ Use `store.on(type, listener)` to observe `valueChange`, `fieldChange`, `validat
 ## Data sources
 
 `DataSourceManager.loadConfig()` supports static options, async functions, and URL sources. URL parameters may reference form values with `$path` syntax, for example `{ country: '$country' }`.
+
+## Type-safe values and extensions
+
+`FieldValueMap` defines the value produced by every built-in field. Use `FieldValue<'number'>` for a built-in value or supply a custom map for an extension:
+
+```ts
+type CustomValues = { color: `#${string}` };
+type ColorValue = FieldValue<'color', CustomValues>;
+
+const registry = new FieldRegistry<Renderer, Metadata, 'text' | 'color'>();
+```
+
+`InferSchemaType<typeof schema>` preserves literal field names and derives nested object, array, scalar, selection, and boolean values. Dynamic runtime schemas remain supported: unknown custom controls resolve to `unknown`, requiring consumers to narrow their values instead of receiving an unsafe `any`.
+## Typed paths
+
+`Path<TValues>` lists valid dot and bracket paths, while `PathValue<TValues, TPath>` resolves the value at a path. `FormStore<TValues>` uses both types for `getValue`, `setValue`, `resetField`, field errors, touched state, and field subscriptions.
+
+```ts
+interface CustomerValues {
+  age: number;
+  address: { city: string };
+  contacts: Array<{ name: string }>;
+}
+
+const store = new FormStore<CustomerValues>();
+store.setValue('address.city', 'Chennai');
+store.setValue('contacts[0].name', 'Xavier');
+// store.setValue('age', 'wrong'); // TypeScript error
+```
+
+For a path that only exists at runtime, opt in explicitly with `dynamicPath(runtimeString)`. Stores declared as `FormStore<Record<string, unknown>>` continue to accept arbitrary string paths.
+## Selector subscriptions
+
+Use `subscribeSelector` to observe one derived state slice. The listener runs only when that selection changes; pass a third equality function for structural or domain-specific comparison.
+
+```ts
+const unsubscribe = store.subscribeSelector(
+  state => state.values.customer?.name,
+  (name, previousName) => console.log({ name, previousName }),
+);
+```
+
+`subscribeToValue`, `subscribeToError`, `subscribeToTouched`, and `subscribeToDirty` provide typed shortcuts for common field slices. Existing `subscribe` and `subscribeToField` behavior remains compatible. `ConditionController.subscribeSelector` provides the same change-only behavior for derived condition state.
+## Transactions and batch updates
+
+`store.batch()` groups sync or async mutations into one atomic observer cycle. State reads inside the callback see each mutation immediately, while events and subscribers are deferred until the outermost batch completes. Nested batches are safe, repeated field events are consolidated, and condition/dependency effects settle before the final notification.
+
+```ts
+store.batch(() => {
+  store.setValue('country', 'IN');
+  store.setValue('state', null);
+  store.setValue('city', null);
+});
+```
+
+To validate once, call `store.validate(...)` at the end of an async batch or immediately after a synchronous batch. A failed callback does not roll state back: completed mutations are committed and notified once before the error is rethrown. This keeps the v1 transaction contract small and deterministic without introducing partial rollback semantics.
+
+## Asynchronous operations and cancellation
+
+Core async work uses monotonic request IDs and last-write-wins state. Starting a request for an existing key aborts the previous signal; responses from code that does not honor cancellation are still marked stale and cannot replace current state or populate caches.
+
+`DataSourceManager` applies this contract to registered sources, remote options, pagination, and rapid search. Each source receives `signal` and `requestId` in its context. `getState(name)` consistently exposes `status`, `loading`, `requestId`, `data`, and the current non-cancellation `error`. Use `cancel(name)` when a field becomes hidden and `unregister(name)` when it is removed; both invalidate active work. `clear()` cancels all active requests.
+
+```ts
+const sources = new DataSourceManager({
+  onError: (error, name, requestId) => report(error, { name, requestId }),
+});
+
+const options = await sources.loadConfig(
+  'customers',
+  {
+    type: 'function',
+    load: async ({ signal }) => fetch('/customers', { signal }).then(response => response.json()),
+  },
+  { values: store.getValues() },
+  { search: 'ada' },
+);
+```
+
+Form validation follows the same rule. Validators receive an optional `{ signal, requestId }` context, while `FormState.validating` and `validationError` expose current status. A newer `validate()` call aborts and invalidates the older call; `cancelValidation()` and `reset()` cancel active validation. Dependency refresh callbacks receive the same context, cancel superseded refreshes per dependent field, and are cancelled by `cancelRefresh(field)` or `dispose()`.
+
+`AsyncRequestManager` is exported for custom remote controls and future plugins. Cancellation errors are not reported as failures. Current non-cancellation failures are normalized to `Error` and routed through the relevant `onError`/`onAsyncError` hook. Operations that ignore their abort signal may still resolve to their original caller, but their result has `current: false` and is never committed by Core.
+
+## Unified runtime lifecycle
+
+`FormRuntime` is the recommended composed Core entry point when a form uses conditions, dependencies, and data sources together. It owns a `FormStore`, `ConditionController`, `DependencyController`, and `DataSourceManager`, fixes their ordering, and disposes them as one unit.
+
+For a synchronous mutation, the stable order is:
+
+1. The runtime records the mutation phase.
+2. State changes immediately inside an implicit outer transaction.
+3. Dependency resets are evaluated.
+4. Conditions and hidden-value policies are evaluated against the settled dependency state.
+5. Public form events are emitted.
+6. selector, field, and form subscribers receive the final snapshot once.
+7. Datasource effects start asynchronously on the next microtask with cancellation and stale-response protection.
+
+Condition- or dependency-generated mutations join the active transaction. Their events are drained until the state settles before subscribers run. Explicit `batch()` calls use the same pipeline and nested batches join their outer transaction.
+
+Validation is intentionally explicit rather than automatic. Calling `validate()` or `submit()` creates an asynchronous validation phase; only the current request may commit errors, then the validation event is emitted and subscribers are notified. Datasource completion does not implicitly validate the form.
+
+```ts
+const runtime = new FormRuntime(schema, initialValues, {
+  onLifecycle: event => observe(event.phase),
+});
+
+runtime.setValue('country', 'IN');
+await runtime.validate(createFormValidator(schema));
+runtime.dispose();
+```
+
+`RUNTIME_LIFECYCLE_PHASES` and `onLifecycle()` expose phase metadata without field values. Dependency cycles fail during runtime construction. Event-driven mutation loops are stopped by `FormStoreOptions.maxLifecycleIterations` (default 10,000). After `dispose()`, runtime operations throw; active validation and datasource work are cancelled.
+
+Low-level controllers remain available for advanced composition. Consumers that construct them manually own their ordering and disposal; the deterministic composed contract above applies to `FormRuntime`.
+
+## Plugins and mutation middleware
+
+Plugins are installed through `FormRuntimeOptions.plugins`. Setup, lifecycle hooks, and mutation interceptors run in declaration order; cleanup and disposal run in reverse order. Plugin names must be unique.
+
+```ts
+const trimValues: CorePlugin<CustomerValues> = {
+  name: 'trim-values',
+  interceptMutation(mutation) {
+    if (mutation.type !== 'setValue' || typeof mutation.value !== 'string') return;
+    return { ...mutation, value: mutation.value.trim() };
+  },
+};
+
+const runtime = new FormRuntime(schema, initialValues, {
+  plugins: [
+    trimValues,
+    createLifecycleAuditPlugin(entry => audit(entry)),
+  ],
+  onPluginError: failure => report(failure),
+});
+```
+
+`setup(context)` can return a cleanup function. `onLifecycle(event, context)` observes the stable runtime phases. `interceptMutation(mutation, context)` is synchronous and may return a same-type replacement, return `{ cancel: true }`, or return nothing to preserve the mutation. Interceptors cannot change the mutation kind. Runtime `setValue`, `setValues`, and `reset` calls pass through middleware; direct low-level store calls intentionally do not.
+
+The plugin context exposes a deeply frozen schema, immutable form snapshots, copied condition state, and deeply frozen datasource state. It does not expose mutation methods. Hook failures are normalized, routed to `onPluginError`, and isolated; a failing plugin or error reporter cannot interrupt Core. Plugins whose setup fails are not activated, and duplicate or unnamed plugins are rejected.
+
+`createLifecycleAuditPlugin` is the official minimal example. It records phase, operation, paths, and async metadata but excludes field values by default.

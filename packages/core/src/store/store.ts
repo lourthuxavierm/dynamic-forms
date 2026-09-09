@@ -1,24 +1,50 @@
 import type {
+  DynamicFormValues,
+  EqualityFn,
   FormErrors,
   FormListener,
+  FormSelector,
   FormState,
+  FormStoreOptions,
+  SelectorListener,
   FormSubmitHandler,
   FormValidator,
   FormValues,
   ResetOptions,
   SetValueOptions,
+  ValidateOptions,
 } from './types';
-import { FormEventEmitter, type FormEventListener, type FormEventType } from '../events';
-import { deleteByPath, getByPath, setByPath } from './paths';
+import { AsyncRequestManager, isAbortError, normalizeAsyncError } from '../async';
+import { FormEventEmitter, type FormEvent, type FormEventListener, type FormEventType } from '../events';
+import { deleteByPath, dynamicPath, getByPath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
-export class FormStore<T extends FormValues = FormValues> {
+interface SelectorSubscription<T extends FormValues> {
+  selector: FormSelector<T, unknown>;
+  listener: SelectorListener<unknown>;
+  equality: EqualityFn<unknown>;
+  selected: unknown;
+}
+export class FormStore<T extends FormValues = DynamicFormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
-  private readonly events = new FormEventEmitter();
+  private readonly selectorSubscriptions = new Set<SelectorSubscription<T>>();
+  private readonly events = new FormEventEmitter<unknown, T>();
+  private readonly asyncRequests: AsyncRequestManager<'validation'>;
+  private readonly pendingEvents = new Map<string, FormEvent<unknown, T>>();
+  private readonly pendingPaths = new Set<string>();
+  private batchDepth = 0;
+  private readonly maxLifecycleIterations: number;
+  private pendingNotify = false;
+  private pendingNotifyAll = false;
   private initialValues: T;
 
-  constructor(initialValues: T = {} as T) {
+  constructor(initialValues: T = {} as T, options: FormStoreOptions = {}) {
+    this.asyncRequests = new AsyncRequestManager({ onError: options.onAsyncError });
+    this.maxLifecycleIterations = options.maxLifecycleIterations ?? 10_000;
+    if (!Number.isInteger(this.maxLifecycleIterations) || this.maxLifecycleIterations < 1) {
+      throw new Error('maxLifecycleIterations must be a positive integer.');
+    }
     this.initialValues = clone(initialValues);
     this.state = createState(this.initialValues);
   }
@@ -31,22 +57,52 @@ export class FormStore<T extends FormValues = FormValues> {
     return this.state.values;
   }
 
-  getValue(path: string): unknown {
-    return getByPath(this.state.values, path);
+  /** Runs related mutations as one atomic notification and event cycle. */
+  batch<TResult>(operation: () => Promise<TResult>): Promise<TResult>;
+  batch<TResult>(operation: () => TResult): TResult;
+  batch<TResult>(operation: () => TResult | Promise<TResult>): TResult | Promise<TResult> {
+    this.batchDepth += 1;
+    let result: TResult | Promise<TResult>;
+    try {
+      result = operation();
+    } catch (error) {
+      this.finishBatch();
+      throw error;
+    }
+    if (isPromiseLike(result)) {
+      return result.then(
+        (value) => { this.finishBatch(); return value; },
+        (error: unknown) => { this.finishBatch(); throw error; },
+      );
+    }
+    this.finishBatch();
+    return result;
   }
 
+  getValue<TPath extends Path<T>>(path: TPath): PathValue<T, TPath>;
+  getValue(path: DynamicPath): unknown;
+  getValue(path: string): unknown {
+    return getByPath(this.state.values, dynamicPath(path));
+  }
+
+  setValue<TPath extends Path<T>>(path: TPath, value: PathValue<T, TPath>, options?: SetValueOptions): void;
+  setValue(path: DynamicPath, value: unknown, options?: SetValueOptions): void;
   setValue(path: string, value: unknown, options: SetValueOptions = {}): void {
-    const previousValue = this.getValue(path);
+    if (this.batchDepth === 0) {
+      this.batch(() => this.setValue(dynamicPath(path), value, options));
+      return;
+    }
+    const previousValue = this.getValue(dynamicPath(path));
     if (Object.is(previousValue, value)) {
       return;
     }
 
-    const values = setByPath(this.state.values, path, value) as T;
+    const values = setByPath(this.state.values, dynamicPath(path), value) as T;
     const dirty = updateDirtyState(
       this.state.dirty,
       path,
       value,
-      getByPath(this.initialValues, path),
+      getByPath(this.initialValues, dynamicPath(path)),
       options.shouldDirty,
     );
     const touched = options.shouldTouch
@@ -54,12 +110,16 @@ export class FormStore<T extends FormValues = FormValues> {
       : this.state.touched;
 
     this.updateState({ values, dirty, touched });
-    this.events.emit({ type: 'valueChange', field: path, value, previousValue, payload: { values: this.state.values } });
-    this.events.emit({ type: 'fieldChange', field: path, value, previousValue });
+    this.emitEvent({ type: 'valueChange', field: path, value, previousValue, payload: { values: this.state.values } });
+    this.emitEvent({ type: 'fieldChange', field: path, value, previousValue });
     this.notifyPaths([path]);
   }
 
   setValues(values: Partial<T>, options: SetValueOptions = {}): void {
+    if (this.batchDepth === 0) {
+      this.batch(() => this.setValues(values, options));
+      return;
+    }
     const entries = Object.entries(values);
     if (entries.length === 0) {
       return;
@@ -72,16 +132,16 @@ export class FormStore<T extends FormValues = FormValues> {
     const changedPaths: string[] = [];
 
     for (const [path, value] of entries) {
-      if (Object.is(getByPath(nextValues, path), value)) {
+      if (Object.is(getByPath(nextValues, dynamicPath(path)), value)) {
         continue;
       }
 
-      nextValues = setByPath(nextValues, path, value) as T;
+      nextValues = setByPath(nextValues, dynamicPath(path), value) as T;
       nextDirty = updateDirtyState(
         nextDirty,
         path,
         value,
-        getByPath(this.initialValues, path),
+        getByPath(this.initialValues, dynamicPath(path)),
         options.shouldDirty,
       );
       if (options.shouldTouch) {
@@ -100,12 +160,14 @@ export class FormStore<T extends FormValues = FormValues> {
       touched: nextTouched,
     });
     for (const path of changedPaths) {
-      this.events.emit({ type: 'valueChange', field: path, value: getByPath(nextValues, path), previousValue: getByPath(previousValues, path), payload: { values: this.state.values } });
-      this.events.emit({ type: 'fieldChange', field: path, value: getByPath(nextValues, path) });
+      this.emitEvent({ type: 'valueChange', field: path, value: getByPath(nextValues, dynamicPath(path)), previousValue: getByPath(previousValues, dynamicPath(path)), payload: { values: this.state.values } });
+      this.emitEvent({ type: 'fieldChange', field: path, value: getByPath(nextValues, dynamicPath(path)) });
     }
     this.notifyPaths(changedPaths);
   }
 
+  setError<TPath extends Path<T>>(path: TPath, message: string): void;
+  setError(path: DynamicPath, message: string): void;
   setError(path: string, message: string): void {
     this.updateState({
       errors: { ...this.state.errors, [path]: message },
@@ -114,6 +176,8 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyPaths([path]);
   }
 
+  clearError<TPath extends Path<T>>(path: TPath): void;
+  clearError(path: DynamicPath): void;
   clearError(path: string): void {
     if (!(path in this.state.errors)) {
       return;
@@ -125,6 +189,8 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyPaths([path]);
   }
 
+  setTouched<TPath extends Path<T>>(path: TPath, touched?: boolean): void;
+  setTouched(path: DynamicPath, touched?: boolean): void;
   setTouched(path: string, touched = true): void {
     if (this.state.touched[path] === touched) {
       return;
@@ -152,12 +218,51 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notify();
   }
 
-  async validate(validator: FormValidator<T>): Promise<boolean> {
-    const errors = await validator(this.getValues());
-    this.updateState({ errors: { ...errors }, valid: Object.keys(errors).length === 0 });
-    this.events.emit({ type: 'validate', payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values } });
-    this.notifyAll();
-    return this.state.valid;
+  async validate(validator: FormValidator<T>, options: ValidateOptions = {}): Promise<boolean> {
+    const values = this.getValues();
+    const request = this.asyncRequests.run(
+      'validation',
+      (context) => validator(values, context),
+      options,
+    );
+    const requestId = this.asyncRequests.getState('validation')!.requestId;
+    this.updateState({ validating: true, validationError: undefined });
+    this.notify();
+
+    try {
+      const result = await request;
+      if (!result.current) return this.state.valid;
+      const errors = result.value;
+      this.updateState({
+        errors: { ...errors },
+        valid: Object.keys(errors).length === 0,
+        validating: false,
+        validationError: undefined,
+      });
+      this.emitEvent({
+        type: 'validate',
+        payload: { valid: this.state.valid, errors: this.state.errors, values: this.state.values },
+      });
+      this.notifyAll();
+      return this.state.valid;
+    } catch (error) {
+      const normalized = normalizeAsyncError(error);
+      if (this.asyncRequests.getState('validation')?.requestId === requestId) {
+        this.updateState({
+          validating: false,
+          validationError: isAbortError(normalized) ? undefined : normalized,
+        });
+        this.notify();
+      }
+      throw normalized;
+    }
+  }
+
+  cancelValidation(): void {
+    this.asyncRequests.cancel('validation');
+    if (!this.state.validating) return;
+    this.updateState({ validating: false, validationError: undefined });
+    this.notify();
   }
 
   async submit<TResult>(
@@ -175,7 +280,7 @@ export class FormStore<T extends FormValues = FormValues> {
     this.setSubmitting(true);
     try {
       const result = await onSubmit(this.getValues());
-      this.events.emit({ type: 'submit', payload: { values: this.state.values, result } });
+      this.emitEvent({ type: 'submit', payload: { values: this.state.values, result } });
       return result;
     } finally {
       this.setSubmitting(false);
@@ -183,6 +288,11 @@ export class FormStore<T extends FormValues = FormValues> {
   }
 
   reset(newInitialValues?: T, options: ResetOptions = {}): void {
+    if (this.batchDepth === 0) {
+      this.batch(() => this.reset(newInitialValues, options));
+      return;
+    }
+    this.asyncRequests.cancel('validation');
     if (newInitialValues) {
       this.initialValues = clone(newInitialValues);
     }
@@ -196,12 +306,14 @@ export class FormStore<T extends FormValues = FormValues> {
       submitting: false,
       loading: false,
     });
-    this.events.emit({ type: 'reset', payload: { values: this.state.values } });
+    this.emitEvent({ type: 'reset', payload: { values: this.state.values } });
     this.notifyAll();
   }
 
+  resetField<TPath extends Path<T>>(path: TPath): void;
+  resetField(path: DynamicPath): void;
   resetField(path: string): void {
-    const values = setByPath(this.state.values, path, getByPath(this.initialValues, path)) as T;
+    const values = setByPath(this.state.values, dynamicPath(path), getByPath(this.initialValues, dynamicPath(path))) as T;
     this.updateState({
       values,
       errors: removePath(this.state.errors, path),
@@ -212,7 +324,7 @@ export class FormStore<T extends FormValues = FormValues> {
     this.notifyPaths([path]);
   }
 
-  on(type: FormEventType, listener: FormEventListener): () => void {
+  on(type: FormEventType, listener: FormEventListener<unknown, T>): () => void {
     return this.events.on(type, listener);
   }
 
@@ -221,6 +333,55 @@ export class FormStore<T extends FormValues = FormValues> {
     return () => this.listeners.delete(listener);
   }
 
+  subscribeSelector<TSelected>(
+    selector: FormSelector<T, TSelected>,
+    listener: SelectorListener<TSelected>,
+    equality: EqualityFn<TSelected> = Object.is,
+  ): () => void {
+    const subscription: SelectorSubscription<T> = {
+      selector: (state) => selector(state),
+      listener: (selected, previous) => listener(selected as TSelected, previous as TSelected),
+      equality: (left, right) => equality(left as TSelected, right as TSelected),
+      selected: selector(this.state),
+    };
+    this.selectorSubscriptions.add(subscription);
+    return () => this.selectorSubscriptions.delete(subscription);
+  }
+
+  subscribeToValue<TPath extends Path<T>>(
+    path: TPath,
+    listener: SelectorListener<PathValue<T, TPath>>,
+    equality?: EqualityFn<PathValue<T, TPath>>,
+  ): () => void;
+  subscribeToValue(path: DynamicPath, listener: SelectorListener<unknown>, equality?: EqualityFn<unknown>): () => void;
+  subscribeToValue(path: string, listener: SelectorListener<unknown>, equality: EqualityFn<unknown> = Object.is): () => void {
+    return this.subscribeSelector(
+      (state) => getByPath(state.values, dynamicPath(path)),
+      listener,
+      equality,
+    );
+  }
+
+  subscribeToError<TPath extends Path<T>>(path: TPath, listener: SelectorListener<string | undefined>): () => void;
+  subscribeToError(path: DynamicPath, listener: SelectorListener<string | undefined>): () => void;
+  subscribeToError(path: string, listener: SelectorListener<string | undefined>): () => void {
+    return this.subscribeSelector((state) => state.errors[path], listener);
+  }
+
+  subscribeToTouched<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToTouched(path: DynamicPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToTouched(path: string, listener: SelectorListener<boolean>): () => void {
+    return this.subscribeSelector((state) => state.touched[path] ?? false, listener);
+  }
+
+  subscribeToDirty<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToDirty(path: DynamicPath, listener: SelectorListener<boolean>): () => void;
+  subscribeToDirty(path: string, listener: SelectorListener<boolean>): () => void {
+    return this.subscribeSelector((state) => state.dirty[path] ?? false, listener);
+  }
+
+  subscribeToField<TPath extends Path<T>>(path: TPath, listener: FormListener<T>): () => void;
+  subscribeToField(path: DynamicPath, listener: FormListener<T>): () => void;
   subscribeToField(path: string, listener: FormListener<T>): () => void {
     let listeners = this.fieldListeners.get(path);
     if (!listeners) {
@@ -239,25 +400,103 @@ export class FormStore<T extends FormValues = FormValues> {
     this.state = freezeState({ ...this.state, ...patch });
   }
 
+  private emitEvent(event: FormEvent<unknown, T>): void {
+    if (this.batchDepth === 0) {
+      this.events.emit(event);
+      return;
+    }
+    const key = event.field && (event.type === 'valueChange' || event.type === 'fieldChange')
+      ? `${event.type}:${event.field}`
+      : event.type;
+    const previous = this.pendingEvents.get(key);
+    this.pendingEvents.set(key, previous
+      ? { ...previous, ...event, previousValue: previous.previousValue }
+      : event);
+  }
+
+  private finishBatch(): void {
+    this.batchDepth -= 1;
+    if (this.batchDepth > 0) return;
+    this.batchDepth = 1;
+    let processed = 0;
+    while (this.pendingEvents.size > 0) {
+      const events = [...this.pendingEvents.values()];
+      this.pendingEvents.clear();
+      for (const event of events) {
+        if (++processed > this.maxLifecycleIterations) {
+          this.batchDepth = 0;
+          throw new Error('Lifecycle processing exceeded maxLifecycleIterations.');
+        }
+        if ((event.type === 'valueChange' || event.type === 'fieldChange')
+          && Object.is(event.previousValue, event.value)) continue;
+        this.events.emit(event.payload
+          ? { ...event, payload: { ...event.payload, values: this.state.values } }
+          : event);
+      }
+    }
+    this.batchDepth = 0;
+    const notify = this.pendingNotify;
+    const notifyAll = this.pendingNotifyAll;
+    const paths = [...this.pendingPaths];
+    this.pendingNotify = false;
+    this.pendingNotifyAll = false;
+    this.pendingPaths.clear();
+    if (!notify) return;
+    this.notifyNow();
+    if (notifyAll) this.notifyAllFieldsNow();
+    else this.notifyFieldsNow(paths);
+  }
+
   private notify(): void {
+    if (this.batchDepth > 0) {
+      this.pendingNotify = true;
+      return;
+    }
+    this.notifyNow();
+  }
+
+  private notifyNow(): void {
     for (const listener of this.listeners) listener(this.state);
+    for (const subscription of this.selectorSubscriptions) {
+      const selected = subscription.selector(this.state);
+      if (subscription.equality(subscription.selected, selected)) continue;
+      const previous = subscription.selected;
+      subscription.selected = selected;
+      subscription.listener(selected, previous);
+    }
   }
 
   private notifyPaths(paths: string[]): void {
-    this.notify();
+    if (this.batchDepth > 0) {
+      this.pendingNotify = true;
+      for (const path of paths) this.pendingPaths.add(path);
+      return;
+    }
+    this.notifyNow();
+    this.notifyFieldsNow(paths);
+  }
+
+  private notifyFieldsNow(paths: readonly string[]): void {
     const notified = new Set<FormListener<T>>();
     for (const path of paths) {
       for (const affectedPath of getAffectedPaths(path)) {
-        for (const listener of this.fieldListeners.get(affectedPath) ?? []) {
-          notified.add(listener);
-        }
+        for (const listener of this.fieldListeners.get(affectedPath) ?? []) notified.add(listener);
       }
     }
     for (const listener of notified) listener(this.state);
   }
 
   private notifyAll(): void {
-    this.notify();
+    if (this.batchDepth > 0) {
+      this.pendingNotify = true;
+      this.pendingNotifyAll = true;
+      return;
+    }
+    this.notifyNow();
+    this.notifyAllFieldsNow();
+  }
+
+  private notifyAllFieldsNow(): void {
     const notified = new Set<FormListener<T>>();
     for (const listeners of this.fieldListeners.values()) {
       for (const listener of listeners) notified.add(listener);
@@ -276,6 +515,8 @@ function createState<T extends FormValues>(initialValues: T): FormState<T> {
     submitting: false,
     disabled: false,
     loading: false,
+    validating: false,
+    validationError: undefined,
   });
 }
 
@@ -292,7 +533,7 @@ function updateDirtyState(
 }
 
 function removePath<TValue>(values: Record<string, TValue>, path: string): Record<string, TValue> {
-  return deleteByPath(values, path) as Record<string, TValue>;
+  return deleteByPath(values, dynamicPath(path)) as Record<string, TValue>;
 }
 
 function getAffectedPaths(path: string): string[] {
@@ -328,4 +569,9 @@ function deepFreeze<TValue>(value: TValue, seen = new WeakSet<object>()): TValue
     deepFreeze(nestedValue, seen);
   }
   return Object.freeze(value);
+}
+
+function isPromiseLike<TValue>(value: TValue | Promise<TValue>): value is Promise<TValue> {
+  return typeof value === 'object' && value !== null && 'then' in value
+    && typeof (value as { then?: unknown }).then === 'function';
 }

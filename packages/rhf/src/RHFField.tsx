@@ -1,3 +1,4 @@
+import { dynamicPath } from '@dynamic-form-engine/core';
 import { useEffect, type ReactElement } from 'react';
 import {
   Controller,
@@ -44,7 +45,7 @@ export function RHFField<
   const dynamicState = useDynamicFieldState(name);
   useEffect(() => {
     if (dynamicState.visible || context.hiddenFieldPolicy !== 'unregister') return;
-    context.store.setValue(name, undefined, { shouldDirty: false });
+    context.store.setValue(dynamicPath(name), undefined, { shouldDirty: false });
     context.methods.unregister(props.name);
   }, [context.hiddenFieldPolicy, context.methods, context.store, dynamicState.visible, name, props.name]);
   if (!dynamicState.visible) return null;

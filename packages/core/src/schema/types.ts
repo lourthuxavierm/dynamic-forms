@@ -164,11 +164,11 @@ export type FieldConfig =
   | ArrayFieldConfig
   | FileFieldConfig
   | Record<string, unknown>;
-export interface FieldSchema {
+export interface FieldSchema<TCustomValue = never> {
   name: string;
   type: FieldType | string;
   label?: string;
-  defaultValue?: unknown;
+  defaultValue?: FieldValue | TCustomValue;
   placeholder?: string;
   description?: string;
   disabled?: boolean;
@@ -188,50 +188,118 @@ export interface FieldSchema {
   /**
    * Child fields for 'object' or 'array' types.
    */
-  fields?: readonly FieldSchema[];
+  fields?: readonly FieldSchema<TCustomValue>[];
   /**
    * Custom metadata for the field.
    */
   metadata?: Record<string, unknown>;
 }
 
-export interface FormSchema {
+export interface FormSchema<TCustomValue = never> {
   id: string;
-  fields: readonly FieldSchema[];
+  fields: readonly FieldSchema<TCustomValue>[];
   /**
    * Version of the schema.
    */
   version?: string;
 }
 
-export type FieldValue = any;
+export type FieldOptionValue = string | number | boolean;
 
-/**
- * Helper to infer the TypeScript type of form values from a schema.
- * Note: This is a simplified version and might need refinement for complex schemas.
- */
-export type InferSchemaType<T extends FormSchema | readonly FieldSchema[]> = T extends FormSchema
-  ? InferFieldsType<T['fields']>
-  : T extends readonly FieldSchema[]
-  ? InferFieldsType<T>
-  : never;
+/** Framework-neutral representation of an uploaded file. */
+export interface FieldFileValue {
+  name: string;
+  size: number;
+  type: string;
+  lastModified?: number;
+  data?: unknown;
+}
 
-type InferFieldsType<T extends readonly FieldSchema[]> = {
-  [K in T[number] as K['name']]: InferFieldType<K>;
+/** Value contract for every built-in field type. Extend through FieldValue's second generic. */
+export interface FieldValueMap {
+  text: string;
+  textarea: string;
+  password: string;
+  email: string;
+  url: string;
+  number: number | null;
+  integer: number | null;
+  decimal: number | null;
+  hidden: string | number | boolean | null;
+  select: FieldOptionValue | null;
+  'multi-select': FieldOptionValue[];
+  autocomplete: FieldOptionValue | null;
+  'async-autocomplete': FieldOptionValue | null;
+  checkbox: boolean;
+  'checkbox-group': FieldOptionValue[];
+  radio: FieldOptionValue | null;
+  'radio-group': FieldOptionValue | null;
+  switch: boolean;
+  'toggle-button': boolean;
+  'toggle-button-group': FieldOptionValue[];
+  'tree-select': FieldOptionValue | null;
+  'tree-checkbox': FieldOptionValue[];
+  date: string | null;
+  time: string | null;
+  datetime: string | null;
+  'date-range': readonly [string | null, string | null];
+  'time-range': readonly [string | null, string | null];
+  'datetime-range': readonly [string | null, string | null];
+  month: string | null;
+  year: number | null;
+  currency: number | null;
+  percentage: number | null;
+  slider: number | null;
+  'range-slider': readonly [number | null, number | null];
+  rating: number | null;
+  phone: string;
+  otp: string;
+  pin: string;
+  mask: string;
+  file: FieldFileValue | null;
+  'multi-file': FieldFileValue[];
+  camera: FieldFileValue | null;
+  signature: string | null;
+  'document-preview': string | null;
+  object: Record<string, unknown>;
+  array: unknown[];
+}
+
+export type FieldValue<
+  TType extends string = keyof FieldValueMap,
+  TCustomValues extends Record<string, unknown> = Record<never, never>,
+> = TType extends keyof TCustomValues
+  ? TCustomValues[TType]
+  : TType extends keyof FieldValueMap
+    ? FieldValueMap[TType]
+    : unknown;
+
+/** Infer form values from a const schema while retaining custom field-map support. */
+export type InferSchemaType<
+  T extends FormSchema<unknown> | readonly FieldSchema<unknown>[],
+  TCustomValues extends Record<string, unknown> = Record<never, never>,
+> = T extends FormSchema<unknown>
+  ? InferFieldsType<T['fields'], TCustomValues>
+  : T extends readonly FieldSchema<unknown>[]
+    ? InferFieldsType<T, TCustomValues>
+    : never;
+
+type InferFieldsType<
+  T extends readonly FieldSchema<unknown>[],
+  TCustomValues extends Record<string, unknown>,
+> = {
+  [K in T[number] as K['name']]: InferFieldType<K, TCustomValues>;
 };
 
-type InferFieldType<T extends FieldSchema> = T['type'] extends 'object'
-  ? T['fields'] extends readonly FieldSchema[]
-    ? InferFieldsType<T['fields']>
-    : Record<string, any>
+type InferFieldType<
+  T extends FieldSchema<unknown>,
+  TCustomValues extends Record<string, unknown>,
+> = T['type'] extends 'object'
+  ? T['fields'] extends readonly FieldSchema<unknown>[]
+    ? InferFieldsType<T['fields'], TCustomValues>
+    : FieldValueMap['object']
   : T['type'] extends 'array'
-  ? T['fields'] extends readonly FieldSchema[]
-    ? InferFieldsType<T['fields']>[]
-    : any[]
-  : T['type'] extends 'number' | 'integer' | 'decimal'
-  ? number
-  : T['type'] extends 'checkbox' | 'switch'
-  ? boolean
-  : T['type'] extends 'multi-select' | 'checkbox-group' | 'toggle-button-group'
-  ? any[]
-  : any;
+    ? T['fields'] extends readonly FieldSchema<unknown>[]
+      ? InferFieldsType<T['fields'], TCustomValues>[]
+      : FieldValueMap['array']
+    : FieldValue<Extract<T['type'], string>, TCustomValues>;
