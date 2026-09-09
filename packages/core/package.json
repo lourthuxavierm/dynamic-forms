@@ -17,12 +17,15 @@
   "files": [
     "dist",
     "README.md",
+    "PERFORMANCE.md",
     "LICENSE",
     "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsup && tsc -p tsconfig.build.json",
     "test": "vitest run",
+    "bench": "vitest bench --run",
+    "bench:json": "vitest bench --run --outputJson=benchmark-results.json",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [

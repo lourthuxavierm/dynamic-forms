@@ -193,3 +193,9 @@ const runtime = new FormRuntime(schema, initialValues, {
 The plugin context exposes a deeply frozen schema, immutable form snapshots, copied condition state, and deeply frozen datasource state. It does not expose mutation methods. Hook failures are normalized, routed to `onPluginError`, and isolated; a failing plugin or error reporter cannot interrupt Core. Plugins whose setup fails are not activated, and duplicate or unnamed plugins are rejected.
 
 `createLifecycleAuditPlugin` is the official minimal example. It records phase, operation, paths, and async metadata but excludes field values by default.
+
+## Performance
+
+Core ships repeatable benchmarks and conservative CI budgets. Run `pnpm --filter @dynamic-form-engine/core bench` for the human-readable benchmark matrix, `bench:json` for a machine-readable report. `CORE_PERFORMANCE_BUDGETS` exposes the CI guardrails.
+
+See [PERFORMANCE.md](./PERFORMANCE.md) for scenarios, budgets, the dated reference-machine baseline, known characteristics, and interpretation guidance.
