@@ -2,7 +2,7 @@ import { ConditionController } from '../conditions';
 import { DataSourceManager } from '../datasource';
 import { DependencyController } from '../dependencies';
 import { CorePluginHost, type CorePluginContext } from '../plugins';
-import { createInitialValues, normalizeSchemaOrThrow, type FormSchema, type NormalizedFormSchema } from '../schema';
+import { compileSchemaOrThrow, explainField, mergeSchemaInitialValues, type CompiledFieldExplanation, type CompiledFormSchema, type FormSchema, type NormalizedFormSchema } from '../schema';
 import {
   dynamicPath,
   FormStore,
@@ -24,6 +24,7 @@ import type {
 
 export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   readonly schema: NormalizedFormSchema;
+  readonly compiledSchema: CompiledFormSchema;
   readonly store: FormStore<TValues>;
   readonly dataSources: DataSourceManager;
   readonly dependencies: DependencyController<TValues>;
@@ -37,11 +38,12 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
 
   constructor(schema: FormSchema, initialValues: TValues = {} as TValues, options: FormRuntimeOptions<TValues> = {}) {
     if (options.onLifecycle) this.lifecycleListeners.add(options.onLifecycle);
-    this.schema = normalizeSchemaOrThrow(schema, options.schema);
-    const normalizedInitialValues = { ...createInitialValues(this.schema), ...initialValues } as TValues;
-    this.store = new FormStore(normalizedInitialValues, options.store);
+    this.compiledSchema = compileSchemaOrThrow(schema, options.schema);
+    this.schema = this.compiledSchema.schema;
+    const normalizedInitialValues = mergeSchemaInitialValues<TValues>(this.schema, initialValues);
+    this.store = new FormStore<TValues>(normalizedInitialValues, options.store);
     this.dataSources = new DataSourceManager(options.dataSources);
-    this.dependencies = new DependencyController(this.store, this.schema, {
+    this.dependencies = new DependencyController(this.store, this.compiledSchema, {
       onEvaluate: (paths) => {
         if (this.ready) this.emitLifecycle({ phase: 'dependencies', paths, async: false });
       },
@@ -59,7 +61,7 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
     });
     this.conditions = new ConditionController(
       this.store,
-      schema,
+      this.compiledSchema,
       options.onConditionChange,
       (paths) => {
         if (this.ready) this.emitLifecycle({ phase: 'conditions', paths, async: false });
@@ -111,6 +113,11 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
     return () => this.lifecycleListeners.delete(listener);
   }
 
+  explainField(path: string): CompiledFieldExplanation {
+    this.assertActive();
+    return explainField(this.compiledSchema, path);
+  }
+
   setValue<TPath extends Path<TValues>>(
     path: TPath,
     value: PathValue<TValues, TPath>,
@@ -147,7 +154,8 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
     const mutation = this.pluginHost.interceptMutation({ type: 'reset', values, options });
     if ('cancel' in mutation) return;
     this.emitLifecycle({ phase: 'mutation', operation: 'reset', async: false });
-    this.store.reset(mutation.values as TValues | undefined, mutation.options);
+    const resetValues = mutation.values ? mergeSchemaInitialValues<TValues>(this.schema, mutation.values as Partial<TValues>) : undefined;
+    this.store.reset(resetValues, mutation.options);
   }
 
   async validate(validator: FormValidator<TValues>, options?: ValidateOptions): Promise<boolean> {

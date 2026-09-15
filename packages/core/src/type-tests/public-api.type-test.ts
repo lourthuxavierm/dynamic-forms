@@ -5,8 +5,9 @@ import type {
   FormEvent,
   InferSchemaType,
   Validator,
+  StrictFormSchema,
 } from '../index';
-import { FieldRegistry } from '../index';
+import { defineFormSchema, definePortableFormSchema, FieldRegistry } from '../index';
 
 type Equal<TLeft, TRight> =
   (<T>() => T extends TLeft ? 1 : 2) extends (<T>() => T extends TRight ? 1 : 2)
@@ -68,3 +69,27 @@ void event;
 // @ts-expect-error event value type is string
 const invalidEvent: FormEvent<string> = { type: 'valueChange', value: 42 };
 void invalidEvent;
+
+const strictSchema = defineFormSchema({ schemaVersion: 1, id: 'strict', fields: [
+  { name: 'title', type: 'text', defaultValue: 'Draft', validation: { minLength: 2 } },
+  { name: 'amount', type: 'number', defaultValue: 1, validation: { min: 0 } },
+  { name: 'group', type: 'object', fields: [{ name: 'enabled', type: 'checkbox', defaultValue: false }] },
+] } as const);
+const strictContract: StrictFormSchema = strictSchema;
+void strictContract;
+// @ts-expect-error text defaults must be strings
+defineFormSchema({ schemaVersion: 1, id: 'bad-default', fields: [{ name: 'title', type: 'text', defaultValue: 1 }] } as const);
+// @ts-expect-error string validation does not accept numeric min
+defineFormSchema({ schemaVersion: 1, id: 'bad-validation', fields: [{ name: 'title', type: 'text', validation: { min: 1 } }] } as const);
+// @ts-expect-error value fields cannot contain structural children
+defineFormSchema({ schemaVersion: 1, id: 'bad-children', fields: [{ name: 'title', type: 'text', fields: [{ name: 'nested', type: 'text' }] }] } as const);
+// @ts-expect-error structural fields require children
+defineFormSchema({ schemaVersion: 1, id: 'bad-object', fields: [{ name: 'group', type: 'object' }] } as const);
+// @ts-expect-error persisted strict schemas must carry an explicit format version
+defineFormSchema({ id: 'missing-version', fields: [{ name: 'title', type: 'text' }] } as const);
+
+definePortableFormSchema({ schemaVersion: 1, id: 'portable', fields: [{ name: 'country', type: 'select', dataSource: { type: 'url', url: '/countries', params: { active: true } }, metadata: { audit: 'country' } }] } as const);
+// @ts-expect-error portable schemas cannot contain function data sources
+definePortableFormSchema({ schemaVersion: 1, id: 'runtime-only', fields: [{ name: 'country', type: 'select', dataSource: { type: 'function', load: async () => [] } }] } as const);
+// @ts-expect-error portable metadata must be JSON-safe
+definePortableFormSchema({ schemaVersion: 1, id: 'bad-metadata', fields: [{ name: 'title', type: 'text', metadata: { callback: () => undefined } }] } as const);

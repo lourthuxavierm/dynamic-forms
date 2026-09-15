@@ -189,6 +189,29 @@ describe('Core Schema', () => {
 
     expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
   });
+  it('validates nested datasource parameter references before runtime', () => {
+    const valid = validateSchema({ id: 'source-refs', fields: [
+      { name: 'country', type: 'text' },
+      { name: 'state', type: 'select', dataSource: { type: 'url', url: '/states', params: { country: '$country', nested: { source: { fromField: 'country' } } } } },
+    ] });
+    expect(valid.valid).toBe(true);
+
+    const invalid = validateSchema({ id: 'bad-source-ref', fields: [
+      { name: 'state', type: 'select', dataSource: { type: 'url', url: '/states', params: { country: { fromField: 'missing' } } } },
+    ] });
+    expect(invalid.errors).toContainEqual(expect.objectContaining({ message: 'Unknown data source parameter field: missing' }));
+  });
+  it('rejects built-in default type mismatches and validates option identity recursively', () => {
+    const result = validateSchema({ id: 'value-contracts', fields: [
+      { name: 'title', type: 'text', defaultValue: 42 },
+      { name: 'count', type: 'number', defaultValue: '1' },
+      { name: 'period', type: 'date-range', defaultValue: ['2026-01-01', 2] },
+      { name: 'upload', type: 'file', defaultValue: { name: 'missing-size-and-type' } },
+      { name: 'choice', type: 'select', options: [{ label: 'Number', value: 1 }, { label: 'String', value: '1' }, { label: 'Group', value: 'group', children: [{ label: 'A', value: 'a' }, { label: 'Again', value: 'a' }] }] },
+    ] });
+    expect(result.errors.filter((error) => error.code === 'DEFAULT_VALUE_TYPE_MISMATCH')).toHaveLength(4);
+    expect(result.errors.filter((error) => error.code === 'OPTION_DUPLICATE_VALUE')).toHaveLength(1);
+  });
   it('rejects invalid structure, references, rule ranges, option values, and data sources', () => {
     const schema: FormSchema = {
       id: 'invalid-contract',

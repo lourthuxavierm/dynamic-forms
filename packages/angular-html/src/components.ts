@@ -31,7 +31,7 @@ import type { DynamicFormFacade } from '@dynamic-form-engine/angular';
 })
 export class DynamicHtmlFieldComponent {
   readonly field = input.required<FieldSchema>();
-  readonly form = input.required<DynamicFormFacade>();
+  readonly form = input.required<Pick<DynamicFormFacade, 'field'>>();
   readonly binding = computed(() => this.form().field(this.field().name));
   readonly visible = computed(() => this.binding().visible());
   readonly disabled = computed(() => this.binding().disabled());

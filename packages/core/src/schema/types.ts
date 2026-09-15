@@ -165,6 +165,8 @@ export type FieldConfig =
   | FileFieldConfig
   | Record<string, unknown>;
 export interface FieldSchema<TCustomValue = never> {
+  /** Stable builder identity, independent from the data-binding name. */
+  id?: string;
   name: string;
   type: FieldType | string;
   label?: string;
@@ -193,6 +195,8 @@ export interface FieldSchema<TCustomValue = never> {
    * Custom metadata for the field.
    */
   metadata?: Record<string, unknown>;
+  /** Namespaced renderer or application extensions. */
+  extensions?: Readonly<Record<string, unknown>>;
 }
 
 export interface FormSchema<TCustomValue = never> {
@@ -273,6 +277,78 @@ export type FieldValue<
   : TType extends keyof FieldValueMap
     ? FieldValueMap[TType]
     : unknown;
+
+export interface StringValidationRules { required?: boolean; minLength?: number; maxLength?: number; pattern?: string; }
+export interface NumberValidationRules { required?: boolean; min?: number; max?: number; multipleOf?: number; }
+export interface ArrayValidationRules { required?: boolean; minItems?: number; maxItems?: number; uniqueItems?: boolean; }
+export interface BooleanValidationRules { required?: boolean; }
+
+type StructuralFieldType = 'object' | 'array';
+type StringFieldType = 'text' | 'textarea' | 'password' | 'email' | 'url' | 'phone' | 'otp' | 'pin' | 'mask';
+type NumberFieldType = 'number' | 'integer' | 'decimal' | 'currency' | 'percentage' | 'slider' | 'rating' | 'year';
+type BooleanFieldType = 'checkbox' | 'switch' | 'toggle-button';
+type CollectionFieldType = 'multi-select' | 'checkbox-group' | 'toggle-button-group' | 'tree-checkbox' | 'multi-file';
+type ScalarFieldType = Exclude<keyof FieldValueMap, StructuralFieldType | StringFieldType | NumberFieldType | BooleanFieldType | CollectionFieldType>;
+type CommonFieldProperties = Pick<FieldSchema,
+  'id' | 'name' | 'label' | 'placeholder' | 'description' | 'disabled' | 'readOnly' |
+  'visibleWhen' | 'disabledWhen' | 'requiredWhen' | 'readOnlyWhen' | 'hiddenValuePolicy' |
+  'dependsOn' | 'resetOnDependencyChange' | 'metadata' | 'extensions'
+>;
+type ValidationFor<TType extends keyof FieldValueMap> =
+  TType extends StringFieldType ? StringValidationRules :
+  TType extends NumberFieldType ? NumberValidationRules :
+  TType extends CollectionFieldType ? ArrayValidationRules :
+  TType extends BooleanFieldType ? BooleanValidationRules : FieldValidation;
+type ConfigFor<TType extends keyof FieldValueMap> =
+  TType extends StringFieldType ? TextFieldConfig | MaskFieldConfig | SegmentedFieldConfig :
+  TType extends NumberFieldType ? NumericFieldConfig | CurrencyFieldConfig | RangeFieldConfig | YearFieldConfig :
+  TType extends CollectionFieldType | ScalarFieldType ? ChoiceFieldConfig | DateTimeFieldConfig | FileFieldConfig : never;
+
+export type ValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> = CommonFieldProperties & {
+  type: TType;
+  defaultValue?: FieldValueMap[TType];
+  validation?: ValidationFor<TType>;
+  config?: ConfigFor<TType>;
+  options?: readonly FieldOption[];
+  dataSource?: DataSourceConfig;
+  fields?: never;
+};
+export interface ObjectFieldSchema extends CommonFieldProperties { type: 'object'; fields: readonly FormField[]; defaultValue?: Record<string, unknown>; validation?: BooleanValidationRules; options?: never; dataSource?: never; }
+export interface ArrayFieldSchema extends CommonFieldProperties { type: 'array'; fields: readonly FormField[]; defaultValue?: unknown[]; validation?: ArrayValidationRules; config?: ArrayFieldConfig; options?: never; dataSource?: never; }
+export type FormField =
+  | ValueFieldSchema<StringFieldType>
+  | ValueFieldSchema<NumberFieldType>
+  | ValueFieldSchema<BooleanFieldType>
+  | ValueFieldSchema<CollectionFieldType>
+  | ValueFieldSchema<ScalarFieldType>
+  | ObjectFieldSchema
+  | ArrayFieldSchema;
+
+/** Strict persisted-schema authoring contract. Use FieldSchema for registered programmatic custom controls. */
+export interface StrictFormSchema<TFields extends readonly FormField[] = readonly FormField[]> extends Omit<FormSchema, 'fields' | 'schemaVersion'> { schemaVersion: 1; fields: TFields; }
+export function defineFormSchema<const TFields extends readonly FormField[]>(schema: StrictFormSchema<TFields>): StrictFormSchema<TFields> { return schema; }
+
+export type JsonPrimitive = string | number | boolean | null;
+export type JsonValue = JsonPrimitive | { readonly [key: string]: JsonValue } | readonly JsonValue[];
+export type PortableDataSourceConfig<T extends JsonValue = JsonValue> =
+  | { type: 'static'; options: readonly T[]; cache?: boolean; cacheKey?: string }
+  | { type: 'url'; url: string; method?: 'GET' | 'POST'; params?: Readonly<Record<string, JsonValue>>; searchParam?: string; pageParam?: string; pageSizeParam?: string; cache?: boolean; cacheKey?: string };
+type PortableProperties = {
+  metadata?: Readonly<Record<string, JsonValue>>;
+  extensions?: Readonly<Record<string, JsonValue>>;
+};
+type PortableValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> =
+  Omit<ValueFieldSchema<TType>, 'dataSource' | 'metadata' | 'extensions'> & PortableProperties & { dataSource?: PortableDataSourceConfig };
+export type PortableFormField =
+  | PortableValueFieldSchema<StringFieldType>
+  | PortableValueFieldSchema<NumberFieldType>
+  | PortableValueFieldSchema<BooleanFieldType>
+  | PortableValueFieldSchema<CollectionFieldType>
+  | PortableValueFieldSchema<ScalarFieldType>
+  | (Omit<ObjectFieldSchema, 'fields' | 'metadata' | 'extensions'> & PortableProperties & { fields: readonly PortableFormField[] })
+  | (Omit<ArrayFieldSchema, 'fields' | 'metadata' | 'extensions'> & PortableProperties & { fields: readonly PortableFormField[] });
+export interface PortableFormSchema<TFields extends readonly PortableFormField[] = readonly PortableFormField[]> extends Omit<FormSchema, 'fields' | 'schemaVersion'> { schemaVersion: 1; fields: TFields; }
+export function definePortableFormSchema<const TFields extends readonly PortableFormField[]>(schema: PortableFormSchema<TFields>): PortableFormSchema<TFields> { return schema; }
 
 /** Infer form values from a const schema while retaining custom field-map support. */
 export type InferSchemaType<

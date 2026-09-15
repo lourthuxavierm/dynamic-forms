@@ -5,6 +5,8 @@ import {
   CURRENT_SCHEMA_VERSION,
   SchemaNormalizationError,
   createInitialValues,
+  createArrayItemValue,
+  mergeSchemaInitialValues,
   normalizeSchema,
   normalizeSchemaOrThrow,
 } from './normalization';
@@ -72,6 +74,17 @@ describe('schema normalization and versioning', () => {
     });
   });
 
+  it('deeply merges explicit object values and creates fresh array item defaults', () => {
+    const schema = normalizeSchemaOrThrow({ id: 'nested-defaults', fields: [
+      { name: 'profile', type: 'object', fields: [{ name: 'name', type: 'text', defaultValue: 'Anonymous' }, { name: 'address', type: 'object', fields: [{ name: 'city', type: 'text', defaultValue: 'Chennai' }, { name: 'zip', type: 'text', defaultValue: '600001' }] }] },
+      { name: 'contacts', type: 'array', fields: [{ name: 'kind', type: 'text', defaultValue: 'home' }, { name: 'value', type: 'text' }] },
+    ] });
+    expect(mergeSchemaInitialValues(schema, { profile: { address: { city: 'Pune' } } })).toEqual({ profile: { name: 'Anonymous', address: { city: 'Pune', zip: '600001' } }, contacts: [] });
+    const first = createArrayItemValue(schema, 'contacts') as Record<string, unknown>;
+    const second = createArrayItemValue(schema, 'contacts') as Record<string, unknown>;
+    expect(first).toEqual({ kind: 'home', value: '' }); expect(first).not.toBe(second);
+  });
+
   it('returns categorized diagnostics for invalid references, duplicates, and cycles', () => {
     const result = normalizeSchema({
       id: 'invalid',
@@ -86,8 +99,10 @@ describe('schema normalization and versioning', () => {
     expect(result.valid).toBe(false);
     expect(result.schema).toBeUndefined();
     expect(result.diagnostics.map((item) => item.code)).toEqual(expect.arrayContaining([
-      'duplicate-field', 'invalid-reference', 'dependency-cycle',
+      'FIELD_DUPLICATE', 'CONDITION_REFERENCE_NOT_FOUND', 'DEPENDENCY_CYCLE',
     ]));
+    expect(result.diagnostics.find((item) => item.code === 'CONDITION_REFERENCE_NOT_FOUND')).toMatchObject({ relatedPath: 'missing' });
+    expect(result.diagnostics.find((item) => item.code === 'DEPENDENCY_CYCLE')?.details).toMatchObject({ cycle: ['a', 'b', 'a'] });
     expect(() => normalizeSchemaOrThrow({
       id: 'cycle',
       fields: [
@@ -97,11 +112,21 @@ describe('schema normalization and versioning', () => {
     })).toThrow('Dependency cycle detected');
   });
 
+  it('returns structured warnings without preventing compilation', () => {
+    const result = normalizeSchema({ id: 'warnings', fields: [{ name: 'country', type: 'select' }, { name: 'token', type: 'hidden', validation: { required: true } }] });
+    expect(result.valid).toBe(true);
+    expect(result.schema).toBeDefined();
+    expect(result.diagnostics).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'SELECT_WITHOUT_OPTIONS', severity: 'warning', path: 'country' }),
+      expect.objectContaining({ code: 'HIDDEN_REQUIRED_FIELD', severity: 'warning', path: 'token' }),
+    ]));
+  });
+
   it('rejects future versions and reports missing migration paths', () => {
     expect(normalizeSchema({ id: 'future', schemaVersion: 2, fields: [] }).diagnostics[0]?.code)
-      .toBe('unsupported-schema-version');
+      .toBe('SCHEMA_UNSUPPORTED_VERSION');
     expect(normalizeSchema({ id: 'old', schemaVersion: 0, fields: [] }).diagnostics[0]?.code)
-      .toBe('missing-migration');
+      .toBe('SCHEMA_MIGRATION_MISSING');
   });
 
   it('runs explicit migrations in order and gives migrations immutable input', () => {
@@ -125,7 +150,7 @@ describe('schema normalization and versioning', () => {
       throw new Error('Expected normalization to fail');
     } catch (error) {
       expect(error).toBeInstanceOf(SchemaNormalizationError);
-      expect((error as SchemaNormalizationError).diagnostics[0]?.code).toBe('invalid-schema');
+      expect((error as SchemaNormalizationError).diagnostics[0]?.code).toBe('SCHEMA_INVALID');
     }
   });
 
