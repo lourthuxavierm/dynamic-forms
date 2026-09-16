@@ -3,6 +3,7 @@ import type {
   FieldValue,
   FieldValueMap,
   FormEvent,
+  InferFormValues,
   InferSchemaType,
   Validator,
   StrictFormSchema,
@@ -34,11 +35,26 @@ const customerSchema = {
 } as const;
 
 type CustomerValues = InferSchemaType<typeof customerSchema>;
+type CustomerValuesViaStableName = InferFormValues<typeof customerSchema>;
+type _StableInferenceName = Expect<Equal<CustomerValuesViaStableName, CustomerValues>>;
 type _Name = Expect<Equal<CustomerValues['name'], string>>;
 type _Age = Expect<Equal<CustomerValues['age'], number | null>>;
 type _Marketing = Expect<Equal<CustomerValues['marketing'], boolean>>;
 type _Tags = Expect<Equal<CustomerValues['tags'], Array<string | number | boolean>>>;
 type _City = Expect<Equal<CustomerValues['address']['city'], string>>;
+
+const nestedArraySchema = defineFormSchema({ schemaVersion: 1, id: 'nested-arrays', fields: [
+  { name: 'orders', type: 'array', fields: [
+    { name: 'product', type: 'text' },
+    { name: 'quantity', type: 'integer' },
+  ] },
+  { name: 'scores', type: 'array', metadata: { primitiveItems: true }, fields: [
+    { name: 'score', type: 'number' },
+  ] },
+] } as const);
+type NestedArrayValues = InferFormValues<typeof nestedArraySchema>;
+type _ArrayObject = Expect<Equal<NestedArrayValues['orders'][number], { product: string; quantity: number | null }>>;
+type _PrimitiveArray = Expect<Equal<NestedArrayValues['scores'][number], number | null>>;
 
 interface Renderer { render(): void }
 interface Metadata extends Record<string, unknown> { category: 'input' | 'display' }

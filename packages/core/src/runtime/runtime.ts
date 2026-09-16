@@ -2,7 +2,7 @@ import { ConditionController } from '../conditions';
 import { DataSourceManager } from '../datasource';
 import { DependencyController } from '../dependencies';
 import { CorePluginHost, type CorePluginContext } from '../plugins';
-import { compileSchemaOrThrow, explainField, mergeSchemaInitialValues, type CompiledFieldExplanation, type CompiledFormSchema, type FormSchema, type NormalizedFormSchema } from '../schema';
+import { compileSchemaOrThrow, explainField, mergeSchemaInitialValues, type CompiledFieldExplanation, type CompiledFormSchema, type FormSchema, type InferFormValues, type NormalizedFormSchema } from '../schema';
 import {
   dynamicPath,
   FormStore,
@@ -195,6 +195,22 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   private assertActive(): void {
     if (this.disposed) throw new Error('FormRuntime has been disposed.');
   }
+}
+
+/**
+ * Construct a runtime whose value contract is inferred from a const schema.
+ * Use the FormRuntime constructor directly when supplying an explicit value type.
+ */
+export function createFormRuntime<const TSchema extends FormSchema>(
+  schema: TSchema,
+  initialValues?: InferFormValues<TSchema>,
+  options?: FormRuntimeOptions<InferFormValues<TSchema>>,
+): FormRuntime<InferFormValues<TSchema>> {
+  return new FormRuntime<InferFormValues<TSchema>>(
+    schema,
+    initialValues ?? ({} as InferFormValues<TSchema>),
+    options,
+  );
 }
 
 function cloneReadonly<T>(value: T, seen = new WeakMap<object, unknown>()): T {

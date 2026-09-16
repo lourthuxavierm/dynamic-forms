@@ -351,7 +351,7 @@ export interface PortableFormSchema<TFields extends readonly PortableFormField[]
 export function definePortableFormSchema<const TFields extends readonly PortableFormField[]>(schema: PortableFormSchema<TFields>): PortableFormSchema<TFields> { return schema; }
 
 /** Infer form values from a const schema while retaining custom field-map support. */
-export type InferSchemaType<
+export type InferFormValues<
   T extends FormSchema<unknown> | readonly FieldSchema<unknown>[],
   TCustomValues extends Record<string, unknown> = Record<never, never>,
 > = T extends FormSchema<unknown>
@@ -359,6 +359,12 @@ export type InferSchemaType<
   : T extends readonly FieldSchema<unknown>[]
     ? InferFieldsType<T, TCustomValues>
     : never;
+
+/** @deprecated Use InferFormValues. */
+export type InferSchemaType<
+  T extends FormSchema<unknown> | readonly FieldSchema<unknown>[],
+  TCustomValues extends Record<string, unknown> = Record<never, never>,
+> = InferFormValues<T, TCustomValues>;
 
 type InferFieldsType<
   T extends readonly FieldSchema<unknown>[],
@@ -376,6 +382,10 @@ type InferFieldType<
     : FieldValueMap['object']
   : T['type'] extends 'array'
     ? T['fields'] extends readonly FieldSchema<unknown>[]
-      ? InferFieldsType<T['fields'], TCustomValues>[]
+      ? T extends { metadata: { primitiveItems: true } }
+        ? T['fields'] extends readonly [infer TItem extends FieldSchema<unknown>]
+          ? InferFieldType<TItem, TCustomValues>[]
+          : InferFieldsType<T['fields'], TCustomValues>[]
+        : InferFieldsType<T['fields'], TCustomValues>[]
       : FieldValueMap['array']
     : FieldValue<Extract<T['type'], string>, TCustomValues>;
