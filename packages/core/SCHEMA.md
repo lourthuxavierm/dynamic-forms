@@ -10,6 +10,8 @@ Fields may provide a stable `id` for builder selection, rename tracking, schema 
 
 `definePortableFormSchema()`, `PortableFormSchema`, `PortableFormField`, `JsonValue`, and `PortableDataSourceConfig` enforce the recursive JSON-safe persistence boundary. Function data sources and function-valued metadata/extensions are programmatic runtime configuration and are not portable. Deprecations retain their old behavior for the current major version and produce warnings before removal; incompatible schema or exported-type changes require a major release.
 
+Options use primitive string, number, or boolean identity. Equality follows `Object.is`, so `1` and `"1"` are distinct. Duplicate values are rejected among siblings at every tree level. Disabled state and nested children survive normalization. `PortableFieldOption` restricts option metadata recursively to JSON values.
+
 ## Frozen structural and path contract
 
 - Object and array fields use `fields` for child schemas in version 1. Arrays interpret those children as the shape of each item. The `item` spelling is not accepted in schema version 1.
@@ -57,3 +59,17 @@ const runtime = new FormRuntime(oldSchema, initialValues, {
 ```
 
 Each migration receives a deeply frozen clone, must return the declared target version, and is followed until `CURRENT_SCHEMA_VERSION`. Missing paths, loops, thrown errors, and incorrect target versions produce diagnostics. Migrations should be pure and deterministic; retain old migration steps for every persisted schema version your application supports.
+
+## Deprecation policy
+
+Deprecated properties continue to behave as documented throughout the current major line and emit `DEPRECATED_PROPERTY` with replacement and removal metadata. The legacy field-level `required` shortcut normalizes to `validation.required` and is scheduled for removal in 2.0. New schemas should only use `validation.required`.
+
+## Stable and internal boundaries
+
+Public authoring types, normalization and compilation entry points, diagnostics, migrations, path helpers, `CompiledFormSchema`'s readonly indexes, and `explainField()` are supported public contracts. Helper functions not exported from package entry points remain internal. New indexes may be added compatibly, but removing or changing an existing exported field requires semver review.
+
+## JSON Schema adapter boundary
+
+JSON Schema import/export belongs in an adapter package, not the Core runtime. An adapter can preserve primitive/object/array shape, requiredness, ranges, string constraints, enums, labels, and defaults. Conditions, dependency effects, datasource loaders, renderer extensions, custom controls, and runtime functions have no lossless standard JSON Schema representation and must be carried in namespaced extension keywords or reported as conversion diagnostics.
+
+See `EXAMPLES.md` for portable, nested, conditional, datasource, validation, and custom-control examples.

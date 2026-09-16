@@ -212,6 +212,15 @@ describe('Core Schema', () => {
     expect(result.errors.filter((error) => error.code === 'DEFAULT_VALUE_TYPE_MISMATCH')).toHaveLength(4);
     expect(result.errors.filter((error) => error.code === 'OPTION_DUPLICATE_VALUE')).toHaveLength(1);
   });
+  it('rejects invalid datasource pagination, cache, and debounce configuration', () => {
+    const result = validateSchema({ id: 'invalid-datasource-options', fields: [
+      { name: 'paged', type: 'select', dataSource: { type: 'url', url: '/items', pageParam: 'page' } },
+      { name: 'cached', type: 'select', dataSource: { type: 'url', url: '/items', cacheKey: 'items' } },
+      { name: 'search', type: 'async-autocomplete', config: { debounceMs: -1 } },
+    ] });
+    expect(result.errors.filter((error) => error.code === 'DATASOURCE_INVALID')).toHaveLength(2);
+    expect(result.errors).toContainEqual(expect.objectContaining({ code: 'FIELD_CONFIG_INVALID', path: 'search' }));
+  });
   it('rejects invalid structure, references, rule ranges, option values, and data sources', () => {
     const schema: FormSchema = {
       id: 'invalid-contract',

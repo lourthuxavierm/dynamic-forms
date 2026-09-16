@@ -122,6 +122,95 @@ describe('schema normalization and versioning', () => {
     ]));
   });
 
+  it('normalizes the deprecated required shortcut and reports its replacement', () => {
+    const result = normalizeSchema({ id: 'deprecated', fields: [{ name: 'name', type: 'text', required: true }] });
+    expect(result.schema?.fields[0].validation.required).toBe(true);
+    expect(result.diagnostics).toContainEqual(expect.objectContaining({
+      code: 'DEPRECATED_PROPERTY',
+      severity: 'warning',
+      path: 'name.required',
+      details: { property: 'required', replacement: 'validation.required', removal: '2.0.0' },
+    }));
+  });
+
+  it('keeps normalized output and diagnostic identity stable', () => {
+    const result = normalizeSchema({ id: 'snapshot', fields: [
+      { name: 'display_name', type: 'text', required: true },
+      { name: 'country', type: 'select' },
+    ] });
+    expect({
+      schema: result.schema,
+      diagnostics: result.diagnostics.map(({ code, severity, path, details }) => ({ code, severity, path, details })),
+    }).toMatchInlineSnapshot(`
+      {
+        "diagnostics": [
+          {
+            "code": "DEPRECATED_PROPERTY",
+            "details": {
+              "property": "required",
+              "removal": "2.0.0",
+              "replacement": "validation.required",
+            },
+            "path": "display_name.required",
+            "severity": "warning",
+          },
+          {
+            "code": "SELECT_WITHOUT_OPTIONS",
+            "details": undefined,
+            "path": "country",
+            "severity": "warning",
+          },
+        ],
+        "schema": {
+          "fields": [
+            {
+              "config": undefined,
+              "dataSource": undefined,
+              "defaultValue": "",
+              "dependsOn": [],
+              "disabledWhen": undefined,
+              "fields": [],
+              "hiddenValuePolicy": "preserve",
+              "label": "Display name",
+              "metadata": undefined,
+              "name": "display_name",
+              "options": [],
+              "readOnlyWhen": undefined,
+              "requiredWhen": undefined,
+              "resetOnDependencyChange": false,
+              "type": "text",
+              "validation": {
+                "required": true,
+              },
+              "visibleWhen": undefined,
+            },
+            {
+              "config": undefined,
+              "dataSource": undefined,
+              "defaultValue": null,
+              "dependsOn": [],
+              "disabledWhen": undefined,
+              "fields": [],
+              "hiddenValuePolicy": "preserve",
+              "label": "Country",
+              "metadata": undefined,
+              "name": "country",
+              "options": [],
+              "readOnlyWhen": undefined,
+              "requiredWhen": undefined,
+              "resetOnDependencyChange": false,
+              "type": "select",
+              "validation": {},
+              "visibleWhen": undefined,
+            },
+          ],
+          "id": "snapshot",
+          "schemaVersion": 1,
+        },
+      }
+    `);
+  });
+
   it('rejects future versions and reports missing migration paths', () => {
     expect(normalizeSchema({ id: 'future', schemaVersion: 2, fields: [] }).diagnostics[0]?.code)
       .toBe('SCHEMA_UNSUPPORTED_VERSION');

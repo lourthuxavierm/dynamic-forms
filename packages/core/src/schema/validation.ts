@@ -9,6 +9,7 @@ export type SchemaValidationCode =
   | 'OPTION_DUPLICATE_VALUE' | 'CONDITION_REFERENCE_NOT_FOUND'
   | 'DEPENDENCY_REFERENCE_NOT_FOUND' | 'DEPENDENCY_SELF_REFERENCE'
   | 'DATASOURCE_INVALID' | 'DATASOURCE_PARAMETER_REFERENCE_NOT_FOUND'
+  | 'FIELD_CONFIG_INVALID'
   | 'DEFAULT_VALUE_TYPE_MISMATCH';
 export interface SchemaValidationError {
   code: SchemaValidationCode;
@@ -42,7 +43,7 @@ function validateField(field: FieldSchema<unknown>, path: string, all: Map<strin
   if (field.fields && !structural) add(errors, 'FIELD_CHILDREN_NOT_ALLOWED', path, 'Only object and array fields may define child fields');
   if (structural && (!field.fields || !field.fields.length)) add(errors, 'FIELD_CHILDREN_REQUIRED', path, `${field.type} fields must define at least one child field`);
   validateDefaultValue(field, path, errors);
-  validateRules(field, path, errors); validateOptions(field, path, errors); validateReferences(field, path, all, errors); validateDataSource(field.dataSource, path, all, errors);
+  validateRules(field, path, errors); validateOptions(field, path, errors); validateReferences(field, path, all, errors); validateDataSource(field.dataSource, path, all, errors); validateConfig(field, path, errors);
 }
 function validateRules(field: FieldSchema<unknown>, path: string, errors: SchemaValidationError[]): void {
   const rules = field.validation; if (!rules) return;
@@ -106,7 +107,16 @@ function validateDataSource(source: DataSourceConfig | undefined, path: string, 
   if (source.type === 'function' && typeof source.load !== 'function') add(errors, 'DATASOURCE_INVALID', path, 'Function data sources require a load function');
   if (source.type === 'static' && !Array.isArray(source.options)) add(errors, 'DATASOURCE_INVALID', path, 'Static data sources require options');
   if (source.type === 'url' && !source.url?.trim()) add(errors, 'DATASOURCE_INVALID', path, 'URL data sources require a URL');
+  if ((source.pageParam && !source.pageSizeParam) || (!source.pageParam && source.pageSizeParam)) add(errors, 'DATASOURCE_INVALID', path, 'Pagination requires both pageParam and pageSizeParam');
+  const parameterNames = [source.searchParam, source.pageParam, source.pageSizeParam].filter((value): value is string => value !== undefined);
+  if (parameterNames.some((value) => !value.trim())) add(errors, 'DATASOURCE_INVALID', path, 'Data source parameter names must not be empty');
+  if (new Set(parameterNames).size !== parameterNames.length) add(errors, 'DATASOURCE_INVALID', path, 'Search and pagination parameter names must be distinct');
+  if (source.cacheKey !== undefined && !source.cache) add(errors, 'DATASOURCE_INVALID', path, 'cacheKey requires cache to be enabled');
   for (const reference of dataSourceReferences(source.params)) if (!hasSchemaPath(all, reference)) add(errors, 'DATASOURCE_PARAMETER_REFERENCE_NOT_FOUND', path, `Unknown data source parameter field: ${reference}`, reference);
+}
+function validateConfig(field: FieldSchema<unknown>, path: string, errors: SchemaValidationError[]): void {
+  const debounceMs = field.config && 'debounceMs' in field.config ? field.config.debounceMs : undefined;
+  if (debounceMs !== undefined && (typeof debounceMs !== 'number' || !Number.isFinite(debounceMs) || debounceMs < 0)) add(errors, 'FIELD_CONFIG_INVALID', path, 'debounceMs must be a finite non-negative number', undefined, { debounceMs });
 }
 function dataSourceReferences(params: Readonly<Record<string, unknown>> | undefined): readonly string[] {
   const references = new Set<string>(); const visit = (value: unknown): void => { if (typeof value === 'string' && value.startsWith('$') && value.length > 1) references.add(value.slice(1)); if (isRecord(value) && typeof value.fromField === 'string') references.add(value.fromField); if (Array.isArray(value)) value.forEach(visit); else if (isRecord(value)) Object.values(value).forEach(visit); }; visit(params); return [...references];

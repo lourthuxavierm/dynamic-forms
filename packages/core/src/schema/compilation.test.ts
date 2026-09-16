@@ -29,4 +29,58 @@ describe('schema compilation', () => {
     expect(runtime.conditions.getState('details')?.visible).toBe(false);
     runtime.setValue('enabled', true); expect(runtime.conditions.getState('details')?.visible).toBe(true); runtime.dispose();
   });
+  it('keeps the builder-facing compiled summary stable', () => {
+    const compiled = compileSchemaOrThrow({ id: 'summary', fields: [
+      { name: 'country', type: 'select', options: [{ label: 'India', value: 'IN' }] },
+      { name: 'state', type: 'select', dependsOn: ['country'], visibleWhen: { field: 'country', operator: 'equals', value: 'IN' }, dataSource: { type: 'url', url: '/states', params: { country: '$country' } }, validation: { required: true } },
+    ] });
+    const summary = {
+      fields: [...compiled.fieldsByPath.keys()],
+      dependencies: [...compiled.dependencyGraph.dependenciesByField],
+      conditions: [...compiled.conditionDependentsByField],
+      dataSources: [...compiled.dataSourceDependentsByField],
+      validation: [...compiled.validationByPath.keys()],
+      diagnostics: compiled.diagnostics.map(({ code, severity, path }) => ({ code, severity, path })),
+    };
+    expect(summary).toMatchInlineSnapshot(`
+      {
+        "conditions": [
+          [
+            "country",
+            [
+              "state",
+            ],
+          ],
+        ],
+        "dataSources": [
+          [
+            "country",
+            [
+              "state",
+            ],
+          ],
+        ],
+        "dependencies": [
+          [
+            "country",
+            [],
+          ],
+          [
+            "state",
+            [
+              "country",
+            ],
+          ],
+        ],
+        "diagnostics": [],
+        "fields": [
+          "country",
+          "state",
+        ],
+        "validation": [
+          "state",
+        ],
+      }
+    `);
+  });
 });

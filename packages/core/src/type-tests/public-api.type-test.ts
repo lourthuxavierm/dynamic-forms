@@ -105,7 +105,10 @@ defineFormSchema({ schemaVersion: 1, id: 'bad-object', fields: [{ name: 'group',
 defineFormSchema({ id: 'missing-version', fields: [{ name: 'title', type: 'text' }] } as const);
 
 definePortableFormSchema({ schemaVersion: 1, id: 'portable', fields: [{ name: 'country', type: 'select', dataSource: { type: 'url', url: '/countries', params: { active: true } }, metadata: { audit: 'country' } }] } as const);
+definePortableFormSchema({ schemaVersion: 1, id: 'portable-options', fields: [{ name: 'country', type: 'select', options: [{ label: 'India', value: 'IN', metadata: { region: 'Asia' }, children: [{ label: 'Tamil Nadu', value: 'TN' }] }] }] } as const);
 // @ts-expect-error portable schemas cannot contain function data sources
 definePortableFormSchema({ schemaVersion: 1, id: 'runtime-only', fields: [{ name: 'country', type: 'select', dataSource: { type: 'function', load: async () => [] } }] } as const);
 // @ts-expect-error portable metadata must be JSON-safe
 definePortableFormSchema({ schemaVersion: 1, id: 'bad-metadata', fields: [{ name: 'title', type: 'text', metadata: { callback: () => undefined } }] } as const);
+// @ts-expect-error portable option metadata must be JSON-safe
+definePortableFormSchema({ schemaVersion: 1, id: 'bad-option-metadata', fields: [{ name: 'country', type: 'select', options: [{ label: 'India', value: 'IN', metadata: { callback: () => undefined } }] }] } as const);

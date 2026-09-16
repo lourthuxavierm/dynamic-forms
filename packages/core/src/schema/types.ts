@@ -63,6 +63,7 @@ export interface FieldOption {
   value: string | number | boolean;
   disabled?: boolean;
   group?: string;
+  metadata?: Readonly<Record<string, unknown>>;
   children?: readonly FieldOption[];
 }
 
@@ -187,6 +188,8 @@ export interface FieldSchema<TCustomValue = never> {
   options?: readonly FieldOption[];
   config?: FieldConfig;
   validation?: FieldValidation;
+  /** @deprecated Use validation.required. Retained through the 1.x line. */
+  required?: boolean;
   /**
    * Child fields for 'object' or 'array' types.
    */
@@ -293,6 +296,7 @@ type CommonFieldProperties = Pick<FieldSchema,
   'id' | 'name' | 'label' | 'placeholder' | 'description' | 'disabled' | 'readOnly' |
   'visibleWhen' | 'disabledWhen' | 'requiredWhen' | 'readOnlyWhen' | 'hiddenValuePolicy' |
   'dependsOn' | 'resetOnDependencyChange' | 'metadata' | 'extensions'
+  | 'required'
 >;
 type ValidationFor<TType extends keyof FieldValueMap> =
   TType extends StringFieldType ? StringValidationRules :
@@ -330,6 +334,10 @@ export function defineFormSchema<const TFields extends readonly FormField[]>(sch
 
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | { readonly [key: string]: JsonValue } | readonly JsonValue[];
+export interface PortableFieldOption extends Omit<FieldOption, 'metadata' | 'children'> {
+  metadata?: Readonly<Record<string, JsonValue>>;
+  children?: readonly PortableFieldOption[];
+}
 export type PortableDataSourceConfig<T extends JsonValue = JsonValue> =
   | { type: 'static'; options: readonly T[]; cache?: boolean; cacheKey?: string }
   | { type: 'url'; url: string; method?: 'GET' | 'POST'; params?: Readonly<Record<string, JsonValue>>; searchParam?: string; pageParam?: string; pageSizeParam?: string; cache?: boolean; cacheKey?: string };
@@ -338,7 +346,10 @@ type PortableProperties = {
   extensions?: Readonly<Record<string, JsonValue>>;
 };
 type PortableValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> =
-  Omit<ValueFieldSchema<TType>, 'dataSource' | 'metadata' | 'extensions'> & PortableProperties & { dataSource?: PortableDataSourceConfig };
+  Omit<ValueFieldSchema<TType>, 'dataSource' | 'metadata' | 'extensions' | 'options'> & PortableProperties & {
+    dataSource?: PortableDataSourceConfig;
+    options?: readonly PortableFieldOption[];
+  };
 export type PortableFormField =
   | PortableValueFieldSchema<StringFieldType>
   | PortableValueFieldSchema<NumberFieldType>

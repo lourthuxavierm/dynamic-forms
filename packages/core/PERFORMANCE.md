@@ -47,10 +47,23 @@ Environment: Windows x64, Node.js 24.15.0, Intel Core i5-6300U 2.40 GHz (4 logic
 | Issue 100 rapid datasource searches | 7.50 ms | 9.39 ms |
 | Reset 5,000 fields | 19.35 ms | 22.41 ms |
 
+Additional compiler baseline from the P1 schema pass on the same class of environment:
+
+| Scenario | Mean |
+|---|---:|
+| Compile 100 fields | 0.97 ms |
+| Compile 500 fields | 3.87 ms |
+| Compile 1,000 fields | 7.92 ms |
+| Compile 5,000 fields | 44.75 ms |
+| Compiled lookup in 5,000 fields | 0.0001 ms |
+| Raw scan in 5,000 fields | 0.0808 ms |
+
+The measured compiled lookup was approximately 692 times faster than the equivalent raw scan. Treat ratios as directional because sub-microsecond timings are particularly sensitive to runtime and hardware.
+
 The current batch path optimizes consistency and notification count, not raw mutation throughput: it performs the same immutable state work as individual updates but emits one final notification. This is an explicit performance characteristic rather than an undocumented assumption.
 
 ## Coverage
 
-The benchmark matrix covers 100, 500, 1,000, and 5,000-field forms; nested objects; large arrays; 100 conditional fields; a 100-field dependency chain; repeated mutations; batched mutations; validation-heavy forms; rapid stale-safe datasource requests; reset; initialization; cloning/freezing; notification counts; and retained heap.
+The benchmark matrix covers 100, 500, 1,000, and 5,000-field forms; schema compilation at each size; compiled-index lookup compared with raw field scanning; nested objects; large arrays; 100 conditional fields; a 100-field dependency chain; repeated mutations; batched mutations; validation-heavy forms; rapid stale-safe datasource requests; reset; initialization; cloning/freezing; notification counts; and retained heap.
 
 For application profiling, measure end-to-end renderer work separately. Core benchmarks intentionally exclude React, Angular, network latency, and DOM rendering.

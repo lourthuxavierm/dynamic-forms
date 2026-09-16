@@ -6,7 +6,7 @@ import type { FieldOption, FieldSchema, FieldValidation, FieldValue, FormSchema 
 import { validateSchema, type SchemaValidationCode } from './validation';
 
 export const CURRENT_SCHEMA_VERSION = 1 as const;
-export type SchemaDiagnosticCode = SchemaValidationCode | 'SCHEMA_INVALID' | 'SCHEMA_UNSUPPORTED_VERSION' | 'SCHEMA_MIGRATION_MISSING' | 'DEPENDENCY_CYCLE' | 'SELECT_WITHOUT_OPTIONS' | 'HIDDEN_REQUIRED_FIELD';
+export type SchemaDiagnosticCode = SchemaValidationCode | 'SCHEMA_INVALID' | 'SCHEMA_UNSUPPORTED_VERSION' | 'SCHEMA_MIGRATION_MISSING' | 'DEPENDENCY_CYCLE' | 'SELECT_WITHOUT_OPTIONS' | 'HIDDEN_REQUIRED_FIELD' | 'DEPRECATED_PROPERTY';
 export interface SchemaDiagnostic {
   code: SchemaDiagnosticCode;
   severity: 'error' | 'warning' | 'info';
@@ -19,7 +19,7 @@ export interface SchemaDiagnostic {
 }
 export interface SchemaMigration { from: number; to: number; migrate(schema: Readonly<Record<string, unknown>>): unknown; }
 export interface NormalizeSchemaOptions { migrations?: readonly SchemaMigration[]; throwOnError?: boolean; }
-export type NormalizedFieldSchema<TCustomValue = never> = Readonly<Omit<FieldSchema<TCustomValue>, 'label' | 'defaultValue' | 'hiddenValuePolicy' | 'dependsOn' | 'resetOnDependencyChange' | 'dataSource' | 'options' | 'validation' | 'fields'> & {
+export type NormalizedFieldSchema<TCustomValue = never> = Readonly<Omit<FieldSchema<TCustomValue>, 'label' | 'defaultValue' | 'hiddenValuePolicy' | 'dependsOn' | 'resetOnDependencyChange' | 'dataSource' | 'options' | 'validation' | 'fields' | 'required'> & {
   label: string; defaultValue: FieldValue | TCustomValue | undefined;
   hiddenValuePolicy: 'preserve' | 'clear' | 'reset'; dependsOn: readonly string[];
   resetOnDependencyChange: boolean; dataSource?: Readonly<DataSourceConfig>;
@@ -114,6 +114,7 @@ function migrateToCurrent(input: unknown, migrations: readonly SchemaMigration[]
 }
 
 function normalizeField<T>(field: FieldSchema<T>): NormalizedFieldSchema<T> {
+  const { required: _deprecatedRequired, ...canonicalField } = field;
   const fields = (field.fields ?? []).map(normalizeField);
   const source = field.dataSource ? {
     ...field.dataSource, type: field.dataSource.type ?? inferSource(field.dataSource),
@@ -122,12 +123,12 @@ function normalizeField<T>(field: FieldSchema<T>): NormalizedFieldSchema<T> {
     options: field.dataSource.options ? [...field.dataSource.options] : field.dataSource.options,
   } : undefined;
   return deepFreeze({
-    ...field, label: field.label ?? humanize(field.name),
+    ...canonicalField, label: field.label ?? humanize(field.name),
     defaultValue: field.defaultValue !== undefined ? clone(field.defaultValue) : defaultValue(field.type, fields),
     hiddenValuePolicy: field.hiddenValuePolicy ?? 'preserve',
     dependsOn: [...new Set((field.dependsOn ?? []).map(normalizePath))],
     resetOnDependencyChange: field.resetOnDependencyChange ?? false,
-    options: (field.options ?? []).map(normalizeOption), validation: { ...(field.validation ?? {}) }, fields, dataSource: source,
+    options: (field.options ?? []).map(normalizeOption), validation: { ...(field.validation ?? {}), ...(field.required !== undefined && field.validation?.required === undefined ? { required: field.required } : {}) }, fields, dataSource: source,
     visibleWhen: copyCondition(field.visibleWhen), disabledWhen: copyCondition(field.disabledWhen),
     requiredWhen: copyCondition(field.requiredWhen), readOnlyWhen: copyCondition(field.readOnlyWhen),
     config: field.config ? { ...field.config } : field.config, metadata: field.metadata ? { ...field.metadata } : field.metadata,
@@ -176,7 +177,8 @@ function collectWarnings(fields: readonly FieldSchema<unknown>[], parent: string
   for (const field of fields) {
     const path = parent ? `${parent}.${field.name}` : field.name;
     if (['select', 'multi-select', 'radio', 'radio-group'].includes(field.type) && !field.options?.length && !field.dataSource) diagnostics.push({ code: 'SELECT_WITHOUT_OPTIONS', severity: 'warning', path, message: 'Selection field has neither options nor a data source.' });
-    if (field.type === 'hidden' && field.validation?.required) diagnostics.push({ code: 'HIDDEN_REQUIRED_FIELD', severity: 'warning', path, message: 'A permanently hidden field is required.' });
+    if (field.type === 'hidden' && (field.validation?.required ?? field.required)) diagnostics.push({ code: 'HIDDEN_REQUIRED_FIELD', severity: 'warning', path, message: 'A permanently hidden field is required.' });
+    if (field.required !== undefined) diagnostics.push({ code: 'DEPRECATED_PROPERTY', severity: 'warning', path: `${path}.required`, message: 'required is deprecated; use validation.required instead.', details: { property: 'required', replacement: 'validation.required', removal: '2.0.0' } });
     collectWarnings(field.fields ?? [], path, diagnostics);
   }
 }

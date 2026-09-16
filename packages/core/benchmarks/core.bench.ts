@@ -5,6 +5,7 @@ import {
   DependencyController,
   FormStore,
   createFormValidator,
+  compileSchemaOrThrow,
   type FormSchema,
 } from '../src/index';
 
@@ -44,6 +45,25 @@ describe('conditions and dependencies', () => {
     const controller = new DependencyController(store, dependencySchema);
     store.setValue('field0', 'updated');
     controller.dispose();
+  }, options);
+});
+
+describe('schema compilation and compiled lookup', () => {
+  for (const count of [100, 500, 1_000, 5_000]) {
+    const schema = createFlatSchema(count);
+    bench(`compile ${count} fields`, () => {
+      compileSchemaOrThrow(schema);
+    }, options);
+  }
+
+  const compiled = compileSchemaOrThrow(createFlatSchema(5_000));
+  bench('lookup one field in a 5000-field compiled index', () => {
+    compiled.fieldsByPath.get('field4999');
+  }, options);
+
+  const rawFields = createFlatSchema(5_000).fields;
+  bench('scan 5000 raw fields for one field', () => {
+    rawFields.find((field) => field.name === 'field4999');
   }, options);
 });
 
