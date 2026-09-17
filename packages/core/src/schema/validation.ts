@@ -1,5 +1,6 @@
 import type { FieldCondition } from '../conditions';
 import type { DataSourceConfig } from '../datasource';
+import { normalizePath, parsePath } from '../store';
 import type { FieldOption, FieldSchema, FormSchema } from './types';
 
 export type SchemaValidationCode =
@@ -9,8 +10,10 @@ export type SchemaValidationCode =
   | 'OPTION_DUPLICATE_VALUE' | 'CONDITION_REFERENCE_NOT_FOUND'
   | 'DEPENDENCY_REFERENCE_NOT_FOUND' | 'DEPENDENCY_SELF_REFERENCE'
   | 'DATASOURCE_INVALID' | 'DATASOURCE_PARAMETER_REFERENCE_NOT_FOUND'
+  | 'FIELD_REFERENCE_INVALID' | 'FIELD_REFERENCE_INDEX_NOT_SUPPORTED'
+  | 'ARRAY_ITEM_BEHAVIOR_NOT_SUPPORTED'
   | 'FIELD_CONFIG_INVALID'
-  | 'DEFAULT_VALUE_TYPE_MISMATCH';
+  | 'DEFAULT_VALUE_TYPE_MISMATCH' | 'DEFAULT_VALUE_UNKNOWN_KEY';
 export interface SchemaValidationError {
   code: SchemaValidationCode;
   path: string;
@@ -42,6 +45,7 @@ function validateField(field: FieldSchema<unknown>, path: string, all: Map<strin
   const structural = field.type === 'object' || field.type === 'array';
   if (field.fields && !structural) add(errors, 'FIELD_CHILDREN_NOT_ALLOWED', path, 'Only object and array fields may define child fields');
   if (structural && (!field.fields || !field.fields.length)) add(errors, 'FIELD_CHILDREN_REQUIRED', path, `${field.type} fields must define at least one child field`);
+  if (isArrayDescendant(all, path) && hasRuntimeReferenceBehavior(field)) add(errors, 'ARRAY_ITEM_BEHAVIOR_NOT_SUPPORTED', path, 'Conditions, dependencies, and data sources on array item fields require runtime item compilation and are not supported in persisted schemas');
   validateDefaultValue(field, path, errors);
   validateRules(field, path, errors); validateOptions(field, path, errors); validateReferences(field, path, all, errors); validateDataSource(field.dataSource, path, all, errors); validateConfig(field, path, errors);
 }
@@ -66,7 +70,9 @@ function validateOptionList(options: readonly FieldOption[], path: string, error
 }
 function validateDefaultValue(field: FieldSchema<unknown>, path: string, errors: SchemaValidationError[]): void {
   if (field.defaultValue === undefined) return;
-  const value = field.defaultValue;
+  validateDefaultNode(field, field.defaultValue, path, errors);
+}
+function validateDefaultNode(field: FieldSchema<unknown>, value: unknown, path: string, errors: SchemaValidationError[]): void {
   const strings = ['text', 'textarea', 'password', 'email', 'url', 'phone', 'otp', 'pin', 'mask'];
   const numbers = ['number', 'integer', 'decimal', 'currency', 'percentage', 'slider', 'rating', 'year'];
   const booleans = ['checkbox', 'switch', 'toggle-button'];
@@ -85,19 +91,58 @@ function validateDefaultValue(field: FieldSchema<unknown>, path: string, errors:
   else if (field.type === 'hidden') valid = value === null || ['string', 'number', 'boolean'].includes(typeof value);
   else if (field.type === 'file' || field.type === 'camera') valid = value === null || isFileValue(value);
   else if (field.type === 'multi-file') valid = Array.isArray(value) && value.every(isFileValue);
-  if (!valid) add(errors, 'DEFAULT_VALUE_TYPE_MISMATCH', path, `Default value does not match field type: ${field.type}`, undefined, { fieldType: field.type, actualType: Array.isArray(value) ? 'array' : value === null ? 'null' : typeof value });
+  if (!valid) {
+    add(errors, 'DEFAULT_VALUE_TYPE_MISMATCH', path, `Default value does not match field type: ${field.type}`, undefined, { fieldType: field.type, actualType: valueType(value) });
+    return;
+  }
+  if (field.type === 'object' && isRecord(value)) validateObjectDefault(field.fields ?? [], value, path, errors);
+  if (field.type === 'array' && Array.isArray(value)) validateArrayDefault(field, value, path, errors);
+}
+function validateObjectDefault(children: readonly FieldSchema<unknown>[], value: Readonly<Record<string, unknown>>, path: string, errors: SchemaValidationError[]): void {
+  const fields = new Map(children.map((child) => [child.name, child]));
+  for (const [key, nested] of Object.entries(value)) {
+    const child = fields.get(key);
+    const childPath = `${path}.${key}`;
+    if (!child) {
+      add(errors, 'DEFAULT_VALUE_UNKNOWN_KEY', childPath, `Default value contains an unknown field: ${key}`, undefined, { key });
+      continue;
+    }
+    validateDefaultNode(child, nested, childPath, errors);
+  }
+}
+function validateArrayDefault(field: FieldSchema<unknown>, value: readonly unknown[], path: string, errors: SchemaValidationError[]): void {
+  const children = field.fields ?? [];
+  if (field.metadata?.primitiveItems === true && children.length === 1) {
+    value.forEach((item, index) => validateDefaultNode(children[0], item, `${path}.${index}`, errors));
+    return;
+  }
+  value.forEach((item, index) => {
+    const itemPath = `${path}.${index}`;
+    if (!isRecord(item)) {
+      add(errors, 'DEFAULT_VALUE_TYPE_MISMATCH', itemPath, 'Array item default must be an object matching the declared child fields', undefined, { fieldType: 'object', actualType: valueType(item) });
+      return;
+    }
+    validateObjectDefault(children, item, itemPath, errors);
+  });
 }
 function validateReferences(field: FieldSchema<unknown>, path: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
   for (const condition of [field.visibleWhen, field.disabledWhen, field.requiredWhen, field.readOnlyWhen]) validateCondition(condition, path, all, errors);
   for (const dependency of field.dependsOn ?? []) {
-    if (!hasSchemaPath(all, dependency)) add(errors, 'DEPENDENCY_REFERENCE_NOT_FOUND', path, `Unknown dependency field: ${dependency}`, dependency);
-    if (dependency === path) add(errors, 'DEPENDENCY_SELF_REFERENCE', path, 'A field cannot depend on itself', dependency);
+    if (!validateReferencePath(dependency, path, all, errors)) continue;
+    const canonical = normalizePath(dependency);
+    if (!hasSchemaPath(all, canonical)) add(errors, 'DEPENDENCY_REFERENCE_NOT_FOUND', path, `Unknown dependency field: ${dependency}`, canonical);
+    if (canonical === path) add(errors, 'DEPENDENCY_SELF_REFERENCE', path, 'A field cannot depend on itself', canonical);
   }
 }
-function hasSchemaPath(all: Map<string, FieldSchema<unknown>>, path: string): boolean { if (all.has(path)) return true; return all.has(path.replace(/\[(?:\d+)\]/g, '').split('.').filter((segment) => !/^\d+$/.test(segment)).join('.')); }
+function hasSchemaPath(all: Map<string, FieldSchema<unknown>>, path: string): boolean { return all.has(path); }
 function validateCondition(condition: FieldCondition | undefined, path: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
   if (!condition) return;
-  if ('field' in condition) { if (!hasSchemaPath(all, condition.field)) add(errors, 'CONDITION_REFERENCE_NOT_FOUND', path, `Unknown condition field: ${condition.field}`, condition.field); return; }
+  if ('field' in condition) {
+    if (!validateReferencePath(condition.field, path, all, errors)) return;
+    const canonical = normalizePath(condition.field);
+    if (!hasSchemaPath(all, canonical)) add(errors, 'CONDITION_REFERENCE_NOT_FOUND', path, `Unknown condition field: ${condition.field}`, canonical);
+    return;
+  }
   for (const nested of condition.and ?? []) validateCondition(nested, path, all, errors);
   for (const nested of condition.or ?? []) validateCondition(nested, path, all, errors);
   validateCondition(condition.not, path, all, errors);
@@ -112,7 +157,11 @@ function validateDataSource(source: DataSourceConfig | undefined, path: string, 
   if (parameterNames.some((value) => !value.trim())) add(errors, 'DATASOURCE_INVALID', path, 'Data source parameter names must not be empty');
   if (new Set(parameterNames).size !== parameterNames.length) add(errors, 'DATASOURCE_INVALID', path, 'Search and pagination parameter names must be distinct');
   if (source.cacheKey !== undefined && !source.cache) add(errors, 'DATASOURCE_INVALID', path, 'cacheKey requires cache to be enabled');
-  for (const reference of dataSourceReferences(source.params)) if (!hasSchemaPath(all, reference)) add(errors, 'DATASOURCE_PARAMETER_REFERENCE_NOT_FOUND', path, `Unknown data source parameter field: ${reference}`, reference);
+  for (const reference of dataSourceReferences(source.params)) {
+    if (!validateReferencePath(reference, path, all, errors)) continue;
+    const canonical = normalizePath(reference);
+    if (!hasSchemaPath(all, canonical)) add(errors, 'DATASOURCE_PARAMETER_REFERENCE_NOT_FOUND', path, `Unknown data source parameter field: ${reference}`, canonical);
+  }
 }
 function validateConfig(field: FieldSchema<unknown>, path: string, errors: SchemaValidationError[]): void {
   const debounceMs = field.config && 'debounceMs' in field.config ? field.config.debounceMs : undefined;
@@ -126,3 +175,34 @@ function isRecord(value: unknown): value is Record<string, unknown> { return val
 function isOptionValue(value: unknown): value is string | number | boolean { return ['string', 'number', 'boolean'].includes(typeof value); }
 function isPair(value: unknown, accepts: (item: unknown) => boolean): boolean { return Array.isArray(value) && value.length === 2 && value.every(accepts); }
 function isFileValue(value: unknown): boolean { return isRecord(value) && typeof value.name === 'string' && typeof value.size === 'number' && typeof value.type === 'string'; }
+function valueType(value: unknown): string { return Array.isArray(value) ? 'array' : value === null ? 'null' : typeof value; }
+function validateReferencePath(reference: string, ownerPath: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): boolean {
+  let segments: readonly string[];
+  try { segments = parsePath(reference); }
+  catch {
+    add(errors, 'FIELD_REFERENCE_INVALID', ownerPath, `Invalid field reference path: ${reference}`, reference);
+    return false;
+  }
+  if (!segments.length) {
+    add(errors, 'FIELD_REFERENCE_INVALID', ownerPath, 'Field reference path must not be empty', reference);
+    return false;
+  }
+  if (segments.some((segment) => /^\d+$/.test(segment))) {
+    add(errors, 'FIELD_REFERENCE_INDEX_NOT_SUPPORTED', ownerPath, `Indexed array references are not supported in persisted schemas: ${reference}`, normalizePath(reference), { reference });
+    return false;
+  }
+  const canonical = normalizePath(reference);
+  if (isArrayDescendant(all, canonical)) {
+    add(errors, 'FIELD_REFERENCE_INDEX_NOT_SUPPORTED', ownerPath, `Array item template references are ambiguous without a runtime index: ${reference}`, canonical, { reference });
+    return false;
+  }
+  return true;
+}
+function isArrayDescendant(all: Map<string, FieldSchema<unknown>>, path: string): boolean {
+  const segments = path.split('.');
+  for (let index = 1; index < segments.length; index += 1) if (all.get(segments.slice(0, index).join('.'))?.type === 'array') return true;
+  return false;
+}
+function hasRuntimeReferenceBehavior(field: FieldSchema<unknown>): boolean {
+  return Boolean(field.visibleWhen || field.disabledWhen || field.requiredWhen || field.readOnlyWhen || field.dependsOn?.length || field.dataSource);
+}

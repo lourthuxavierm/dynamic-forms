@@ -62,6 +62,21 @@ function append(target: Map<string, string[]>, source: string, dependent: string
 function conditionReferences(condition: FieldCondition | undefined): readonly string[] { if (!condition) return []; if ('field' in condition) return [condition.field]; return [...(condition.and ?? []).flatMap(conditionReferences), ...(condition.or ?? []).flatMap(conditionReferences), ...conditionReferences(condition.not)]; }
 function dataSourceReferences(params: Readonly<Record<string, unknown>> | undefined): readonly string[] { const output = new Set<string>(); const visit = (value: unknown): void => { if (typeof value === 'string' && value.startsWith('$') && value.length > 1) output.add(value.slice(1)); else if (isRecord(value) && typeof value.fromField === 'string') output.add(value.fromField); if (Array.isArray(value)) value.forEach(visit); else if (isRecord(value)) Object.values(value).forEach(visit); }; visit(params); return [...output]; }
 function readonlyArrayMap(source: Map<string, string[]>): ReadonlyMap<string, readonly string[]> { return readonlyMap(new Map([...source].map(([key, values]) => [key, Object.freeze([...values])] as const))); }
-function readonlyMap<K, V>(source: ReadonlyMap<K, V>): ReadonlyMap<K, V> { const data = new Map(source); return Object.freeze({ get size() { return data.size; }, get: (key: K) => data.get(key), has: (key: K) => data.has(key), entries: () => data.entries(), keys: () => data.keys(), values: () => data.values(), forEach: (callback: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: unknown) => data.forEach((value, key) => callback.call(thisArg, value, key, data)), [Symbol.iterator]: () => data[Symbol.iterator](), [Symbol.toStringTag]: 'ReadonlyMap' }); }
+function readonlyMap<K, V>(source: ReadonlyMap<K, V>): ReadonlyMap<K, V> {
+  const data = new Map(source);
+  const facade: ReadonlyMap<K, V> = Object.freeze({
+    get size() { return data.size; },
+    get: (key: K) => data.get(key),
+    has: (key: K) => data.has(key),
+    entries: () => data.entries(),
+    keys: () => data.keys(),
+    values: () => data.values(),
+    forEach: (callback: (value: V, key: K, map: ReadonlyMap<K, V>) => void, thisArg?: unknown) =>
+      data.forEach((value, key) => callback.call(thisArg, value, key, facade)),
+    [Symbol.iterator]: () => data[Symbol.iterator](),
+    [Symbol.toStringTag]: 'ReadonlyMap',
+  });
+  return facade;
+}
 function isRecord(value: unknown): value is Record<string, unknown> { return value !== null && typeof value === 'object' && !Array.isArray(value); }
 function reverseLookup(index: ReadonlyMap<string, readonly string[]>, dependent: string): string[] { return [...index].filter(([, values]) => values.includes(dependent)).map(([source]) => source); }

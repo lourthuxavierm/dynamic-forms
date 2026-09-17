@@ -170,7 +170,9 @@ function detectCycles(fields: readonly FieldSchema<unknown>[]): SchemaDiagnostic
 function collect(fields: readonly FieldSchema<unknown>[], parent: string, graph: Map<string, readonly string[]>): void {
   for (const field of fields) {
     const path = parent ? `${parent}.${field.name}` : field.name;
-    graph.set(path, field.dependsOn ?? []); collect(field.fields ?? [], path, graph);
+    graph.set(path, (field.dependsOn ?? []).map((dependency) => {
+      try { return normalizePath(dependency); } catch { return dependency; }
+    })); collect(field.fields ?? [], path, graph);
   }
 }
 function collectWarnings(fields: readonly FieldSchema<unknown>[], parent: string, diagnostics: SchemaDiagnostic[]): void {

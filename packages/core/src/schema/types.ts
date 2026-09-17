@@ -152,16 +152,56 @@ export interface FileFieldConfig {
   imagePreview?: boolean;
 }
 
+/** Exact configuration contract for each built-in value field. */
+export interface FieldConfigMap {
+  text: TextFieldConfig;
+  textarea: TextFieldConfig;
+  password: TextFieldConfig;
+  email: TextFieldConfig;
+  url: TextFieldConfig;
+  number: NumericFieldConfig;
+  integer: NumericFieldConfig;
+  decimal: NumericFieldConfig;
+  hidden: never;
+  select: ChoiceFieldConfig;
+  'multi-select': ChoiceFieldConfig;
+  autocomplete: ChoiceFieldConfig;
+  'async-autocomplete': ChoiceFieldConfig;
+  checkbox: never;
+  'checkbox-group': ChoiceFieldConfig;
+  radio: ChoiceFieldConfig;
+  'radio-group': ChoiceFieldConfig;
+  switch: never;
+  'toggle-button': never;
+  'toggle-button-group': ChoiceFieldConfig;
+  'tree-select': ChoiceFieldConfig;
+  'tree-checkbox': ChoiceFieldConfig;
+  date: DateTimeFieldConfig;
+  time: DateTimeFieldConfig;
+  datetime: DateTimeFieldConfig;
+  'date-range': DateTimeFieldConfig;
+  'time-range': DateTimeFieldConfig;
+  'datetime-range': DateTimeFieldConfig;
+  month: DateTimeFieldConfig;
+  year: YearFieldConfig;
+  currency: CurrencyFieldConfig;
+  percentage: NumericFieldConfig;
+  slider: NumericFieldConfig;
+  'range-slider': RangeFieldConfig;
+  rating: NumericFieldConfig;
+  phone: TextFieldConfig;
+  otp: SegmentedFieldConfig;
+  pin: SegmentedFieldConfig;
+  mask: MaskFieldConfig;
+  file: FileFieldConfig;
+  'multi-file': FileFieldConfig;
+  camera: FileFieldConfig;
+  signature: never;
+  'document-preview': never;
+}
+
 export type FieldConfig =
-  | TextFieldConfig
-  | NumericFieldConfig
-  | CurrencyFieldConfig
-  | ChoiceFieldConfig
-  | DateTimeFieldConfig
-  | MaskFieldConfig
-  | SegmentedFieldConfig
-  | YearFieldConfig
-  | RangeFieldConfig
+  | FieldConfigMap[keyof FieldConfigMap]
   | ArrayFieldConfig
   | FileFieldConfig
   | Record<string, unknown>;
@@ -303,20 +343,18 @@ type ValidationFor<TType extends keyof FieldValueMap> =
   TType extends NumberFieldType ? NumberValidationRules :
   TType extends CollectionFieldType ? ArrayValidationRules :
   TType extends BooleanFieldType ? BooleanValidationRules : FieldValidation;
-type ConfigFor<TType extends keyof FieldValueMap> =
-  TType extends StringFieldType ? TextFieldConfig | MaskFieldConfig | SegmentedFieldConfig :
-  TType extends NumberFieldType ? NumericFieldConfig | CurrencyFieldConfig | RangeFieldConfig | YearFieldConfig :
-  TType extends CollectionFieldType | ScalarFieldType ? ChoiceFieldConfig | DateTimeFieldConfig | FileFieldConfig : never;
-
-export type ValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> = CommonFieldProperties & {
-  type: TType;
-  defaultValue?: FieldValueMap[TType];
-  validation?: ValidationFor<TType>;
-  config?: ConfigFor<TType>;
-  options?: readonly FieldOption[];
-  dataSource?: DataSourceConfig;
-  fields?: never;
-};
+export type ValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> =
+  TType extends Exclude<keyof FieldValueMap, StructuralFieldType>
+    ? CommonFieldProperties & {
+        type: TType;
+        defaultValue?: FieldValueMap[TType];
+        validation?: ValidationFor<TType>;
+        config?: FieldConfigMap[TType];
+        options?: readonly FieldOption[];
+        dataSource?: DataSourceConfig;
+        fields?: never;
+      }
+    : never;
 export interface ObjectFieldSchema extends CommonFieldProperties { type: 'object'; fields: readonly FormField[]; defaultValue?: Record<string, unknown>; validation?: BooleanValidationRules; options?: never; dataSource?: never; }
 export interface ArrayFieldSchema extends CommonFieldProperties { type: 'array'; fields: readonly FormField[]; defaultValue?: unknown[]; validation?: ArrayValidationRules; config?: ArrayFieldConfig; options?: never; dataSource?: never; }
 export type FormField =

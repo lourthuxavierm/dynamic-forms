@@ -4,7 +4,7 @@ Core accepts a concise public `FormSchema`, validates it, and converts it into a
 
 Core then compiles that canonical schema with `compileSchema()` into immutable field, dependency, condition, datasource, validation, and default-value indexes. `FormRuntime.compiledSchema` is the runtime contract; `FormRuntime.schema` remains the normalized authoring-compatible view. `runtime.explainField(path)` exposes builder-friendly relationships without requiring callers to inspect compiler internals.
 
-For persisted schema authoring, use `defineFormSchema()` or `StrictFormSchema`. They require `schemaVersion: 1`; their `FormField` discriminated union enforces type-specific defaults and validation and separates value fields from required-child object/array fields. The broader `FieldSchema` remains the compatibility boundary for programmatically registered custom controls whose type names Core cannot know in advance.
+For persisted schema authoring, use `defineFormSchema()` or `StrictFormSchema`. They require `schemaVersion: 1`; their `FormField` discriminated union enforces type-specific defaults, validation, and configuration through `FieldConfigMap`, and separates value fields from required-child object/array fields. The broader `FieldSchema` remains the compatibility boundary for programmatically registered custom controls whose type names Core cannot know in advance.
 
 Fields may provide a stable `id` for builder selection, rename tracking, schema diffs, and migrations. `name` remains the data-binding identity. Extensions belong under `extensions` and must use a collision-resistant namespace such as `@dynamic-form-engine/react-html` or an application-owned name. Core never interprets renderer namespaces.
 
@@ -16,8 +16,10 @@ Options use primitive string, number, or boolean identity. Equality follows `Obj
 
 - Object and array fields use `fields` for child schemas in version 1. Arrays interpret those children as the shape of each item. The `item` spelling is not accepted in schema version 1.
 - Canonical runtime paths use dot syntax, including numeric array indexes: `orders.0.product`. Public bracket paths such as `orders[0].product` normalize to that form.
+- Persisted schema references are template-level paths. Concrete or template array-item references such as `orders[0].product`, `orders.0.product`, and `orders.product` are rejected because Core does not yet compile conditions, dependencies, or data sources per runtime item. A field may reference the array container `orders` as a whole. Runtime value APIs continue to support concrete indexed paths.
 - `normalizePath`, `parsePath`, `joinPath`, `parentPath`, `isSamePath`, `isAncestorPath`, and `isDescendantPath` are the shared path primitives.
 - Explicit runtime initial values override schema defaults. Schema defaults override field-type defaults. Object values merge recursively, so a partial runtime object retains unspecified nested schema defaults. Arrays are replaced as complete values and are never index-merged.
+- Persisted object and array defaults are validated recursively. Partial object defaults may omit declared children, but unknown keys are rejected. Object-array items must match the declared child shape; primitive arrays marked with `metadata.primitiveItems` validate every item against their single child field.
 - `createArrayItemValue(schema, path)` creates a fresh item from an array field's normalized child defaults. Primitive arrays marked with `metadata.primitiveItems` receive the single child default directly.
 - `reset()` restores the runtime's current initial values. `reset(newInitialValues)` establishes a new initial baseline after recursively merging schema defaults beneath the supplied values.
 - Hidden values are preserved unless `hiddenValuePolicy` explicitly selects `clear` or `reset`.

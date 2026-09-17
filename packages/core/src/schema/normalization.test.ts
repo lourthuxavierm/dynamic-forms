@@ -112,6 +112,21 @@ describe('schema normalization and versioning', () => {
     })).toThrow('Dependency cycle detected');
   });
 
+  it('rejects indexed dependency cycles before compilation for dot and bracket syntax', () => {
+    for (const indexedPath of ['items.0.enabled', 'items[0].enabled']) {
+      const result = normalizeSchema({ id: 'indexed-cycle', fields: [
+        { name: 'items', type: 'array', fields: [{ name: 'enabled', type: 'checkbox', dependsOn: ['toggle'] }] },
+        { name: 'toggle', type: 'checkbox', dependsOn: [indexedPath] },
+      ] });
+      expect(result.valid).toBe(false);
+      expect(result.schema).toBeUndefined();
+      expect(result.diagnostics).toEqual(expect.arrayContaining([
+        expect.objectContaining({ code: 'ARRAY_ITEM_BEHAVIOR_NOT_SUPPORTED', path: 'items.enabled' }),
+        expect.objectContaining({ code: 'FIELD_REFERENCE_INDEX_NOT_SUPPORTED', path: 'toggle', relatedPath: 'items.0.enabled' }),
+      ]));
+    }
+  });
+
   it('returns structured warnings without preventing compilation', () => {
     const result = normalizeSchema({ id: 'warnings', fields: [{ name: 'country', type: 'select' }, { name: 'token', type: 'hidden', validation: { required: true } }] });
     expect(result.valid).toBe(true);

@@ -18,6 +18,33 @@ describe('schema compilation', () => {
     expect('set' in compiled.fieldsByPath).toBe(false);
     expect(explainField(compiled, 'state')).toMatchObject({ dependencies: ['country'], conditionSources: ['country'], dataSourceSources: ['country'], hasValidation: true, hasDefault: true });
   });
+  it('never exposes mutable backing maps from compiled indexes', () => {
+    const compiled = compileSchemaOrThrow({ id: 'readonly-indexes', fields: [
+      { name: 'source', type: 'text', defaultValue: 'initial' },
+      { name: 'target', type: 'select', dependsOn: ['source'], visibleWhen: { field: 'source', operator: 'exists' }, dataSource: { type: 'url', url: '/target', params: { source: '$source' } }, validation: { required: true } },
+    ] });
+    const indexes: readonly ReadonlyMap<unknown, unknown>[] = [
+      compiled.fieldsByPath,
+      compiled.dependencyGraph.dependenciesByField,
+      compiled.dependencyGraph.dependentsByField,
+      compiled.conditionDependentsByField,
+      compiled.dataSourceDependentsByField,
+      compiled.validationByPath,
+      compiled.defaultsByPath,
+    ];
+
+    for (const index of indexes) {
+      expect(Object.isFrozen(index)).toBe(true);
+      expect('set' in index).toBe(false);
+      expect('delete' in index).toBe(false);
+      expect('clear' in index).toBe(false);
+      let callbackMap: ReadonlyMap<unknown, unknown> | undefined;
+      index.forEach((_value, _key, map) => { callbackMap ??= map; });
+      expect(callbackMap).toBe(index);
+      expect('set' in (callbackMap ?? index)).toBe(false);
+      expect('clear' in (callbackMap ?? index)).toBe(false);
+    }
+  });
   it('returns diagnostics instead of a partial schema', () => {
     const result = compileSchema({ id: 'invalid', fields: [{ name: 'a', type: 'text', dependsOn: ['missing'] }] });
     expect(result.valid).toBe(false); expect(result.schema).toBeUndefined(); expect(result.diagnostics[0]?.code).toBe('DEPENDENCY_REFERENCE_NOT_FOUND');

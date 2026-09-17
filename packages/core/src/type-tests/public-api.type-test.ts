@@ -93,6 +93,13 @@ const strictSchema = defineFormSchema({ schemaVersion: 1, id: 'strict', fields: 
 ] } as const);
 const strictContract: StrictFormSchema = strictSchema;
 void strictContract;
+defineFormSchema({ schemaVersion: 1, id: 'valid-configs', fields: [
+  { name: 'bio', type: 'textarea', config: { rows: 4 } },
+  { name: 'code', type: 'otp', config: { length: 6, numeric: true } },
+  { name: 'country', type: 'select', config: { searchable: true } },
+  { name: 'birthday', type: 'date', config: { minDate: '1900-01-01' } },
+  { name: 'resume', type: 'file', config: { accept: '.pdf' } },
+] } as const);
 // @ts-expect-error text defaults must be strings
 defineFormSchema({ schemaVersion: 1, id: 'bad-default', fields: [{ name: 'title', type: 'text', defaultValue: 1 }] } as const);
 // @ts-expect-error string validation does not accept numeric min
@@ -103,6 +110,16 @@ defineFormSchema({ schemaVersion: 1, id: 'bad-children', fields: [{ name: 'title
 defineFormSchema({ schemaVersion: 1, id: 'bad-object', fields: [{ name: 'group', type: 'object' }] } as const);
 // @ts-expect-error persisted strict schemas must carry an explicit format version
 defineFormSchema({ id: 'missing-version', fields: [{ name: 'title', type: 'text' }] } as const);
+// @ts-expect-error text fields do not accept OTP/PIN configuration
+defineFormSchema({ schemaVersion: 1, id: 'text-otp-config', fields: [{ name: 'title', type: 'text', config: { length: 6 } }] } as const);
+// @ts-expect-error select fields do not accept file configuration
+defineFormSchema({ schemaVersion: 1, id: 'select-file-config', fields: [{ name: 'choice', type: 'select', config: { accept: '.pdf' } }] } as const);
+// @ts-expect-error date fields do not accept choice configuration
+defineFormSchema({ schemaVersion: 1, id: 'date-choice-config', fields: [{ name: 'date', type: 'date', config: { searchable: true } }] } as const);
+// @ts-expect-error multi-file fields do not accept choice configuration
+defineFormSchema({ schemaVersion: 1, id: 'files-choice-config', fields: [{ name: 'files', type: 'multi-file', config: { searchable: true } }] } as const);
+// @ts-expect-error configuration-free checkbox fields reject config
+defineFormSchema({ schemaVersion: 1, id: 'checkbox-config', fields: [{ name: 'enabled', type: 'checkbox', config: { min: 0 } }] } as const);
 
 definePortableFormSchema({ schemaVersion: 1, id: 'portable', fields: [{ name: 'country', type: 'select', dataSource: { type: 'url', url: '/countries', params: { active: true } }, metadata: { audit: 'country' } }] } as const);
 definePortableFormSchema({ schemaVersion: 1, id: 'portable-options', fields: [{ name: 'country', type: 'select', options: [{ label: 'India', value: 'IN', metadata: { region: 'Asia' }, children: [{ label: 'Tamil Nadu', value: 'TN' }] }] }] } as const);
