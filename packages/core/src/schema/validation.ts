@@ -5,6 +5,7 @@ import type { FieldOption, FieldSchema, FormSchema } from './types';
 
 export type SchemaValidationCode =
   | 'FIELD_NAME_EMPTY' | 'FIELD_NAME_INVALID' | 'FIELD_DUPLICATE'
+  | 'FIELD_ID_EMPTY' | 'FIELD_ID_INVALID' | 'FIELD_ID_DUPLICATE'
   | 'FIELD_CHILDREN_NOT_ALLOWED' | 'FIELD_CHILDREN_REQUIRED'
   | 'VALIDATION_RANGE_INVALID' | 'VALIDATION_MULTIPLE_INVALID' | 'VALIDATION_PATTERN_INVALID'
   | 'OPTION_DUPLICATE_VALUE' | 'CONDITION_REFERENCE_NOT_FOUND'
@@ -26,19 +27,25 @@ export interface SchemaValidationResult { valid: boolean; errors: SchemaValidati
 export function validateSchema(schema: FormSchema<unknown>): SchemaValidationResult {
   const errors: SchemaValidationError[] = [];
   const fields = new Map<string, FieldSchema<unknown>>();
-  collect(schema.fields, '', fields, errors);
+  collect(schema.fields, '', fields, new Map(), errors);
   for (const [path, field] of fields) validateField(field, path, fields, errors);
   return { valid: errors.length === 0, errors };
 }
-function collect(items: readonly FieldSchema<unknown>[], parent: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {
+function collect(items: readonly FieldSchema<unknown>[], parent: string, all: Map<string, FieldSchema<unknown>>, ids: Map<string, string>, errors: SchemaValidationError[]): void {
   const siblings = new Set<string>();
   for (const field of items) {
     const path = parent ? `${parent}.${field.name}` : field.name;
     if (!field.name.trim()) add(errors, 'FIELD_NAME_EMPTY', path, 'Field name must not be empty');
     if (/[.\[\]]/.test(field.name)) add(errors, 'FIELD_NAME_INVALID', path, 'Field name must not contain path separators');
     if (siblings.has(field.name)) add(errors, 'FIELD_DUPLICATE', path, `Duplicate field name: ${field.name}`, path);
+    if (field.id !== undefined) {
+      if (!field.id.trim()) add(errors, 'FIELD_ID_EMPTY', path, 'Field id must not be empty', undefined, { id: field.id });
+      else if (field.id !== field.id.trim()) add(errors, 'FIELD_ID_INVALID', path, 'Field id must not contain leading or trailing whitespace', undefined, { id: field.id });
+      else if (ids.has(field.id)) add(errors, 'FIELD_ID_DUPLICATE', path, `Duplicate field id: ${field.id}`, ids.get(field.id), { id: field.id });
+      else ids.set(field.id, path);
+    }
     siblings.add(field.name); all.set(path, field);
-    if (field.fields) collect(field.fields, path, all, errors);
+    if (field.fields) collect(field.fields, path, all, ids, errors);
   }
 }
 function validateField(field: FieldSchema<unknown>, path: string, all: Map<string, FieldSchema<unknown>>, errors: SchemaValidationError[]): void {

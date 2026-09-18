@@ -178,6 +178,34 @@ describe('Core Schema', () => {
     expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
   });
 
+  it('requires optional field ids to be trimmed, non-empty, and unique form-wide', () => {
+    const result = validateSchema({ id: 'field-identities', fields: [
+      { id: '', name: 'empty', type: 'text' },
+      { id: ' padded ', name: 'padded', type: 'text' },
+      { id: 'stable-profile', name: 'profile', type: 'object', fields: [
+        { id: 'duplicate-id', name: 'name', type: 'text' },
+      ] },
+      { id: 'stable-items', name: 'items', type: 'array', fields: [
+        { id: 'duplicate-id', name: 'value', type: 'text' },
+      ] },
+    ] });
+    expect(result.errors).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'FIELD_ID_EMPTY', path: 'empty' }),
+      expect.objectContaining({ code: 'FIELD_ID_INVALID', path: 'padded' }),
+      expect.objectContaining({ code: 'FIELD_ID_DUPLICATE', path: 'items.value', relatedPath: 'profile.name', details: { id: 'duplicate-id' } }),
+    ]));
+    expect(result.errors).toHaveLength(3);
+  });
+
+  it('accepts globally unique opaque ids independent of field paths', () => {
+    expect(validateSchema({ id: 'valid-identities', fields: [
+      { id: 'fld_01JABC', name: 'profile', type: 'object', fields: [
+        { id: 'customer-name-v1', name: 'name', type: 'text' },
+      ] },
+      { id: 'anything-stable', name: 'name', type: 'text' },
+    ] })).toMatchObject({ valid: true, errors: [] });
+  });
+
   it('rejects indexed and ambiguous array-item references deterministically', () => {
     const schema: FormSchema = {
       id: 'indexed-references',
