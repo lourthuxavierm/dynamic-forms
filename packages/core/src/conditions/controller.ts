@@ -1,6 +1,6 @@
 import { dynamicPath } from '../store';
 import type { FormStore, FormValues } from '../store';
-import type { FieldSchema, FormSchema } from '../schema';
+import type { CompiledFormSchema, FieldSchema, FormSchema } from '../schema';
 import type { FieldCondition } from './types';
 import { evaluateCondition } from './evaluate';
 
@@ -34,13 +34,14 @@ export class ConditionController<T extends FormValues = FormValues> {
   private readonly unsubscribers: Array<() => void>;
   private version = 0;
 
-  constructor(private readonly store: FormStore<T>, schema: FormSchema, private readonly onChange?: (path: string, state: FieldConditionState) => void, private readonly onEvaluate?: (paths: readonly string[]) => void) {
-    collectFields(schema.fields, '', this.fields);
-    for (const [path, field] of this.fields) {
-      for (const dependency of collectConditionDependencies(field)) {
-        const dependents = this.dependencies.get(dependency) ?? new Set<string>();
-        dependents.add(path);
-        this.dependencies.set(dependency, dependents);
+  constructor(private readonly store: FormStore<T>, schema: FormSchema | CompiledFormSchema, private readonly onChange?: (path: string, state: FieldConditionState) => void, private readonly onEvaluate?: (paths: readonly string[]) => void) {
+    if ('fieldsByPath' in schema) {
+      for (const [path, field] of schema.fieldsByPath) this.fields.set(path, field);
+      for (const [dependency, dependents] of schema.conditionDependentsByField) this.dependencies.set(dependency, new Set(dependents));
+    } else {
+      collectFields(schema.fields, '', this.fields);
+      for (const [path, field] of this.fields) for (const dependency of collectConditionDependencies(field)) {
+        const dependents = this.dependencies.get(dependency) ?? new Set<string>(); dependents.add(path); this.dependencies.set(dependency, dependents);
       }
     }
     this.recalculate(this.fields.keys());

@@ -3,10 +3,12 @@ import type {
   FieldValue,
   FieldValueMap,
   FormEvent,
+  InferFormValues,
   InferSchemaType,
   Validator,
+  StrictFormSchema,
 } from '../index';
-import { FieldRegistry } from '../index';
+import { defineFormSchema, definePortableFormSchema, FieldRegistry } from '../index';
 
 type Equal<TLeft, TRight> =
   (<T>() => T extends TLeft ? 1 : 2) extends (<T>() => T extends TRight ? 1 : 2)
@@ -33,11 +35,26 @@ const customerSchema = {
 } as const;
 
 type CustomerValues = InferSchemaType<typeof customerSchema>;
+type CustomerValuesViaStableName = InferFormValues<typeof customerSchema>;
+type _StableInferenceName = Expect<Equal<CustomerValuesViaStableName, CustomerValues>>;
 type _Name = Expect<Equal<CustomerValues['name'], string>>;
 type _Age = Expect<Equal<CustomerValues['age'], number | null>>;
 type _Marketing = Expect<Equal<CustomerValues['marketing'], boolean>>;
 type _Tags = Expect<Equal<CustomerValues['tags'], Array<string | number | boolean>>>;
 type _City = Expect<Equal<CustomerValues['address']['city'], string>>;
+
+const nestedArraySchema = defineFormSchema({ schemaVersion: 1, id: 'nested-arrays', fields: [
+  { name: 'orders', type: 'array', fields: [
+    { name: 'product', type: 'text' },
+    { name: 'quantity', type: 'integer' },
+  ] },
+  { name: 'scores', type: 'array', metadata: { primitiveItems: true }, fields: [
+    { name: 'score', type: 'number' },
+  ] },
+] } as const);
+type NestedArrayValues = InferFormValues<typeof nestedArraySchema>;
+type _ArrayObject = Expect<Equal<NestedArrayValues['orders'][number], { product: string; quantity: number | null }>>;
+type _PrimitiveArray = Expect<Equal<NestedArrayValues['scores'][number], number | null>>;
 
 interface Renderer { render(): void }
 interface Metadata extends Record<string, unknown> { category: 'input' | 'display' }
@@ -68,3 +85,47 @@ void event;
 // @ts-expect-error event value type is string
 const invalidEvent: FormEvent<string> = { type: 'valueChange', value: 42 };
 void invalidEvent;
+
+const strictSchema = defineFormSchema({ schemaVersion: 1, id: 'strict', fields: [
+  { name: 'title', type: 'text', defaultValue: 'Draft', validation: { minLength: 2 } },
+  { name: 'amount', type: 'number', defaultValue: 1, validation: { min: 0 } },
+  { name: 'group', type: 'object', fields: [{ name: 'enabled', type: 'checkbox', defaultValue: false }] },
+] } as const);
+const strictContract: StrictFormSchema = strictSchema;
+void strictContract;
+defineFormSchema({ schemaVersion: 1, id: 'valid-configs', fields: [
+  { name: 'bio', type: 'textarea', config: { rows: 4 } },
+  { name: 'code', type: 'otp', config: { length: 6, numeric: true } },
+  { name: 'country', type: 'select', config: { searchable: true } },
+  { name: 'birthday', type: 'date', config: { minDate: '1900-01-01' } },
+  { name: 'resume', type: 'file', config: { accept: '.pdf' } },
+] } as const);
+// @ts-expect-error text defaults must be strings
+defineFormSchema({ schemaVersion: 1, id: 'bad-default', fields: [{ name: 'title', type: 'text', defaultValue: 1 }] } as const);
+// @ts-expect-error string validation does not accept numeric min
+defineFormSchema({ schemaVersion: 1, id: 'bad-validation', fields: [{ name: 'title', type: 'text', validation: { min: 1 } }] } as const);
+// @ts-expect-error value fields cannot contain structural children
+defineFormSchema({ schemaVersion: 1, id: 'bad-children', fields: [{ name: 'title', type: 'text', fields: [{ name: 'nested', type: 'text' }] }] } as const);
+// @ts-expect-error structural fields require children
+defineFormSchema({ schemaVersion: 1, id: 'bad-object', fields: [{ name: 'group', type: 'object' }] } as const);
+// @ts-expect-error persisted strict schemas must carry an explicit format version
+defineFormSchema({ id: 'missing-version', fields: [{ name: 'title', type: 'text' }] } as const);
+// @ts-expect-error text fields do not accept OTP/PIN configuration
+defineFormSchema({ schemaVersion: 1, id: 'text-otp-config', fields: [{ name: 'title', type: 'text', config: { length: 6 } }] } as const);
+// @ts-expect-error select fields do not accept file configuration
+defineFormSchema({ schemaVersion: 1, id: 'select-file-config', fields: [{ name: 'choice', type: 'select', config: { accept: '.pdf' } }] } as const);
+// @ts-expect-error date fields do not accept choice configuration
+defineFormSchema({ schemaVersion: 1, id: 'date-choice-config', fields: [{ name: 'date', type: 'date', config: { searchable: true } }] } as const);
+// @ts-expect-error multi-file fields do not accept choice configuration
+defineFormSchema({ schemaVersion: 1, id: 'files-choice-config', fields: [{ name: 'files', type: 'multi-file', config: { searchable: true } }] } as const);
+// @ts-expect-error configuration-free checkbox fields reject config
+defineFormSchema({ schemaVersion: 1, id: 'checkbox-config', fields: [{ name: 'enabled', type: 'checkbox', config: { min: 0 } }] } as const);
+
+definePortableFormSchema({ schemaVersion: 1, id: 'portable', fields: [{ name: 'country', type: 'select', dataSource: { type: 'url', url: '/countries', params: { active: true } }, metadata: { audit: 'country' } }] } as const);
+definePortableFormSchema({ schemaVersion: 1, id: 'portable-options', fields: [{ name: 'country', type: 'select', options: [{ label: 'India', value: 'IN', metadata: { region: 'Asia' }, children: [{ label: 'Tamil Nadu', value: 'TN' }] }] }] } as const);
+// @ts-expect-error portable schemas cannot contain function data sources
+definePortableFormSchema({ schemaVersion: 1, id: 'runtime-only', fields: [{ name: 'country', type: 'select', dataSource: { type: 'function', load: async () => [] } }] } as const);
+// @ts-expect-error portable metadata must be JSON-safe
+definePortableFormSchema({ schemaVersion: 1, id: 'bad-metadata', fields: [{ name: 'title', type: 'text', metadata: { callback: () => undefined } }] } as const);
+// @ts-expect-error portable option metadata must be JSON-safe
+definePortableFormSchema({ schemaVersion: 1, id: 'bad-option-metadata', fields: [{ name: 'country', type: 'select', options: [{ label: 'India', value: 'IN', metadata: { callback: () => undefined } }] }] } as const);

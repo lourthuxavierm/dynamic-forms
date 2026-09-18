@@ -1,7 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { deleteByPath, dynamicPath, getByPath, setByPath } from './paths';
+import { deleteByPath, dynamicPath, getByPath, isAncestorPath, isDescendantPath, isSamePath, joinPath, normalizePath, parentPath, parsePath, setByPath } from './paths';
 
 describe('typed path runtime primitives', () => {
+  it('canonicalizes and compares object and array paths', () => {
+    expect(normalizePath('items[0].name')).toBe('items.0.name');
+    expect(parsePath('items.0.name')).toEqual(['items', '0', 'name']);
+    expect(joinPath('items[0]', 'name')).toBe('items.0.name');
+    expect(parentPath('items[0].name')).toBe('items.0');
+    expect(isSamePath('items[0]', 'items.0')).toBe(true);
+    expect(isAncestorPath('items', 'items[0].name')).toBe(true);
+    expect(isDescendantPath('items.0.name', 'items')).toBe(true);
+    expect(() => normalizePath('items..name')).toThrow('Invalid field path');
+  });
   it('reads dot and bracket array paths', () => {
     const values = { contacts: [{ name: 'Ada', phones: ['111', '222'] }] };
 

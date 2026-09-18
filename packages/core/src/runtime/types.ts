@@ -1,5 +1,6 @@
 import type { DataSourceManagerOptions } from '../datasource';
 import type { FieldConditionState } from '../conditions';
+import type { NormalizeSchemaOptions } from '../schema';
 import type { FormEvent } from '../events';
 import type { CorePlugin, CorePluginError } from '../plugins/types';
 import type { FormStoreOptions, FormValues } from '../store';
@@ -30,6 +31,8 @@ export type RuntimeLifecycleListener<TValues extends FormValues> = (
 ) => void;
 
 export interface FormRuntimeOptions<TValues extends FormValues> {
+  /** Schema migrations used before Core constructs the canonical runtime schema. */
+  schema?: Omit<NormalizeSchemaOptions, 'throwOnError'>;
   plugins?: readonly CorePlugin<TValues>[];
   onPluginError?: (error: CorePluginError) => void;
   store?: FormStoreOptions;

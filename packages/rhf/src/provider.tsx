@@ -188,6 +188,7 @@ function projectSnapshot<TFieldValues extends FieldValues>(
   store: FormStore<TFieldValues>,
   values: TFieldValues,
 ): void {
+  if (isSameValue(store.getValues(), values)) return;
   store.reset(structuredClone(values));
 }
 

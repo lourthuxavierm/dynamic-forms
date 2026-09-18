@@ -64,9 +64,21 @@ export type PathValue<TValues, TPath extends string> = string extends TPath
 /** Immutable utilities for dynamic runtime paths. */
 type PathContainer = Record<string, unknown> | unknown[];
 
-function pathKeys(path: string): string[] {
-  return path.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean);
+export function parsePath(path: string): readonly string[] {
+  if (typeof path !== 'string' || !path.trim()) return Object.freeze([]);
+  const canonical = path.trim().replace(/\[(\d+)\]/g, '.$1');
+  if (canonical.startsWith('.') || canonical.endsWith('.') || canonical.includes('..') || /[\[\]]/.test(canonical)) throw new Error(`Invalid field path: ${path}`);
+  const segments = canonical.split('.');
+  if (segments.some((segment) => !segment || !/^(?:\d+|[^.\[\]]+)$/.test(segment))) throw new Error(`Invalid field path: ${path}`);
+  return Object.freeze(segments);
 }
+export function normalizePath(path: string): string { return parsePath(path).join('.'); }
+export function joinPath(...parts: readonly string[]): string { return normalizePath(parts.filter(Boolean).map(normalizePath).join('.')); }
+export function parentPath(path: string): string | undefined { const parts = [...parsePath(path)]; if (parts.length <= 1) return undefined; parts.pop(); return parts.join('.'); }
+export function isSamePath(left: string, right: string): boolean { return normalizePath(left) === normalizePath(right); }
+export function isAncestorPath(ancestor: string, descendant: string): boolean { const left = normalizePath(ancestor), right = normalizePath(descendant); return left !== right && right.startsWith(`${left}.`); }
+export function isDescendantPath(descendant: string, ancestor: string): boolean { return isAncestorPath(ancestor, descendant); }
+function pathKeys(path: string): readonly string[] { return parsePath(path); }
 
 function isContainer(value: unknown): value is PathContainer {
   return value !== null && typeof value === 'object';
