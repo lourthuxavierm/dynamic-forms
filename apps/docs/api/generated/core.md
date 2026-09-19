@@ -12,7 +12,7 @@ Related: [guide](../../runtime/) · [controls/examples](../../playground/)
 
 ## Public exports
 
-This page contains 69 exports. Signatures are regenerated from the package entry point.
+This page contains 164 exports. Signatures are regenerated from the package entry point.
 
 ### ArrayFieldConfig
 
@@ -25,6 +25,127 @@ Framework-neutral constraints for array structural fields.
 export interface ArrayFieldConfig;
 ```
 
+### ArrayFieldSchema
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ArrayFieldSchema;
+```
+
+### ArrayValidationRules
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ArrayValidationRules;
+```
+
+### AsyncRequestContext
+
+- Kind: interface
+- Source: `packages/core/src/async/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface AsyncRequestContext;
+```
+
+### AsyncRequestManager
+
+- Kind: class
+- Source: `packages/core/src/async/manager.ts`
+
+Public class exported by @dynamic-form-engine/core.
+
+```ts
+export class AsyncRequestManager;
+```
+
+### AsyncRequestManagerOptions
+
+- Kind: interface
+- Source: `packages/core/src/async/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface AsyncRequestManagerOptions;
+```
+
+### AsyncRequestResult
+
+- Kind: interface
+- Source: `packages/core/src/async/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface AsyncRequestResult;
+```
+
+### AsyncRequestState
+
+- Kind: interface
+- Source: `packages/core/src/async/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface AsyncRequestState;
+```
+
+### AsyncRequestStatus
+
+- Kind: type
+- Source: `packages/core/src/async/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type AsyncRequestStatus;
+```
+
+### AsyncRunOptions
+
+- Kind: interface
+- Source: `packages/core/src/async/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface AsyncRunOptions;
+```
+
+### BooleanValidationRules
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface BooleanValidationRules;
+```
+
+### CancelMutation
+
+- Kind: interface
+- Source: `packages/core/src/plugins/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CancelMutation;
+```
+
 ### ChoiceFieldConfig
 
 - Kind: interface
@@ -34,6 +155,61 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface ChoiceFieldConfig;
+```
+
+### CompiledDependencyGraph
+
+- Kind: interface
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CompiledDependencyGraph;
+```
+
+### CompiledFieldExplanation
+
+- Kind: interface
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CompiledFieldExplanation;
+```
+
+### CompiledFormSchema
+
+- Kind: interface
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CompiledFormSchema;
+```
+
+### compileSchema
+
+- Kind: function
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function compileSchema<TCustomValue = never>(input: FormSchema<TCustomValue> | unknown, options?: Omit<NormalizeSchemaOptions, "throwOnError">): SchemaCompileResult<TCustomValue>
+```
+
+### compileSchemaOrThrow
+
+- Kind: function
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function compileSchemaOrThrow<TCustomValue = never>(input: FormSchema<TCustomValue> | unknown, options?: Omit<NormalizeSchemaOptions, "throwOnError">): CompiledFormSchema<TCustomValue>
 ```
 
 ### Condition
@@ -80,6 +256,138 @@ Public type exported by @dynamic-form-engine/core.
 export type ConditionOperator;
 ```
 
+### ConditionStateEquality
+
+- Kind: type
+- Source: `packages/core/src/conditions/controller.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type ConditionStateEquality;
+```
+
+### ConditionStateListener
+
+- Kind: type
+- Source: `packages/core/src/conditions/controller.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type ConditionStateListener;
+```
+
+### ConditionStateSelector
+
+- Kind: type
+- Source: `packages/core/src/conditions/controller.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type ConditionStateSelector;
+```
+
+### CORE_PERFORMANCE_BUDGETS
+
+- Kind: const
+- Source: `packages/core/src/performance/budgets.ts`
+
+Conservative CI guardrails, not expected averages. Benchmark output should be used for machine-specific comparisons and these limits catch major regressions.
+
+```ts
+export declare const CORE_PERFORMANCE_BUDGETS: Readonly<CorePerformanceBudgets>;
+```
+
+### CoreMutation
+
+- Kind: type
+- Source: `packages/core/src/plugins/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type CoreMutation;
+```
+
+### CorePerformanceBudgets
+
+- Kind: interface
+- Source: `packages/core/src/performance/budgets.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CorePerformanceBudgets;
+```
+
+### CorePlugin
+
+- Kind: interface
+- Source: `packages/core/src/plugins/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CorePlugin;
+```
+
+### CorePluginContext
+
+- Kind: interface
+- Source: `packages/core/src/plugins/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CorePluginContext;
+```
+
+### CorePluginError
+
+- Kind: interface
+- Source: `packages/core/src/plugins/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface CorePluginError;
+```
+
+### CorePluginHook
+
+- Kind: type
+- Source: `packages/core/src/plugins/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type CorePluginHook;
+```
+
+### CorePluginHost
+
+- Kind: class
+- Source: `packages/core/src/plugins/host.ts`
+
+Public class exported by @dynamic-form-engine/core.
+
+```ts
+export class CorePluginHost;
+```
+
+### createArrayItemValue
+
+- Kind: function
+- Source: `packages/core/src/schema/normalization.ts`
+
+Creates a fresh default item for an array field using its normalized child schema.
+
+```ts
+export declare function createArrayItemValue(schema: NormalizedFormSchema<unknown>, arrayPath: string): unknown
+```
+
 ### createFieldValidators
 
 - Kind: function
@@ -89,6 +397,17 @@ Public function exported by @dynamic-form-engine/core.
 
 ```ts
 export declare function createFieldValidators(field: FieldSchema, overrides?: FieldValidationOverrides): Validator[]
+```
+
+### createFormRuntime
+
+- Kind: function
+- Source: `packages/core/src/runtime/runtime.ts`
+
+Construct a runtime whose value contract is inferred from a const schema. Use the FormRuntime constructor directly when supplying an explicit value type.
+
+```ts
+export declare function createFormRuntime<const TSchema extends FormSchema>(schema: TSchema, initialValues?: InferFormValues<TSchema>, options?: FormRuntimeOptions<InferFormValues<TSchema>>): FormRuntime<InferFormValues<TSchema>>
 ```
 
 ### createFormValidator
@@ -102,6 +421,28 @@ Creates the authoritative client-side validator for a schema; servers must still
 export declare function createFormValidator(schema: FormSchema): FormValidator
 ```
 
+### createInitialValues
+
+- Kind: function
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function createInitialValues(schema: NormalizedFormSchema<unknown>): FormValues
+```
+
+### createLifecycleAuditPlugin
+
+- Kind: function
+- Source: `packages/core/src/plugins/audit.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function createLifecycleAuditPlugin<TValues extends FormValues>(record: (entry: LifecycleAuditEntry) => void): CorePlugin<TValues>
+```
+
 ### CurrencyFieldConfig
 
 - Kind: interface
@@ -111,6 +452,17 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface CurrencyFieldConfig;
+```
+
+### CURRENT_SCHEMA_VERSION
+
+- Kind: const
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public const exported by @dynamic-form-engine/core.
+
+```ts
+export declare const CURRENT_SCHEMA_VERSION: 1;
 ```
 
 ### DataSource
@@ -201,6 +553,28 @@ Public interface exported by @dynamic-form-engine/core.
 export interface DateTimeFieldConfig;
 ```
 
+### defineFormSchema
+
+- Kind: function
+- Source: `packages/core/src/schema/types.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function defineFormSchema<const TFields extends readonly FormField[]>(schema: StrictFormSchema<TFields>): StrictFormSchema<TFields>
+```
+
+### definePortableFormSchema
+
+- Kind: function
+- Source: `packages/core/src/schema/types.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function definePortableFormSchema<const TFields extends readonly PortableFormField[]>(schema: PortableFormSchema<TFields>): PortableFormSchema<TFields>
+```
+
 ### deleteByPath
 
 - Kind: function
@@ -209,7 +583,8 @@ export interface DateTimeFieldConfig;
 Public function exported by @dynamic-form-engine/core.
 
 ```ts
-export declare function deleteByPath(obj: any, path: string): any
+export declare function deleteByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath): TValues
+export declare function deleteByPath<TValues>(obj: TValues, path: DynamicPath): TValues
 ```
 
 ### DependencyController
@@ -245,6 +620,61 @@ Public class exported by @dynamic-form-engine/core.
 export class DependencyGraph;
 ```
 
+### DependencyRefreshContext
+
+- Kind: interface
+- Source: `packages/core/src/dependencies/controller.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface DependencyRefreshContext;
+```
+
+### DynamicFormValues
+
+- Kind: type
+- Source: `packages/core/src/store/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type DynamicFormValues;
+```
+
+### dynamicPath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function dynamicPath(path: string): DynamicPath
+```
+
+### DynamicPath
+
+- Kind: type
+- Source: `packages/core/src/store/paths.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type DynamicPath;
+```
+
+### EqualityFn
+
+- Kind: type
+- Source: `packages/core/src/store/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type EqualityFn;
+```
+
 ### evaluateCondition
 
 - Kind: function
@@ -253,7 +683,18 @@ export class DependencyGraph;
 Public function exported by @dynamic-form-engine/core.
 
 ```ts
-export declare function evaluateCondition(condition: FieldCondition, values: Record<string, unknown>): boolean
+export declare function evaluateCondition(condition: FieldCondition, values: object): boolean
+```
+
+### explainField
+
+- Kind: function
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function explainField<TCustomValue>(compiled: CompiledFormSchema<TCustomValue>, path: string): CompiledFieldExplanation<TCustomValue>
 ```
 
 ### FieldCondition
@@ -289,6 +730,17 @@ Public type exported by @dynamic-form-engine/core.
 export type FieldConfig;
 ```
 
+### FieldConfigMap
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Exact configuration contract for each built-in value field.
+
+```ts
+export interface FieldConfigMap;
+```
+
 ### FieldDefinition
 
 - Kind: interface
@@ -311,6 +763,17 @@ Public interface exported by @dynamic-form-engine/core.
 export interface FieldDependency;
 ```
 
+### FieldFileValue
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Framework-neutral representation of an uploaded file.
+
+```ts
+export interface FieldFileValue;
+```
+
 ### FieldOption
 
 - Kind: interface
@@ -320,6 +783,17 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface FieldOption;
+```
+
+### FieldOptionValue
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type FieldOptionValue;
 ```
 
 ### FieldRegistry
@@ -388,6 +862,17 @@ Public type exported by @dynamic-form-engine/core.
 export type FieldValue;
 ```
 
+### FieldValueMap
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Value contract for every built-in field type. Extend through FieldValue's second generic.
+
+```ts
+export interface FieldValueMap;
+```
+
 ### FileFieldConfig
 
 - Kind: interface
@@ -443,6 +928,17 @@ Public type exported by @dynamic-form-engine/core.
 export type FormEventListener;
 ```
 
+### FormEventPayload
+
+- Kind: type
+- Source: `packages/core/src/events/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type FormEventPayload;
+```
+
 ### FormEventType
 
 - Kind: type
@@ -452,6 +948,17 @@ Public type exported by @dynamic-form-engine/core.
 
 ```ts
 export type FormEventType;
+```
+
+### FormField
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type FormField;
 ```
 
 ### FormListener
@@ -465,6 +972,28 @@ Public type exported by @dynamic-form-engine/core.
 export type FormListener;
 ```
 
+### FormRuntime
+
+- Kind: class
+- Source: `packages/core/src/runtime/runtime.ts`
+
+Public class exported by @dynamic-form-engine/core.
+
+```ts
+export class FormRuntime;
+```
+
+### FormRuntimeOptions
+
+- Kind: interface
+- Source: `packages/core/src/runtime/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface FormRuntimeOptions;
+```
+
 ### FormSchema
 
 - Kind: interface
@@ -474,6 +1003,17 @@ Root declarative form contract. See the schema reference before accepting schema
 
 ```ts
 export interface FormSchema;
+```
+
+### FormSelector
+
+- Kind: type
+- Source: `packages/core/src/store/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type FormSelector;
 ```
 
 ### FormState
@@ -496,6 +1036,17 @@ Framework-neutral observable form state and mutation boundary.
 
 ```ts
 export class FormStore;
+```
+
+### FormStoreOptions
+
+- Kind: interface
+- Source: `packages/core/src/store/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface FormStoreOptions;
 ```
 
 ### FormSubmitHandler
@@ -536,10 +1087,22 @@ export type FormValues;
 - Kind: function
 - Source: `packages/core/src/store/paths.ts`
 
-Simple path utilities for getting and setting values in nested objects. This avoids a heavy dependency like lodash if we only need these basic operations.
+Public function exported by @dynamic-form-engine/core.
 
 ```ts
-export declare function getByPath(obj: any, path: string): any
+export declare function getByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath): PathValue<TValues, TPath>
+export declare function getByPath(obj: unknown, path: DynamicPath): unknown
+```
+
+### InferFormValues
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Infer form values from a const schema while retaining custom field-map support.
+
+```ts
+export type InferFormValues;
 ```
 
 ### InferSchemaType
@@ -547,10 +1110,98 @@ export declare function getByPath(obj: any, path: string): any
 - Kind: type
 - Source: `packages/core/src/schema/types.ts`
 
-Helper to infer the TypeScript type of form values from a schema. Note: This is a simplified version and might need refinement for complex schemas.
+Public type exported by @dynamic-form-engine/core.
 
 ```ts
 export type InferSchemaType;
+```
+
+### isAbortError
+
+- Kind: function
+- Source: `packages/core/src/async/manager.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function isAbortError(error: unknown): boolean
+```
+
+### isAncestorPath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function isAncestorPath(ancestor: string, descendant: string): boolean
+```
+
+### isDescendantPath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function isDescendantPath(descendant: string, ancestor: string): boolean
+```
+
+### isSamePath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function isSamePath(left: string, right: string): boolean
+```
+
+### joinPath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function joinPath(...parts: readonly string[]): string
+```
+
+### JsonPrimitive
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type JsonPrimitive;
+```
+
+### JsonValue
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type JsonValue;
+```
+
+### LifecycleAuditEntry
+
+- Kind: interface
+- Source: `packages/core/src/plugins/audit.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface LifecycleAuditEntry;
 ```
 
 ### MaskFieldConfig
@@ -564,6 +1215,116 @@ Public interface exported by @dynamic-form-engine/core.
 export interface MaskFieldConfig;
 ```
 
+### mergeSchemaInitialValues
+
+- Kind: function
+- Source: `packages/core/src/schema/normalization.ts`
+
+Schema defaults recursively merged beneath explicit runtime values. Arrays are replaced, not index-merged.
+
+```ts
+export declare function mergeSchemaInitialValues<T extends FormValues>(schema: NormalizedFormSchema<unknown>, initialValues: Partial<T>): T
+```
+
+### MutationInterceptorResult
+
+- Kind: type
+- Source: `packages/core/src/plugins/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type MutationInterceptorResult;
+```
+
+### normalizeAsyncError
+
+- Kind: function
+- Source: `packages/core/src/async/manager.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function normalizeAsyncError(error: unknown): Error
+```
+
+### NormalizedFieldSchema
+
+- Kind: type
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type NormalizedFieldSchema;
+```
+
+### NormalizedFormSchema
+
+- Kind: interface
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface NormalizedFormSchema;
+```
+
+### normalizePath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function normalizePath(path: string): string
+```
+
+### normalizeSchema
+
+- Kind: function
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function normalizeSchema<TCustomValue = never>(input: FormSchema<TCustomValue> | unknown, options?: NormalizeSchemaOptions): SchemaNormalizationResult<TCustomValue>
+```
+
+### NormalizeSchemaOptions
+
+- Kind: interface
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface NormalizeSchemaOptions;
+```
+
+### normalizeSchemaOrThrow
+
+- Kind: function
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function normalizeSchemaOrThrow<TCustomValue = never>(schema: FormSchema<TCustomValue> | unknown, options?: Omit<NormalizeSchemaOptions, "throwOnError">): NormalizedFormSchema<TCustomValue>
+```
+
+### NumberValidationRules
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface NumberValidationRules;
+```
+
 ### NumericFieldConfig
 
 - Kind: interface
@@ -573,6 +1334,105 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface NumericFieldConfig;
+```
+
+### ObjectFieldSchema
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ObjectFieldSchema;
+```
+
+### parentPath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function parentPath(path: string): string | undefined
+```
+
+### parsePath
+
+- Kind: function
+- Source: `packages/core/src/store/paths.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function parsePath(path: string): readonly string[]
+```
+
+### Path
+
+- Kind: type
+- Source: `packages/core/src/store/paths.ts`
+
+Dot and bracket paths for known values. Broad runtime records intentionally accept string.
+
+```ts
+export type Path;
+```
+
+### PathValue
+
+- Kind: type
+- Source: `packages/core/src/store/paths.ts`
+
+Value resolved at a known path. Dynamic strings deliberately resolve to unknown.
+
+```ts
+export type PathValue;
+```
+
+### PortableDataSourceConfig
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type PortableDataSourceConfig;
+```
+
+### PortableFieldOption
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface PortableFieldOption;
+```
+
+### PortableFormField
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type PortableFormField;
+```
+
+### PortableFormSchema
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface PortableFormSchema;
 ```
 
 ### RangeFieldConfig
@@ -608,6 +1468,138 @@ Public interface exported by @dynamic-form-engine/core.
 export interface ResetOptions;
 ```
 
+### RUNTIME_LIFECYCLE_PHASES
+
+- Kind: const
+- Source: `packages/core/src/runtime/types.ts`
+
+Public const exported by @dynamic-form-engine/core.
+
+```ts
+export declare const RUNTIME_LIFECYCLE_PHASES: readonly ["mutation", "dependencies", "conditions", "events", "notification", "dataSource", "validation"];
+```
+
+### RuntimeLifecycleEvent
+
+- Kind: interface
+- Source: `packages/core/src/runtime/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface RuntimeLifecycleEvent;
+```
+
+### RuntimeLifecycleListener
+
+- Kind: type
+- Source: `packages/core/src/runtime/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type RuntimeLifecycleListener;
+```
+
+### RuntimeLifecyclePhase
+
+- Kind: type
+- Source: `packages/core/src/runtime/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type RuntimeLifecyclePhase;
+```
+
+### RuntimeOperation
+
+- Kind: type
+- Source: `packages/core/src/runtime/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type RuntimeOperation;
+```
+
+### SchemaCompileResult
+
+- Kind: interface
+- Source: `packages/core/src/schema/compilation.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface SchemaCompileResult;
+```
+
+### SchemaDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface SchemaDiagnostic;
+```
+
+### SchemaDiagnosticCode
+
+- Kind: type
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type SchemaDiagnosticCode;
+```
+
+### SchemaMigration
+
+- Kind: interface
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface SchemaMigration;
+```
+
+### SchemaNormalizationError
+
+- Kind: class
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public class exported by @dynamic-form-engine/core.
+
+```ts
+export class SchemaNormalizationError;
+```
+
+### SchemaNormalizationResult
+
+- Kind: interface
+- Source: `packages/core/src/schema/normalization.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface SchemaNormalizationResult;
+```
+
+### SchemaValidationCode
+
+- Kind: type
+- Source: `packages/core/src/schema/validation.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type SchemaValidationCode;
+```
+
 ### SchemaValidationError
 
 - Kind: interface
@@ -641,6 +1633,17 @@ Framework-neutral configuration for OTP and PIN controls.
 export interface SegmentedFieldConfig;
 ```
 
+### SelectorListener
+
+- Kind: type
+- Source: `packages/core/src/store/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type SelectorListener;
+```
+
 ### setByPath
 
 - Kind: function
@@ -649,7 +1652,8 @@ export interface SegmentedFieldConfig;
 Public function exported by @dynamic-form-engine/core.
 
 ```ts
-export declare function setByPath(obj: any, path: string, value: any): any
+export declare function setByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath, value: PathValue<TValues, TPath>): TValues
+export declare function setByPath<TValues>(obj: TValues, path: DynamicPath, value: unknown): TValues
 ```
 
 ### SetValueOptions
@@ -661,6 +1665,28 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface SetValueOptions;
+```
+
+### StrictFormSchema
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Strict persisted-schema authoring contract. Use FieldSchema for registered programmatic custom controls.
+
+```ts
+export interface StrictFormSchema;
+```
+
+### StringValidationRules
+
+- Kind: interface
+- Source: `packages/core/src/schema/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface StringValidationRules;
 ```
 
 ### TextFieldConfig
@@ -685,6 +1711,17 @@ Public function exported by @dynamic-form-engine/core.
 export declare function validateField<T>(field: string, value: T, values: Record<string, unknown>, validators?: Validator<T>[]): Promise<ValidationResult>
 ```
 
+### ValidateOptions
+
+- Kind: interface
+- Source: `packages/core/src/store/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ValidateOptions;
+```
+
 ### validateSchema
 
 - Kind: function
@@ -693,7 +1730,7 @@ export declare function validateField<T>(field: string, value: T, values: Record
 Public function exported by @dynamic-form-engine/core.
 
 ```ts
-export declare function validateSchema(schema: FormSchema): SchemaValidationResult
+export declare function validateSchema(schema: FormSchema<unknown>): SchemaValidationResult
 ```
 
 ### ValidationError
@@ -749,6 +1786,17 @@ Public type exported by @dynamic-form-engine/core.
 
 ```ts
 export type ValidatorResult;
+```
+
+### ValueFieldSchema
+
+- Kind: type
+- Source: `packages/core/src/schema/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type ValueFieldSchema;
 ```
 
 ### VERSION

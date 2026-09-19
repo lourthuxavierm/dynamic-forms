@@ -10,9 +10,89 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "ArrayFieldSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "ArrayValidationRules",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "AsyncRequestContext",
+          "kind": "interface",
+          "source": "packages/core/src/async/types.ts"
+        },
+        {
+          "name": "AsyncRequestManager",
+          "kind": "class",
+          "source": "packages/core/src/async/manager.ts"
+        },
+        {
+          "name": "AsyncRequestManagerOptions",
+          "kind": "interface",
+          "source": "packages/core/src/async/types.ts"
+        },
+        {
+          "name": "AsyncRequestResult",
+          "kind": "interface",
+          "source": "packages/core/src/async/types.ts"
+        },
+        {
+          "name": "AsyncRequestState",
+          "kind": "interface",
+          "source": "packages/core/src/async/types.ts"
+        },
+        {
+          "name": "AsyncRequestStatus",
+          "kind": "type",
+          "source": "packages/core/src/async/types.ts"
+        },
+        {
+          "name": "AsyncRunOptions",
+          "kind": "interface",
+          "source": "packages/core/src/async/types.ts"
+        },
+        {
+          "name": "BooleanValidationRules",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "CancelMutation",
+          "kind": "interface",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
           "name": "ChoiceFieldConfig",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "CompiledDependencyGraph",
+          "kind": "interface",
+          "source": "packages/core/src/schema/compilation.ts"
+        },
+        {
+          "name": "CompiledFieldExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/schema/compilation.ts"
+        },
+        {
+          "name": "CompiledFormSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/compilation.ts"
+        },
+        {
+          "name": "compileSchema",
+          "kind": "function",
+          "source": "packages/core/src/schema/compilation.ts"
+        },
+        {
+          "name": "compileSchemaOrThrow",
+          "kind": "function",
+          "source": "packages/core/src/schema/compilation.ts"
         },
         {
           "name": "Condition",
@@ -35,9 +115,74 @@
           "source": "packages/core/src/conditions/types.ts"
         },
         {
+          "name": "ConditionStateEquality",
+          "kind": "type",
+          "source": "packages/core/src/conditions/controller.ts"
+        },
+        {
+          "name": "ConditionStateListener",
+          "kind": "type",
+          "source": "packages/core/src/conditions/controller.ts"
+        },
+        {
+          "name": "ConditionStateSelector",
+          "kind": "type",
+          "source": "packages/core/src/conditions/controller.ts"
+        },
+        {
+          "name": "CORE_PERFORMANCE_BUDGETS",
+          "kind": "const",
+          "source": "packages/core/src/performance/budgets.ts"
+        },
+        {
+          "name": "CoreMutation",
+          "kind": "type",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
+          "name": "CorePerformanceBudgets",
+          "kind": "interface",
+          "source": "packages/core/src/performance/budgets.ts"
+        },
+        {
+          "name": "CorePlugin",
+          "kind": "interface",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
+          "name": "CorePluginContext",
+          "kind": "interface",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
+          "name": "CorePluginError",
+          "kind": "interface",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
+          "name": "CorePluginHook",
+          "kind": "type",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
+          "name": "CorePluginHost",
+          "kind": "class",
+          "source": "packages/core/src/plugins/host.ts"
+        },
+        {
+          "name": "createArrayItemValue",
+          "kind": "function",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
           "name": "createFieldValidators",
           "kind": "function",
           "source": "packages/core/src/validation/schemaValidators.ts"
+        },
+        {
+          "name": "createFormRuntime",
+          "kind": "function",
+          "source": "packages/core/src/runtime/runtime.ts"
         },
         {
           "name": "createFormValidator",
@@ -45,9 +190,24 @@
           "source": "packages/core/src/validation/schemaValidators.ts"
         },
         {
+          "name": "createInitialValues",
+          "kind": "function",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "createLifecycleAuditPlugin",
+          "kind": "function",
+          "source": "packages/core/src/plugins/audit.ts"
+        },
+        {
           "name": "CurrencyFieldConfig",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "CURRENT_SCHEMA_VERSION",
+          "kind": "const",
+          "source": "packages/core/src/schema/normalization.ts"
         },
         {
           "name": "DataSource",
@@ -90,6 +250,16 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "defineFormSchema",
+          "kind": "function",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "definePortableFormSchema",
+          "kind": "function",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
           "name": "deleteByPath",
           "kind": "function",
           "source": "packages/core/src/store/paths.ts"
@@ -110,9 +280,39 @@
           "source": "packages/core/src/dependencies/graph.ts"
         },
         {
+          "name": "DependencyRefreshContext",
+          "kind": "interface",
+          "source": "packages/core/src/dependencies/controller.ts"
+        },
+        {
+          "name": "DynamicFormValues",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
+          "name": "dynamicPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "DynamicPath",
+          "kind": "type",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "EqualityFn",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
           "name": "evaluateCondition",
           "kind": "function",
           "source": "packages/core/src/conditions/evaluate.ts"
+        },
+        {
+          "name": "explainField",
+          "kind": "function",
+          "source": "packages/core/src/schema/compilation.ts"
         },
         {
           "name": "FieldCondition",
@@ -130,6 +330,11 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "FieldConfigMap",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
           "name": "FieldDefinition",
           "kind": "interface",
           "source": "packages/core/src/registry/types.ts"
@@ -140,8 +345,18 @@
           "source": "packages/core/src/dependencies/types.ts"
         },
         {
+          "name": "FieldFileValue",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
           "name": "FieldOption",
           "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldOptionValue",
+          "kind": "type",
           "source": "packages/core/src/schema/types.ts"
         },
         {
@@ -175,6 +390,11 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "FieldValueMap",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
           "name": "FileFieldConfig",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
@@ -200,9 +420,19 @@
           "source": "packages/core/src/events/types.ts"
         },
         {
+          "name": "FormEventPayload",
+          "kind": "type",
+          "source": "packages/core/src/events/types.ts"
+        },
+        {
           "name": "FormEventType",
           "kind": "type",
           "source": "packages/core/src/events/types.ts"
+        },
+        {
+          "name": "FormField",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
         },
         {
           "name": "FormListener",
@@ -210,9 +440,24 @@
           "source": "packages/core/src/store/types.ts"
         },
         {
+          "name": "FormRuntime",
+          "kind": "class",
+          "source": "packages/core/src/runtime/runtime.ts"
+        },
+        {
+          "name": "FormRuntimeOptions",
+          "kind": "interface",
+          "source": "packages/core/src/runtime/types.ts"
+        },
+        {
           "name": "FormSchema",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FormSelector",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
         },
         {
           "name": "FormState",
@@ -223,6 +468,11 @@
           "name": "FormStore",
           "kind": "class",
           "source": "packages/core/src/store/store.ts"
+        },
+        {
+          "name": "FormStoreOptions",
+          "kind": "interface",
+          "source": "packages/core/src/store/types.ts"
         },
         {
           "name": "FormSubmitHandler",
@@ -245,9 +495,58 @@
           "source": "packages/core/src/store/paths.ts"
         },
         {
-          "name": "InferSchemaType",
+          "name": "InferFormValues",
           "kind": "type",
           "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "InferSchemaType",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts",
+          "deprecated": {
+            "message": "Use InferFormValues.",
+            "replacement": "InferFormValues."
+          }
+        },
+        {
+          "name": "isAbortError",
+          "kind": "function",
+          "source": "packages/core/src/async/manager.ts"
+        },
+        {
+          "name": "isAncestorPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "isDescendantPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "isSamePath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "joinPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "JsonPrimitive",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "JsonValue",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "LifecycleAuditEntry",
+          "kind": "interface",
+          "source": "packages/core/src/plugins/audit.ts"
         },
         {
           "name": "MaskFieldConfig",
@@ -255,7 +554,102 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "mergeSchemaInitialValues",
+          "kind": "function",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "MutationInterceptorResult",
+          "kind": "type",
+          "source": "packages/core/src/plugins/types.ts"
+        },
+        {
+          "name": "normalizeAsyncError",
+          "kind": "function",
+          "source": "packages/core/src/async/manager.ts"
+        },
+        {
+          "name": "NormalizedFieldSchema",
+          "kind": "type",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "NormalizedFormSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "normalizePath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "normalizeSchema",
+          "kind": "function",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "NormalizeSchemaOptions",
+          "kind": "interface",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "normalizeSchemaOrThrow",
+          "kind": "function",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "NumberValidationRules",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
           "name": "NumericFieldConfig",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "ObjectFieldSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "parentPath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "parsePath",
+          "kind": "function",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "Path",
+          "kind": "type",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "PathValue",
+          "kind": "type",
+          "source": "packages/core/src/store/paths.ts"
+        },
+        {
+          "name": "PortableDataSourceConfig",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "PortableFieldOption",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "PortableFormField",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "PortableFormSchema",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
         },
@@ -275,6 +669,66 @@
           "source": "packages/core/src/store/types.ts"
         },
         {
+          "name": "RUNTIME_LIFECYCLE_PHASES",
+          "kind": "const",
+          "source": "packages/core/src/runtime/types.ts"
+        },
+        {
+          "name": "RuntimeLifecycleEvent",
+          "kind": "interface",
+          "source": "packages/core/src/runtime/types.ts"
+        },
+        {
+          "name": "RuntimeLifecycleListener",
+          "kind": "type",
+          "source": "packages/core/src/runtime/types.ts"
+        },
+        {
+          "name": "RuntimeLifecyclePhase",
+          "kind": "type",
+          "source": "packages/core/src/runtime/types.ts"
+        },
+        {
+          "name": "RuntimeOperation",
+          "kind": "type",
+          "source": "packages/core/src/runtime/types.ts"
+        },
+        {
+          "name": "SchemaCompileResult",
+          "kind": "interface",
+          "source": "packages/core/src/schema/compilation.ts"
+        },
+        {
+          "name": "SchemaDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "SchemaDiagnosticCode",
+          "kind": "type",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "SchemaMigration",
+          "kind": "interface",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "SchemaNormalizationError",
+          "kind": "class",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "SchemaNormalizationResult",
+          "kind": "interface",
+          "source": "packages/core/src/schema/normalization.ts"
+        },
+        {
+          "name": "SchemaValidationCode",
+          "kind": "type",
+          "source": "packages/core/src/schema/validation.ts"
+        },
+        {
           "name": "SchemaValidationError",
           "kind": "interface",
           "source": "packages/core/src/schema/validation.ts"
@@ -290,6 +744,11 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "SelectorListener",
+          "kind": "type",
+          "source": "packages/core/src/store/types.ts"
+        },
+        {
           "name": "setByPath",
           "kind": "function",
           "source": "packages/core/src/store/paths.ts"
@@ -300,6 +759,16 @@
           "source": "packages/core/src/store/types.ts"
         },
         {
+          "name": "StrictFormSchema",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "StringValidationRules",
+          "kind": "interface",
+          "source": "packages/core/src/schema/types.ts"
+        },
+        {
           "name": "TextFieldConfig",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
@@ -308,6 +777,11 @@
           "name": "validateField",
           "kind": "function",
           "source": "packages/core/src/validation/validator.ts"
+        },
+        {
+          "name": "ValidateOptions",
+          "kind": "interface",
+          "source": "packages/core/src/store/types.ts"
         },
         {
           "name": "validateSchema",
@@ -338,6 +812,11 @@
           "name": "ValidatorResult",
           "kind": "type",
           "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "ValueFieldSchema",
+          "kind": "type",
+          "source": "packages/core/src/schema/types.ts"
         },
         {
           "name": "VERSION",
