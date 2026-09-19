@@ -178,7 +178,35 @@ describe('Core Schema', () => {
     expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
   });
 
-  it('accepts indexed references to array item fields', () => {
+  it('requires optional field ids to be trimmed, non-empty, and unique form-wide', () => {
+    const result = validateSchema({ id: 'field-identities', fields: [
+      { id: '', name: 'empty', type: 'text' },
+      { id: ' padded ', name: 'padded', type: 'text' },
+      { id: 'stable-profile', name: 'profile', type: 'object', fields: [
+        { id: 'duplicate-id', name: 'name', type: 'text' },
+      ] },
+      { id: 'stable-items', name: 'items', type: 'array', fields: [
+        { id: 'duplicate-id', name: 'value', type: 'text' },
+      ] },
+    ] });
+    expect(result.errors).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'FIELD_ID_EMPTY', path: 'empty' }),
+      expect.objectContaining({ code: 'FIELD_ID_INVALID', path: 'padded' }),
+      expect.objectContaining({ code: 'FIELD_ID_DUPLICATE', path: 'items.value', relatedPath: 'profile.name', details: { id: 'duplicate-id' } }),
+    ]));
+    expect(result.errors).toHaveLength(3);
+  });
+
+  it('accepts globally unique opaque ids independent of field paths', () => {
+    expect(validateSchema({ id: 'valid-identities', fields: [
+      { id: 'fld_01JABC', name: 'profile', type: 'object', fields: [
+        { id: 'customer-name-v1', name: 'name', type: 'text' },
+      ] },
+      { id: 'anything-stable', name: 'name', type: 'text' },
+    ] })).toMatchObject({ valid: true, errors: [] });
+  });
+
+  it('rejects indexed and ambiguous array-item references deterministically', () => {
     const schema: FormSchema = {
       id: 'indexed-references',
       fields: [
@@ -187,7 +215,101 @@ describe('Core Schema', () => {
       ],
     };
 
-    expect(validateSchema(schema)).toMatchObject({ valid: true, errors: [] });
+    const errors = validateSchema(schema).errors;
+    expect(errors.filter((error) => error.code === 'FIELD_REFERENCE_INDEX_NOT_SUPPORTED')).toHaveLength(2);
+    expect(errors.map((error) => error.relatedPath)).toEqual(['items.0.enabled', 'items.0.enabled']);
+  });
+  it('rejects runtime reference behavior declared inside array item templates', () => {
+    const result = validateSchema({ id: 'array-item-behavior', fields: [
+      { name: 'enabled', type: 'checkbox' },
+      { name: 'items', type: 'array', fields: [
+        { name: 'value', type: 'text', dependsOn: ['enabled'], resetOnDependencyChange: true },
+      ] },
+    ] });
+    expect(result.errors).toContainEqual(expect.objectContaining({ code: 'ARRAY_ITEM_BEHAVIOR_NOT_SUPPORTED', path: 'items.value' }));
+  });
+  it('allows top-level fields to reference an array as a whole', () => {
+    const result = validateSchema({ id: 'array-container-reference', fields: [
+      { name: 'items', type: 'array', fields: [{ name: 'value', type: 'text' }] },
+      { name: 'summary', type: 'text', visibleWhen: { field: 'items', operator: 'exists' }, dependsOn: ['items'] },
+    ] });
+    expect(result).toMatchObject({ valid: true, errors: [] });
+  });
+  it('validates nested datasource parameter references before runtime', () => {
+    const valid = validateSchema({ id: 'source-refs', fields: [
+      { name: 'country', type: 'text' },
+      { name: 'state', type: 'select', dataSource: { type: 'url', url: '/states', params: { country: '$country', nested: { source: { fromField: 'country' } } } } },
+    ] });
+    expect(valid.valid).toBe(true);
+
+    const invalid = validateSchema({ id: 'bad-source-ref', fields: [
+      { name: 'state', type: 'select', dataSource: { type: 'url', url: '/states', params: { country: { fromField: 'missing' } } } },
+    ] });
+    expect(invalid.errors).toContainEqual(expect.objectContaining({ message: 'Unknown data source parameter field: missing' }));
+  });
+  it('rejects built-in default type mismatches and validates option identity recursively', () => {
+    const result = validateSchema({ id: 'value-contracts', fields: [
+      { name: 'title', type: 'text', defaultValue: 42 },
+      { name: 'count', type: 'number', defaultValue: '1' },
+      { name: 'period', type: 'date-range', defaultValue: ['2026-01-01', 2] },
+      { name: 'upload', type: 'file', defaultValue: { name: 'missing-size-and-type' } },
+      { name: 'choice', type: 'select', options: [{ label: 'Number', value: 1 }, { label: 'String', value: '1' }, { label: 'Group', value: 'group', children: [{ label: 'A', value: 'a' }, { label: 'Again', value: 'a' }] }] },
+    ] });
+    expect(result.errors.filter((error) => error.code === 'DEFAULT_VALUE_TYPE_MISMATCH')).toHaveLength(4);
+    expect(result.errors.filter((error) => error.code === 'OPTION_DUPLICATE_VALUE')).toHaveLength(1);
+  });
+  it('recursively validates object, object-array, and primitive-array defaults', () => {
+    const result = validateSchema({ id: 'nested-default-contracts', fields: [
+      { name: 'profile', type: 'object', fields: [
+        { name: 'age', type: 'number' },
+        { name: 'avatar', type: 'file' },
+      ], defaultValue: { age: 'not-a-number', avatar: { name: 'missing-size' }, extra: true } },
+      { name: 'periods', type: 'array', fields: [
+        { name: 'range', type: 'date-range' },
+        { name: 'status', type: 'select' },
+      ], defaultValue: [
+        { range: ['2026-01-01', 2], status: { invalid: true } },
+        'not-an-object',
+      ] },
+      { name: 'scores', type: 'array', metadata: { primitiveItems: true }, fields: [
+        { name: 'score', type: 'number' },
+      ], defaultValue: [1, 'two'] },
+    ] });
+
+    expect(result.errors).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: 'DEFAULT_VALUE_TYPE_MISMATCH', path: 'profile.age' }),
+      expect.objectContaining({ code: 'DEFAULT_VALUE_TYPE_MISMATCH', path: 'profile.avatar' }),
+      expect.objectContaining({ code: 'DEFAULT_VALUE_UNKNOWN_KEY', path: 'profile.extra' }),
+      expect.objectContaining({ code: 'DEFAULT_VALUE_TYPE_MISMATCH', path: 'periods.0.range' }),
+      expect.objectContaining({ code: 'DEFAULT_VALUE_TYPE_MISMATCH', path: 'periods.0.status' }),
+      expect.objectContaining({ code: 'DEFAULT_VALUE_TYPE_MISMATCH', path: 'periods.1' }),
+      expect.objectContaining({ code: 'DEFAULT_VALUE_TYPE_MISMATCH', path: 'scores.1' }),
+    ]));
+    expect(result.errors).toHaveLength(7);
+  });
+  it('accepts partial nested defaults that match declared child fields', () => {
+    const result = validateSchema({ id: 'valid-nested-defaults', fields: [
+      { name: 'profile', type: 'object', fields: [
+        { name: 'age', type: 'number' },
+        { name: 'name', type: 'text' },
+      ], defaultValue: { age: 42 } },
+      { name: 'items', type: 'array', fields: [
+        { name: 'enabled', type: 'checkbox' },
+      ], defaultValue: [{ enabled: true }, {}] },
+      { name: 'scores', type: 'array', metadata: { primitiveItems: true }, fields: [
+        { name: 'score', type: 'number' },
+      ], defaultValue: [1, null, 3] },
+    ] });
+    expect(result).toMatchObject({ valid: true, errors: [] });
+  });
+  it('rejects invalid datasource pagination, cache, and debounce configuration', () => {
+    const result = validateSchema({ id: 'invalid-datasource-options', fields: [
+      { name: 'paged', type: 'select', dataSource: { type: 'url', url: '/items', pageParam: 'page' } },
+      { name: 'cached', type: 'select', dataSource: { type: 'url', url: '/items', cacheKey: 'items' } },
+      { name: 'search', type: 'async-autocomplete', config: { debounceMs: -1 } },
+    ] });
+    expect(result.errors.filter((error) => error.code === 'DATASOURCE_INVALID')).toHaveLength(2);
+    expect(result.errors).toContainEqual(expect.objectContaining({ code: 'FIELD_CONFIG_INVALID', path: 'search' }));
   });
   it('rejects invalid structure, references, rule ranges, option values, and data sources', () => {
     const schema: FormSchema = {

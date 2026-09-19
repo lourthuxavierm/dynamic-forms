@@ -66,7 +66,9 @@ const registry = new FieldRegistry<Renderer, Metadata, 'text' | 'color'>();
 `InferSchemaType<typeof schema>` preserves literal field names and derives nested object, array, scalar, selection, and boolean values. Dynamic runtime schemas remain supported: unknown custom controls resolve to `unknown`, requiring consumers to narrow their values instead of receiving an unsafe `any`.
 ## Typed paths
 
-`Path<TValues>` lists valid dot and bracket paths, while `PathValue<TValues, TPath>` resolves the value at a path. `FormStore<TValues>` uses both types for `getValue`, `setValue`, `resetField`, field errors, touched state, and field subscriptions.
+`InferFormValues<typeof schema>` derives the complete value contract from a const schema, including nested objects, arrays of objects, and primitive arrays. `createFormRuntime(schema, initialValues)` carries that inferred contract into the runtime automatically; the `FormRuntime<TValues>` constructor remains available when an explicit value type is preferred.
+
+`Path<TValues>` lists valid dot and bracket paths, while `PathValue<TValues, TPath>` resolves the value at a path. `FormStore<TValues>` and `FormRuntime<TValues>` use both types for value access and mutation.
 
 ```ts
 interface CustomerValues {
@@ -193,3 +195,14 @@ const runtime = new FormRuntime(schema, initialValues, {
 The plugin context exposes a deeply frozen schema, immutable form snapshots, copied condition state, and deeply frozen datasource state. It does not expose mutation methods. Hook failures are normalized, routed to `onPluginError`, and isolated; a failing plugin or error reporter cannot interrupt Core. Plugins whose setup fails are not activated, and duplicate or unnamed plugins are rejected.
 
 `createLifecycleAuditPlugin` is the official minimal example. It records phase, operation, paths, and async metadata but excludes field values by default.
+
+## Schema normalization and versioning
+
+`FormRuntime` validates and normalizes public schemas into a deeply frozen canonical representation before constructing Core controllers. Use `normalizeSchema` for diagnostic results or `normalizeSchemaOrThrow` for fail-fast construction. `schemaVersion` tracks the numeric Core format; the existing `version` remains a consumer-defined release label. Missing schema versions default to the current format for compatibility.
+
+See [SCHEMA.md](./SCHEMA.md) for defaults, diagnostics, runtime integration, and the explicit migration contract.
+## Performance
+
+Core ships repeatable benchmarks and conservative CI budgets. Run `pnpm --filter @dynamic-form-engine/core bench` for the human-readable benchmark matrix, `bench:json` for a machine-readable report. `CORE_PERFORMANCE_BUDGETS` exposes the CI guardrails.
+
+See [PERFORMANCE.md](./PERFORMANCE.md) for scenarios, budgets, the dated reference-machine baseline, known characteristics, and interpretation guidance.

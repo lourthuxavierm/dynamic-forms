@@ -2,11 +2,12 @@ import * as _angular_core from '@angular/core';
 import { Type } from '@angular/core';
 import * as _dynamic_form_engine_angular from '@dynamic-form-engine/angular';
 import { DynamicFormFacade } from '@dynamic-form-engine/angular';
+import * as _dynamic_form_engine_core from '@dynamic-form-engine/core';
 import { FieldSchema, FormValues, FormSchema } from '@dynamic-form-engine/core';
 
 declare class DynamicHtmlFieldComponent {
-    readonly field: _angular_core.InputSignal<FieldSchema>;
-    readonly form: _angular_core.InputSignal<DynamicFormFacade<FormValues>>;
+    readonly field: _angular_core.InputSignal<FieldSchema<never>>;
+    readonly form: _angular_core.InputSignal<Pick<DynamicFormFacade<_dynamic_form_engine_core.DynamicFormValues>, "field">>;
     readonly binding: _angular_core.Signal<_dynamic_form_engine_angular.DynamicFieldSignals<unknown>>;
     readonly visible: _angular_core.Signal<boolean>;
     readonly disabled: _angular_core.Signal<boolean>;
@@ -26,7 +27,7 @@ declare class DynamicHtmlFieldComponent {
     static ɵcmp: _angular_core.ɵɵComponentDeclaration<DynamicHtmlFieldComponent, "df-html-field", never, { "field": { "alias": "field"; "required": true; "isSignal": true; }; "form": { "alias": "form"; "required": true; "isSignal": true; }; }, {}, never, never, true, never>;
 }
 declare class DynamicHtmlFormComponent<T extends FormValues = FormValues> {
-    readonly schema: _angular_core.InputSignal<FormSchema>;
+    readonly schema: _angular_core.InputSignal<FormSchema<never>>;
     readonly form: _angular_core.InputSignal<DynamicFormFacade<T>>;
     readonly submitLabel: _angular_core.InputSignal<string>;
     readonly submittedValues: _angular_core.OutputEmitterRef<Readonly<T>>;

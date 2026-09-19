@@ -20,3 +20,4 @@ CSS. It does not yet match React HTML's complete control/layout contract.
 - [Accessibility](./accessibility.md)
 - [SSR and hydration](./ssr.md)
 - [Complete example](./complete-example.md)
+The renderer consumes Core's normalized schema contract. Renderer components use a narrowed field facade rather than relying on Angular template generic inference, preserving compatibility with strict Angular production builds.

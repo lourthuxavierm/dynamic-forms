@@ -35,10 +35,12 @@ export function FormCanvas(props: FormCanvasProps) {
   const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const canvasRef = useRef<HTMLElement>(null);
   const fieldSignature = props.schema.fields.map((field) => field.name).join('|');
+  const currentLayout = useRef(history.present);
+  currentLayout.current = history.present;
 
   useEffect(() => {
-    dispatch({ type: 'replace', layout: normalizeLayout(props.schema, history.present) });
-  }, [fieldSignature]);
+    dispatch({ type: 'replace', layout: normalizeLayout(props.schema, currentLayout.current) });
+  }, [fieldSignature, props.schema]);
   useEffect(() => {
     localStorage.setItem(`${LAYOUT_KEY}:${props.schema.id}`, JSON.stringify(history.present));
   }, [history.present, props.schema.id]);

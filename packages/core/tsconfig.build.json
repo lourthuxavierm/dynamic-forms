@@ -10,5 +10,11 @@
   },
   "include": [
     "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/type-tests/**",
+    "dist",
+    "node_modules"
   ]
 }

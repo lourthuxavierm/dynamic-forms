@@ -2,7 +2,7 @@ import { AsyncRequestManager, isAbortError, type AsyncRequestContext } from '../
 import { dynamicPath } from '../store';
 import type { DataSourceConfig } from '../datasource';
 import type { FormStore, FormValues } from '../store';
-import type { FieldSchema, FormSchema } from '../schema';
+import type { CompiledFormSchema, FieldSchema, FormSchema } from '../schema';
 import { DependencyGraph } from './graph';
 
 export interface DependencyRefreshContext extends AsyncRequestContext {
@@ -27,12 +27,13 @@ export class DependencyController<T extends FormValues = FormValues> {
   private readonly unsubscribers: readonly (() => void)[];
   private readonly requests: AsyncRequestManager<string>;
 
-  constructor(store: FormStore<T>, schema: FormSchema, options: DependencyControllerOptions<T> = {}) {
+  constructor(store: FormStore<T>, schema: FormSchema | CompiledFormSchema, options: DependencyControllerOptions<T> = {}) {
     this.requests = new AsyncRequestManager({ onError: options.onAsyncError });
-    collectFields(schema.fields, '', this.fields);
-    const dependencies = [...this.fields].flatMap(([path, field]) => field.dependsOn?.length
-      ? [{ field: path, dependsOn: [...field.dependsOn] }]
-      : []);
+    if ('fieldsByPath' in schema) for (const [path, field] of schema.fieldsByPath) this.fields.set(path, field);
+    else collectFields(schema.fields, '', this.fields);
+    const dependencies = 'fieldsByPath' in schema
+      ? [...schema.dependencyGraph.dependenciesByField].filter(([, values]) => values.length).map(([field, dependsOn]) => ({ field, dependsOn: [...dependsOn] }))
+      : [...this.fields].flatMap(([path, field]) => field.dependsOn?.length ? [{ field: path, dependsOn: [...field.dependsOn] }] : []);
     this.graph = new DependencyGraph(dependencies);
     this.watchedPaths = [...new Set(dependencies.flatMap((dependency) => dependency.dependsOn))];
     const process = (changedFields: readonly string[]) => {

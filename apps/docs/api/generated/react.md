@@ -107,7 +107,7 @@ export declare function fieldId(name: string): string
 - Kind: type
 - Source: `packages/react/src/types.ts`
 
-Dot-separated paths accepted by React form hooks.
+Dot and bracket paths accepted by typed React form hooks.
 
 ```ts
 export type FieldPath;
@@ -154,7 +154,7 @@ export interface FormErrorSummaryProps;
 Owns the React form context, store lifecycle, validation mode, and optional submission callbacks.
 
 ```ts
-export declare function FormProvider<T extends FormValues = FormValues>({ store, registry, schema, defaultValues, children, onSubmit, formValidator, onError, onChange, onValidate, validationMode, onInvalidSubmit, focusOnInvalidSubmit, onDataSourceRefresh, }: FormProviderProps<T>): import("react").JSX.Element
+export declare function FormProvider<T extends FormValues = DynamicFormValues>({ store, registry, schema, defaultValues, children, onSubmit, formValidator, onError, onChange, onValidate, validationMode, onInvalidSubmit, focusOnInvalidSubmit, onDataSourceRefresh, }: FormProviderProps<T>): import("react").JSX.Element
 ```
 
 ### FormProviderProps
@@ -206,7 +206,7 @@ export declare function registerReactField<TValue = unknown>(registry: FieldRegi
 - Kind: type
 - Source: `packages/react/src/types.ts`
 
-Public type exported by @dynamic-form-engine/react.
+Explicitly typed or runtime-branded paths accepted by schema-driven hooks.
 
 ```ts
 export type TypedFieldPath;
@@ -297,7 +297,7 @@ export declare function useFieldState(name: string): { visible: boolean; disable
 Creates a typed store and registry for a controlled FormProvider.
 
 ```ts
-export declare function useForm<TValues extends FormValues = FormValues>(options?: UseFormOptions<TValues>): { store: FormStore<TValues>; registry: FieldRegistry<any>; }
+export declare function useForm<TValues extends FormValues = DynamicFormValues>(options?: UseFormOptions<TValues>): { store: FormStore<TValues>; registry: FieldRegistry<unknown, Record<string, unknown>, string>; }
 ```
 
 ### useFormActions
@@ -308,7 +308,7 @@ export declare function useForm<TValues extends FormValues = FormValues>(options
 Public function exported by @dynamic-form-engine/react.
 
 ```ts
-export declare function useFormActions<T extends FormValues = FormValues>(): { setValue: (path: string, value: unknown, options?: import("@dynamic-form-engine/core").SetValueOptions) => void; setValues: (values: Partial<T>, options?: import("@dynamic-form-engine/core").SetValueOptions) => void; setError: (path: string, message: string) => void; clearError: (path: string) => void; validateField: (name: string) => Promise<boolean>; validateForm: () => Promise<boolean>; submit: <TResult = unknown>() => Promise<TResult | undefined>; reset: () => void; resetField: (name: string) => void; }
+export declare function useFormActions<T extends FormValues = DynamicFormValues>(): { setValue: { <TPath extends import("@dynamic-form-engine/core").Path<T>>(path: TPath, value: import("@dynamic-form-engine/core").PathValue<T, TPath>, options?: import("@dynamic-form-engine/core").SetValueOptions): void; (path: import("@dynamic-form-engine/core").DynamicPath, value: unknown, options?: import("@dynamic-form-engine/core").SetValueOptions): void; }; setValues: (values: Partial<T>, options?: import("@dynamic-form-engine/core").SetValueOptions) => void; setError: { <TPath extends import("@dynamic-form-engine/core").Path<T>>(path: TPath, message: string): void; (path: import("@dynamic-form-engine/core").DynamicPath, message: string): void; }; clearError: { <TPath extends import("@dynamic-form-engine/core").Path<T>>(path: TPath): void; (path: import("@dynamic-form-engine/core").DynamicPath): void; }; validateField: (name: string) => Promise<boolean>; validateForm: () => Promise<boolean>; submit: <TResult = unknown>() => Promise<TResult | undefined>; reset: () => void; resetField: (name: string) => void; }
 ```
 
 ### useFormContext
@@ -319,7 +319,7 @@ export declare function useFormActions<T extends FormValues = FormValues>(): { s
 Public function exported by @dynamic-form-engine/react.
 
 ```ts
-export declare function useFormContext<T extends FormValues = FormValues>(): FormContextValue<T>
+export declare function useFormContext<T extends FormValues = DynamicFormValues>(): FormContextValue<T>
 ```
 
 ### useFormEvent
@@ -352,7 +352,7 @@ export interface UseFormOptions;
 Subscribes to a selected form-state slice through React external-store semantics.
 
 ```ts
-export declare function useFormState<TSelected = FormState<FormValues>>(selector?: (state: FormState) => TSelected): TSelected
+export declare function useFormState<TSelected = FormState<DynamicFormValues>>(selector?: (state: FormState) => TSelected): TSelected
 ```
 
 ### useFormStore

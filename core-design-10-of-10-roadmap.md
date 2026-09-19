@@ -19,8 +19,8 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | 5 | Async Race & Cancellation Management | P0 | [x] | Stale-safe async operations |
 | 6 | Unified Runtime Lifecycle | P0 | [x] | Deterministic processing pipeline |
 | 7 | Plugin / Middleware Contract | P1 | [x] | Stable Core extension API |
-| 8 | Performance Guarantees | P1 | [ ] | Benchmarked large-form performance |
-| 9 | Schema Normalization & Versioning | P1 | [ ] | Canonical/versioned schema runtime |
+| 8 | Performance Guarantees | P1 | [x] | Benchmarked large-form performance |
+| 9 | Schema Normalization & Versioning | P1 | [x] | Canonical/versioned schema runtime |
 | 10 | Diagnostics & Explainability | P1 | [ ] | Core can explain runtime decisions |
 
 ---
@@ -330,20 +330,20 @@ Prove Core performance instead of assuming it.
 
 ### Benchmark scenarios
 
-- [ ] 100 fields.
-- [ ] 500 fields.
-- [ ] 1,000 fields.
-- [ ] 5,000 fields as a stress test.
-- [ ] Deep nested objects.
-- [ ] Large field arrays.
-- [ ] 100+ conditional fields.
-- [ ] Long dependency chains.
-- [ ] Repeated `setValue()` operations.
-- [ ] Batch updates.
-- [ ] Validation-heavy forms.
-- [ ] Rapid async datasource requests.
-- [ ] Reset large forms.
-- [ ] Snapshot/clone/freeze cost.
+- [x] 100 fields.
+- [x] 500 fields.
+- [x] 1,000 fields.
+- [x] 5,000 fields as a stress test.
+- [x] Deep nested objects.
+- [x] Large field arrays.
+- [x] 100+ conditional fields.
+- [x] Long dependency chains.
+- [x] Repeated `setValue()` operations.
+- [x] Batch updates.
+- [x] Validation-heavy forms.
+- [x] Rapid async datasource requests.
+- [x] Reset large forms.
+- [x] Snapshot/clone/freeze cost.
 
 ### Measure
 
@@ -376,19 +376,19 @@ Separate the flexible public schema from a predictable internal runtime represen
 
 ### Required work
 
-- [ ] Introduce schema normalization.
-- [ ] Normalize defaults.
-- [ ] Normalize validation definitions.
-- [ ] Normalize conditions.
-- [ ] Normalize dependencies.
-- [ ] Normalize data sources.
-- [ ] Validate duplicate field names.
-- [ ] Validate invalid references.
-- [ ] Detect dependency cycles.
-- [ ] Produce useful schema diagnostics.
-- [ ] Introduce `schemaVersion` if appropriate.
-- [ ] Define future schema migration mechanism.
-- [ ] Keep normalization framework-independent.
+- [x] Introduce schema normalization.
+- [x] Normalize defaults.
+- [x] Normalize validation definitions.
+- [x] Normalize conditions.
+- [x] Normalize dependencies.
+- [x] Normalize data sources.
+- [x] Validate duplicate field names.
+- [x] Validate invalid references.
+- [x] Detect dependency cycles.
+- [x] Produce useful schema diagnostics.
+- [x] Introduce `schemaVersion` if appropriate.
+- [x] Define future schema migration mechanism.
+- [x] Keep normalization framework-independent.
 
 ### Example
 
@@ -485,7 +485,7 @@ These requirements apply across all ten areas.
 - [x] Lifecycle-order tests.
 - [x] Batch/transaction tests.
 - [ ] Type-level tests.
-- [ ] Performance benchmarks.
+- [x] Performance benchmarks.
 - [ ] Memory/disposal tests where applicable.
 
 ## Documentation
@@ -493,7 +493,7 @@ These requirements apply across all ten areas.
 - [ ] Core architecture.
 - [x] Runtime lifecycle.
 - [ ] Store contract.
-- [ ] Schema contract.
+- [x] Schema contract.
 - [ ] Conditions.
 - [ ] Dependencies.
 - [ ] Data sources.
@@ -501,8 +501,8 @@ These requirements apply across all ten areas.
 - [ ] Events.
 - [x] Plugins.
 - [x] Async behavior.
-- [ ] Performance guidance.
-- [ ] Migration/versioning policy.
+- [x] Performance guidance.
+- [x] Migration/versioning policy.
 
 ---
 
@@ -521,14 +521,14 @@ These requirements apply across all ten areas.
 
 - [x] Unified lifecycle.
 - [x] Selector subscriptions.
-- [ ] Schema normalization/versioning.
+- [x] Schema normalization/versioning.
 
 **Target Core score: ~9.5/10**
 
 ## Phase 3 — Enterprise Hardening
 
 - [ ] Diagnostics/explainability.
-- [ ] Performance benchmarks and budgets.
+- [x] Performance benchmarks and budgets.
 - [x] Small stable plugin contract.
 - [ ] Complete regression/documentation pass.
 
@@ -548,11 +548,11 @@ The Core can be considered complete for a stable enterprise-quality `1.0.0` when
 - [x] Transaction-safe.
 - [x] Async race-safe.
 - [x] Extensible without modifying Core.
-- [ ] Fine-grained and performant.
-- [ ] Schema-version aware.
+- [x] Fine-grained and performant.
+- [x] Schema-version aware.
 - [ ] Observable and diagnosable.
 - [ ] Thoroughly tested.
-- [ ] Benchmarked.
+- [x] Benchmarked.
 - [ ] Public API frozen/documented.
 - [ ] No unnecessary framework dependencies.
 - [ ] No unnecessary public `any` escape hatches.

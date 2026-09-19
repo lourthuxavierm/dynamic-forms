@@ -29,7 +29,8 @@
     "verify:rhf": "node scripts/verify-rhf-release.mjs",
     "verify:react-html-release": "node scripts/verify-react-html-release.mjs",
     "verify:zod-architecture": "pnpm --filter @dynamic-forms/docs zod:architecture",
-    "verify:zod-release": "node scripts/verify-zod-release.mjs"
+    "verify:zod-release": "node scripts/verify-zod-release.mjs",
+    "verify:core-release": "node scripts/verify-core-release.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

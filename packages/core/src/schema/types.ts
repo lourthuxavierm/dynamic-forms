@@ -63,6 +63,7 @@ export interface FieldOption {
   value: string | number | boolean;
   disabled?: boolean;
   group?: string;
+  metadata?: Readonly<Record<string, unknown>>;
   children?: readonly FieldOption[];
 }
 
@@ -151,20 +152,62 @@ export interface FileFieldConfig {
   imagePreview?: boolean;
 }
 
+/** Exact configuration contract for each built-in value field. */
+export interface FieldConfigMap {
+  text: TextFieldConfig;
+  textarea: TextFieldConfig;
+  password: TextFieldConfig;
+  email: TextFieldConfig;
+  url: TextFieldConfig;
+  number: NumericFieldConfig;
+  integer: NumericFieldConfig;
+  decimal: NumericFieldConfig;
+  hidden: never;
+  select: ChoiceFieldConfig;
+  'multi-select': ChoiceFieldConfig;
+  autocomplete: ChoiceFieldConfig;
+  'async-autocomplete': ChoiceFieldConfig;
+  checkbox: never;
+  'checkbox-group': ChoiceFieldConfig;
+  radio: ChoiceFieldConfig;
+  'radio-group': ChoiceFieldConfig;
+  switch: never;
+  'toggle-button': never;
+  'toggle-button-group': ChoiceFieldConfig;
+  'tree-select': ChoiceFieldConfig;
+  'tree-checkbox': ChoiceFieldConfig;
+  date: DateTimeFieldConfig;
+  time: DateTimeFieldConfig;
+  datetime: DateTimeFieldConfig;
+  'date-range': DateTimeFieldConfig;
+  'time-range': DateTimeFieldConfig;
+  'datetime-range': DateTimeFieldConfig;
+  month: DateTimeFieldConfig;
+  year: YearFieldConfig;
+  currency: CurrencyFieldConfig;
+  percentage: NumericFieldConfig;
+  slider: NumericFieldConfig;
+  'range-slider': RangeFieldConfig;
+  rating: NumericFieldConfig;
+  phone: TextFieldConfig;
+  otp: SegmentedFieldConfig;
+  pin: SegmentedFieldConfig;
+  mask: MaskFieldConfig;
+  file: FileFieldConfig;
+  'multi-file': FileFieldConfig;
+  camera: FileFieldConfig;
+  signature: never;
+  'document-preview': never;
+}
+
 export type FieldConfig =
-  | TextFieldConfig
-  | NumericFieldConfig
-  | CurrencyFieldConfig
-  | ChoiceFieldConfig
-  | DateTimeFieldConfig
-  | MaskFieldConfig
-  | SegmentedFieldConfig
-  | YearFieldConfig
-  | RangeFieldConfig
+  | FieldConfigMap[keyof FieldConfigMap]
   | ArrayFieldConfig
   | FileFieldConfig
   | Record<string, unknown>;
 export interface FieldSchema<TCustomValue = never> {
+  /** Stable builder identity, independent from the data-binding name. */
+  id?: string;
   name: string;
   type: FieldType | string;
   label?: string;
@@ -185,6 +228,8 @@ export interface FieldSchema<TCustomValue = never> {
   options?: readonly FieldOption[];
   config?: FieldConfig;
   validation?: FieldValidation;
+  /** @deprecated Use validation.required. Retained through the 1.x line. */
+  required?: boolean;
   /**
    * Child fields for 'object' or 'array' types.
    */
@@ -193,14 +238,16 @@ export interface FieldSchema<TCustomValue = never> {
    * Custom metadata for the field.
    */
   metadata?: Record<string, unknown>;
+  /** Namespaced renderer or application extensions. */
+  extensions?: Readonly<Record<string, unknown>>;
 }
 
 export interface FormSchema<TCustomValue = never> {
   id: string;
   fields: readonly FieldSchema<TCustomValue>[];
-  /**
-   * Version of the schema.
-   */
+  /** Structural format version used by Core migrations. Defaults to the current version. */
+  schemaVersion?: number;
+  /** Consumer-defined form release label. */
   version?: string;
 }
 
@@ -274,8 +321,86 @@ export type FieldValue<
     ? FieldValueMap[TType]
     : unknown;
 
+export interface StringValidationRules { required?: boolean; minLength?: number; maxLength?: number; pattern?: string; }
+export interface NumberValidationRules { required?: boolean; min?: number; max?: number; multipleOf?: number; }
+export interface ArrayValidationRules { required?: boolean; minItems?: number; maxItems?: number; uniqueItems?: boolean; }
+export interface BooleanValidationRules { required?: boolean; }
+
+type StructuralFieldType = 'object' | 'array';
+type StringFieldType = 'text' | 'textarea' | 'password' | 'email' | 'url' | 'phone' | 'otp' | 'pin' | 'mask';
+type NumberFieldType = 'number' | 'integer' | 'decimal' | 'currency' | 'percentage' | 'slider' | 'rating' | 'year';
+type BooleanFieldType = 'checkbox' | 'switch' | 'toggle-button';
+type CollectionFieldType = 'multi-select' | 'checkbox-group' | 'toggle-button-group' | 'tree-checkbox' | 'multi-file';
+type ScalarFieldType = Exclude<keyof FieldValueMap, StructuralFieldType | StringFieldType | NumberFieldType | BooleanFieldType | CollectionFieldType>;
+type CommonFieldProperties = Pick<FieldSchema,
+  'id' | 'name' | 'label' | 'placeholder' | 'description' | 'disabled' | 'readOnly' |
+  'visibleWhen' | 'disabledWhen' | 'requiredWhen' | 'readOnlyWhen' | 'hiddenValuePolicy' |
+  'dependsOn' | 'resetOnDependencyChange' | 'metadata' | 'extensions'
+  | 'required'
+>;
+type ValidationFor<TType extends keyof FieldValueMap> =
+  TType extends StringFieldType ? StringValidationRules :
+  TType extends NumberFieldType ? NumberValidationRules :
+  TType extends CollectionFieldType ? ArrayValidationRules :
+  TType extends BooleanFieldType ? BooleanValidationRules : FieldValidation;
+export type ValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> =
+  TType extends Exclude<keyof FieldValueMap, StructuralFieldType>
+    ? CommonFieldProperties & {
+        type: TType;
+        defaultValue?: FieldValueMap[TType];
+        validation?: ValidationFor<TType>;
+        config?: FieldConfigMap[TType];
+        options?: readonly FieldOption[];
+        dataSource?: DataSourceConfig;
+        fields?: never;
+      }
+    : never;
+export interface ObjectFieldSchema extends CommonFieldProperties { type: 'object'; fields: readonly FormField[]; defaultValue?: Record<string, unknown>; validation?: BooleanValidationRules; options?: never; dataSource?: never; }
+export interface ArrayFieldSchema extends CommonFieldProperties { type: 'array'; fields: readonly FormField[]; defaultValue?: unknown[]; validation?: ArrayValidationRules; config?: ArrayFieldConfig; options?: never; dataSource?: never; }
+export type FormField =
+  | ValueFieldSchema<StringFieldType>
+  | ValueFieldSchema<NumberFieldType>
+  | ValueFieldSchema<BooleanFieldType>
+  | ValueFieldSchema<CollectionFieldType>
+  | ValueFieldSchema<ScalarFieldType>
+  | ObjectFieldSchema
+  | ArrayFieldSchema;
+
+/** Strict persisted-schema authoring contract. Use FieldSchema for registered programmatic custom controls. */
+export interface StrictFormSchema<TFields extends readonly FormField[] = readonly FormField[]> extends Omit<FormSchema, 'fields' | 'schemaVersion'> { schemaVersion: 1; fields: TFields; }
+export function defineFormSchema<const TFields extends readonly FormField[]>(schema: StrictFormSchema<TFields>): StrictFormSchema<TFields> { return schema; }
+
+export type JsonPrimitive = string | number | boolean | null;
+export type JsonValue = JsonPrimitive | { readonly [key: string]: JsonValue } | readonly JsonValue[];
+export interface PortableFieldOption extends Omit<FieldOption, 'metadata' | 'children'> {
+  metadata?: Readonly<Record<string, JsonValue>>;
+  children?: readonly PortableFieldOption[];
+}
+export type PortableDataSourceConfig<T extends JsonValue = JsonValue> =
+  | { type: 'static'; options: readonly T[]; cache?: boolean; cacheKey?: string }
+  | { type: 'url'; url: string; method?: 'GET' | 'POST'; params?: Readonly<Record<string, JsonValue>>; searchParam?: string; pageParam?: string; pageSizeParam?: string; cache?: boolean; cacheKey?: string };
+type PortableProperties = {
+  metadata?: Readonly<Record<string, JsonValue>>;
+  extensions?: Readonly<Record<string, JsonValue>>;
+};
+type PortableValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> =
+  Omit<ValueFieldSchema<TType>, 'dataSource' | 'metadata' | 'extensions' | 'options'> & PortableProperties & {
+    dataSource?: PortableDataSourceConfig;
+    options?: readonly PortableFieldOption[];
+  };
+export type PortableFormField =
+  | PortableValueFieldSchema<StringFieldType>
+  | PortableValueFieldSchema<NumberFieldType>
+  | PortableValueFieldSchema<BooleanFieldType>
+  | PortableValueFieldSchema<CollectionFieldType>
+  | PortableValueFieldSchema<ScalarFieldType>
+  | (Omit<ObjectFieldSchema, 'fields' | 'metadata' | 'extensions'> & PortableProperties & { fields: readonly PortableFormField[] })
+  | (Omit<ArrayFieldSchema, 'fields' | 'metadata' | 'extensions'> & PortableProperties & { fields: readonly PortableFormField[] });
+export interface PortableFormSchema<TFields extends readonly PortableFormField[] = readonly PortableFormField[]> extends Omit<FormSchema, 'fields' | 'schemaVersion'> { schemaVersion: 1; fields: TFields; }
+export function definePortableFormSchema<const TFields extends readonly PortableFormField[]>(schema: PortableFormSchema<TFields>): PortableFormSchema<TFields> { return schema; }
+
 /** Infer form values from a const schema while retaining custom field-map support. */
-export type InferSchemaType<
+export type InferFormValues<
   T extends FormSchema<unknown> | readonly FieldSchema<unknown>[],
   TCustomValues extends Record<string, unknown> = Record<never, never>,
 > = T extends FormSchema<unknown>
@@ -283,6 +408,12 @@ export type InferSchemaType<
   : T extends readonly FieldSchema<unknown>[]
     ? InferFieldsType<T, TCustomValues>
     : never;
+
+/** @deprecated Use InferFormValues. */
+export type InferSchemaType<
+  T extends FormSchema<unknown> | readonly FieldSchema<unknown>[],
+  TCustomValues extends Record<string, unknown> = Record<never, never>,
+> = InferFormValues<T, TCustomValues>;
 
 type InferFieldsType<
   T extends readonly FieldSchema<unknown>[],
@@ -300,6 +431,10 @@ type InferFieldType<
     : FieldValueMap['object']
   : T['type'] extends 'array'
     ? T['fields'] extends readonly FieldSchema<unknown>[]
-      ? InferFieldsType<T['fields'], TCustomValues>[]
+      ? T extends { metadata: { primitiveItems: true } }
+        ? T['fields'] extends readonly [infer TItem extends FieldSchema<unknown>]
+          ? InferFieldType<TItem, TCustomValues>[]
+          : InferFieldsType<T['fields'], TCustomValues>[]
+        : InferFieldsType<T['fields'], TCustomValues>[]
       : FieldValueMap['array']
     : FieldValue<Extract<T['type'], string>, TCustomValues>;

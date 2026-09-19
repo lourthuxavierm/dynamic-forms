@@ -13,6 +13,8 @@ export default tseslint.config(
       '**/.turbo/**',
       '**/.vitepress/cache/**',
       '**/.vitepress/dist/**',
+      '**/.vitepress/.temp/**',
+      '**/.vitepress/.snippet-check/**',
       '**/playwright-report/**',
       '**/test-results/**',
     ],

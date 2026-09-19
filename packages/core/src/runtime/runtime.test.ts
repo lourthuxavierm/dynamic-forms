@@ -25,6 +25,14 @@ const schema: FormSchema = {
 };
 
 describe('FormRuntime lifecycle', () => {
+  it('preserves nested schema defaults under initial values and replacement resets', () => {
+    type Values = { profile: { name: string; city: string } };
+    const runtime = new FormRuntime<Values>({ id: 'nested-runtime', fields: [{ name: 'profile', type: 'object', fields: [{ name: 'name', type: 'text', defaultValue: 'Anonymous' }, { name: 'city', type: 'text', defaultValue: 'Chennai' }] }] }, { profile: { name: 'Ada' } } as Values);
+    expect(runtime.store.getValues()).toEqual({ profile: { name: 'Ada', city: 'Chennai' } });
+    runtime.reset({ profile: { city: 'Pune' } } as Values);
+    expect(runtime.store.getValues()).toEqual({ profile: { name: 'Anonymous', city: 'Pune' } });
+    runtime.dispose();
+  });
   it('uses deterministic sync ordering and starts data-source work after notification', async () => {
     const phases: RuntimeLifecyclePhase[] = [];
     const runtime = new FormRuntime(
