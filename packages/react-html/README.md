@@ -10,6 +10,8 @@ media workflows, structural arrays, declarative layouts, and opt-in theming.
 The stable v1 contract contains exactly 42 leaf controls, exported through
 V1_HTML_FIELD_TYPES, plus the object and array structural types. See
 docs/CONTROL-REFERENCE.md for their value and behavior contracts.
+The package entry points and stable/experimental boundary are frozen in
+[the v1 public API contract](./docs/V1-PUBLIC-API.md).
 
 ## Install
 

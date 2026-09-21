@@ -8,10 +8,19 @@ import { EXPERIMENTAL_HTML_FIELD_TYPES, HtmlForm, V1_HTML_FIELD_TYPES, createDef
 afterEach(cleanup);
 
 describe('Native HTML v1 contract', () => {
-  it('locks exactly 42 stable controls without counting extensions', () => {
-    expect(V1_HTML_FIELD_TYPES).toHaveLength(42);
+  it('locks the exact 42 stable leaf controls and keeps extensions separate', () => {
+    expect(V1_HTML_FIELD_TYPES).toEqual([
+      'text', 'textarea', 'password', 'email', 'url', 'number', 'integer', 'decimal', 'hidden',
+      'select', 'multi-select', 'autocomplete', 'async-autocomplete', 'checkbox',
+      'checkbox-group', 'radio', 'radio-group', 'switch', 'toggle-button-group', 'tree-select',
+      'date', 'time', 'datetime', 'date-range', 'time-range', 'datetime-range', 'month', 'year',
+      'currency', 'percentage', 'slider', 'range-slider', 'rating', 'phone', 'otp', 'pin', 'mask',
+      'file', 'multi-file', 'camera', 'signature', 'document-preview',
+    ]);
+    expect(EXPERIMENTAL_HTML_FIELD_TYPES).toEqual(['searchable-select', 'tree-checkbox']);
     expect(new Set(V1_HTML_FIELD_TYPES).size).toBe(42);
     const registry = createDefaultHtmlRegistry();
+    expect(Object.keys(registry).sort()).toEqual([...V1_HTML_FIELD_TYPES, ...EXPERIMENTAL_HTML_FIELD_TYPES].sort());
     for (const type of V1_HTML_FIELD_TYPES) expect(registry[type], type).toBeDefined();
     for (const type of EXPERIMENTAL_HTML_FIELD_TYPES) {
       expect(V1_HTML_FIELD_TYPES).not.toContain(type as never);

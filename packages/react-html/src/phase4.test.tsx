@@ -18,6 +18,17 @@ function schema(fields: readonly FieldSchema[]): FormSchema {
 }
 
 describe('Phase 4 baseline native controls', () => {
+  it.each(['text', 'textarea', 'password', 'email', 'url'] as const)('%s stores unformatted text and restores its initial value on reset', (type) => {
+    const field: FieldSchema = { name: 'entry', type, label: 'Entry' };
+    const store = new FormStore({ entry: 'original' });
+    const view = render(<FormProvider store={store} schema={schema([field])}><HtmlForm /></FormProvider>);
+    const input = view.getByLabelText('Entry') as HTMLInputElement | HTMLTextAreaElement;
+    fireEvent.change(input, { target: { value: 'changed@example.test' } });
+    expect(store.getValue('entry')).toBe('changed@example.test');
+    store.reset();
+    expect(store.getValue('entry')).toBe('original');
+  });
+
   it('registers the complete baseline inventory', () => {
     const registry = createDefaultHtmlRegistry();
     for (const type of inventory) expect(registry[type]).toBeDefined();
@@ -60,6 +71,21 @@ describe('Phase 4 baseline native controls', () => {
     roles.options[1].selected = true;
     fireEvent.change(roles);
     expect(store.getValues()).toMatchObject({ name: 'Ada', age: 42, active: true, level: 7, roles: ['admin', 'audit'] });
+  });
+
+  it.each(['number', 'integer', 'decimal'] as const)('%s ignores invalid numeric changes and clears to undefined', (type) => {
+    const field: FieldSchema = { name: 'amount', type, label: 'Amount' };
+    const store = new FormStore({ amount: 7 });
+    const view = render(<FormProvider store={store} schema={schema([field])}><HtmlForm /></FormProvider>);
+    const input = view.getByLabelText('Amount') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: 'Infinity' } });
+    expect(store.getValue('amount')).toBe(7);
+    if (type === 'integer') {
+      fireEvent.change(input, { target: { value: '1.5' } });
+      expect(store.getValue('amount')).toBe(7);
+    }
+    fireEvent.change(input, { target: { value: '' } });
+    expect(store.getValue('amount')).toBeUndefined();
   });
 
   it('exposes descriptions, errors, required state, and touched/dirty state', async () => {

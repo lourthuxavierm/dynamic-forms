@@ -51,6 +51,60 @@ describe('Phase 9 structural rendering', () => {
     expect((view.getByRole('button', { name: 'Add item' }) as HTMLButtonElement).disabled).toBe(true);
   });
 
+  it('builds deep defaults for array objects and keeps nested paths correct through reorder and removal', () => {
+    const schema: FormSchema = { id: 'deep-operations', fields: [{ name: 'groups', type: 'array', label: 'Groups', fields: [
+      { name: 'name', type: 'text', label: 'Group name', defaultValue: 'New' },
+      { name: 'settings', type: 'object', label: 'Settings', fields: [
+        { name: 'enabled', type: 'checkbox', label: 'Enabled', defaultValue: true },
+        { name: 'details', type: 'object', label: 'Details', fields: [{ name: 'title', type: 'text', label: 'Title', defaultValue: 'Draft' }] },
+      ] },
+      { name: 'tags', type: 'array', label: 'Tags', fields: [{ name: '$value', type: 'text', label: 'Tag' }] },
+    ] }] };
+    const { store, view } = setup(schema, { groups: [{ name: 'Existing', settings: { enabled: false, details: { title: 'Saved' } }, tags: ['old'] }] });
+    const outer = view.container.querySelector('[data-df-field="groups"]')!;
+    const rows = () => Array.from(outer.querySelectorAll(':scope > div > div > fieldset.df-array-item'));
+    const keys = () => rows().map((node) => node.getAttribute('data-df-array-key'));
+    const originalKey = keys()[0];
+    fireEvent.click(outer.querySelector(':scope > button')!);
+    expect(store.getValue('groups')).toEqual([
+      { name: 'Existing', settings: { enabled: false, details: { title: 'Saved' } }, tags: ['old'] },
+      { name: 'New', settings: { enabled: true, details: { title: 'Draft' } }, tags: [] },
+    ]);
+    expect((view.getAllByLabelText('Title')[1] as HTMLInputElement).name).toBe('groups[1].settings.details.title');
+    const addedKey = keys()[1];
+    fireEvent.click(rows()[1].querySelector(':scope > div[role="group"] > button:nth-child(3)')!);
+    expect(keys()).toEqual([addedKey, originalKey]);
+    expect(store.getValue('groups')).toEqual([
+      { name: 'New', settings: { enabled: true, details: { title: 'Draft' } }, tags: [] },
+      { name: 'Existing', settings: { enabled: false, details: { title: 'Saved' } }, tags: ['old'] },
+    ]);
+    fireEvent.click(rows()[1].querySelector(':scope > div[role="group"] > button:first-child')!);
+    expect(keys()).toEqual([addedKey]);
+    expect(store.getValue('groups')).toEqual([{ name: 'New', settings: { enabled: true, details: { title: 'Draft' } }, tags: [] }]);
+  });
+
+  it('honors array duplicate and reorder restrictions without disabling add or remove', () => {
+    const schema: FormSchema = { id: 'restricted-operations', fields: [{ name: 'items', type: 'array', config: { allowDuplicate: false, allowReorder: false }, fields: [{ name: 'value', type: 'text', label: 'Value' }] }] };
+    const { store, view } = setup(schema, { items: [{ value: 'one' }, { value: 'two' }] });
+    expect(view.getAllByRole('button', { name: 'Duplicate' }).every((node) => (node as HTMLButtonElement).disabled)).toBe(true);
+    expect(view.getAllByRole('button', { name: 'Move up' }).every((node) => (node as HTMLButtonElement).disabled)).toBe(true);
+    expect(view.getAllByRole('button', { name: 'Move down' }).every((node) => (node as HTMLButtonElement).disabled)).toBe(true);
+    fireEvent.click(view.getAllByRole('button', { name: 'Remove' })[0]);
+    expect(store.getValue('items')).toEqual([{ value: 'two' }]);
+    fireEvent.click(view.getByRole('button', { name: 'Add item' }));
+    expect(store.getValue('items')).toEqual([{ value: 'two' }, { value: '' }]);
+  });
+
+  it('shows deep nested errors at their indexed field path', () => {
+    const schema: FormSchema = { id: 'deep-errors', fields: [{ name: 'rows', type: 'array', fields: [{ name: 'details', type: 'object', fields: [{ name: 'title', type: 'text', label: 'Title' }] }] }] };
+    const { store, view } = setup(schema, { rows: [{ details: { title: '' } }] });
+    act(() => store.setError('rows[0].details.title', 'Title is required'));
+    const input = view.getByLabelText('Title') as HTMLInputElement;
+    expect(input.name).toBe('rows[0].details.title');
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(view.getAllByText('Title is required')).toHaveLength(2);
+  });
+
   it('evaluates sibling conditions inside items and exposes a windowed renderer contract', () => {
     const windowed = vi.fn(({ items }: { items: readonly HtmlArrayRenderItem[] }) => <>{items.slice(0, 1).map((item) => <div key={item.id}>{item.content}</div>)}</>);
     const schema: FormSchema = { id: 'conditional', fields: [{ name: 'contacts', type: 'array', label: 'Contacts', fields: [

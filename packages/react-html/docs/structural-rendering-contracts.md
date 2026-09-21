@@ -6,7 +6,7 @@
 
 Object items use indexed paths such as `contacts[0].email`. Primitive items use the item path itself, such as `tags[0]`, and are enabled with `metadata: { primitiveItems: true }` or a single child named `$value`.
 
-Array controls support add, remove, duplicate, and move operations. `validation.minItems` and `validation.maxItems` disable operations that would violate collection bounds. New object items are built from child defaults; duplicate performs a deep clone so rows never share mutable data.
+Array controls support add, remove, duplicate, and move operations. `validation.minItems` and `validation.maxItems` disable operations that would violate collection bounds. `config.allowDuplicate: false` and `config.allowReorder: false` disable those actions independently. New object items recursively apply child defaults, including objects inside array items; duplicate performs a deep clone so rows never share mutable data.
 
 Row keys are opaque and stable across value edits and adapter mutations. Consumers must not persist or submit these keys.
 

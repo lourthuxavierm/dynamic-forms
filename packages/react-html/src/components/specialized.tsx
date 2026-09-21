@@ -55,7 +55,8 @@ function LocalizedNumericField({ props, percentage }: { props: FieldComponentPro
   return <HtmlFieldShell props={props}><input
     id={props.accessibility.id} name={props.name} type="text" inputMode="decimal"
     value={display} disabled={props.disabled} readOnly={props.readOnly} required={props.required}
-    aria-labelledby={props.accessibility.labelId} aria-invalid={props.accessibility.ariaInvalid || undefined}
+    aria-labelledby={props.accessibility.labelId} aria-describedby={props.accessibility.ariaDescribedBy}
+    aria-invalid={props.accessibility.ariaInvalid || undefined}
     placeholder={props.field.placeholder}
     onFocus={() => { setFocused(true); setDisplay(numericValue === undefined ? '' : String(numericValue)); }}
     onChange={(event) => {
@@ -81,6 +82,7 @@ export function HtmlSlider(props: FieldComponentProps) {
   return <HtmlFieldShell props={props}><input id={props.accessibility.id} name={props.name} type="range"
     min={config.min} max={config.max} step={config.step} value={typeof props.value === 'number' ? props.value : config.min}
     disabled={props.disabled} aria-readonly={props.readOnly || undefined} aria-labelledby={props.accessibility.labelId}
+    aria-describedby={props.accessibility.ariaDescribedBy} aria-invalid={props.accessibility.ariaInvalid || undefined}
     onChange={(event) => { if (!props.readOnly) props.setValue(Number(event.target.value)); }}
     onBlur={() => props.setTouched(true)} />
     <output htmlFor={props.accessibility.id}>{String(props.value ?? config.min)}</output>
@@ -92,7 +94,8 @@ export function HtmlRangeSlider(props: FieldComponentProps) {
   const value = Array.isArray(props.value) && props.value.length === 2 ? [Number(props.value[0]), Number(props.value[1])] : [config.min, config.max];
   const lowerId = props.accessibility.id + '-lower';
   const upperId = props.accessibility.id + '-upper';
-  return <HtmlFieldShell props={props}><div role="group" aria-labelledby={props.accessibility.labelId}>
+  return <HtmlFieldShell props={props}><div role="group" aria-labelledby={props.accessibility.labelId}
+    aria-describedby={props.accessibility.ariaDescribedBy} aria-invalid={props.accessibility.ariaInvalid || undefined}>
     <label htmlFor={lowerId}>Minimum</label><input id={lowerId} name={props.name + '.0'} type="range"
       min={config.min} max={value[1]} step={config.step} value={value[0]} disabled={props.disabled}
       aria-readonly={props.readOnly || undefined}
@@ -109,7 +112,9 @@ export function HtmlRangeSlider(props: FieldComponentProps) {
 
 export function HtmlRating(props: FieldComponentProps) {
   const maximum = (props.field.config as NumericConfig | undefined)?.maxRating ?? 5;
-  return <HtmlFieldShell props={props}><div role="radiogroup" aria-labelledby={props.accessibility.labelId}>
+  return <HtmlFieldShell props={props}><div role="radiogroup" aria-labelledby={props.accessibility.labelId}
+    aria-describedby={props.accessibility.ariaDescribedBy} aria-invalid={props.accessibility.ariaInvalid || undefined}
+    aria-required={props.required || undefined}>
     {Array.from({ length: maximum }, (_, index) => index + 1).map((rating) => {
       const id = props.accessibility.id + '-' + rating;
       return <label key={id} htmlFor={id}><input id={id} type="radio" name={props.name}
@@ -125,7 +130,8 @@ export function HtmlPhoneField(props: FieldComponentProps) {
   return <HtmlFieldShell props={props}><input id={props.accessibility.id} name={props.name} type="tel"
     inputMode="tel" autoComplete="tel" value={props.value == null ? '' : String(props.value)}
     disabled={props.disabled} readOnly={props.readOnly} required={props.required}
-    aria-labelledby={props.accessibility.labelId}
+    aria-labelledby={props.accessibility.labelId} aria-describedby={props.accessibility.ariaDescribedBy}
+    aria-invalid={props.accessibility.ariaInvalid || undefined}
     onChange={(event) => { if (!props.readOnly) props.setValue(event.target.value); }}
     onBlur={() => props.setTouched(true)} /></HtmlFieldShell>;
 }
@@ -140,7 +146,9 @@ function SegmentedCode({ props, secret }: { props: FieldComponentProps; secret?:
     const pasted = onlyDigits(event.clipboardData.getData('text')).slice(0, length);
     if (pasted) { update(pasted); refs.current[Math.min(pasted.length, length - 1)]?.focus(); }
   };
-  return <HtmlFieldShell props={props} hideLabel><fieldset disabled={props.disabled}>
+  return <HtmlFieldShell props={props} hideLabel><fieldset disabled={props.disabled}
+    aria-describedby={props.accessibility.ariaDescribedBy} aria-invalid={props.accessibility.ariaInvalid || undefined}
+    aria-required={props.required || undefined}>
     <legend id={props.accessibility.labelId}>{props.field.label ?? props.name}</legend>
     {Array.from({ length }, (_, index) => <input key={index} ref={(element) => { refs.current[index] = element; }}
       type={secret ? 'password' : 'text'} inputMode="numeric" maxLength={1}
@@ -210,7 +218,8 @@ export function HtmlMaskField(props: FieldComponentProps) {
   return <HtmlFieldShell props={props}><input id={props.accessibility.id} name={props.name} type="text"
     value={display} disabled={props.disabled} readOnly={props.readOnly}
     placeholder={props.field.placeholder ?? mask}
-    aria-labelledby={props.accessibility.labelId} aria-invalid={Boolean(props.error || !mask) || undefined}
+    aria-labelledby={props.accessibility.labelId} aria-describedby={props.accessibility.ariaDescribedBy}
+    aria-invalid={Boolean(props.error || !mask) || undefined}
     onChange={(event) => { if (!props.readOnly && mask) props.setValue(extractMaskValue(event.target.value, mask) || undefined); }}
     onBlur={() => props.setTouched(true)} />
     {!mask && <div role="alert">Mask configuration is required.</div>}

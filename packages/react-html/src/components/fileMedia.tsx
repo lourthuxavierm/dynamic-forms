@@ -173,6 +173,7 @@ function FileControl({ props, multiple, camera }: { props: FieldComponentProps; 
     multiple={multiple} accept={camera ? 'image/*' : config?.accept} capture={camera ? 'environment' : undefined}
     disabled={props.disabled} required={props.required} aria-labelledby={props.accessibility.labelId}
     aria-invalid={props.accessibility.ariaInvalid || undefined}
+    aria-describedby={props.accessibility.ariaDescribedBy}
     onChange={(event) => { if (!props.readOnly) select(event.target.files); }}
     onBlur={() => props.setTouched(true)} />
     {config?.imagePreview && values.map((file, index) => <FilePreview key={file.name + index} file={file} />)}

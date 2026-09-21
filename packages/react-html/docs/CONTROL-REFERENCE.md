@@ -39,6 +39,17 @@ Common markup exposes df-field and df-field-control classes, state modifier
 classes, and data attributes. Labels, descriptions, errors, required state, and
 validating announcements are connected with generated IDs and ARIA attributes.
 
+HtmlForm validates before invoking its submit callback. While a submission is
+pending, a second submit is ignored, Core exposes `submitting: true`, and the
+default submit button is disabled. A rejected callback does not become an
+unhandled event promise: HtmlForm announces the error in an alert and calls
+`onSubmitError(error)` when supplied. A new attempt clears the previous alert.
+
+Conditionally hidden fields retain their values by default, including in the
+submitted value object. Set `hiddenValuePolicy: 'clear'` or `'reset'` on the
+schema field to choose a different Core-owned value policy. Hiding alone does
+not remove a field from the submitted object.
+
 ## Configuration
 
 - Numeric and year fields use min, max, step, and optional precision.

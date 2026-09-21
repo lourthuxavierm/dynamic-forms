@@ -1,7 +1,10 @@
 import type { ComponentType } from 'react';
 import type { FieldComponentProps } from '@dynamic-form-engine/react';
 
-export type HtmlFieldComponent = ComponentType<any>;
+/** A registry control must accept the headless field contract.
+ * The value type is open because one registry may contain controls for different value types.
+ */
+export type HtmlFieldComponent = ComponentType<FieldComponentProps<any>>;
 export type TypedHtmlFieldComponent<T = unknown> = ComponentType<FieldComponentProps<T>>;
 
 export * from './HtmlFieldErrorBoundary';

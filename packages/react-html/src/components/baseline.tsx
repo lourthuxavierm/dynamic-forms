@@ -41,7 +41,16 @@ function HtmlInput(props: FieldComponentProps, type: InputKind, numeric = false,
     onChange: (event: ChangeEvent<HTMLInputElement>) => {
       if (props.readOnly) return;
       const raw = event.target.value;
-      props.setValue(numeric ? (raw === '' ? undefined : Number(raw)) : raw);
+      if (!numeric) {
+        props.setValue(raw);
+        return;
+      }
+      if (raw.trim() === '') {
+        props.setValue(undefined);
+        return;
+      }
+      const parsed = Number(raw);
+      if (Number.isFinite(parsed) && (!integer || Number.isInteger(parsed))) props.setValue(parsed);
     },
   };
   return <HtmlFieldShell props={props}><input {...inputProps} /></HtmlFieldShell>;

@@ -1,5 +1,5 @@
 import { useSyncExternalStore, type ReactNode } from 'react';
-import { evaluateCondition, type FieldSchema } from '@dynamic-form-engine/core';
+import { evaluateCondition, type ArrayFieldConfig, type FieldSchema } from '@dynamic-form-engine/core';
 import { useFieldArray, useFieldState, useFormContext } from '@dynamic-form-engine/react';
 import type { HtmlFieldRegistry } from '../registry';
 
@@ -38,7 +38,7 @@ function HtmlObjectField({ field, name, registry, arrayItemsRenderer, renderLeaf
       <legend>{field.label ?? humanize(field.name)}</legend>
       {field.description ? <p>{field.description}</p> : null}
       {field.fields?.map((child) => (
-        <StructuralNode key={child.name} field={child} name={`${name}.${child.name}`} registry={registry} arrayItemsRenderer={arrayItemsRenderer} renderLeaf={renderLeaf} />
+        <StructuralNode key={child.id ?? child.name} field={child} name={`${name}.${child.name}`} registry={registry} arrayItemsRenderer={arrayItemsRenderer} renderLeaf={renderLeaf} />
       ))}
       {state.error ? <p role="alert">{state.error}</p> : null}
     </fieldset>
@@ -53,6 +53,7 @@ function HtmlArrayField({ field, name, registry, arrayItemsRenderer, renderLeaf 
   if (!state.visible) return null;
   const minimum = field.validation?.minItems ?? 0;
   const maximum = field.validation?.maxItems ?? Number.POSITIVE_INFINITY;
+  const config = field.config as ArrayFieldConfig | undefined;
   const primitive = isPrimitiveArray(field);
   const disabled = state.disabled || Boolean(field.disabled);
   const immutable = disabled || state.readOnly || Boolean(field.readOnly);
@@ -66,14 +67,14 @@ function HtmlArrayField({ field, name, registry, arrayItemsRenderer, renderLeaf 
         {primitive
           ? renderPrimitive(field, name, index, renderLeaf)
           : field.fields?.map((child) => (
-            <ConditionalArrayNode key={child.name} field={child} name={`${name}[${index}].${child.name}`} itemValue={item.value} registry={registry} arrayItemsRenderer={arrayItemsRenderer} renderLeaf={renderLeaf} />
+            <ConditionalArrayNode key={child.id ?? child.name} field={child} name={`${name}[${index}].${child.name}`} itemValue={item.value} registry={registry} arrayItemsRenderer={arrayItemsRenderer} renderLeaf={renderLeaf} />
           ))}
         {itemErrors.filter(([path]) => path === `${name}[${index}]`).map(([path, message]) => <p role="alert" key={path}>{message}</p>)}
         <div role="group" aria-label={`Actions for item ${index + 1}`}>
           <button type="button" disabled={immutable || array.fields.length <= minimum} onClick={() => array.remove(index)}>Remove</button>
-          <button type="button" disabled={immutable || array.fields.length >= maximum} onClick={() => array.insert(index + 1, cloneValue(item.value))}>Duplicate</button>
-          <button type="button" disabled={immutable || index === 0} onClick={() => array.move(index, index - 1)}>Move up</button>
-          <button type="button" disabled={immutable || index === array.fields.length - 1} onClick={() => array.move(index, index + 1)}>Move down</button>
+          <button type="button" disabled={immutable || config?.allowDuplicate === false || array.fields.length >= maximum} onClick={() => array.insert(index + 1, cloneValue(item.value))}>Duplicate</button>
+          <button type="button" disabled={immutable || config?.allowReorder === false || index === 0} onClick={() => array.move(index, index - 1)}>Move up</button>
+          <button type="button" disabled={immutable || config?.allowReorder === false || index === array.fields.length - 1} onClick={() => array.move(index, index + 1)}>Move down</button>
         </div>
       </fieldset>
     ),
@@ -83,10 +84,10 @@ function HtmlArrayField({ field, name, registry, arrayItemsRenderer, renderLeaf 
     <fieldset className="df-structural df-array" disabled={disabled} data-df-field={name}>
       <legend>{field.label ?? humanize(field.name)}</legend>
       {field.description ? <p>{field.description}</p> : null}
-      <div aria-live="polite">{renderedItems}</div>
+      <div>{renderedItems}</div>
       {state.error ? <p role="alert">{state.error}</p> : null}
       <button type="button" disabled={immutable || array.fields.length >= maximum} onClick={() => array.append(createDefaultItem(field, primitive))}>Add item</button>
-      {Number.isFinite(maximum) ? <small>{array.fields.length} of {maximum} items</small> : <small>{array.fields.length} items</small>}
+      {Number.isFinite(maximum) ? <small aria-live="polite" aria-atomic="true">{array.fields.length} of {maximum} items</small> : <small aria-live="polite" aria-atomic="true">{array.fields.length} items</small>}
     </fieldset>
   );
 }
@@ -129,16 +130,18 @@ function isPrimitiveArray(field: FieldSchema): boolean {
 }
 
 function createDefaultItem(field: FieldSchema, primitive: boolean): unknown {
-  if (primitive) return cloneValue(field.fields?.[0]?.defaultValue ?? '');
-  return Object.fromEntries((field.fields ?? []).map((child) => [child.name, cloneValue(child.defaultValue ?? defaultForType(child.type))]));
+  if (primitive) return field.fields?.[0] ? defaultForField(field.fields[0]) : '';
+  return Object.fromEntries((field.fields ?? []).map((child) => [child.name, defaultForField(child)]));
 }
 
-function defaultForType(type: string): unknown {
-  if (type === 'array') return [];
-  if (type === 'object') return {};
-  if (type === 'checkbox' || type === 'switch') return false;
-  if (type === 'multi-select' || type === 'checkbox-group') return [];
-  return '';
+function defaultForField(field: FieldSchema): unknown {
+  if (field.defaultValue !== undefined) return cloneValue(field.defaultValue);
+  if (field.type === 'object') return Object.fromEntries((field.fields ?? []).map((child) => [child.name, defaultForField(child)]));
+  if (['array', 'multi-select', 'checkbox-group', 'toggle-button-group', 'tree-checkbox', 'multi-file'].includes(field.type)) return [];
+  if (['checkbox', 'switch', 'toggle-button'].includes(field.type)) return false;
+  if (field.type.endsWith('-range') || field.type === 'range-slider') return [null, null];
+  if (['text', 'textarea', 'password', 'email', 'url', 'phone', 'otp', 'pin', 'mask'].includes(field.type)) return '';
+  return null;
 }
 
 function cloneValue<T>(value: T): T {

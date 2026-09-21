@@ -1,6 +1,15 @@
 # Accessibility verification
 
-The native adapter targets WCAG 2.2 AA. Automated axe checks run against representative baseline, composite, structural, and layout markup. Automation complements rather than replaces keyboard and assistive-technology testing.
+The native adapter targets WCAG 2.2 AA. Automated axe checks run against representative baseline, composite, numeric, temporal, formatted, media, structural, and layout markup. The tests also verify error/description ID links for specialized controls and keyboard focus movement for segmented codes. Automation complements rather than replaces keyboard and assistive-technology testing.
+
+## Release evidence status
+
+The automated checks are part of the package test suite. The manual keyboard,
+zoom/reflow, NVDA, VoiceOver, and localization/RTL checks below are **not**
+certified by a passing unit test. For each release candidate, record the
+browser/OS/assistive-technology version, fixture, tester, date, result, and
+issue link. Do not mark the accessibility release gate complete until those
+records exist and blocking issues are resolved.
 
 ## Keyboard-only walkthrough
 
