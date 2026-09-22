@@ -69,11 +69,11 @@ try {
   assert.ok(!JSON.stringify(compatibility.manifest).includes('workspace:'), 'Compatibility manifest contains an unresolved workspace protocol');
 
   verifyFiles('react-html', canonical.packed.files, [
-    'dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'dist/styles.css',
+    'dist/index.js', 'dist/index.cjs', 'dist/index.d.ts', 'dist/styles.css',
     'docs/VERSION-1.md', 'docs/RELEASE.md', 'docs/MIGRATION-FROM-HTML.md', 'README.md', 'package.json',
   ]);
   verifyFiles('html', compatibility.packed.files, [
-    'dist/index.js', 'dist/index.mjs', 'dist/index.d.ts', 'styles.css', 'README.md', 'package.json',
+    'dist/index.js', 'dist/index.cjs', 'dist/index.d.ts', 'styles.css', 'README.md', 'package.json',
   ]);
 
   console.log(`Release packages verified at version ${canonical.manifest.version}: react-html first, html compatibility second.`);
