@@ -9,6 +9,22 @@ export interface DependencyRefreshContext extends AsyncRequestContext {
   field: string;
 }
 
+/** What triggered dependency processing. */
+export type DependencyRefreshCause =
+  | { readonly type: 'valueChange'; readonly path: string }
+  | { readonly type: 'reset' };
+
+/** Reported once per action taken on a dependent field. */
+export interface DependencyRefreshEvent {
+  /** The dependent field being refreshed. */
+  readonly field: string;
+  /** The field whose change started this refresh, or a form reset. */
+  readonly cause: DependencyRefreshCause;
+  /** Direct dependencies of `field` through which the change arrived. */
+  readonly via: readonly string[];
+  readonly action: 'reset' | 'dataSource';
+}
+
 export interface DependencyControllerOptions<T extends FormValues> {
   onDataSourceRefresh?: (
     field: FieldSchema,
@@ -18,6 +34,8 @@ export interface DependencyControllerOptions<T extends FormValues> {
   ) => void | Promise<void>;
   onAsyncError?: (error: Error, field: string, requestId: number) => void;
   onEvaluate?: (paths: readonly string[]) => void;
+  /** Called before each dependent-field action. Intended for diagnostics. */
+  onRefresh?: (event: DependencyRefreshEvent) => void;
 }
 
 export class DependencyController<T extends FormValues = FormValues> {
@@ -36,13 +54,18 @@ export class DependencyController<T extends FormValues = FormValues> {
       : [...this.fields].flatMap(([path, field]) => field.dependsOn?.length ? [{ field: path, dependsOn: [...field.dependsOn] }] : []);
     this.graph = new DependencyGraph(dependencies);
     this.watchedPaths = [...new Set(dependencies.flatMap((dependency) => dependency.dependsOn))];
-    const process = (changedFields: readonly string[]) => {
+    const process = (changedFields: readonly string[], cause: DependencyRefreshCause) => {
       const affected = new Set(changedFields.flatMap((field) => this.graph.getTransitiveDependents(field)));
       options.onEvaluate?.([...affected]);
       for (const dependentPath of affected) {
         const dependent = this.fields.get(dependentPath)!;
-        if (dependent.resetOnDependencyChange) store.resetField(dynamicPath(dependentPath));
+        const via = options.onRefresh ? this.graph.getDependencies(dependentPath).filter((dependency) => changedFields.includes(dependency) || affected.has(dependency)) : [];
+        if (dependent.resetOnDependencyChange) {
+          options.onRefresh?.({ field: dependentPath, cause, via, action: 'reset' });
+          store.resetField(dynamicPath(dependentPath));
+        }
         if (dependent.dataSource && options.onDataSourceRefresh) {
+          options.onRefresh?.({ field: dependentPath, cause, via, action: 'dataSource' });
           const values = store.getValues();
           void this.requests.run(
             dependentPath,
@@ -56,8 +79,8 @@ export class DependencyController<T extends FormValues = FormValues> {
       }
     };
     this.unsubscribers = [
-      store.on('valueChange', (event) => { if (event.field) process([event.field]); }),
-      store.on('reset', () => process(this.watchedPaths)),
+      store.on('valueChange', (event) => { if (event.field) process([event.field], { type: 'valueChange', path: event.field }); }),
+      store.on('reset', () => process(this.watchedPaths, { type: 'reset' })),
     ];
   }
 

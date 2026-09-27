@@ -1,11 +1,16 @@
 import { ConditionController } from '../conditions';
 import { DataSourceManager } from '../datasource';
-import { DependencyController } from '../dependencies';
+import { describeValueType, type ConditionEvaluationCause, type FieldConditionState } from '../conditions';
+import { DependencyController, type DependencyRefreshCause } from '../dependencies';
+import { buildFieldStateExplanation } from '../diagnostics/explain';
+import { DiagnosticsRecorder } from '../diagnostics/recorder';
+import type { DiagnosticCause, ExplainFieldStateOptions, FieldStateExplanation, RuntimeDiagnostics } from '../diagnostics';
 import { CorePluginHost, type CorePluginContext } from '../plugins';
 import { compileSchemaOrThrow, explainField, mergeSchemaInitialValues, type CompiledFieldExplanation, type CompiledFormSchema, type FormSchema, type InferFormValues, type NormalizedFormSchema } from '../schema';
 import {
   dynamicPath,
   FormStore,
+  isSamePath,
   type DynamicFormValues,
   type FormSubmitHandler,
   type FormValidator,
@@ -29,7 +34,12 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   readonly dataSources: DataSourceManager;
   readonly dependencies: DependencyController<TValues>;
   readonly conditions: ConditionController<TValues>;
+  /** Opt-in diagnostic trace for debugging and DevTools. */
+  readonly diagnostics: RuntimeDiagnostics;
 
+  private readonly recorder: DiagnosticsRecorder;
+  /** Paths whose next value change comes from a hidden-value policy. */
+  private readonly pendingHiddenClears = new Set<string>();
   private readonly pluginHost!: CorePluginHost<TValues>;
   private readonly lifecycleListeners = new Set<RuntimeLifecycleListener<TValues>>();
   private readonly unsubscribers: Array<() => void>;
@@ -42,10 +52,24 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
     this.schema = this.compiledSchema.schema;
     const normalizedInitialValues = mergeSchemaInitialValues<TValues>(this.schema, initialValues);
     this.store = new FormStore<TValues>(normalizedInitialValues, options.store);
-    this.dataSources = new DataSourceManager(options.dataSources);
+    this.recorder = new DiagnosticsRecorder(options.diagnostics);
+    this.diagnostics = this.recorder;
+    // Registered before the controllers so value changes are recorded before
+    // the condition and dependency transitions they cause.
+    const recorderUnsubscribers = this.subscribeRecorder();
+    this.dataSources = new DataSourceManager({
+      ...options.dataSources,
+      onRequest: (event) => {
+        options.dataSources?.onRequest?.(event);
+        this.recorder.record({ type: 'dataSourceRequest', path: event.name, requestId: event.requestId, phase: event.phase, ...(event.error ? { error: event.error.message } : {}) });
+      },
+    });
     this.dependencies = new DependencyController(this.store, this.compiledSchema, {
       onEvaluate: (paths) => {
         if (this.ready) this.emitLifecycle({ phase: 'dependencies', paths, async: false });
+      },
+      onRefresh: (event) => {
+        this.recorder.record({ type: 'dependencyRefresh', path: event.field, action: event.action, via: Object.freeze([...event.via]), cause: this.diagnosticCause(event.cause) });
       },
       onDataSourceRefresh: async (_field, dataSource, values, context) => {
         await Promise.resolve();
@@ -65,6 +89,23 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
       options.onConditionChange,
       (paths) => {
         if (this.ready) this.emitLifecycle({ phase: 'conditions', paths, async: false });
+      },
+      (path, state, details) => {
+        // Mirrors ConditionController: a hidden `clear` only writes when a value is present.
+        if (details.hiddenValuePolicy === 'clear' && this.store.getValue(dynamicPath(path)) !== undefined) this.pendingHiddenClears.add(path);
+        if (this.recorder.enabled) {
+          const current = Object.freeze({ ...state });
+          const previous = details.previous ? Object.freeze({ ...details.previous }) : undefined;
+          this.recorder.record({
+            type: 'conditionChange',
+            path,
+            state: current,
+            ...(previous ? { previous } : {}),
+            changed: Object.freeze(changedFlags(current, previous)),
+            cause: this.diagnosticCause(details.cause),
+            ...(details.hiddenValuePolicy ? { hiddenValuePolicy: details.hiddenValuePolicy } : {}),
+          });
+        }
       },
     );
     const pluginContext: CorePluginContext<TValues> = Object.freeze({
@@ -87,6 +128,7 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
       options.onPluginError,
     );
     this.unsubscribers = [
+      ...recorderUnsubscribers,
       this.store.on('valueChange', (formEvent) => {
         this.emitLifecycle({ phase: 'events', paths: formEvent.field ? [formEvent.field] : [], formEvent, async: false });
       }),
@@ -116,6 +158,26 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   explainField(path: string): CompiledFieldExplanation {
     this.assertActive();
     return explainField(this.compiledSchema, path);
+  }
+
+  /**
+   * Explains the field's current runtime state: why it is visible, disabled,
+   * read-only, or required, which rule produced its error, its dependencies,
+   * and its data-source request state. Values are redacted unless requested.
+   */
+  explainFieldState(path: string, options: ExplainFieldStateOptions = {}): FieldStateExplanation {
+    this.assertActive();
+    const state = this.conditions.getState(path) ?? this.findConditionState(path);
+    return buildFieldStateExplanation({
+      path,
+      compiled: this.compiledSchema,
+      values: this.store.getValues(),
+      errors: this.store.getState().errors,
+      conditionState: state,
+      dataSourceState: this.dataSources.getState(path),
+      recorder: this.recorder,
+      includeValues: options.includeValues ?? this.recorder.includeValues,
+    });
   }
 
   setValue<TPath extends Path<TValues>>(
@@ -183,6 +245,55 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
     this.dataSources.clear();
     this.store.cancelValidation();
     this.lifecycleListeners.clear();
+    this.recorder.dispose();
+    this.pendingHiddenClears.clear();
+  }
+
+  private subscribeRecorder(): Array<() => void> {
+    return [
+      this.store.on('valueChange', (formEvent) => {
+        if (!formEvent.field) return;
+        const path = formEvent.field;
+        const fromHiddenPolicy = this.pendingHiddenClears.delete(path) || [...this.pendingHiddenClears].some((pending) => isSamePath(pending, path) && this.pendingHiddenClears.delete(pending));
+        if (!this.recorder.enabled) return;
+        const includeValues = this.recorder.includeValues;
+        this.recorder.record({
+          type: 'valueChange',
+          path,
+          origin: fromHiddenPolicy ? 'hiddenValuePolicy' : 'api',
+          valueType: describeValueType(formEvent.value),
+          previousValueType: describeValueType(formEvent.previousValue),
+          ...(includeValues ? { value: formEvent.value, previousValue: formEvent.previousValue } : {}),
+        });
+      }),
+      this.store.on('reset', () => {
+        this.pendingHiddenClears.clear();
+        this.recorder.record({ type: 'reset' });
+      }),
+      this.store.on('validate', (formEvent) => {
+        if (!this.recorder.enabled) return;
+        const payload = formEvent.payload && 'errors' in formEvent.payload ? formEvent.payload : undefined;
+        const errors = payload?.errors ?? this.store.getState().errors;
+        this.recorder.record({ type: 'validation', valid: payload?.valid ?? Object.keys(errors).length === 0, errorPaths: Object.freeze(Object.keys(errors)) });
+      }),
+    ];
+  }
+
+  private diagnosticCause(cause: ConditionEvaluationCause | DependencyRefreshCause): DiagnosticCause {
+    if (cause.type === 'initial') return Object.freeze({ type: 'initial' });
+    if (cause.type === 'reset') {
+      const sequence = this.recorder.resetSequence();
+      return Object.freeze({ type: 'reset', ...(sequence !== undefined ? { sequence } : {}) });
+    }
+    const sequence = this.recorder.valueChangeSequence(cause.path);
+    return Object.freeze({ type: 'valueChange', path: cause.path, ...(sequence !== undefined ? { sequence } : {}) });
+  }
+
+  private findConditionState(path: string): FieldConditionState | undefined {
+    for (const candidate of this.compiledSchema.fieldsByPath.keys()) {
+      if (isSamePath(candidate, path)) return this.conditions.getState(candidate);
+    }
+    return undefined;
   }
 
   private emitLifecycle(event: RuntimeLifecycleEvent<TValues>): void {
@@ -223,4 +334,9 @@ function cloneReadonly<T>(value: T, seen = new WeakMap<object, unknown>()): T {
     (clone as Record<string, unknown>)[key] = cloneReadonly(nested, seen);
   }
   return Object.freeze(clone) as T;
+}
+
+function changedFlags(current: FieldConditionState, previous?: FieldConditionState): (keyof FieldConditionState)[] {
+  const keys: (keyof FieldConditionState)[] = ['visible', 'disabled', 'required', 'readOnly'];
+  return previous ? keys.filter((key) => current[key] !== previous[key]) : keys;
 }

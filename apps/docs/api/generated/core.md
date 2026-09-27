@@ -12,7 +12,7 @@ Related: [guide](../../runtime/) · [controls/examples](../../playground/)
 
 ## Public exports
 
-This page contains 164 exports. Signatures are regenerated from the package entry point.
+This page contains 197 exports. Signatures are regenerated from the package entry point.
 
 ### ArrayFieldConfig
 
@@ -223,6 +223,28 @@ Public interface exported by @dynamic-form-engine/core.
 export interface Condition;
 ```
 
+### ConditionChangeDetails
+
+- Kind: interface
+- Source: `packages/core/src/conditions/controller.ts`
+
+Context passed to the optional `onTransition` callback (diagnostics).
+
+```ts
+export interface ConditionChangeDetails;
+```
+
+### ConditionChangeDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ConditionChangeDiagnostic;
+```
+
 ### ConditionController
 
 - Kind: class
@@ -232,6 +254,39 @@ Public class exported by @dynamic-form-engine/core.
 
 ```ts
 export class ConditionController;
+```
+
+### ConditionEvaluationCause
+
+- Kind: type
+- Source: `packages/core/src/conditions/controller.ts`
+
+What triggered a condition re-evaluation.
+
+```ts
+export type ConditionEvaluationCause;
+```
+
+### ConditionExplanation
+
+- Kind: type
+- Source: `packages/core/src/conditions/explain.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type ConditionExplanation;
+```
+
+### ConditionExplanationResult
+
+- Kind: interface
+- Source: `packages/core/src/conditions/explain.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ConditionExplanationResult;
 ```
 
 ### ConditionGroup
@@ -245,6 +300,17 @@ Public interface exported by @dynamic-form-engine/core.
 export interface ConditionGroup;
 ```
 
+### ConditionGroupExplanation
+
+- Kind: interface
+- Source: `packages/core/src/conditions/explain.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ConditionGroupExplanation;
+```
+
 ### ConditionOperator
 
 - Kind: type
@@ -254,6 +320,17 @@ Public type exported by @dynamic-form-engine/core.
 
 ```ts
 export type ConditionOperator;
+```
+
+### ConditionRuleExplanation
+
+- Kind: interface
+- Source: `packages/core/src/conditions/explain.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ConditionRuleExplanation;
 ```
 
 ### ConditionStateEquality
@@ -531,6 +608,39 @@ Public interface exported by @dynamic-form-engine/core.
 export interface DataSourceManagerOptions;
 ```
 
+### DataSourceRequestDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface DataSourceRequestDiagnostic;
+```
+
+### DataSourceRequestEvent
+
+- Kind: interface
+- Source: `packages/core/src/datasource/datasource.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface DataSourceRequestEvent;
+```
+
+### DataSourceRequestPhase
+
+- Kind: type
+- Source: `packages/core/src/datasource/datasource.ts`
+
+Request lifecycle reported by `DataSourceManager`. - `start`: a request began (any in-flight request for the same name is superseded) - `success` / `error`: the current request settled - `cancelled`: the request was aborted (superseded, cancelled, or externally aborted) - `stale`: the request resolved after being superseded and its data was discarded - `cache`: the result was served from cache without a request
+
+```ts
+export type DataSourceRequestPhase;
+```
+
 ### DataSourceResult
 
 - Kind: interface
@@ -620,6 +730,17 @@ Public class exported by @dynamic-form-engine/core.
 export class DependencyGraph;
 ```
 
+### DependencyRefreshCause
+
+- Kind: type
+- Source: `packages/core/src/dependencies/controller.ts`
+
+What triggered dependency processing.
+
+```ts
+export type DependencyRefreshCause;
+```
+
 ### DependencyRefreshContext
 
 - Kind: interface
@@ -629,6 +750,72 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface DependencyRefreshContext;
+```
+
+### DependencyRefreshDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface DependencyRefreshDiagnostic;
+```
+
+### DependencyRefreshEvent
+
+- Kind: interface
+- Source: `packages/core/src/dependencies/controller.ts`
+
+Reported once per action taken on a dependent field.
+
+```ts
+export interface DependencyRefreshEvent;
+```
+
+### describeValueType
+
+- Kind: function
+- Source: `packages/core/src/conditions/explain.ts`
+
+Public function exported by @dynamic-form-engine/core.
+
+```ts
+export declare function describeValueType(value: unknown): DiagnosticValueType
+```
+
+### DiagnosticCause
+
+- Kind: type
+- Source: `packages/core/src/diagnostics/types.ts`
+
+What caused a recorded state transition.
+
+```ts
+export type DiagnosticCause;
+```
+
+### DiagnosticTraceFilter
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface DiagnosticTraceFilter;
+```
+
+### DiagnosticValueType
+
+- Kind: type
+- Source: `packages/core/src/conditions/explain.ts`
+
+Runtime type of a value, reported instead of the value itself when values are redacted.
+
+```ts
+export type DiagnosticValueType;
 ```
 
 ### DynamicFormValues
@@ -686,6 +873,28 @@ Public function exported by @dynamic-form-engine/core.
 export declare function evaluateCondition(condition: FieldCondition, values: object): boolean
 ```
 
+### explainCondition
+
+- Kind: function
+- Source: `packages/core/src/conditions/explain.ts`
+
+Evaluates a condition with the same semantics as `evaluateCondition` and reports how each rule contributed to the result.
+
+```ts
+export declare function explainCondition(condition: FieldCondition, values: object, options?: ExplainConditionOptions): ConditionExplanationResult
+```
+
+### ExplainConditionOptions
+
+- Kind: interface
+- Source: `packages/core/src/conditions/explain.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ExplainConditionOptions;
+```
+
 ### explainField
 
 - Kind: function
@@ -695,6 +904,17 @@ Public function exported by @dynamic-form-engine/core.
 
 ```ts
 export declare function explainField<TCustomValue>(compiled: CompiledFormSchema<TCustomValue>, path: string): CompiledFieldExplanation<TCustomValue>
+```
+
+### ExplainFieldStateOptions
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ExplainFieldStateOptions;
 ```
 
 ### FieldCondition
@@ -741,6 +961,17 @@ Exact configuration contract for each built-in value field.
 export interface FieldConfigMap;
 ```
 
+### FieldDataSourceExplanation
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface FieldDataSourceExplanation;
+```
+
 ### FieldDefinition
 
 - Kind: interface
@@ -772,6 +1003,28 @@ Framework-neutral representation of an uploaded file.
 
 ```ts
 export interface FieldFileValue;
+```
+
+### FieldFlagExplanation
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface FieldFlagExplanation;
+```
+
+### FieldFlagReason
+
+- Kind: type
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type FieldFlagReason;
 ```
 
 ### FieldOption
@@ -818,6 +1071,17 @@ Declarative field contract shared by supported renderers.
 export interface FieldSchema;
 ```
 
+### FieldStateExplanation
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface FieldStateExplanation;
+```
+
 ### FieldType
 
 - Kind: type
@@ -838,6 +1102,17 @@ Public interface exported by @dynamic-form-engine/core.
 
 ```ts
 export interface FieldValidation;
+```
+
+### FieldValidationExplanation
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface FieldValidationExplanation;
 ```
 
 ### FieldValidationOverrides
@@ -1457,6 +1732,17 @@ Public interface exported by @dynamic-form-engine/core.
 export interface RegistryOptions;
 ```
 
+### ResetDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ResetDiagnostic;
+```
+
 ### ResetOptions
 
 - Kind: interface
@@ -1477,6 +1763,61 @@ Public const exported by @dynamic-form-engine/core.
 
 ```ts
 export declare const RUNTIME_LIFECYCLE_PHASES: readonly ["mutation", "dependencies", "conditions", "events", "notification", "dataSource", "validation"];
+```
+
+### RuntimeDiagnosticEvent
+
+- Kind: type
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type RuntimeDiagnosticEvent;
+```
+
+### RuntimeDiagnosticEventType
+
+- Kind: type
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type RuntimeDiagnosticEventType;
+```
+
+### RuntimeDiagnosticListener
+
+- Kind: type
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public type exported by @dynamic-form-engine/core.
+
+```ts
+export type RuntimeDiagnosticListener;
+```
+
+### RuntimeDiagnostics
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Diagnostics surface exposed by `FormRuntime.diagnostics`, e.g. for DevTools.
+
+```ts
+export interface RuntimeDiagnostics;
+```
+
+### RuntimeDiagnosticsOptions
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface RuntimeDiagnosticsOptions;
 ```
 
 ### RuntimeLifecycleEvent
@@ -1733,6 +2074,17 @@ Public function exported by @dynamic-form-engine/core.
 export declare function validateSchema(schema: FormSchema<unknown>): SchemaValidationResult
 ```
 
+### ValidationDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ValidationDiagnostic;
+```
+
 ### ValidationError
 
 - Kind: interface
@@ -1786,6 +2138,17 @@ Public type exported by @dynamic-form-engine/core.
 
 ```ts
 export type ValidatorResult;
+```
+
+### ValueChangeDiagnostic
+
+- Kind: interface
+- Source: `packages/core/src/diagnostics/types.ts`
+
+Public interface exported by @dynamic-form-engine/core.
+
+```ts
+export interface ValueChangeDiagnostic;
 ```
 
 ### ValueFieldSchema

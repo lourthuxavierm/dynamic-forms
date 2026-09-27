@@ -21,7 +21,7 @@ Upgrade `@dynamic-form-engine/core` from the current strong architecture to a pr
 | 7 | Plugin / Middleware Contract | P1 | [x] | Stable Core extension API |
 | 8 | Performance Guarantees | P1 | [x] | Benchmarked large-form performance |
 | 9 | Schema Normalization & Versioning | P1 | [x] | Canonical/versioned schema runtime |
-| 10 | Diagnostics & Explainability | P1 | [ ] | Core can explain runtime decisions |
+| 10 | Diagnostics & Explainability | P1 | [x] | Core can explain runtime decisions |
 
 ---
 
@@ -416,22 +416,24 @@ Allow developers and future DevTools to understand why Core reached a particular
 
 ### Questions Core should be able to answer
 
-- [ ] Why is this field hidden?
-- [ ] Why is this field disabled?
-- [ ] Why is this field readonly?
-- [ ] Why is this field required?
-- [ ] Which condition evaluated to false?
-- [ ] Which dependency caused this refresh?
-- [ ] Which validator produced this error?
-- [ ] Which datasource request is active?
-- [ ] Was a datasource response discarded as stale?
-- [ ] Which event caused this state transition?
+- [x] Why is this field hidden?
+- [x] Why is this field disabled?
+- [x] Why is this field readonly?
+- [x] Why is this field required?
+- [x] Which condition evaluated to false?
+- [x] Which dependency caused this refresh?
+- [x] Which validator produced this error?
+- [x] Which datasource request is active?
+- [x] Was a datasource response discarded as stale?
+- [x] Which event caused this state transition?
 
 ### Possible diagnostics API
 
 ```ts
-core.explainField('companyName');
+runtime.explainFieldState('companyName');
 ```
+
+> Implemented as `FormRuntime.explainFieldState` (the existing `explainField` keeps returning static schema metadata), `explainCondition`, the opt-in `FormRuntime.diagnostics` trace, and `DataSourceManagerOptions.onRequest`. See `apps/docs/runtime/diagnostics.md`.
 
 Possible result:
 
@@ -447,14 +449,14 @@ Possible result:
 
 ### Required work
 
-- [ ] Define diagnostic event structure.
-- [ ] Keep diagnostics optional/low-overhead.
-- [ ] Add condition explanations.
-- [ ] Add dependency explanations.
-- [ ] Add validation source metadata.
-- [ ] Add datasource request metadata.
-- [ ] Expose hooks needed by DevTools.
-- [ ] Avoid leaking sensitive field values into logs by default.
+- [x] Define diagnostic event structure.
+- [x] Keep diagnostics optional/low-overhead.
+- [x] Add condition explanations.
+- [x] Add dependency explanations.
+- [x] Add validation source metadata.
+- [x] Add datasource request metadata.
+- [x] Expose hooks needed by DevTools.
+- [x] Avoid leaking sensitive field values into logs by default.
 
 ### Done when
 
@@ -527,7 +529,7 @@ These requirements apply across all ten areas.
 
 ## Phase 3 — Enterprise Hardening
 
-- [ ] Diagnostics/explainability.
+- [x] Diagnostics/explainability.
 - [x] Performance benchmarks and budgets.
 - [x] Small stable plugin contract.
 - [ ] Complete regression/documentation pass.
@@ -550,7 +552,7 @@ The Core can be considered complete for a stable enterprise-quality `1.0.0` when
 - [x] Extensible without modifying Core.
 - [x] Fine-grained and performant.
 - [x] Schema-version aware.
-- [ ] Observable and diagnosable.
+- [x] Observable and diagnosable.
 - [ ] Thoroughly tested.
 - [x] Benchmarked.
 - [ ] Public API frozen/documented.

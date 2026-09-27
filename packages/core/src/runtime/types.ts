@@ -1,4 +1,5 @@
 import type { DataSourceManagerOptions } from '../datasource';
+import type { RuntimeDiagnosticsOptions } from '../diagnostics';
 import type { FieldConditionState } from '../conditions';
 import type { NormalizeSchemaOptions } from '../schema';
 import type { FormEvent } from '../events';
@@ -39,4 +40,6 @@ export interface FormRuntimeOptions<TValues extends FormValues> {
   dataSources?: DataSourceManagerOptions;
   onConditionChange?: (path: string, state: FieldConditionState) => void;
   onLifecycle?: RuntimeLifecycleListener<TValues>;
+  /** Opt-in diagnostic trace. Disabled by default; see `FormRuntime.diagnostics`. */
+  diagnostics?: RuntimeDiagnosticsOptions;
 }

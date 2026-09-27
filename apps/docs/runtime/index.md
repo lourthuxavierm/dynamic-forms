@@ -24,6 +24,7 @@ submission.
 - [Cancellation](./cancellation.md)
 - [Reset](./reset.md)
 - [Submission](./submission.md)
+- [Diagnostics and explainability](./diagnostics.md)
 
 ## Ownership boundary
 

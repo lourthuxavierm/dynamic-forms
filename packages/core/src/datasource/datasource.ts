@@ -9,9 +9,28 @@ export interface DataSourceLoadOptions {
   signal?: AbortSignal;
 }
 
+/**
+ * Request lifecycle reported by `DataSourceManager`.
+ * - `start`: a request began (any in-flight request for the same name is superseded)
+ * - `success` / `error`: the current request settled
+ * - `cancelled`: the request was aborted (superseded, cancelled, or externally aborted)
+ * - `stale`: the request resolved after being superseded and its data was discarded
+ * - `cache`: the result was served from cache without a request
+ */
+export type DataSourceRequestPhase = 'start' | 'success' | 'error' | 'cancelled' | 'stale' | 'cache';
+
+export interface DataSourceRequestEvent {
+  readonly name: string;
+  readonly requestId: number;
+  readonly phase: DataSourceRequestPhase;
+  readonly error?: Error;
+}
+
 export interface DataSourceManagerOptions {
   fetch?: typeof fetch;
   onError?: (error: Error, name: string, requestId: number) => void;
+  /** Observes request lifecycle transitions. Intended for diagnostics and DevTools. */
+  onRequest?: (event: DataSourceRequestEvent) => void;
 }
 
 export class DataSourceManager {
@@ -20,9 +39,11 @@ export class DataSourceManager {
   private readonly requests: AsyncRequestManager<string>;
   private readonly states = new Map<string, DataSourceResult>();
   private readonly fetchImpl: typeof fetch;
+  private readonly onRequest?: (event: DataSourceRequestEvent) => void;
 
   constructor(options: DataSourceManagerOptions = {}) {
     this.fetchImpl = options.fetch ?? fetch;
+    this.onRequest = options.onRequest;
     this.requests = new AsyncRequestManager({ onError: options.onError });
   }
 
@@ -70,6 +91,7 @@ export class DataSourceManager {
       const cached = this.cache.get(cacheKey) as T[];
       const requestId = this.requests.getState(name)?.requestId ?? 0;
       this.states.set(name, { data: cached, loading: false, status: 'success', requestId });
+      this.report(name, requestId, 'cache');
       return cached;
     }
 
@@ -120,6 +142,7 @@ export class DataSourceManager {
       status: 'loading',
       requestId: started.requestId,
     });
+    this.report(name, started.requestId, 'start');
 
     try {
       const result = await requestPromise;
@@ -130,6 +153,9 @@ export class DataSourceManager {
           status: 'success',
           requestId: result.requestId,
         });
+        this.report(name, result.requestId, 'success');
+      } else {
+        this.report(name, result.requestId, 'stale');
       }
       return result;
     } catch (error) {
@@ -144,8 +170,16 @@ export class DataSourceManager {
           ...(isAbortError(normalized) || state.status === 'cancelled' ? {} : { error: normalized }),
         });
       }
+      const current = state?.requestId === started.requestId;
+      if (isAbortError(normalized) || (current && state.status === 'cancelled')) this.report(name, started.requestId, 'cancelled');
+      else if (!current) this.report(name, started.requestId, 'stale');
+      else this.report(name, started.requestId, 'error', normalized);
       throw normalized;
     }
+  }
+
+  private report(name: string, requestId: number, phase: DataSourceRequestPhase, error?: Error): void {
+    this.onRequest?.(Object.freeze({ name, requestId, phase, ...(error ? { error } : {}) }));
   }
 
   private async resolveConfig<T>(

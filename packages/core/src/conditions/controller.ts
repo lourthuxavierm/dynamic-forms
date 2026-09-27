@@ -11,6 +11,20 @@ export interface FieldConditionState {
   readOnly: boolean;
 }
 
+/** What triggered a condition re-evaluation. */
+export type ConditionEvaluationCause =
+  | { readonly type: 'initial' }
+  | { readonly type: 'valueChange'; readonly path: string }
+  | { readonly type: 'reset' };
+
+/** Context passed to the optional `onTransition` callback (diagnostics). */
+export interface ConditionChangeDetails {
+  readonly previous?: Readonly<FieldConditionState>;
+  readonly cause: ConditionEvaluationCause;
+  /** Configured hidden-value policy of a field that has just become hidden. */
+  readonly hiddenValuePolicy?: 'clear' | 'reset';
+}
+
 export type ConditionStateSelector<TSelected> = (
   states: ReadonlyMap<string, FieldConditionState>,
 ) => TSelected;
@@ -34,7 +48,7 @@ export class ConditionController<T extends FormValues = FormValues> {
   private readonly unsubscribers: Array<() => void>;
   private version = 0;
 
-  constructor(private readonly store: FormStore<T>, schema: FormSchema | CompiledFormSchema, private readonly onChange?: (path: string, state: FieldConditionState) => void, private readonly onEvaluate?: (paths: readonly string[]) => void) {
+  constructor(private readonly store: FormStore<T>, schema: FormSchema | CompiledFormSchema, private readonly onChange?: (path: string, state: FieldConditionState) => void, private readonly onEvaluate?: (paths: readonly string[]) => void, private readonly onTransition?: (path: string, state: FieldConditionState, details: ConditionChangeDetails) => void) {
     if ('fieldsByPath' in schema) {
       for (const [path, field] of schema.fieldsByPath) this.fields.set(path, field);
       for (const [dependency, dependents] of schema.conditionDependentsByField) this.dependencies.set(dependency, new Set(dependents));
@@ -44,10 +58,10 @@ export class ConditionController<T extends FormValues = FormValues> {
         const dependents = this.dependencies.get(dependency) ?? new Set<string>(); dependents.add(path); this.dependencies.set(dependency, dependents);
       }
     }
-    this.recalculate(this.fields.keys());
+    this.recalculate(this.fields.keys(), { type: 'initial' });
     this.unsubscribers = [
-      store.on('valueChange', (event) => this.recalculate(this.getAffectedFields(event.field))),
-      store.on('reset', () => this.recalculate(this.fields.keys(), true)),
+      store.on('valueChange', (event) => this.recalculate(this.getAffectedFields(event.field), event.field ? { type: 'valueChange', path: event.field } : { type: 'reset' })),
+      store.on('reset', () => this.recalculate(this.fields.keys(), { type: 'reset' }, true)),
     ];
   }
 
@@ -99,7 +113,7 @@ export class ConditionController<T extends FormValues = FormValues> {
     return affected;
   }
 
-  private recalculate(paths: Iterable<string>, enforceHiddenPolicy = false): void {
+  private recalculate(paths: Iterable<string>, cause: ConditionEvaluationCause, enforceHiddenPolicy = false): void {
     const pathList = [...paths];
     this.onEvaluate?.(pathList);
     const values = this.store.getValues();
@@ -119,6 +133,10 @@ export class ConditionController<T extends FormValues = FormValues> {
         this.states.set(path, next);
         this.version += 1;
         this.versions.set(path, (this.versions.get(path) ?? 0) + 1);
+        if (this.onTransition) {
+          const policy = !next.visible && (field.hiddenValuePolicy === 'clear' || field.hiddenValuePolicy === 'reset') ? field.hiddenValuePolicy : undefined;
+          this.onTransition(path, next, { previous, cause, ...(policy ? { hiddenValuePolicy: policy } : {}) });
+        }
         this.onChange?.(path, next);
         for (const listener of this.fieldListeners.get(path) ?? []) listener();
         for (const listener of this.listeners) listener();
