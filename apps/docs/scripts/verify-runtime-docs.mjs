@@ -8,7 +8,7 @@ const failures = [];
 const requiredPages = [
   'index', 'form-lifecycle', 'form-store', 'form-state', 'field-state', 'events',
   'subscriptions', 'conditions', 'dependencies', 'data-sources', 'cache',
-  'cancellation', 'reset', 'submission',
+  'cancellation', 'reset', 'submission', 'diagnostics',
 ];
 
 const documents = new Map();

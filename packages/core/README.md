@@ -7,10 +7,11 @@ Framework-independent form state and schema runtime for Dynamic Forms. The packa
 - **Schema**: `FormSchema`, `FieldSchema`, `validateSchema`, and `InferSchemaType`.
 - **State**: `FormStore` with immutable snapshots, nested paths, field subscriptions, validation, submission, and lifecycle events.
 - **Validation**: `createFieldValidators`, `createFormValidator`, and `validateField`.
-- **Conditions**: `evaluateCondition` and `ConditionController`.
+- **Conditions**: `evaluateCondition`, `explainCondition`, and `ConditionController`.
 - **Dependencies**: `DependencyGraph` and `DependencyController`.
 - **Data sources**: `DataSourceManager` for static, function, and URL-backed sources.
 - **Extensions**: `FieldRegistry` and `FormEventEmitter`.
+- **Diagnostics**: `FormRuntime.explainFieldState` and the opt-in `FormRuntime.diagnostics` trace.
 
 ## Example
 
@@ -195,6 +196,21 @@ const runtime = new FormRuntime(schema, initialValues, {
 The plugin context exposes a deeply frozen schema, immutable form snapshots, copied condition state, and deeply frozen datasource state. It does not expose mutation methods. Hook failures are normalized, routed to `onPluginError`, and isolated; a failing plugin or error reporter cannot interrupt Core. Plugins whose setup fails are not activated, and duplicate or unnamed plugins are rejected.
 
 `createLifecycleAuditPlugin` is the official minimal example. It records phase, operation, paths, and async metadata but excludes field values by default.
+
+## Diagnostics and explainability
+
+`runtime.explainFieldState(path)` explains a field's current state: why it is visible, disabled, read-only, or required (including the decisive rules of a failing condition), which schema rule produced its error or whether the error is external, its dependencies, and its data-source request state.
+
+```ts
+const runtime = new FormRuntime(schema, initialValues, { diagnostics: { enabled: true } });
+
+runtime.explainFieldState('companyName').visible;
+// { value: false, reason: 'visibleWhen', condition: { decisive: [{ field: 'customerType', operator: 'equals', expected: 'business', ... }] } }
+
+runtime.diagnostics.getTrace({ path: 'companyName' }); // condition changes, refreshes, data-source requests
+```
+
+The trace is opt-in and bounded. Each entry has a sequence number, and transitions carry a `cause` that links back to the value change that triggered them. Field values are excluded from explanations and trace entries unless `includeValues` is enabled. `explainCondition` and `DataSourceManagerOptions.onRequest` expose the same information for standalone use. See the runtime diagnostics guide in the documentation site.
 
 ## Schema normalization and versioning
 

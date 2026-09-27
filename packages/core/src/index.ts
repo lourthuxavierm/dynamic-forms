@@ -10,5 +10,6 @@ export * from "./store";
 export * from "./conditions";
 export * from "./dependencies";
 export * from "./datasource";
+export * from "./diagnostics";
 export * from "./events";
 export * from "./validation";
