@@ -38,3 +38,7 @@ apps/docs/.vitepress/cache/
 apps/docs/.vitepress/.temp/
 apps/docs/.vitepress/.snippet-check/
 benchmark-results.json
+
+# Claude Code personal settings (shared config lives in .claude/settings.json)
+.claude/settings.local.json
+CLAUDE.local.md
