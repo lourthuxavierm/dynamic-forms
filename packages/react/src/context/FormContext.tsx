@@ -29,6 +29,7 @@ import {
 } from '@dynamic-form-engine/core';
 import { warnInDevelopment } from '../development';
 import { findFieldByPath } from '../schemaPaths';
+import { readPathRecord, withoutHiddenFieldErrors } from '../fieldConditions';
 
 export type ValidationMode = 'onChange' | 'onBlur' | 'onSubmit' | 'manual';
 
@@ -76,8 +77,16 @@ export interface FormProviderProps<T extends FormValues = DynamicFormValues> {
   defaultValues?: T;
   children: ReactNode;
   onSubmit?: FormSubmitHandler<T>;
-  /** Additional form-level validator composed after schema validation. */
+  /**
+   * Additional form-level validator (for example `createZodFormValidator`)
+   * composed after schema validation. Its errors for fields hidden by
+   * `visibleWhen` are ignored, like schema validation, unless
+   * `validateHiddenFields` is set. Field-level validation (`validationMode`,
+   * `validateField`) also runs it and uses its error for that field.
+   */
   formValidator?: FormValidator<T>;
+  /** Keep `formValidator` errors for fields hidden by `visibleWhen`. Defaults to `false`. */
+  validateHiddenFields?: boolean;
   /** Receives errors thrown by `onSubmit` or by a validator during `validateForm`/`submit`. */
   onError?: (error: unknown) => void;
   onChange?: (event: FormEvent<unknown, T>) => void;
@@ -180,9 +189,19 @@ export function FormProvider<T extends FormValues = DynamicFormValues>(props: Fo
 
   const actions = useMemo(() => {
     const validationRuns = new Map<string, number>();
+    const fieldRuns = new Map<string, AbortController>();
+    // The application validator, with errors for hidden fields removed (unless opted out).
+    const customValidator = (): FormValidator<T> | undefined => {
+      const validator = latest.current.formValidator;
+      if (!validator) return undefined;
+      return async (values, context) => {
+        const errors = await validator(values, context);
+        return latest.current.validateHiddenFields ? errors : withoutHiddenFieldErrors(errors, schemaRef.current, values);
+      };
+    };
     const resolvedFormValidator = (): FormValidator<T> | undefined => {
       const builtIn = schemaValidatorRef.current;
-      const custom = latest.current.formValidator;
+      const custom = customValidator();
       if (!builtIn) return custom;
       if (!custom) return builtIn;
       return async (values, context) => ({ ...await builtIn(values, context), ...await custom(values, context) });
@@ -200,20 +219,43 @@ export function FormProvider<T extends FormValues = DynamicFormValues>(props: Fo
       const key = normalizePath(name);
       const run = (validationRuns.get(key) ?? 0) + 1;
       validationRuns.set(key, run);
+      fieldRuns.get(key)?.abort();
+      const controller = new AbortController();
+      fieldRuns.set(key, controller);
       const currentSchema = schemaRef.current;
       const field = currentSchema ? findFieldByPath(currentSchema.fields, name) : undefined;
-      if (!field) return true;
+      const custom = customValidator();
+      if (!field && !custom) return true;
+      const isCurrent = () => validationRuns.get(key) === run;
       validating.set(name, true);
       try {
-        const required = Boolean(field.validation?.required || controllerRef.current?.getState(name)?.required);
-        const result = await validateField(name, resolvedStore.getValue(dynamicPath(name)), resolvedStore.getValues() as Record<string, unknown>, createFieldValidators(field, { required }));
-        if (validationRuns.get(key) === run) {
-          if (result.valid) resolvedStore.clearError(dynamicPath(name));
-          else resolvedStore.setError(dynamicPath(name), result.errors[0].message);
+        const values = resolvedStore.getValues();
+        let message: string | undefined;
+        if (field) {
+          const required = Boolean(field.validation?.required || controllerRef.current?.getState(name)?.required);
+          const result = await validateField(name, resolvedStore.getValue(dynamicPath(name)), values as Record<string, unknown>, createFieldValidators(field, { required }));
+          if (!result.valid) message = result.errors[0].message;
         }
-        return result.valid;
+        // The form validator decides this field too, so field-level results
+        // agree with validateForm()/submit() (its error takes precedence, as in composition).
+        if (custom && isCurrent()) {
+          const errors = await custom(values, { signal: controller.signal, requestId: run });
+          message = readPathRecord(errors, name) ?? message;
+        }
+        if (isCurrent()) {
+          if (message === undefined) resolvedStore.clearError(dynamicPath(name));
+          else resolvedStore.setError(dynamicPath(name), message);
+        }
+        return message === undefined;
+      } catch (error) {
+        // A superseded run is silent; a failing validator is reported and leaves errors unchanged.
+        if (isCurrent()) reportError(error);
+        return false;
       } finally {
-        if (validationRuns.get(key) === run) validating.set(name, false);
+        if (isCurrent()) {
+          validating.set(name, false);
+          fieldRuns.delete(key);
+        }
       }
     };
 

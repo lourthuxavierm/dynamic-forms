@@ -1,0 +1,198 @@
+{
+  "package": "@dynamic-form-engine/zod",
+  "generatedBy": "scripts/check-core-api.mjs",
+  "note": "Generated file. Run `pnpm api:update` after an intentional public API change. See packages/core/STABILITY.md.",
+  "summary": {
+    "exports": 20,
+    "stable": 20,
+    "experimental": 0,
+    "deprecated": 0
+  },
+  "exports": {
+    "createZodFieldValidator": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/fieldValidator.ts",
+      "declaration": [
+        "export function createZodFieldValidator<TValue, TOutput = TValue>(schema: ZodSchemaLike<TValue, TOutput>, options?: ZodFieldValidatorOptions): Validator<TValue>;"
+      ]
+    },
+    "createZodFormValidator": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/formValidator.ts",
+      "declaration": [
+        "export function createZodFormValidator<TValues extends Record<string, unknown>, TOutput = TValues>(schema: ZodSchemaLike<TValues, TOutput>, options?: ZodAdapterOptions): FormValidator<TValues>;"
+      ]
+    },
+    "NormalizedZodIssue": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/issues.ts",
+      "declaration": [
+        "export interface NormalizedZodIssue {",
+        "    readonly field: string;",
+        "    readonly issue: ValidationIssue;",
+        "    readonly source: ZodIssueLike;",
+        "}"
+      ]
+    },
+    "normalizeZodIssue": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/issues.ts",
+      "declaration": [
+        "export function normalizeZodIssue(issue: ZodIssueLike, rootErrorPath?: string): NormalizedZodIssue;"
+      ]
+    },
+    "ZodAdapterOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export interface ZodAdapterOptions {",
+        "    rootErrorPath?: string;",
+        "    errorMode?: ZodErrorMode;",
+        "    joinMessages?: (messages: readonly string[]) => string;",
+        "}"
+      ]
+    },
+    "ZodErrorLike": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export interface ZodErrorLike {",
+        "    readonly issues: readonly ZodIssueLike[];",
+        "}"
+      ]
+    },
+    "ZodErrorMode": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export type ZodErrorMode = 'first' | 'all';"
+      ]
+    },
+    "ZodFailure": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export interface ZodFailure {",
+        "    readonly success: false;",
+        "    readonly error: ZodErrorLike;",
+        "}"
+      ]
+    },
+    "ZodFieldValidatorFactory": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/fieldValidator.ts",
+      "declaration": [
+        "export type ZodFieldValidatorFactory = <TValue>(schema: ZodSchemaLike<TValue>, options?: ZodFieldValidatorOptions) => Validator<TValue>;"
+      ]
+    },
+    "ZodFieldValidatorOptions": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export type ZodFieldValidatorOptions = Pick<ZodAdapterOptions, 'errorMode' | 'joinMessages'>;"
+      ]
+    },
+    "ZodFormValidatorFactory": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/formValidator.ts",
+      "declaration": [
+        "export type ZodFormValidatorFactory = <TValues extends Record<string, unknown>>(schema: ZodSchemaLike<TValues>, options?: ZodAdapterOptions) => FormValidator<TValues>;"
+      ]
+    },
+    "ZodIssueLike": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export interface ZodIssueLike {",
+        "    readonly code?: string;",
+        "    readonly message: string;",
+        "    readonly path: readonly ZodPathSegment[];",
+        "}"
+      ]
+    },
+    "zodIssuesToFormErrors": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/issues.ts",
+      "declaration": [
+        "export function zodIssuesToFormErrors(issues: readonly ZodIssueLike[], options?: ZodAdapterOptions): FormErrors;"
+      ]
+    },
+    "zodIssueToValidationIssue": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/issues.ts",
+      "declaration": [
+        "export function zodIssueToValidationIssue(issue: ZodIssueLike): ValidationIssue;"
+      ]
+    },
+    "ZodPathMapping": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/paths.ts",
+      "declaration": [
+        "export interface ZodPathMapping {",
+        "    readonly source: readonly ZodPathSegment[];",
+        "    readonly target: string;",
+        "}"
+      ]
+    },
+    "ZodPathSegment": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export type ZodPathSegment = PropertyKey;"
+      ]
+    },
+    "zodPathToFieldPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/paths.ts",
+      "declaration": [
+        "export function zodPathToFieldPath(path: readonly ZodPathSegment[], rootErrorPath?: string): string;"
+      ]
+    },
+    "ZodSafeParseResult": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export type ZodSafeParseResult<TOutput> = ZodSuccess<TOutput> | ZodFailure;"
+      ]
+    },
+    "ZodSchemaLike": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export interface ZodSchemaLike<TInput = unknown, TOutput = TInput> {",
+        "    safeParseAsync(value: TInput): PromiseLike<ZodSafeParseResult<TOutput>>;",
+        "}"
+      ]
+    },
+    "ZodSuccess": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export interface ZodSuccess<TOutput> {",
+        "    readonly success: true;",
+        "    readonly data: TOutput;",
+        "}"
+      ]
+    }
+  }
+}
