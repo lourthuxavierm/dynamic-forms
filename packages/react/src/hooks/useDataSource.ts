@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataSourceManager, type DataSourceConfig, type DataSourceResult, type FieldSchema } from '@dynamic-form-engine/core';
+import { DataSourceManager, type DataSourceConfig, type DataSourceResult } from '@dynamic-form-engine/core';
+import { findFieldByPath } from '../schemaPaths';
 import { useFormContext } from '../context';
 import { useWatch } from './useWatch';
 
@@ -23,10 +24,21 @@ export interface UseDataSourceResult<T> extends DataSourceResult<T> {
   setPageSize: (pageSize: number | undefined) => void;
 }
 
+/**
+ * Loads a field's data source. Requests are re-run when the configuration's
+ * data (not its object identity), the field's dependency values, the search
+ * term, page, or page size change, so inline `config` objects are safe. A
+ * changed `load` function identity alone does not trigger a request; the latest
+ * function is used on the next load. Pending requests are cancelled on unmount
+ * and whenever a newer request starts.
+ */
 export function useDataSource<T = unknown>(fieldName: string, options: UseDataSourceOptions<T> = {}): UseDataSourceResult<T> {
   const { schema, store } = useFormContext();
-  const field = useMemo(() => schema ? findField(schema.fields, fieldName) : undefined, [fieldName, schema]);
+  const field = useMemo(() => schema ? findFieldByPath(schema.fields, fieldName) : undefined, [fieldName, schema]);
   const config = options.config ?? field?.dataSource as DataSourceConfig<T> | undefined;
+  const latestConfig = useRef(config);
+  latestConfig.current = config;
+  const configKey = config ? configIdentity(config) : '';
   const dependsOn = field?.dependsOn ?? [];
   const dependencyValues = useWatch<unknown>(dependsOn);
   const dependencyKey = JSON.stringify(dependencyValues);
@@ -45,6 +57,7 @@ export function useDataSource<T = unknown>(fieldName: string, options: UseDataSo
   }, [debounceMs, search]);
 
   const refresh = useCallback(async () => {
+    const config = latestConfig.current;
     if (!config || options.enabled === false) return [] as T[];
     const currentRun = ++run.current;
     setState((current) => ({ ...current, loading: true, error: undefined }));
@@ -62,10 +75,10 @@ export function useDataSource<T = unknown>(fieldName: string, options: UseDataSo
       }
       return [] as T[];
     }
-  }, [config, debouncedSearch, fieldName, manager, options.enabled, page, pageSize, store]);
+  }, [configKey, debouncedSearch, fieldName, manager, options.enabled, page, pageSize, store]);
 
   useEffect(() => {
-    if (!config || options.enabled === false) {
+    if (!configKey || options.enabled === false) {
       run.current += 1;
       manager.cancel(fieldName);
       setState((current) => ({ ...current, loading: false }));
@@ -76,7 +89,7 @@ export function useDataSource<T = unknown>(fieldName: string, options: UseDataSo
       run.current += 1;
       manager.cancel(fieldName);
     };
-  }, [config, dependencyKey, fieldName, manager, options.enabled, page, pageSize, refresh]);
+  }, [configKey, dependencyKey, fieldName, manager, options.enabled, page, pageSize, refresh]);
 
   const cancel = useCallback(() => {
     run.current += 1;
@@ -91,12 +104,7 @@ export function useDataSource<T = unknown>(fieldName: string, options: UseDataSo
   return { ...state, search, page, pageSize, refresh, cancel, setSearch, setPage, setPageSize };
 }
 
-function findField(fields: readonly FieldSchema[], name: string, parent = ''): FieldSchema | undefined {
-  for (const field of fields) {
-    const path = parent ? `${parent}.${field.name}` : field.name;
-    if (path === name) return field;
-    const nested = field.fields ? findField(field.fields, name, path) : undefined;
-    if (nested) return nested;
-  }
-  return undefined;
+/** Serializes a configuration's data; functions are identified by position only. */
+function configIdentity(config: DataSourceConfig<unknown>): string {
+  return JSON.stringify(config, (_key, value: unknown) => (typeof value === 'function' ? '[function]' : value));
 }

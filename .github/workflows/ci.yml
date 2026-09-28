@@ -55,3 +55,5 @@ jobs:
         run: pnpm verify
       - name: Verify packed Core release (exports, ESM/CJS, Node consumers)
         run: pnpm verify:core-release
+      - name: Verify packed React release (exports, ESM/CJS, Node consumers)
+        run: pnpm verify:react-release

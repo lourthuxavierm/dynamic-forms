@@ -2,16 +2,33 @@
 
 - Status: Implemented and integration-tested
 - Owner: React maintainers
-- Last verified: 2026-08-27
+- Last verified: 2026-09-28
 - Applies to: React 18 or 19
 
 Provider and subscription hooks supply server snapshots to
-`useSyncExternalStore`, and the integration test renders a provider plus watched
-value through `react-dom/server`. Browser focus logic is guarded when `document`
-is unavailable.
+`useSyncExternalStore`. Browser-only focus logic is guarded when `document` is
+unavailable.
 
-The adapter does not claim streaming, server-component, or persisted-store
-hydration semantics beyond those tests. Keep initial schema and values
-deterministic between server and client. Effects create condition and dependency
-controllers on the client and dispose them during cleanup; subscriptions must
-also survive React Strict Mode's development remount cycle.
+## Guarantees
+
+- **Conditions apply on the server.** Before the provider's condition
+  controller mounts, hooks derive `visible`, `disabled`, `required`, and
+  `readOnly` directly from the schema and current values. A field hidden by
+  `visibleWhen` is absent from server HTML and is never rendered on the first
+  client render.
+- **Hydration matches.** Rendering the same schema and values on the server and
+  client hydrates without mismatch warnings; the controllers then mount and
+  the form reacts to changes.
+- **Strict Mode.** The development mount/unmount/remount cycle creates one
+  active set of controllers and subscriptions, and unmounting releases every
+  store subscription.
+
+These are covered by `packages/react/src/quality-gates.test.tsx`
+(`renderToString`, `hydrateRoot`, and Strict Mode with a subscription tracker).
+
+## Limits
+
+The adapter does not claim streaming, React Server Components, or persisted
+store hydration semantics. Keep the schema and initial values deterministic
+between server and client. Conditions on fields inside array items are not
+evaluated per item, matching Core.

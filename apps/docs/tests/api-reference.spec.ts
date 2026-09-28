@@ -10,7 +10,8 @@ test('API overview separates generated signatures from handwritten guidance', as
 test('generated Core API contains curated and source-derived entries', async ({ page }) => {
   await page.goto('/api/generated/core');
   await expect(page.getByRole('heading', { level: 1, name: '@dynamic-form-engine/core API' })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 3, name: 'FormSchema' })).toBeVisible();
+  // Anchored: VitePress appends a permalink to heading names, and substring matching would also hit CompiledFormSchema etc.
+  await expect(page.getByRole('heading', { level: 3, name: /^FormSchema(?![A-Za-z])/ })).toBeVisible();
   await expect(page.getByText('Root declarative form contract.')).toBeVisible();
   await expect(page.getByText('Internal symbols: excluded')).toBeVisible();
 });

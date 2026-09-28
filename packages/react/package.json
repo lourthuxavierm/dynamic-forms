@@ -29,7 +29,7 @@
     "@dynamic-form-engine/core": "workspace:*"
   },
   "scripts": {
-    "build": "tsup && tsc -p tsconfig.build.json",
+    "build": "tsup && tsc -p tsconfig.build.json && node ../../scripts/fix-declaration-specifiers.mjs dist",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },

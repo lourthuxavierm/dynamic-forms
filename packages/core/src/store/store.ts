@@ -16,7 +16,7 @@ import type {
 } from './types';
 import { AsyncRequestManager, isAbortError, normalizeAsyncError } from '../async';
 import { FormEventEmitter, type FormEvent, type FormEventListener, type FormEventType } from '../events';
-import { dynamicPath, getByPath, isAncestorPath, isSamePath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
+import { dynamicPath, getByPath, isAncestorPath, isSamePath, normalizePath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
 interface SelectorSubscription<T extends FormValues> {
   selector: FormSelector<T, unknown>;
@@ -27,6 +27,7 @@ interface SelectorSubscription<T extends FormValues> {
 export class FormStore<T extends FormValues = DynamicFormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
+  /** Field listeners keyed by canonical path (`items[0].x` and `items.0.x` share a key). */
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
   private readonly selectorSubscriptions = new Set<SelectorSubscription<T>>();
   private readonly events = new FormEventEmitter<unknown, T>();
@@ -383,16 +384,17 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   subscribeToField<TPath extends Path<T>>(path: TPath, listener: FormListener<T>): () => void;
   subscribeToField(path: DynamicPath, listener: FormListener<T>): () => void;
   subscribeToField(path: string, listener: FormListener<T>): () => void {
-    let listeners = this.fieldListeners.get(path);
+    const key = normalizePath(path);
+    let listeners = this.fieldListeners.get(key);
     if (!listeners) {
       listeners = new Set();
-      this.fieldListeners.set(path, listeners);
+      this.fieldListeners.set(key, listeners);
     }
     listeners.add(listener);
 
     return () => {
       listeners?.delete(listener);
-      if (listeners?.size === 0) this.fieldListeners.delete(path);
+      if (listeners?.size === 0 && this.fieldListeners.get(key) === listeners) this.fieldListeners.delete(key);
     };
   }
 
@@ -476,11 +478,20 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     this.notifyFieldsNow(paths);
   }
 
+  // A change at a path affects subscribers of that path, of its ancestors (their
+  // value contains it), and of its descendants (their value may have been
+  // replaced with it).
   private notifyFieldsNow(paths: readonly string[]): void {
+    if (this.fieldListeners.size === 0) return;
     const notified = new Set<FormListener<T>>();
     for (const path of paths) {
-      for (const affectedPath of getAffectedPaths(path)) {
+      const changed = normalizePath(path);
+      for (const affectedPath of getAncestorPaths(changed)) {
         for (const listener of this.fieldListeners.get(affectedPath) ?? []) notified.add(listener);
+      }
+      const prefix = `${changed}.`;
+      for (const [key, listeners] of this.fieldListeners) {
+        if (key.startsWith(prefix)) for (const listener of listeners) notified.add(listener);
       }
     }
     for (const listener of notified) listener(this.state);
@@ -569,15 +580,15 @@ function removePath<TValue>(values: Record<string, TValue>, path: string): Recor
   return changed ? next : values;
 }
 
-function getAffectedPaths(path: string): string[] {
-  const normalized = path.replace(/\[(\d+)\]/g, '.$1');
-  const parts = normalized.split('.').filter(Boolean);
-  const affectedPaths = new Set([path, normalized]);
+/** The canonical path itself followed by each of its ancestors. */
+function getAncestorPaths(canonical: string): string[] {
+  const parts = canonical.split('.').filter(Boolean);
+  const paths = [canonical];
   while (parts.length > 1) {
     parts.pop();
-    affectedPaths.add(parts.join('.'));
+    paths.push(parts.join('.'));
   }
-  return [...affectedPaths];
+  return paths;
 }
 
 function clone<TValue>(value: TValue): TValue {
