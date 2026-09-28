@@ -154,7 +154,7 @@ export declare function formatPercentage(value: number, locale: string, precisio
 Compatibility-package version marker; this does not identify a separate native DOM renderer.
 
 ```ts
-export declare const HTML_ADAPTER_VERSION: "0.1.0";
+export declare const HTML_ADAPTER_VERSION: "1.0.0-rc.1";
 ```
 
 ### HTML_DEFAULT_STYLESHEET
@@ -415,7 +415,7 @@ export declare const HtmlEmailField: (props: FieldComponentProps) => import("rea
 - Kind: type
 - Source: `packages/react-html/src/components/index.ts`
 
-Public type exported by @dynamic-form-engine/html.
+A registry control must accept the headless field contract. The value type is open because one registry may contain controls for different value types.
 
 ```ts
 export type HtmlFieldComponent;
@@ -583,7 +583,7 @@ export declare function HtmlFileUploadProvider({ upload, children }: { upload: H
 Public function exported by @dynamic-form-engine/html.
 
 ```ts
-export declare function HtmlForm({ schema: explicitSchema, registry, submitLabel, onSubmit, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled, colorScheme, density, dir, errorSummary }: HtmlFormProps): import("react").JSX.Element
+export declare function HtmlForm({ schema: explicitSchema, registry, submitLabel, onSubmit, onSubmitError, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled, colorScheme, density, dir, errorSummary }: HtmlFormProps): import("react").JSX.Element
 ```
 
 ### HtmlFormProps
