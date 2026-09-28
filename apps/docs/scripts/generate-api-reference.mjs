@@ -66,8 +66,8 @@ function signature(symbol, location, kind) {
 function deprecation(symbol) {
   const tag = tags(symbol).find((entry) => entry.name === 'deprecated');
   if (!tag) return undefined;
-  const replacement = /(?:use|replacement:)\s+`?([\w.]+)`?/i.exec(tag.text)?.[1];
-  const removal = /removal:\s*([^.;]+)/i.exec(tag.text)?.[1]?.trim();
+  const replacement = /(?:use|replacement:)\s+`?([A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)*)`?/i.exec(tag.text)?.[1];
+  const removal = /removal:\s*(\d+(?:\.\d+){0,2}(?:-[\w.]+)?)/i.exec(tag.text)?.[1];
   return { message: tag.text || 'Deprecated.', replacement, removal };
 }
 function render(pkg, symbols) {
@@ -83,12 +83,13 @@ function render(pkg, symbols) {
   ];
   for (const entry of symbols) {
     lines.push(`### ${entry.name}`, '', `- Kind: ${entry.kind}`, `- Source: \`${entry.source}\``);
-    if (entry.deprecated) {
-      lines.push('- Status: Deprecated', `- Replacement: ${entry.deprecated.replacement ? `\`${entry.deprecated.replacement}\`` : 'No replacement declared'}`, `- Removal target: ${entry.deprecated.removal ?? 'Not declared'}`);
+    if (entry.experimental) lines.push('- Stability: Experimental (may change in a minor release)');
+    if (entry.deprecation) {
+      lines.push('- Status: Deprecated', `- Replacement: ${entry.deprecation.replacement ? `\`${entry.deprecation.replacement}\`` : 'No replacement declared'}`, `- Removal target: ${entry.deprecation.removal ?? 'Not declared'}`);
     }
     lines.push('', entry.annotation || entry.documentation || `Public ${entry.kind} exported by ${pkg.name}.`, '', '```ts', entry.signature, '```', '');
   }
-  if (!symbols.some((entry) => entry.deprecated)) lines.push('## Deprecations', '', 'No exported symbol currently carries a `@deprecated` tag. When one is added, this page displays its replacement and removal target.', '');
+  if (!symbols.some((entry) => entry.deprecation)) lines.push('## Deprecations', '', 'No exported symbol currently carries a `@deprecated` tag. When one is added, this page displays its replacement and removal target.', '');
   return `${lines.join('\n')}\n`;
 }
 function persist(path, content) {
@@ -114,9 +115,10 @@ for (const pkg of packages) {
       name: exported.name, kind, source: relative(root, declaration.getSourceFile().fileName).replaceAll('\\', '/'),
       signature: signature(resolved, declaration, kind), documentation: docs(resolved),
       annotation: annotations.symbols[`${pkg.slug}.${exported.name}`], deprecation: deprecation(resolved),
+      experimental: tags(resolved).some((tag) => tag.name === 'experimental'),
     };
   }).sort((a, b) => a.name.localeCompare(b.name));
-  manifest.packages[pkg.name] = { maturity: pkg.maturity, exports: symbols.map(({ name, kind, source, deprecation: deprecated }) => ({ name, kind, source, deprecated })) };
+  manifest.packages[pkg.name] = { maturity: pkg.maturity, exports: symbols.map(({ name, kind, source, deprecation: deprecated, experimental }) => ({ name, kind, source, deprecated, ...(experimental ? { stability: 'experimental' } : {}) })) };
   persist(resolve(generatedRoot, `${pkg.slug}.md`), render(pkg, symbols));
 }
 

@@ -8,7 +8,7 @@ const failures = [];
 const requiredPages = [
   'index', 'form-lifecycle', 'form-store', 'form-state', 'field-state', 'events',
   'subscriptions', 'conditions', 'dependencies', 'data-sources', 'cache',
-  'cancellation', 'reset', 'submission', 'diagnostics',
+  'cancellation', 'reset', 'submission', 'diagnostics', 'validation',
 ];
 
 const documents = new Map();
@@ -34,7 +34,8 @@ for (const property of stateProperties) {
 }
 
 const eventSource = readFileSync(resolve(repositoryRoot, 'packages/core/src/events/types.ts'), 'utf8');
-const eventTypes = [...eventSource.matchAll(/'([^']+)'/g)].map((match) => match[1]);
+const eventUnion = /export type FormEventType\s*=([^;]+);/.exec(eventSource)?.[1] ?? '';
+const eventTypes = [...eventUnion.matchAll(/'([^']+)'/g)].map((match) => match[1]);
 const eventDocs = documents.get('events') ?? '';
 for (const event of eventTypes) {
   if (!eventDocs.includes(`\`${event}\``)) failures.push(`runtime/events.md: missing event ${event}`);

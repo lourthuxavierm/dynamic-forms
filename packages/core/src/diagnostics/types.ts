@@ -19,6 +19,7 @@ interface DiagnosticEventBase {
   readonly timestamp: number;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ValueChangeDiagnostic extends DiagnosticEventBase {
   readonly type: 'valueChange';
   readonly path: string;
@@ -32,10 +33,12 @@ export interface ValueChangeDiagnostic extends DiagnosticEventBase {
   readonly previousValue?: unknown;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ResetDiagnostic extends DiagnosticEventBase {
   readonly type: 'reset';
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ConditionChangeDiagnostic extends DiagnosticEventBase {
   readonly type: 'conditionChange';
   readonly path: string;
@@ -47,6 +50,7 @@ export interface ConditionChangeDiagnostic extends DiagnosticEventBase {
   readonly hiddenValuePolicy?: 'clear' | 'reset';
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface DependencyRefreshDiagnostic extends DiagnosticEventBase {
   readonly type: 'dependencyRefresh';
   readonly path: string;
@@ -56,6 +60,7 @@ export interface DependencyRefreshDiagnostic extends DiagnosticEventBase {
   readonly cause: DiagnosticCause;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface DataSourceRequestDiagnostic extends DiagnosticEventBase {
   readonly type: 'dataSourceRequest';
   /** Field path that owns the data source. */
@@ -66,6 +71,7 @@ export interface DataSourceRequestDiagnostic extends DiagnosticEventBase {
   readonly error?: string;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ValidationDiagnostic extends DiagnosticEventBase {
   readonly type: 'validation';
   readonly valid: boolean;
@@ -73,6 +79,7 @@ export interface ValidationDiagnostic extends DiagnosticEventBase {
   readonly errorPaths: readonly string[];
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export type RuntimeDiagnosticEvent =
   | ValueChangeDiagnostic
   | ResetDiagnostic
@@ -81,9 +88,12 @@ export type RuntimeDiagnosticEvent =
   | DataSourceRequestDiagnostic
   | ValidationDiagnostic;
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export type RuntimeDiagnosticEventType = RuntimeDiagnosticEvent['type'];
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export type RuntimeDiagnosticListener = (event: RuntimeDiagnosticEvent) => void;
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface RuntimeDiagnosticsOptions {
   /**
    * Record a diagnostic trace. Defaults to `false`; when disabled Core records
@@ -98,6 +108,7 @@ export interface RuntimeDiagnosticsOptions {
   onDiagnostic?: RuntimeDiagnosticListener;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface DiagnosticTraceFilter {
   /** Only events about this path (any path spelling). */
   path?: string;
@@ -117,11 +128,13 @@ export interface RuntimeDiagnostics {
   clear(): void;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ExplainFieldStateOptions {
   /** Include actual values in condition explanations. Defaults to the runtime diagnostics setting. */
   includeValues?: boolean;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export type FieldFlagReason =
   | 'default'
   | 'static'
@@ -131,6 +144,7 @@ export type FieldFlagReason =
   | 'readOnlyWhen'
   | 'requiredWhen';
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface FieldFlagExplanation {
   readonly value: boolean;
   /** Where the value came from. */
@@ -139,6 +153,7 @@ export interface FieldFlagExplanation {
   readonly condition?: ConditionExplanationResult;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface FieldValidationExplanation {
   /** The error currently stored for the field. */
   readonly error?: string;
@@ -157,6 +172,7 @@ export interface FieldValidationExplanation {
   readonly skippedBecauseHidden: boolean;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface FieldDataSourceExplanation {
   readonly status: AsyncRequestStatus;
   readonly loading: boolean;
@@ -168,6 +184,7 @@ export interface FieldDataSourceExplanation {
   readonly lastDiscarded?: DataSourceRequestDiagnostic;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface FieldStateExplanation {
   readonly path: string;
   /** `false` when the path is not a field in the schema. */

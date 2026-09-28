@@ -102,12 +102,14 @@
         {
           "name": "ConditionChangeDetails",
           "kind": "interface",
-          "source": "packages/core/src/conditions/controller.ts"
+          "source": "packages/core/src/conditions/controller.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionChangeDiagnostic",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionController",
@@ -117,17 +119,20 @@
         {
           "name": "ConditionEvaluationCause",
           "kind": "type",
-          "source": "packages/core/src/conditions/controller.ts"
+          "source": "packages/core/src/conditions/controller.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionExplanation",
           "kind": "type",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionExplanationResult",
           "kind": "interface",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionGroup",
@@ -137,7 +142,8 @@
         {
           "name": "ConditionGroupExplanation",
           "kind": "interface",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionOperator",
@@ -147,7 +153,8 @@
         {
           "name": "ConditionRuleExplanation",
           "kind": "interface",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionStateEquality",
@@ -167,7 +174,8 @@
         {
           "name": "CORE_PERFORMANCE_BUDGETS",
           "kind": "const",
-          "source": "packages/core/src/performance/budgets.ts"
+          "source": "packages/core/src/performance/budgets.ts",
+          "stability": "experimental"
         },
         {
           "name": "CoreMutation",
@@ -177,7 +185,8 @@
         {
           "name": "CorePerformanceBudgets",
           "kind": "interface",
-          "source": "packages/core/src/performance/budgets.ts"
+          "source": "packages/core/src/performance/budgets.ts",
+          "stability": "experimental"
         },
         {
           "name": "CorePlugin",
@@ -202,7 +211,8 @@
         {
           "name": "CorePluginHost",
           "kind": "class",
-          "source": "packages/core/src/plugins/host.ts"
+          "source": "packages/core/src/plugins/host.ts",
+          "stability": "experimental"
         },
         {
           "name": "createArrayItemValue",
@@ -277,17 +287,20 @@
         {
           "name": "DataSourceRequestDiagnostic",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "DataSourceRequestEvent",
           "kind": "interface",
-          "source": "packages/core/src/datasource/datasource.ts"
+          "source": "packages/core/src/datasource/datasource.ts",
+          "stability": "experimental"
         },
         {
           "name": "DataSourceRequestPhase",
           "kind": "type",
-          "source": "packages/core/src/datasource/datasource.ts"
+          "source": "packages/core/src/datasource/datasource.ts",
+          "stability": "experimental"
         },
         {
           "name": "DataSourceResult",
@@ -332,7 +345,8 @@
         {
           "name": "DependencyRefreshCause",
           "kind": "type",
-          "source": "packages/core/src/dependencies/controller.ts"
+          "source": "packages/core/src/dependencies/controller.ts",
+          "stability": "experimental"
         },
         {
           "name": "DependencyRefreshContext",
@@ -342,17 +356,20 @@
         {
           "name": "DependencyRefreshDiagnostic",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "DependencyRefreshEvent",
           "kind": "interface",
-          "source": "packages/core/src/dependencies/controller.ts"
+          "source": "packages/core/src/dependencies/controller.ts",
+          "stability": "experimental"
         },
         {
           "name": "describeValueType",
           "kind": "function",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "DiagnosticCause",
@@ -362,7 +379,8 @@
         {
           "name": "DiagnosticTraceFilter",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "DiagnosticValueType",
@@ -397,12 +415,14 @@
         {
           "name": "explainCondition",
           "kind": "function",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ExplainConditionOptions",
           "kind": "interface",
-          "source": "packages/core/src/conditions/explain.ts"
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "explainField",
@@ -412,7 +432,8 @@
         {
           "name": "ExplainFieldStateOptions",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldCondition",
@@ -437,7 +458,8 @@
         {
           "name": "FieldDataSourceExplanation",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldDefinition",
@@ -457,12 +479,14 @@
         {
           "name": "FieldFlagExplanation",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldFlagReason",
           "kind": "type",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldOption",
@@ -487,7 +511,8 @@
         {
           "name": "FieldStateExplanation",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldType",
@@ -502,7 +527,8 @@
         {
           "name": "FieldValidationExplanation",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldValidationOverrides",
@@ -629,8 +655,9 @@
           "kind": "type",
           "source": "packages/core/src/schema/types.ts",
           "deprecated": {
-            "message": "Use InferFormValues.",
-            "replacement": "InferFormValues."
+            "message": "Use InferFormValues. Removal: 2.0.0.",
+            "replacement": "InferFormValues",
+            "removal": "2.0.0"
           }
         },
         {
@@ -791,7 +818,8 @@
         {
           "name": "ResetDiagnostic",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "ResetOptions",
@@ -806,17 +834,20 @@
         {
           "name": "RuntimeDiagnosticEvent",
           "kind": "type",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "RuntimeDiagnosticEventType",
           "kind": "type",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "RuntimeDiagnosticListener",
           "kind": "type",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "RuntimeDiagnostics",
@@ -826,7 +857,8 @@
         {
           "name": "RuntimeDiagnosticsOptions",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "RuntimeLifecycleEvent",
@@ -946,7 +978,8 @@
         {
           "name": "ValidationDiagnostic",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "ValidationError",
@@ -976,7 +1009,8 @@
         {
           "name": "ValueChangeDiagnostic",
           "kind": "interface",
-          "source": "packages/core/src/diagnostics/types.ts"
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "ValueFieldSchema",

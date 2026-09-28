@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateCondition } from './evaluate';
-import { explainCondition } from './explain';
+import { describeValueType, explainCondition } from './explain';
 import type { FieldCondition } from './types';
 
 describe('explainCondition', () => {
@@ -69,5 +69,10 @@ describe('explainCondition', () => {
     expect(Object.isFrozen(result)).toBe(true);
     expect(Object.isFrozen(result.explanation)).toBe(true);
     expect(Object.isFrozen(result.decisive)).toBe(true);
+  });
+
+  it('describes value types without exposing values', () => {
+    expect([undefined, null, 'x', 1, true, [], {}, 1n, Symbol('s'), () => undefined].map(describeValueType))
+      .toEqual(['undefined', 'null', 'string', 'number', 'boolean', 'array', 'object', 'bigint', 'symbol', 'function']);
   });
 });

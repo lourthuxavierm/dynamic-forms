@@ -11,13 +11,21 @@ export interface FieldConditionState {
   readOnly: boolean;
 }
 
-/** What triggered a condition re-evaluation. */
+/**
+ * What triggered a condition re-evaluation.
+ *
+ * @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md.
+ */
 export type ConditionEvaluationCause =
   | { readonly type: 'initial' }
   | { readonly type: 'valueChange'; readonly path: string }
   | { readonly type: 'reset' };
 
-/** Context passed to the optional `onTransition` callback (diagnostics). */
+/**
+ * Context passed to the optional `onTransition` callback (diagnostics).
+ *
+ * @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md.
+ */
 export interface ConditionChangeDetails {
   readonly previous?: Readonly<FieldConditionState>;
   readonly cause: ConditionEvaluationCause;
@@ -37,6 +45,11 @@ interface ConditionSelectorSubscription {
   equality: ConditionStateEquality<unknown>;
   selected: unknown;
 }
+/**
+ * Evaluates `visibleWhen`, `disabledWhen`, `requiredWhen`, and `readOnlyWhen` for every field and
+ * applies hidden-value policies. The optional fifth constructor argument (`onTransition`) is
+ * experimental diagnostics API; see STABILITY.md.
+ */
 export class ConditionController<T extends FormValues = FormValues> {
   private readonly fields = new Map<string, FieldSchema>();
   private readonly states = new Map<string, FieldConditionState>();

@@ -2,8 +2,8 @@
 
 - Status: Documented
 - Owner: Core and React maintainers
-- Last verified: 2026-08-26
-- Applies to: Core and React 0.1.0
+- Last verified: 2026-09-28
+- Applies to: `@dynamic-form-engine/core` 1.0.0-rc and React
 
 ## State shape
 
@@ -12,11 +12,13 @@
 | `values` | Immutable current value tree. |
 | `errors` | First current error message by field path. |
 | `touched` | Boolean flags by path. |
-| `dirty` | Paths whose current value differs from the initial value by `Object.is`. |
+| `dirty` | Paths whose current value differs from the initial value by `Object.is`. Equivalent array spellings share one entry. |
 | `valid` | Whether the current error record is empty after store validation/error operations. |
 | `submitting` | A store submission handler is running. |
 | `disabled` | Form-level disabled state used by store submission gating and integrations. |
-| `loading` | Application/integration-controlled loading state. |
+| `loading` | Application/integration-controlled loading state. Cleared by `reset()`. |
+| `validating` | A current validation request is running. |
+| `validationError` | The error thrown by the current validator, if it failed with anything other than an abort. Cleared when validation starts again or is cancelled. |
 
 ## React selection
 

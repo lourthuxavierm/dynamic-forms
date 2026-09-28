@@ -1,3 +1,4 @@
+/** @experimental CI performance guardrails. Values may change in any release; see STABILITY.md. */
 export interface CorePerformanceBudgets {
   initialize5000Ms: number;
   mutate1000FieldFormMs: number;
@@ -14,6 +15,8 @@ export interface CorePerformanceBudgets {
 /**
  * Conservative CI guardrails, not expected averages. Benchmark output should be
  * used for machine-specific comparisons and these limits catch major regressions.
+ *
+ * @experimental CI performance guardrails. Values may change in any release; see STABILITY.md.
  */
 export const CORE_PERFORMANCE_BUDGETS: Readonly<CorePerformanceBudgets> = Object.freeze({
   initialize5000Ms: 2_000,

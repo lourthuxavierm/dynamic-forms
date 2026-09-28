@@ -5,6 +5,7 @@ import { evaluateCondition } from './evaluate';
 /** Runtime type of a value, reported instead of the value itself when values are redacted. */
 export type DiagnosticValueType = 'undefined' | 'null' | 'string' | 'number' | 'boolean' | 'array' | 'object' | 'bigint' | 'symbol' | 'function';
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ExplainConditionOptions {
   /**
    * Include the actual field values read while evaluating. Defaults to `false`
@@ -13,6 +14,7 @@ export interface ExplainConditionOptions {
   includeValues?: boolean;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ConditionRuleExplanation {
   readonly kind: 'rule';
   readonly result: boolean;
@@ -26,14 +28,17 @@ export interface ConditionRuleExplanation {
   readonly actualType: DiagnosticValueType;
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ConditionGroupExplanation {
   readonly kind: 'and' | 'or' | 'not' | 'group';
   readonly result: boolean;
   readonly children: readonly ConditionExplanation[];
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export type ConditionExplanation = ConditionRuleExplanation | ConditionGroupExplanation;
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface ConditionExplanationResult {
   readonly result: boolean;
   readonly explanation: ConditionExplanation;
@@ -47,6 +52,8 @@ export interface ConditionExplanationResult {
 /**
  * Evaluates a condition with the same semantics as `evaluateCondition` and
  * reports how each rule contributed to the result.
+ *
+ * @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md.
  */
 export function explainCondition(condition: FieldCondition, values: object, options: ExplainConditionOptions = {}): ConditionExplanationResult {
   const explanation = explainNode(condition, values, options.includeValues === true);
@@ -57,6 +64,7 @@ export function explainCondition(condition: FieldCondition, values: object, opti
   });
 }
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export function describeValueType(value: unknown): DiagnosticValueType {
   if (value === null) return 'null';
   if (Array.isArray(value)) return 'array';

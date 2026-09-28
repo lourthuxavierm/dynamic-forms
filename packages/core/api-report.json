@@ -1,0 +1,2376 @@
+{
+  "package": "@dynamic-form-engine/core",
+  "generatedBy": "scripts/check-core-api.mjs",
+  "note": "Generated file. Run `pnpm api:update` after an intentional public API change. See STABILITY.md.",
+  "summary": {
+    "exports": 197,
+    "stable": 164,
+    "experimental": 33,
+    "deprecated": 1
+  },
+  "exports": {
+    "ArrayFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface ArrayFieldConfig {",
+        "    minItems?: number;",
+        "    maxItems?: number;",
+        "    allowDuplicate?: boolean;",
+        "    allowReorder?: boolean;",
+        "}"
+      ]
+    },
+    "ArrayFieldSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface ArrayFieldSchema extends CommonFieldProperties {",
+        "    type: 'array';",
+        "    fields: readonly FormField[];",
+        "    defaultValue?: unknown[];",
+        "    validation?: ArrayValidationRules;",
+        "    config?: ArrayFieldConfig;",
+        "    options?: never;",
+        "    dataSource?: never;",
+        "}"
+      ]
+    },
+    "ArrayValidationRules": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface ArrayValidationRules {",
+        "    required?: boolean;",
+        "    minItems?: number;",
+        "    maxItems?: number;",
+        "    uniqueItems?: boolean;",
+        "}"
+      ]
+    },
+    "AsyncRequestContext": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/async/types.ts",
+      "declaration": [
+        "export interface AsyncRequestContext {",
+        "    requestId: number;",
+        "    signal: AbortSignal;",
+        "}"
+      ]
+    },
+    "AsyncRequestManager": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/async/manager.ts",
+      "declaration": [
+        "export class AsyncRequestManager<TKey = string> {",
+        "    constructor(options?: AsyncRequestManagerOptions<TKey>);",
+        "    getState(key: TKey): AsyncRequestState | undefined;",
+        "    isCurrent(key: TKey, requestId: number): boolean;",
+        "    run<T>(key: TKey, operation: (context: AsyncRequestContext) => T | Promise<T>, options?: AsyncRunOptions): Promise<AsyncRequestResult<T>>;",
+        "    cancel(key: TKey): void;",
+        "    cancelAll(): void;",
+        "    clear(key?: TKey): void;",
+        "}"
+      ]
+    },
+    "AsyncRequestManagerOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/async/types.ts",
+      "declaration": [
+        "export interface AsyncRequestManagerOptions<TKey> {",
+        "    onError?: (error: Error, key: TKey, requestId: number) => void;",
+        "}"
+      ]
+    },
+    "AsyncRequestResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/async/types.ts",
+      "declaration": [
+        "export interface AsyncRequestResult<T> {",
+        "    requestId: number;",
+        "    value: T;",
+        "    current: boolean;",
+        "}"
+      ]
+    },
+    "AsyncRequestState": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/async/types.ts",
+      "declaration": [
+        "export interface AsyncRequestState {",
+        "    requestId: number;",
+        "    status: AsyncRequestStatus;",
+        "    loading: boolean;",
+        "    error?: Error;",
+        "}"
+      ]
+    },
+    "AsyncRequestStatus": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/async/types.ts",
+      "declaration": [
+        "export type AsyncRequestStatus = 'idle' | 'loading' | 'success' | 'error' | 'cancelled';"
+      ]
+    },
+    "AsyncRunOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/async/types.ts",
+      "declaration": [
+        "export interface AsyncRunOptions {",
+        "    signal?: AbortSignal;",
+        "}"
+      ]
+    },
+    "BooleanValidationRules": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface BooleanValidationRules {",
+        "    required?: boolean;",
+        "}"
+      ]
+    },
+    "CancelMutation": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export interface CancelMutation {",
+        "    readonly cancel: true;",
+        "    readonly reason?: string;",
+        "}"
+      ]
+    },
+    "ChoiceFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface ChoiceFieldConfig {",
+        "    multiple?: boolean;",
+        "    searchable?: boolean;",
+        "    debounceMs?: number;",
+        "    clearOnDependencyChange?: boolean;",
+        "}"
+      ]
+    },
+    "CompiledDependencyGraph": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export interface CompiledDependencyGraph {",
+        "    readonly dependenciesByField: ReadonlyMap<string, readonly string[]>;",
+        "    readonly dependentsByField: ReadonlyMap<string, readonly string[]>;",
+        "}"
+      ]
+    },
+    "CompiledFieldExplanation": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export interface CompiledFieldExplanation<TCustomValue = never> {",
+        "    readonly path: string;",
+        "    readonly field?: NormalizedFieldSchema<TCustomValue>;",
+        "    readonly dependencies: readonly string[];",
+        "    readonly dependents: readonly string[];",
+        "    readonly conditionSources: readonly string[];",
+        "    readonly dataSourceSources: readonly string[];",
+        "    readonly hasValidation: boolean;",
+        "    readonly hasDefault: boolean;",
+        "}"
+      ]
+    },
+    "CompiledFormSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export interface CompiledFormSchema<TCustomValue = never> {",
+        "    readonly schema: NormalizedFormSchema<TCustomValue>;",
+        "    readonly fieldsByPath: ReadonlyMap<string, NormalizedFieldSchema<TCustomValue>>;",
+        "    readonly dependencyGraph: CompiledDependencyGraph;",
+        "    readonly conditionDependentsByField: ReadonlyMap<string, readonly string[]>;",
+        "    readonly dataSourceDependentsByField: ReadonlyMap<string, readonly string[]>;",
+        "    readonly validationByPath: ReadonlyMap<string, Readonly<NormalizedFieldSchema<TCustomValue>['validation']>>;",
+        "    readonly defaultsByPath: ReadonlyMap<string, unknown>;",
+        "    readonly diagnostics: readonly SchemaDiagnostic[];",
+        "}"
+      ]
+    },
+    "compileSchema": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export function compileSchema<TCustomValue = never>(input: FormSchema<TCustomValue> | unknown, options?: Omit<NormalizeSchemaOptions, 'throwOnError'>): SchemaCompileResult<TCustomValue>;"
+      ]
+    },
+    "compileSchemaOrThrow": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export function compileSchemaOrThrow<TCustomValue = never>(input: FormSchema<TCustomValue> | unknown, options?: Omit<NormalizeSchemaOptions, 'throwOnError'>): CompiledFormSchema<TCustomValue>;"
+      ]
+    },
+    "Condition": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/conditions/types.ts",
+      "declaration": [
+        "export interface Condition {",
+        "    field: string;",
+        "    operator: ConditionOperator;",
+        "    value?: unknown;",
+        "}"
+      ]
+    },
+    "ConditionChangeDetails": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export interface ConditionChangeDetails {",
+        "    readonly previous?: Readonly<FieldConditionState>;",
+        "    readonly cause: ConditionEvaluationCause;",
+        "    readonly hiddenValuePolicy?: 'clear' | 'reset';",
+        "}"
+      ]
+    },
+    "ConditionChangeDiagnostic": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface ConditionChangeDiagnostic extends DiagnosticEventBase {",
+        "    readonly type: 'conditionChange';",
+        "    readonly path: string;",
+        "    readonly state: Readonly<FieldConditionState>;",
+        "    readonly previous?: Readonly<FieldConditionState>;",
+        "    readonly changed: readonly (keyof FieldConditionState)[];",
+        "    readonly cause: DiagnosticCause;",
+        "    readonly hiddenValuePolicy?: 'clear' | 'reset';",
+        "}"
+      ]
+    },
+    "ConditionController": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export class ConditionController<T extends FormValues = FormValues> {",
+        "    constructor(store: FormStore<T>, schema: FormSchema | CompiledFormSchema, onChange?: (path: string, state: FieldConditionState) => void, onEvaluate?: (paths: readonly string[]) => void, onTransition?: (path: string, state: FieldConditionState, details: ConditionChangeDetails) => void);",
+        "    getState(path: string): FieldConditionState | undefined;",
+        "    getVersion(path?: string): number;",
+        "    subscribe(listener: () => void): () => void;",
+        "    subscribe(path: string, listener: () => void): () => void;",
+        "    subscribeSelector<TSelected>(selector: ConditionStateSelector<TSelected>, listener: ConditionStateListener<TSelected>, equality?: ConditionStateEquality<TSelected>): () => void;",
+        "    dispose(): void;",
+        "}"
+      ]
+    },
+    "ConditionEvaluationCause": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export type ConditionEvaluationCause = {",
+        "    readonly type: 'initial';",
+        "} | {",
+        "    readonly type: 'valueChange';",
+        "    readonly path: string;",
+        "} | {",
+        "    readonly type: 'reset';",
+        "};"
+      ]
+    },
+    "ConditionExplanation": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export type ConditionExplanation = ConditionRuleExplanation | ConditionGroupExplanation;"
+      ]
+    },
+    "ConditionExplanationResult": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export interface ConditionExplanationResult {",
+        "    readonly result: boolean;",
+        "    readonly explanation: ConditionExplanation;",
+        "    readonly decisive: readonly ConditionRuleExplanation[];",
+        "}"
+      ]
+    },
+    "ConditionGroup": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/conditions/types.ts",
+      "declaration": [
+        "export interface ConditionGroup {",
+        "    and?: readonly FieldCondition[];",
+        "    or?: readonly FieldCondition[];",
+        "    not?: FieldCondition;",
+        "}"
+      ]
+    },
+    "ConditionGroupExplanation": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export interface ConditionGroupExplanation {",
+        "    readonly kind: 'and' | 'or' | 'not' | 'group';",
+        "    readonly result: boolean;",
+        "    readonly children: readonly ConditionExplanation[];",
+        "}"
+      ]
+    },
+    "ConditionOperator": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/conditions/types.ts",
+      "declaration": [
+        "export type ConditionOperator = 'equals' | 'notEquals' | 'exists' | 'notExists' | 'contains' | 'greaterThan' | 'lessThan';"
+      ]
+    },
+    "ConditionRuleExplanation": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export interface ConditionRuleExplanation {",
+        "    readonly kind: 'rule';",
+        "    readonly result: boolean;",
+        "    readonly field: string;",
+        "    readonly operator: ConditionOperator;",
+        "    readonly expected?: unknown;",
+        "    readonly actual?: unknown;",
+        "    readonly actualType: DiagnosticValueType;",
+        "}"
+      ]
+    },
+    "ConditionStateEquality": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export type ConditionStateEquality<TSelected> = (left: TSelected, right: TSelected) => boolean;"
+      ]
+    },
+    "ConditionStateListener": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export type ConditionStateListener<TSelected> = (selected: TSelected, previous: TSelected) => void;"
+      ]
+    },
+    "ConditionStateSelector": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export type ConditionStateSelector<TSelected> = (states: ReadonlyMap<string, FieldConditionState>) => TSelected;"
+      ]
+    },
+    "CORE_PERFORMANCE_BUDGETS": {
+      "kind": "const",
+      "stability": "experimental",
+      "source": "src/performance/budgets.ts",
+      "declaration": [
+        "declare const CORE_PERFORMANCE_BUDGETS: Readonly<CorePerformanceBudgets>;"
+      ]
+    },
+    "CoreMutation": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export type CoreMutation<TValues extends FormValues> = {",
+        "    readonly type: 'setValue';",
+        "    readonly path: string;",
+        "    readonly value: unknown;",
+        "    readonly options?: Readonly<SetValueOptions>;",
+        "} | {",
+        "    readonly type: 'setValues';",
+        "    readonly values: Readonly<Partial<TValues>>;",
+        "    readonly options?: Readonly<SetValueOptions>;",
+        "} | {",
+        "    readonly type: 'reset';",
+        "    readonly values?: Readonly<TValues>;",
+        "    readonly options?: Readonly<ResetOptions>;",
+        "};"
+      ]
+    },
+    "CorePerformanceBudgets": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/performance/budgets.ts",
+      "declaration": [
+        "export interface CorePerformanceBudgets {",
+        "    initialize5000Ms: number;",
+        "    mutate1000FieldFormMs: number;",
+        "    batch100UpdatesMs: number;",
+        "    validate1000FieldsMs: number;",
+        "    evaluate100ConditionsMs: number;",
+        "    process100DependenciesMs: number;",
+        "    rapid100RequestsMs: number;",
+        "    reset5000FieldsMs: number;",
+        "    retained5000FieldsMb: number;",
+        "    batchNotificationCount: number;",
+        "}"
+      ]
+    },
+    "CorePlugin": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export interface CorePlugin<TValues extends FormValues> {",
+        "    readonly name: string;",
+        "    setup?(context: CorePluginContext<TValues>): void | (() => void);",
+        "    onLifecycle?(event: Readonly<RuntimeLifecycleEvent<TValues>>, context: CorePluginContext<TValues>): void;",
+        "    interceptMutation?(mutation: Readonly<CoreMutation<TValues>>, context: CorePluginContext<TValues>): MutationInterceptorResult<TValues>;",
+        "    dispose?(context: CorePluginContext<TValues>): void;",
+        "}"
+      ]
+    },
+    "CorePluginContext": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export interface CorePluginContext<TValues extends FormValues> {",
+        "    readonly schema: Readonly<FormSchema>;",
+        "    getState(): Readonly<FormState<TValues>>;",
+        "    getConditionState(path: string): Readonly<FieldConditionState> | undefined;",
+        "    getDataSourceState<T = unknown>(name: string): Readonly<DataSourceResult<T>> | undefined;",
+        "}"
+      ]
+    },
+    "CorePluginError": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export interface CorePluginError {",
+        "    readonly plugin: string;",
+        "    readonly hook: CorePluginHook;",
+        "    readonly error: Error;",
+        "}"
+      ]
+    },
+    "CorePluginHook": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export type CorePluginHook = 'setup' | 'lifecycle' | 'interceptMutation' | 'cleanup' | 'dispose';"
+      ]
+    },
+    "CorePluginHost": {
+      "kind": "class",
+      "stability": "experimental",
+      "source": "src/plugins/host.ts",
+      "declaration": [
+        "export class CorePluginHost<TValues extends FormValues> {",
+        "    constructor(plugins: readonly CorePlugin<TValues>[], context: CorePluginContext<TValues>, onError?: (error: CorePluginError) => void);",
+        "    emitLifecycle(event: Readonly<RuntimeLifecycleEvent<TValues>>): void;",
+        "    interceptMutation<TMutation extends CoreMutation<TValues>>(mutation: TMutation): TMutation | CancelMutation;",
+        "    dispose(): void;",
+        "}"
+      ]
+    },
+    "createArrayItemValue": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export function createArrayItemValue(schema: NormalizedFormSchema<unknown>, arrayPath: string): unknown;"
+      ]
+    },
+    "createFieldValidators": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/validation/schemaValidators.ts",
+      "declaration": [
+        "export function createFieldValidators(field: FieldSchema, overrides?: FieldValidationOverrides): Validator[];"
+      ]
+    },
+    "createFormRuntime": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/runtime/runtime.ts",
+      "declaration": [
+        "export function createFormRuntime<const TSchema extends FormSchema>(schema: TSchema, initialValues?: InferFormValues<TSchema>, options?: FormRuntimeOptions<InferFormValues<TSchema>>): FormRuntime<InferFormValues<TSchema>>;"
+      ]
+    },
+    "createFormValidator": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/validation/schemaValidators.ts",
+      "declaration": [
+        "export function createFormValidator(schema: FormSchema): FormValidator;"
+      ]
+    },
+    "createInitialValues": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export function createInitialValues(schema: NormalizedFormSchema<unknown>): FormValues;"
+      ]
+    },
+    "createLifecycleAuditPlugin": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/plugins/audit.ts",
+      "declaration": [
+        "export function createLifecycleAuditPlugin<TValues extends FormValues>(record: (entry: LifecycleAuditEntry) => void): CorePlugin<TValues>;"
+      ]
+    },
+    "CurrencyFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface CurrencyFieldConfig extends NumericFieldConfig {",
+        "    currency?: string;",
+        "    locale?: string;",
+        "}"
+      ]
+    },
+    "CURRENT_SCHEMA_VERSION": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "declare const CURRENT_SCHEMA_VERSION: 1;"
+      ]
+    },
+    "DataSource": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/datasource/types.ts",
+      "declaration": [
+        "export type DataSource<T = unknown> = (context: DataSourceContext) => Promise<T[]> | T[];"
+      ]
+    },
+    "DataSourceConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/datasource/types.ts",
+      "declaration": [
+        "export interface DataSourceConfig<T = unknown> {",
+        "    type?: 'function' | 'static' | 'url';",
+        "    load?: DataSource<T>;",
+        "    options?: readonly T[];",
+        "    url?: string;",
+        "    method?: 'GET' | 'POST';",
+        "    params?: Record<string, unknown>;",
+        "    searchParam?: string;",
+        "    pageParam?: string;",
+        "    pageSizeParam?: string;",
+        "    cache?: boolean;",
+        "    cacheKey?: string;",
+        "}"
+      ]
+    },
+    "DataSourceContext": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/datasource/types.ts",
+      "declaration": [
+        "export interface DataSourceContext extends Partial<AsyncRequestContext> {",
+        "    values: Record<string, unknown>;",
+        "    field?: string;",
+        "}"
+      ]
+    },
+    "DataSourceLoadOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/datasource/datasource.ts",
+      "declaration": [
+        "export interface DataSourceLoadOptions {",
+        "    search?: string;",
+        "    page?: number;",
+        "    pageSize?: number;",
+        "    signal?: AbortSignal;",
+        "}"
+      ]
+    },
+    "DataSourceManager": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/datasource/datasource.ts",
+      "declaration": [
+        "export class DataSourceManager {",
+        "    constructor(options?: DataSourceManagerOptions);",
+        "    register<T>(name: string, source: DataSource<T>): void;",
+        "    unregister(name: string): void;",
+        "    has(name: string): boolean;",
+        "    getState<T>(name: string): DataSourceResult<T> | undefined;",
+        "    load<T>(name: string, context: DataSourceContext): Promise<T[]>;",
+        "    loadConfig<T>(name: string, config: DataSourceConfig<T>, context: DataSourceContext, options?: DataSourceLoadOptions): Promise<T[]>;",
+        "    cancel(name: string): void;",
+        "    clearCache(): void;",
+        "    clear(): void;",
+        "}"
+      ]
+    },
+    "DataSourceManagerOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/datasource/datasource.ts",
+      "declaration": [
+        "export interface DataSourceManagerOptions {",
+        "    fetch?: typeof fetch;",
+        "    onError?: (error: Error, name: string, requestId: number) => void;",
+        "    onRequest?: (event: DataSourceRequestEvent) => void;",
+        "}"
+      ]
+    },
+    "DataSourceRequestDiagnostic": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface DataSourceRequestDiagnostic extends DiagnosticEventBase {",
+        "    readonly type: 'dataSourceRequest';",
+        "    readonly path: string;",
+        "    readonly requestId: number;",
+        "    readonly phase: DataSourceRequestPhase;",
+        "    readonly error?: string;",
+        "}"
+      ]
+    },
+    "DataSourceRequestEvent": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/datasource/datasource.ts",
+      "declaration": [
+        "export interface DataSourceRequestEvent {",
+        "    readonly name: string;",
+        "    readonly requestId: number;",
+        "    readonly phase: DataSourceRequestPhase;",
+        "    readonly error?: Error;",
+        "}"
+      ]
+    },
+    "DataSourceRequestPhase": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/datasource/datasource.ts",
+      "declaration": [
+        "export type DataSourceRequestPhase = 'start' | 'success' | 'error' | 'cancelled' | 'stale' | 'cache';"
+      ]
+    },
+    "DataSourceResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/datasource/types.ts",
+      "declaration": [
+        "export interface DataSourceResult<T = unknown> {",
+        "    data: T[];",
+        "    loading: boolean;",
+        "    status?: AsyncRequestStatus;",
+        "    requestId?: number;",
+        "    error?: Error;",
+        "}"
+      ]
+    },
+    "DateTimeFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface DateTimeFieldConfig {",
+        "    minDate?: string;",
+        "    maxDate?: string;",
+        "    step?: number;",
+        "}"
+      ]
+    },
+    "defineFormSchema": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export function defineFormSchema<const TFields extends readonly FormField[]>(schema: StrictFormSchema<TFields>): StrictFormSchema<TFields>;"
+      ]
+    },
+    "definePortableFormSchema": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export function definePortableFormSchema<const TFields extends readonly PortableFormField[]>(schema: PortableFormSchema<TFields>): PortableFormSchema<TFields>;"
+      ]
+    },
+    "deleteByPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function deleteByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath): TValues;",
+        "export function deleteByPath<TValues>(obj: TValues, path: DynamicPath): TValues;"
+      ]
+    },
+    "DependencyController": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/dependencies/controller.ts",
+      "declaration": [
+        "export class DependencyController<T extends FormValues = FormValues> {",
+        "    constructor(store: FormStore<T>, schema: FormSchema | CompiledFormSchema, options?: DependencyControllerOptions<T>);",
+        "    cancelRefresh(field: string): void;",
+        "    dispose(): void;",
+        "}"
+      ]
+    },
+    "DependencyControllerOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/dependencies/controller.ts",
+      "declaration": [
+        "export interface DependencyControllerOptions<T extends FormValues> {",
+        "    onDataSourceRefresh?: (field: FieldSchema, dataSource: DataSourceConfig, values: Readonly<T>, context: DependencyRefreshContext) => void | Promise<void>;",
+        "    onAsyncError?: (error: Error, field: string, requestId: number) => void;",
+        "    onEvaluate?: (paths: readonly string[]) => void;",
+        "    onRefresh?: (event: DependencyRefreshEvent) => void;",
+        "}"
+      ]
+    },
+    "DependencyGraph": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/dependencies/graph.ts",
+      "declaration": [
+        "export class DependencyGraph {",
+        "    constructor(dependencies?: readonly FieldDependency[]);",
+        "    setDependencies(field: string, dependsOn: readonly string[]): void;",
+        "    getDependencies(field: string): string[];",
+        "    hasDependency(field: string, dependency: string): boolean;",
+        "    getDependents(field: string): string[];",
+        "    getTransitiveDependents(field: string): string[];",
+        "    clear(): void;",
+        "}"
+      ]
+    },
+    "DependencyRefreshCause": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/dependencies/controller.ts",
+      "declaration": [
+        "export type DependencyRefreshCause = {",
+        "    readonly type: 'valueChange';",
+        "    readonly path: string;",
+        "} | {",
+        "    readonly type: 'reset';",
+        "};"
+      ]
+    },
+    "DependencyRefreshContext": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/dependencies/controller.ts",
+      "declaration": [
+        "export interface DependencyRefreshContext extends AsyncRequestContext {",
+        "    field: string;",
+        "}"
+      ]
+    },
+    "DependencyRefreshDiagnostic": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface DependencyRefreshDiagnostic extends DiagnosticEventBase {",
+        "    readonly type: 'dependencyRefresh';",
+        "    readonly path: string;",
+        "    readonly action: 'reset' | 'dataSource';",
+        "    readonly via: readonly string[];",
+        "    readonly cause: DiagnosticCause;",
+        "}"
+      ]
+    },
+    "DependencyRefreshEvent": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/dependencies/controller.ts",
+      "declaration": [
+        "export interface DependencyRefreshEvent {",
+        "    readonly field: string;",
+        "    readonly cause: DependencyRefreshCause;",
+        "    readonly via: readonly string[];",
+        "    readonly action: 'reset' | 'dataSource';",
+        "}"
+      ]
+    },
+    "describeValueType": {
+      "kind": "function",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export function describeValueType(value: unknown): DiagnosticValueType;"
+      ]
+    },
+    "DiagnosticCause": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export type DiagnosticCause = {",
+        "    readonly type: 'initial';",
+        "} | {",
+        "    readonly type: 'reset';",
+        "    readonly sequence?: number;",
+        "} | {",
+        "    readonly type: 'valueChange';",
+        "    readonly path: string;",
+        "    readonly sequence?: number;",
+        "};"
+      ]
+    },
+    "DiagnosticTraceFilter": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface DiagnosticTraceFilter {",
+        "    path?: string;",
+        "    type?: RuntimeDiagnosticEventType | readonly RuntimeDiagnosticEventType[];",
+        "}"
+      ]
+    },
+    "DiagnosticValueType": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export type DiagnosticValueType = 'undefined' | 'null' | 'string' | 'number' | 'boolean' | 'array' | 'object' | 'bigint' | 'symbol' | 'function';"
+      ]
+    },
+    "DynamicFormValues": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type DynamicFormValues = Record<string, unknown>;"
+      ]
+    },
+    "dynamicPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function dynamicPath(path: string): DynamicPath;"
+      ]
+    },
+    "DynamicPath": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export type DynamicPath = string & {",
+        "    readonly [dynamicPathBrand]: 'DynamicPath';",
+        "};"
+      ]
+    },
+    "EqualityFn": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type EqualityFn<TSelected> = (left: TSelected, right: TSelected) => boolean;"
+      ]
+    },
+    "evaluateCondition": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/conditions/evaluate.ts",
+      "declaration": [
+        "export function evaluateCondition(condition: FieldCondition, values: object): boolean;"
+      ]
+    },
+    "explainCondition": {
+      "kind": "function",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export function explainCondition(condition: FieldCondition, values: object, options?: ExplainConditionOptions): ConditionExplanationResult;"
+      ]
+    },
+    "ExplainConditionOptions": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/conditions/explain.ts",
+      "declaration": [
+        "export interface ExplainConditionOptions {",
+        "    includeValues?: boolean;",
+        "}"
+      ]
+    },
+    "explainField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export function explainField<TCustomValue>(compiled: CompiledFormSchema<TCustomValue>, path: string): CompiledFieldExplanation<TCustomValue>;"
+      ]
+    },
+    "ExplainFieldStateOptions": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface ExplainFieldStateOptions {",
+        "    includeValues?: boolean;",
+        "}"
+      ]
+    },
+    "FieldCondition": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/conditions/types.ts",
+      "declaration": [
+        "export type FieldCondition = Condition | ConditionGroup;"
+      ]
+    },
+    "FieldConditionState": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/conditions/controller.ts",
+      "declaration": [
+        "export interface FieldConditionState {",
+        "    visible: boolean;",
+        "    disabled: boolean;",
+        "    required: boolean;",
+        "    readOnly: boolean;",
+        "}"
+      ]
+    },
+    "FieldConfig": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type FieldConfig = FieldConfigMap[keyof FieldConfigMap] | ArrayFieldConfig | FileFieldConfig | Record<string, unknown>;"
+      ]
+    },
+    "FieldConfigMap": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FieldConfigMap {",
+        "    text: TextFieldConfig;",
+        "    textarea: TextFieldConfig;",
+        "    password: TextFieldConfig;",
+        "    email: TextFieldConfig;",
+        "    url: TextFieldConfig;",
+        "    number: NumericFieldConfig;",
+        "    integer: NumericFieldConfig;",
+        "    decimal: NumericFieldConfig;",
+        "    hidden: never;",
+        "    select: ChoiceFieldConfig;",
+        "    'multi-select': ChoiceFieldConfig;",
+        "    autocomplete: ChoiceFieldConfig;",
+        "    'async-autocomplete': ChoiceFieldConfig;",
+        "    checkbox: never;",
+        "    'checkbox-group': ChoiceFieldConfig;",
+        "    radio: ChoiceFieldConfig;",
+        "    'radio-group': ChoiceFieldConfig;",
+        "    switch: never;",
+        "    'toggle-button': never;",
+        "    'toggle-button-group': ChoiceFieldConfig;",
+        "    'tree-select': ChoiceFieldConfig;",
+        "    'tree-checkbox': ChoiceFieldConfig;",
+        "    date: DateTimeFieldConfig;",
+        "    time: DateTimeFieldConfig;",
+        "    datetime: DateTimeFieldConfig;",
+        "    'date-range': DateTimeFieldConfig;",
+        "    'time-range': DateTimeFieldConfig;",
+        "    'datetime-range': DateTimeFieldConfig;",
+        "    month: DateTimeFieldConfig;",
+        "    year: YearFieldConfig;",
+        "    currency: CurrencyFieldConfig;",
+        "    percentage: NumericFieldConfig;",
+        "    slider: NumericFieldConfig;",
+        "    'range-slider': RangeFieldConfig;",
+        "    rating: NumericFieldConfig;",
+        "    phone: TextFieldConfig;",
+        "    otp: SegmentedFieldConfig;",
+        "    pin: SegmentedFieldConfig;",
+        "    mask: MaskFieldConfig;",
+        "    file: FileFieldConfig;",
+        "    'multi-file': FileFieldConfig;",
+        "    camera: FileFieldConfig;",
+        "    signature: never;",
+        "    'document-preview': never;",
+        "}"
+      ]
+    },
+    "FieldDataSourceExplanation": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface FieldDataSourceExplanation {",
+        "    readonly status: AsyncRequestStatus;",
+        "    readonly loading: boolean;",
+        "    readonly requestId?: number;",
+        "    readonly activeRequestId?: number;",
+        "    readonly error?: string;",
+        "    readonly lastDiscarded?: DataSourceRequestDiagnostic;",
+        "}"
+      ]
+    },
+    "FieldDefinition": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/registry/types.ts",
+      "declaration": [
+        "export interface FieldDefinition<TComponent = unknown, TMetadata extends Record<string, unknown> = Record<string, unknown>, TType extends string = string> {",
+        "    type: TType;",
+        "    component: TComponent;",
+        "    metadata?: TMetadata;",
+        "}"
+      ]
+    },
+    "FieldDependency": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/dependencies/types.ts",
+      "declaration": [
+        "export interface FieldDependency {",
+        "    field: string;",
+        "    dependsOn: string[];",
+        "}"
+      ]
+    },
+    "FieldFileValue": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FieldFileValue {",
+        "    name: string;",
+        "    size: number;",
+        "    type: string;",
+        "    lastModified?: number;",
+        "    data?: unknown;",
+        "}"
+      ]
+    },
+    "FieldFlagExplanation": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface FieldFlagExplanation {",
+        "    readonly value: boolean;",
+        "    readonly reason: FieldFlagReason;",
+        "    readonly condition?: ConditionExplanationResult;",
+        "}"
+      ]
+    },
+    "FieldFlagReason": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export type FieldFlagReason = 'default' | 'static' | 'validation.required' | 'visibleWhen' | 'disabledWhen' | 'readOnlyWhen' | 'requiredWhen';"
+      ]
+    },
+    "FieldOption": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FieldOption {",
+        "    label: string;",
+        "    value: string | number | boolean;",
+        "    disabled?: boolean;",
+        "    group?: string;",
+        "    metadata?: Readonly<Record<string, unknown>>;",
+        "    children?: readonly FieldOption[];",
+        "}"
+      ]
+    },
+    "FieldOptionValue": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type FieldOptionValue = string | number | boolean;"
+      ]
+    },
+    "FieldRegistry": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/registry/registry.ts",
+      "declaration": [
+        "export class FieldRegistry<TComponent = unknown, TMetadata extends Record<string, unknown> = Record<string, unknown>, TType extends string = string> {",
+        "    constructor(options?: RegistryOptions);",
+        "    register(definition: FieldDefinition<TComponent, TMetadata, TType>): void;",
+        "    registerMany(definitions: readonly FieldDefinition<TComponent, TMetadata, TType>[]): void;",
+        "    get(type: TType): FieldDefinition<TComponent, TMetadata, TType> | undefined;",
+        "    has(type: TType): boolean;",
+        "    unregister(type: TType): void;",
+        "    override(type: TType, definition: FieldDefinition<TComponent, TMetadata, TType>): void;",
+        "    clear(): void;",
+        "    getTypes(): TType[];",
+        "    getAll(): FieldDefinition<TComponent, TMetadata, TType>[];",
+        "}"
+      ]
+    },
+    "FieldSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FieldSchema<TCustomValue = never> {",
+        "    id?: string;",
+        "    name: string;",
+        "    type: FieldType | string;",
+        "    label?: string;",
+        "    defaultValue?: FieldValue | TCustomValue;",
+        "    placeholder?: string;",
+        "    description?: string;",
+        "    disabled?: boolean;",
+        "    readOnly?: boolean;",
+        "    visibleWhen?: FieldCondition;",
+        "    disabledWhen?: FieldCondition;",
+        "    requiredWhen?: FieldCondition;",
+        "    readOnlyWhen?: FieldCondition;",
+        "    hiddenValuePolicy?: 'preserve' | 'clear' | 'reset';",
+        "    dependsOn?: readonly string[];",
+        "    resetOnDependencyChange?: boolean;",
+        "    dataSource?: DataSourceConfig;",
+        "    options?: readonly FieldOption[];",
+        "    config?: FieldConfig;",
+        "    validation?: FieldValidation;",
+        "    required?: boolean;",
+        "    fields?: readonly FieldSchema<TCustomValue>[];",
+        "    metadata?: Record<string, unknown>;",
+        "    extensions?: Readonly<Record<string, unknown>>;",
+        "}"
+      ]
+    },
+    "FieldStateExplanation": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface FieldStateExplanation {",
+        "    readonly path: string;",
+        "    readonly exists: boolean;",
+        "    readonly visible: FieldFlagExplanation;",
+        "    readonly disabled: FieldFlagExplanation;",
+        "    readonly readOnly: FieldFlagExplanation;",
+        "    readonly required: FieldFlagExplanation;",
+        "    readonly validation: FieldValidationExplanation;",
+        "    readonly dependencies: {",
+        "        readonly dependsOn: readonly string[];",
+        "        readonly dependents: readonly string[];",
+        "        readonly lastRefresh?: DependencyRefreshDiagnostic;",
+        "    };",
+        "    readonly dataSource?: FieldDataSourceExplanation;",
+        "    readonly lastConditionChange?: ConditionChangeDiagnostic;",
+        "}"
+      ]
+    },
+    "FieldType": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type FieldType = 'text' | 'textarea' | 'password' | 'email' | 'url' | 'number' | 'integer' | 'decimal' | 'hidden' | 'select' | 'multi-select' | 'autocomplete' | 'async-autocomplete' | 'checkbox' | 'checkbox-group' | 'radio' | 'radio-group' | 'switch' | 'toggle-button' | 'toggle-button-group' | 'tree-select' | 'tree-checkbox' | 'date' | 'time' | 'datetime' | 'date-range' | 'time-range' | 'datetime-range' | 'month' | 'year' | 'currency' | 'percentage' | 'slider' | 'range-slider' | 'rating' | 'phone' | 'otp' | 'pin' | 'mask' | 'file' | 'multi-file' | 'camera' | 'signature' | 'document-preview' | 'object' | 'array';"
+      ]
+    },
+    "FieldValidation": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FieldValidation {",
+        "    required?: boolean;",
+        "    minLength?: number;",
+        "    maxLength?: number;",
+        "    min?: number;",
+        "    max?: number;",
+        "    pattern?: string;",
+        "    multipleOf?: number;",
+        "    minItems?: number;",
+        "    maxItems?: number;",
+        "    uniqueItems?: boolean;",
+        "}"
+      ]
+    },
+    "FieldValidationExplanation": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface FieldValidationExplanation {",
+        "    readonly error?: string;",
+        "    readonly source?: 'schema' | 'external';",
+        "    readonly rule?: string;",
+        "    readonly rules: readonly string[];",
+        "    readonly failingRules: readonly string[];",
+        "    readonly skippedBecauseHidden: boolean;",
+        "}"
+      ]
+    },
+    "FieldValidationOverrides": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/validation/schemaValidators.ts",
+      "declaration": [
+        "export interface FieldValidationOverrides {",
+        "    required?: boolean;",
+        "}"
+      ]
+    },
+    "FieldValue": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type FieldValue<TType extends string = keyof FieldValueMap, TCustomValues extends Record<string, unknown> = Record<never, never>> = TType extends keyof TCustomValues ? TCustomValues[TType] : TType extends keyof FieldValueMap ? FieldValueMap[TType] : unknown;"
+      ]
+    },
+    "FieldValueMap": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FieldValueMap {",
+        "    text: string;",
+        "    textarea: string;",
+        "    password: string;",
+        "    email: string;",
+        "    url: string;",
+        "    number: number | null;",
+        "    integer: number | null;",
+        "    decimal: number | null;",
+        "    hidden: string | number | boolean | null;",
+        "    select: FieldOptionValue | null;",
+        "    'multi-select': FieldOptionValue[];",
+        "    autocomplete: FieldOptionValue | null;",
+        "    'async-autocomplete': FieldOptionValue | null;",
+        "    checkbox: boolean;",
+        "    'checkbox-group': FieldOptionValue[];",
+        "    radio: FieldOptionValue | null;",
+        "    'radio-group': FieldOptionValue | null;",
+        "    switch: boolean;",
+        "    'toggle-button': boolean;",
+        "    'toggle-button-group': FieldOptionValue[];",
+        "    'tree-select': FieldOptionValue | null;",
+        "    'tree-checkbox': FieldOptionValue[];",
+        "    date: string | null;",
+        "    time: string | null;",
+        "    datetime: string | null;",
+        "    'date-range': readonly [",
+        "        string | null,",
+        "        string | null",
+        "    ];",
+        "    'time-range': readonly [",
+        "        string | null,",
+        "        string | null",
+        "    ];",
+        "    'datetime-range': readonly [",
+        "        string | null,",
+        "        string | null",
+        "    ];",
+        "    month: string | null;",
+        "    year: number | null;",
+        "    currency: number | null;",
+        "    percentage: number | null;",
+        "    slider: number | null;",
+        "    'range-slider': readonly [",
+        "        number | null,",
+        "        number | null",
+        "    ];",
+        "    rating: number | null;",
+        "    phone: string;",
+        "    otp: string;",
+        "    pin: string;",
+        "    mask: string;",
+        "    file: FieldFileValue | null;",
+        "    'multi-file': FieldFileValue[];",
+        "    camera: FieldFileValue | null;",
+        "    signature: string | null;",
+        "    'document-preview': string | null;",
+        "    object: Record<string, unknown>;",
+        "    array: unknown[];",
+        "}"
+      ]
+    },
+    "FileFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FileFieldConfig {",
+        "    accept?: string;",
+        "    maxFileSize?: number;",
+        "    maxFiles?: number;",
+        "    imagePreview?: boolean;",
+        "}"
+      ]
+    },
+    "FormErrors": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type FormErrors = Record<string, string>;"
+      ]
+    },
+    "FormEvent": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/events/types.ts",
+      "declaration": [
+        "export interface FormEvent<TValue = unknown, TValues extends FormValues = DynamicFormValues, TResult = unknown> {",
+        "    type: FormEventType;",
+        "    field?: string;",
+        "    value?: TValue;",
+        "    previousValue?: TValue;",
+        "    payload?: FormEventPayload<TValues, TResult>;",
+        "}"
+      ]
+    },
+    "FormEventEmitter": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/events/emitter.ts",
+      "declaration": [
+        "export class FormEventEmitter<TValue = unknown, TValues extends FormValues = DynamicFormValues, TResult = unknown> {",
+        "    on(type: FormEventType, listener: FormEventListener<TValue, TValues, TResult>): () => void;",
+        "    emit(event: FormEvent<TValue, TValues, TResult>): void;",
+        "    clear(): void;",
+        "}"
+      ]
+    },
+    "FormEventListener": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/events/types.ts",
+      "declaration": [
+        "export type FormEventListener<TValue = unknown, TValues extends FormValues = DynamicFormValues, TResult = unknown> = (event: FormEvent<TValue, TValues, TResult>) => void;"
+      ]
+    },
+    "FormEventPayload": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/events/types.ts",
+      "declaration": [
+        "export type FormEventPayload<TValues extends FormValues = DynamicFormValues, TResult = unknown> = {",
+        "    values: Readonly<TValues>;",
+        "} | {",
+        "    values: Readonly<TValues>;",
+        "    result: TResult;",
+        "} | {",
+        "    values: Readonly<TValues>;",
+        "    valid: boolean;",
+        "    errors: Readonly<FormErrors>;",
+        "};"
+      ]
+    },
+    "FormEventType": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/events/types.ts",
+      "declaration": [
+        "export type FormEventType = 'valueChange' | 'fieldChange' | 'submit' | 'reset' | 'validate';"
+      ]
+    },
+    "FormField": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type FormField = ValueFieldSchema<StringFieldType> | ValueFieldSchema<NumberFieldType> | ValueFieldSchema<BooleanFieldType> | ValueFieldSchema<CollectionFieldType> | ValueFieldSchema<ScalarFieldType> | ObjectFieldSchema | ArrayFieldSchema;"
+      ]
+    },
+    "FormListener": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type FormListener<T extends FormValues = DynamicFormValues> = (state: FormState<T>) => void;"
+      ]
+    },
+    "FormRuntime": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/runtime/runtime.ts",
+      "declaration": [
+        "export class FormRuntime<TValues extends FormValues = DynamicFormValues> {",
+        "    readonly schema: NormalizedFormSchema;",
+        "    readonly compiledSchema: CompiledFormSchema;",
+        "    readonly store: FormStore<TValues>;",
+        "    readonly dataSources: DataSourceManager;",
+        "    readonly dependencies: DependencyController<TValues>;",
+        "    readonly conditions: ConditionController<TValues>;",
+        "    readonly diagnostics: RuntimeDiagnostics;",
+        "    constructor(schema: FormSchema, initialValues?: TValues, options?: FormRuntimeOptions<TValues>);",
+        "    onLifecycle(listener: RuntimeLifecycleListener<TValues>): () => void;",
+        "    explainField(path: string): CompiledFieldExplanation;",
+        "    explainFieldState(path: string, options?: ExplainFieldStateOptions): FieldStateExplanation;",
+        "    setValue<TPath extends Path<TValues>>(path: TPath, value: PathValue<TValues, TPath>, options?: SetValueOptions): void;",
+        "    setValues(values: Partial<TValues>, options?: SetValueOptions): void;",
+        "    batch<TResult>(operation: () => TResult): TResult;",
+        "    reset(values?: TValues, options?: ResetOptions): void;",
+        "    validate(validator: FormValidator<TValues>, options?: ValidateOptions): Promise<boolean>;",
+        "    submit<TResult>(handler: FormSubmitHandler<TValues, TResult>, validator?: FormValidator<TValues>): Promise<TResult | undefined>;",
+        "    dispose(): void;",
+        "}"
+      ]
+    },
+    "FormRuntimeOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/runtime/types.ts",
+      "declaration": [
+        "export interface FormRuntimeOptions<TValues extends FormValues> {",
+        "    schema?: Omit<NormalizeSchemaOptions, 'throwOnError'>;",
+        "    plugins?: readonly CorePlugin<TValues>[];",
+        "    onPluginError?: (error: CorePluginError) => void;",
+        "    store?: FormStoreOptions;",
+        "    dataSources?: DataSourceManagerOptions;",
+        "    onConditionChange?: (path: string, state: FieldConditionState) => void;",
+        "    onLifecycle?: RuntimeLifecycleListener<TValues>;",
+        "    diagnostics?: RuntimeDiagnosticsOptions;",
+        "}"
+      ]
+    },
+    "FormSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface FormSchema<TCustomValue = never> {",
+        "    id: string;",
+        "    fields: readonly FieldSchema<TCustomValue>[];",
+        "    schemaVersion?: number;",
+        "    version?: string;",
+        "}"
+      ]
+    },
+    "FormSelector": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type FormSelector<T extends FormValues, TSelected> = (state: Readonly<FormState<T>>) => TSelected;"
+      ]
+    },
+    "FormState": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export interface FormState<T extends FormValues = DynamicFormValues> {",
+        "    values: T;",
+        "    errors: FormErrors;",
+        "    touched: Record<string, boolean>;",
+        "    dirty: Record<string, boolean>;",
+        "    valid: boolean;",
+        "    submitting: boolean;",
+        "    disabled: boolean;",
+        "    loading: boolean;",
+        "    validating: boolean;",
+        "    validationError?: Error;",
+        "}"
+      ]
+    },
+    "FormStore": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/store/store.ts",
+      "declaration": [
+        "export class FormStore<T extends FormValues = DynamicFormValues> {",
+        "    constructor(initialValues?: T, options?: FormStoreOptions);",
+        "    getState(): FormState<T>;",
+        "    getValues(): T;",
+        "    batch<TResult>(operation: () => Promise<TResult>): Promise<TResult>;",
+        "    batch<TResult>(operation: () => TResult): TResult;",
+        "    getValue<TPath extends Path<T>>(path: TPath): PathValue<T, TPath>;",
+        "    getValue(path: DynamicPath): unknown;",
+        "    setValue<TPath extends Path<T>>(path: TPath, value: PathValue<T, TPath>, options?: SetValueOptions): void;",
+        "    setValue(path: DynamicPath, value: unknown, options?: SetValueOptions): void;",
+        "    setValues(values: Partial<T>, options?: SetValueOptions): void;",
+        "    setError<TPath extends Path<T>>(path: TPath, message: string): void;",
+        "    setError(path: DynamicPath, message: string): void;",
+        "    clearError<TPath extends Path<T>>(path: TPath): void;",
+        "    clearError(path: DynamicPath): void;",
+        "    setTouched<TPath extends Path<T>>(path: TPath, touched?: boolean): void;",
+        "    setTouched(path: DynamicPath, touched?: boolean): void;",
+        "    setDisabled(disabled: boolean): void;",
+        "    setLoading(loading: boolean): void;",
+        "    setSubmitting(submitting: boolean): void;",
+        "    validate(validator: FormValidator<T>, options?: ValidateOptions): Promise<boolean>;",
+        "    cancelValidation(): void;",
+        "    submit<TResult>(onSubmit: FormSubmitHandler<T, TResult>, validator?: FormValidator<T>): Promise<TResult | undefined>;",
+        "    reset(newInitialValues?: T, options?: ResetOptions): void;",
+        "    resetField<TPath extends Path<T>>(path: TPath): void;",
+        "    resetField(path: DynamicPath): void;",
+        "    on(type: FormEventType, listener: FormEventListener<unknown, T>): () => void;",
+        "    subscribe(listener: FormListener<T>): () => void;",
+        "    subscribeSelector<TSelected>(selector: FormSelector<T, TSelected>, listener: SelectorListener<TSelected>, equality?: EqualityFn<TSelected>): () => void;",
+        "    subscribeToValue<TPath extends Path<T>>(path: TPath, listener: SelectorListener<PathValue<T, TPath>>, equality?: EqualityFn<PathValue<T, TPath>>): () => void;",
+        "    subscribeToValue(path: DynamicPath, listener: SelectorListener<unknown>, equality?: EqualityFn<unknown>): () => void;",
+        "    subscribeToError<TPath extends Path<T>>(path: TPath, listener: SelectorListener<string | undefined>): () => void;",
+        "    subscribeToError(path: DynamicPath, listener: SelectorListener<string | undefined>): () => void;",
+        "    subscribeToTouched<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;",
+        "    subscribeToTouched(path: DynamicPath, listener: SelectorListener<boolean>): () => void;",
+        "    subscribeToDirty<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;",
+        "    subscribeToDirty(path: DynamicPath, listener: SelectorListener<boolean>): () => void;",
+        "    subscribeToField<TPath extends Path<T>>(path: TPath, listener: FormListener<T>): () => void;",
+        "    subscribeToField(path: DynamicPath, listener: FormListener<T>): () => void;",
+        "}"
+      ]
+    },
+    "FormStoreOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export interface FormStoreOptions {",
+        "    maxLifecycleIterations?: number;",
+        "    onAsyncError?: (error: Error, operation: 'validation', requestId: number) => void;",
+        "}"
+      ]
+    },
+    "FormSubmitHandler": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type FormSubmitHandler<T extends FormValues = DynamicFormValues, TResult = unknown> = (values: Readonly<T>) => TResult | Promise<TResult>;"
+      ]
+    },
+    "FormValidator": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type FormValidator<T extends FormValues = DynamicFormValues> = (values: Readonly<T>, context?: AsyncRequestContext) => FormErrors | Promise<FormErrors>;"
+      ]
+    },
+    "FormValues": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type FormValues = object;"
+      ]
+    },
+    "getByPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function getByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath): PathValue<TValues, TPath>;",
+        "export function getByPath(obj: unknown, path: DynamicPath): unknown;"
+      ]
+    },
+    "InferFormValues": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type InferFormValues<T extends FormSchema<unknown> | readonly FieldSchema<unknown>[], TCustomValues extends Record<string, unknown> = Record<never, never>> = T extends FormSchema<unknown> ? InferFieldsType<T['fields'], TCustomValues> : T extends readonly FieldSchema<unknown>[] ? InferFieldsType<T, TCustomValues> : never;"
+      ]
+    },
+    "InferSchemaType": {
+      "kind": "type",
+      "stability": "stable",
+      "deprecated": "Use InferFormValues. Removal: 2.0.0.",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type InferSchemaType<T extends FormSchema<unknown> | readonly FieldSchema<unknown>[], TCustomValues extends Record<string, unknown> = Record<never, never>> = InferFormValues<T, TCustomValues>;"
+      ]
+    },
+    "isAbortError": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/async/manager.ts",
+      "declaration": [
+        "export function isAbortError(error: unknown): boolean;"
+      ]
+    },
+    "isAncestorPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function isAncestorPath(ancestor: string, descendant: string): boolean;"
+      ]
+    },
+    "isDescendantPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function isDescendantPath(descendant: string, ancestor: string): boolean;"
+      ]
+    },
+    "isSamePath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function isSamePath(left: string, right: string): boolean;"
+      ]
+    },
+    "joinPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function joinPath(...parts: readonly string[]): string;"
+      ]
+    },
+    "JsonPrimitive": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type JsonPrimitive = string | number | boolean | null;"
+      ]
+    },
+    "JsonValue": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type JsonValue = JsonPrimitive | {",
+        "    readonly [key: string]: JsonValue;",
+        "} | readonly JsonValue[];"
+      ]
+    },
+    "LifecycleAuditEntry": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/plugins/audit.ts",
+      "declaration": [
+        "export interface LifecycleAuditEntry {",
+        "    readonly phase: RuntimeLifecyclePhase;",
+        "    readonly operation?: RuntimeOperation;",
+        "    readonly paths?: readonly string[];",
+        "    readonly async: boolean;",
+        "}"
+      ]
+    },
+    "MaskFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface MaskFieldConfig {",
+        "    mask?: string;",
+        "    length?: number;",
+        "    placeholderCharacter?: string;",
+        "}"
+      ]
+    },
+    "mergeSchemaInitialValues": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export function mergeSchemaInitialValues<T extends FormValues>(schema: NormalizedFormSchema<unknown>, initialValues: Partial<T>): T;"
+      ]
+    },
+    "MutationInterceptorResult": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/plugins/types.ts",
+      "declaration": [
+        "export type MutationInterceptorResult<TValues extends FormValues> = CoreMutation<TValues> | CancelMutation | void;"
+      ]
+    },
+    "normalizeAsyncError": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/async/manager.ts",
+      "declaration": [
+        "export function normalizeAsyncError(error: unknown): Error;"
+      ]
+    },
+    "NormalizedFieldSchema": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export type NormalizedFieldSchema<TCustomValue = never> = Readonly<Omit<FieldSchema<TCustomValue>, 'label' | 'defaultValue' | 'hiddenValuePolicy' | 'dependsOn' | 'resetOnDependencyChange' | 'dataSource' | 'options' | 'validation' | 'fields' | 'required'> & {",
+        "    label: string;",
+        "    defaultValue: FieldValue | TCustomValue | undefined;",
+        "    hiddenValuePolicy: 'preserve' | 'clear' | 'reset';",
+        "    dependsOn: readonly string[];",
+        "    resetOnDependencyChange: boolean;",
+        "    dataSource?: Readonly<DataSourceConfig>;",
+        "    options: readonly Readonly<FieldOption>[];",
+        "    validation: Readonly<FieldValidation>;",
+        "    fields: readonly NormalizedFieldSchema<TCustomValue>[];",
+        "}>;"
+      ]
+    },
+    "NormalizedFormSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export interface NormalizedFormSchema<TCustomValue = never> extends Omit<FormSchema<TCustomValue>, 'schemaVersion' | 'fields'> {",
+        "    readonly schemaVersion: typeof CURRENT_SCHEMA_VERSION;",
+        "    readonly fields: readonly NormalizedFieldSchema<TCustomValue>[];",
+        "}"
+      ]
+    },
+    "normalizePath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function normalizePath(path: string): string;"
+      ]
+    },
+    "normalizeSchema": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export function normalizeSchema<TCustomValue = never>(input: FormSchema<TCustomValue> | unknown, options?: NormalizeSchemaOptions): SchemaNormalizationResult<TCustomValue>;"
+      ]
+    },
+    "NormalizeSchemaOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export interface NormalizeSchemaOptions {",
+        "    migrations?: readonly SchemaMigration[];",
+        "    throwOnError?: boolean;",
+        "}"
+      ]
+    },
+    "normalizeSchemaOrThrow": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export function normalizeSchemaOrThrow<TCustomValue = never>(schema: FormSchema<TCustomValue> | unknown, options?: Omit<NormalizeSchemaOptions, 'throwOnError'>): NormalizedFormSchema<TCustomValue>;"
+      ]
+    },
+    "NumberValidationRules": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface NumberValidationRules {",
+        "    required?: boolean;",
+        "    min?: number;",
+        "    max?: number;",
+        "    multipleOf?: number;",
+        "}"
+      ]
+    },
+    "NumericFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface NumericFieldConfig {",
+        "    min?: number;",
+        "    max?: number;",
+        "    step?: number;",
+        "    precision?: number;",
+        "}"
+      ]
+    },
+    "ObjectFieldSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface ObjectFieldSchema extends CommonFieldProperties {",
+        "    type: 'object';",
+        "    fields: readonly FormField[];",
+        "    defaultValue?: Record<string, unknown>;",
+        "    validation?: BooleanValidationRules;",
+        "    options?: never;",
+        "    dataSource?: never;",
+        "}"
+      ]
+    },
+    "parentPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function parentPath(path: string): string | undefined;"
+      ]
+    },
+    "parsePath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function parsePath(path: string): readonly string[];"
+      ]
+    },
+    "Path": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export type Path<TValues> = string extends keyof TValues ? string : Extract<NestedPath<TValues>, string>;"
+      ]
+    },
+    "PathValue": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export type PathValue<TValues, TPath extends string> = string extends TPath ? unknown : ValueAtPath<TValues, NormalizePath<TPath>>;"
+      ]
+    },
+    "PortableDataSourceConfig": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type PortableDataSourceConfig<T extends JsonValue = JsonValue> = {",
+        "    type: 'static';",
+        "    options: readonly T[];",
+        "    cache?: boolean;",
+        "    cacheKey?: string;",
+        "} | {",
+        "    type: 'url';",
+        "    url: string;",
+        "    method?: 'GET' | 'POST';",
+        "    params?: Readonly<Record<string, JsonValue>>;",
+        "    searchParam?: string;",
+        "    pageParam?: string;",
+        "    pageSizeParam?: string;",
+        "    cache?: boolean;",
+        "    cacheKey?: string;",
+        "};"
+      ]
+    },
+    "PortableFieldOption": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface PortableFieldOption extends Omit<FieldOption, 'metadata' | 'children'> {",
+        "    metadata?: Readonly<Record<string, JsonValue>>;",
+        "    children?: readonly PortableFieldOption[];",
+        "}"
+      ]
+    },
+    "PortableFormField": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type PortableFormField = PortableValueFieldSchema<StringFieldType> | PortableValueFieldSchema<NumberFieldType> | PortableValueFieldSchema<BooleanFieldType> | PortableValueFieldSchema<CollectionFieldType> | PortableValueFieldSchema<ScalarFieldType> | (Omit<ObjectFieldSchema, 'fields' | 'metadata' | 'extensions'> & PortableProperties & {",
+        "    fields: readonly PortableFormField[];",
+        "}) | (Omit<ArrayFieldSchema, 'fields' | 'metadata' | 'extensions'> & PortableProperties & {",
+        "    fields: readonly PortableFormField[];",
+        "});"
+      ]
+    },
+    "PortableFormSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface PortableFormSchema<TFields extends readonly PortableFormField[] = readonly PortableFormField[]> extends Omit<FormSchema, 'fields' | 'schemaVersion'> {",
+        "    schemaVersion: 1;",
+        "    fields: TFields;",
+        "}"
+      ]
+    },
+    "RangeFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface RangeFieldConfig extends NumericFieldConfig {",
+        "    minDistance?: number;",
+        "}"
+      ]
+    },
+    "RegistryOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/registry/types.ts",
+      "declaration": [
+        "export interface RegistryOptions {",
+        "    allowOverrides?: boolean;",
+        "}"
+      ]
+    },
+    "ResetDiagnostic": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface ResetDiagnostic extends DiagnosticEventBase {",
+        "    readonly type: 'reset';",
+        "}"
+      ]
+    },
+    "ResetOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export interface ResetOptions {",
+        "    keepValues?: boolean;",
+        "    keepErrors?: boolean;",
+        "    keepTouched?: boolean;",
+        "    keepDirty?: boolean;",
+        "}"
+      ]
+    },
+    "RUNTIME_LIFECYCLE_PHASES": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/runtime/types.ts",
+      "declaration": [
+        "declare const RUNTIME_LIFECYCLE_PHASES: readonly [\"mutation\", \"dependencies\", \"conditions\", \"events\", \"notification\", \"dataSource\", \"validation\"];"
+      ]
+    },
+    "RuntimeDiagnosticEvent": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export type RuntimeDiagnosticEvent = ValueChangeDiagnostic | ResetDiagnostic | ConditionChangeDiagnostic | DependencyRefreshDiagnostic | DataSourceRequestDiagnostic | ValidationDiagnostic;"
+      ]
+    },
+    "RuntimeDiagnosticEventType": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export type RuntimeDiagnosticEventType = RuntimeDiagnosticEvent['type'];"
+      ]
+    },
+    "RuntimeDiagnosticListener": {
+      "kind": "type",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export type RuntimeDiagnosticListener = (event: RuntimeDiagnosticEvent) => void;"
+      ]
+    },
+    "RuntimeDiagnostics": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface RuntimeDiagnostics {",
+        "    readonly enabled: boolean;",
+        "    readonly includeValues: boolean;",
+        "    enable(options?: Pick<RuntimeDiagnosticsOptions, 'includeValues' | 'limit'>): void;",
+        "    disable(): void;",
+        "    getTrace(filter?: DiagnosticTraceFilter): readonly RuntimeDiagnosticEvent[];",
+        "    subscribe(listener: RuntimeDiagnosticListener): () => void;",
+        "    clear(): void;",
+        "}"
+      ]
+    },
+    "RuntimeDiagnosticsOptions": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface RuntimeDiagnosticsOptions {",
+        "    enabled?: boolean;",
+        "    includeValues?: boolean;",
+        "    limit?: number;",
+        "    onDiagnostic?: RuntimeDiagnosticListener;",
+        "}"
+      ]
+    },
+    "RuntimeLifecycleEvent": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/runtime/types.ts",
+      "declaration": [
+        "export interface RuntimeLifecycleEvent<TValues extends FormValues> {",
+        "    phase: RuntimeLifecyclePhase;",
+        "    operation?: RuntimeOperation;",
+        "    paths?: readonly string[];",
+        "    formEvent?: FormEvent<unknown, TValues>;",
+        "    async: boolean;",
+        "}"
+      ]
+    },
+    "RuntimeLifecycleListener": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/runtime/types.ts",
+      "declaration": [
+        "export type RuntimeLifecycleListener<TValues extends FormValues> = (event: Readonly<RuntimeLifecycleEvent<TValues>>) => void;"
+      ]
+    },
+    "RuntimeLifecyclePhase": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/runtime/types.ts",
+      "declaration": [
+        "export type RuntimeLifecyclePhase = typeof RUNTIME_LIFECYCLE_PHASES[number];"
+      ]
+    },
+    "RuntimeOperation": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/runtime/types.ts",
+      "declaration": [
+        "export type RuntimeOperation = 'setValue' | 'setValues' | 'reset' | 'batch' | 'validate' | 'submit';"
+      ]
+    },
+    "SchemaCompileResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/compilation.ts",
+      "declaration": [
+        "export interface SchemaCompileResult<TCustomValue = never> {",
+        "    readonly valid: boolean;",
+        "    readonly schema?: CompiledFormSchema<TCustomValue>;",
+        "    readonly diagnostics: readonly SchemaDiagnostic[];",
+        "}"
+      ]
+    },
+    "SchemaDiagnostic": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export interface SchemaDiagnostic {",
+        "    code: SchemaDiagnosticCode;",
+        "    severity: 'error' | 'warning' | 'info';",
+        "    path: string;",
+        "    message: string;",
+        "    relatedPath?: string;",
+        "    details?: Readonly<Record<string, unknown>>;",
+        "    reference?: string;",
+        "}"
+      ]
+    },
+    "SchemaDiagnosticCode": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export type SchemaDiagnosticCode = SchemaValidationCode | 'SCHEMA_INVALID' | 'SCHEMA_UNSUPPORTED_VERSION' | 'SCHEMA_MIGRATION_MISSING' | 'DEPENDENCY_CYCLE' | 'SELECT_WITHOUT_OPTIONS' | 'HIDDEN_REQUIRED_FIELD' | 'DEPRECATED_PROPERTY';"
+      ]
+    },
+    "SchemaMigration": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export interface SchemaMigration {",
+        "    from: number;",
+        "    to: number;",
+        "    migrate(schema: Readonly<Record<string, unknown>>): unknown;",
+        "}"
+      ]
+    },
+    "SchemaNormalizationError": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export class SchemaNormalizationError extends Error {",
+        "    readonly diagnostics: readonly SchemaDiagnostic[];",
+        "    constructor(diagnostics: readonly SchemaDiagnostic[]);",
+        "}"
+      ]
+    },
+    "SchemaNormalizationResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/normalization.ts",
+      "declaration": [
+        "export interface SchemaNormalizationResult<TCustomValue = never> {",
+        "    valid: boolean;",
+        "    schema?: NormalizedFormSchema<TCustomValue>;",
+        "    diagnostics: readonly SchemaDiagnostic[];",
+        "}"
+      ]
+    },
+    "SchemaValidationCode": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/validation.ts",
+      "declaration": [
+        "export type SchemaValidationCode = 'FIELD_NAME_EMPTY' | 'FIELD_NAME_INVALID' | 'FIELD_DUPLICATE' | 'FIELD_ID_EMPTY' | 'FIELD_ID_INVALID' | 'FIELD_ID_DUPLICATE' | 'FIELD_CHILDREN_NOT_ALLOWED' | 'FIELD_CHILDREN_REQUIRED' | 'VALIDATION_RANGE_INVALID' | 'VALIDATION_MULTIPLE_INVALID' | 'VALIDATION_PATTERN_INVALID' | 'OPTION_DUPLICATE_VALUE' | 'CONDITION_REFERENCE_NOT_FOUND' | 'DEPENDENCY_REFERENCE_NOT_FOUND' | 'DEPENDENCY_SELF_REFERENCE' | 'DATASOURCE_INVALID' | 'DATASOURCE_PARAMETER_REFERENCE_NOT_FOUND' | 'FIELD_REFERENCE_INVALID' | 'FIELD_REFERENCE_INDEX_NOT_SUPPORTED' | 'ARRAY_ITEM_BEHAVIOR_NOT_SUPPORTED' | 'FIELD_CONFIG_INVALID' | 'DEFAULT_VALUE_TYPE_MISMATCH' | 'DEFAULT_VALUE_UNKNOWN_KEY';"
+      ]
+    },
+    "SchemaValidationError": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/validation.ts",
+      "declaration": [
+        "export interface SchemaValidationError {",
+        "    code: SchemaValidationCode;",
+        "    path: string;",
+        "    message: string;",
+        "    relatedPath?: string;",
+        "    details?: Readonly<Record<string, unknown>>;",
+        "}"
+      ]
+    },
+    "SchemaValidationResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/validation.ts",
+      "declaration": [
+        "export interface SchemaValidationResult {",
+        "    valid: boolean;",
+        "    errors: SchemaValidationError[];",
+        "}"
+      ]
+    },
+    "SegmentedFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface SegmentedFieldConfig {",
+        "    length?: number;",
+        "    numeric?: boolean;",
+        "    autoComplete?: string;",
+        "}"
+      ]
+    },
+    "SelectorListener": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export type SelectorListener<TSelected> = (selected: TSelected, previous: TSelected) => void;"
+      ]
+    },
+    "setByPath": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/store/paths.ts",
+      "declaration": [
+        "export function setByPath<TValues, TPath extends Path<TValues>>(obj: TValues, path: TPath, value: PathValue<TValues, TPath>): TValues;",
+        "export function setByPath<TValues>(obj: TValues, path: DynamicPath, value: unknown): TValues;"
+      ]
+    },
+    "SetValueOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export interface SetValueOptions {",
+        "    shouldTouch?: boolean;",
+        "    shouldDirty?: boolean;",
+        "    shouldValidate?: boolean;",
+        "}"
+      ]
+    },
+    "StrictFormSchema": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface StrictFormSchema<TFields extends readonly FormField[] = readonly FormField[]> extends Omit<FormSchema, 'fields' | 'schemaVersion'> {",
+        "    schemaVersion: 1;",
+        "    fields: TFields;",
+        "}"
+      ]
+    },
+    "StringValidationRules": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface StringValidationRules {",
+        "    required?: boolean;",
+        "    minLength?: number;",
+        "    maxLength?: number;",
+        "    pattern?: string;",
+        "}"
+      ]
+    },
+    "TextFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface TextFieldConfig {",
+        "    multiline?: boolean;",
+        "    rows?: number;",
+        "}"
+      ]
+    },
+    "validateField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/validation/validator.ts",
+      "declaration": [
+        "export function validateField<T>(field: string, value: T, values: Record<string, unknown>, validators?: Validator<T>[]): Promise<ValidationResult>;"
+      ]
+    },
+    "ValidateOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/store/types.ts",
+      "declaration": [
+        "export interface ValidateOptions {",
+        "    signal?: AbortSignal;",
+        "}"
+      ]
+    },
+    "validateSchema": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/schema/validation.ts",
+      "declaration": [
+        "export function validateSchema(schema: FormSchema<unknown>): SchemaValidationResult;"
+      ]
+    },
+    "ValidationDiagnostic": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface ValidationDiagnostic extends DiagnosticEventBase {",
+        "    readonly type: 'validation';",
+        "    readonly valid: boolean;",
+        "    readonly errorPaths: readonly string[];",
+        "}"
+      ]
+    },
+    "ValidationError": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/validation/types.ts",
+      "declaration": [
+        "export interface ValidationError extends ValidationIssue {",
+        "    field: string;",
+        "}"
+      ]
+    },
+    "ValidationIssue": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/validation/types.ts",
+      "declaration": [
+        "export interface ValidationIssue {",
+        "    code: string;",
+        "    message: string;",
+        "}"
+      ]
+    },
+    "ValidationResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/validation/types.ts",
+      "declaration": [
+        "export interface ValidationResult {",
+        "    valid: boolean;",
+        "    errors: ValidationError[];",
+        "}"
+      ]
+    },
+    "Validator": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/validation/types.ts",
+      "declaration": [
+        "export type Validator<TValue = unknown, TValues extends FormValues = DynamicFormValues> = (value: TValue, values: Readonly<TValues>) => ValidatorResult | Promise<ValidatorResult>;"
+      ]
+    },
+    "ValidatorResult": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/validation/types.ts",
+      "declaration": [
+        "export type ValidatorResult = string | ValidationIssue | undefined;"
+      ]
+    },
+    "ValueChangeDiagnostic": {
+      "kind": "interface",
+      "stability": "experimental",
+      "source": "src/diagnostics/types.ts",
+      "declaration": [
+        "export interface ValueChangeDiagnostic extends DiagnosticEventBase {",
+        "    readonly type: 'valueChange';",
+        "    readonly path: string;",
+        "    readonly origin: 'api' | 'hiddenValuePolicy';",
+        "    readonly valueType: DiagnosticValueType;",
+        "    readonly previousValueType: DiagnosticValueType;",
+        "    readonly value?: unknown;",
+        "    readonly previousValue?: unknown;",
+        "}"
+      ]
+    },
+    "ValueFieldSchema": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export type ValueFieldSchema<TType extends Exclude<keyof FieldValueMap, StructuralFieldType>> = TType extends Exclude<keyof FieldValueMap, StructuralFieldType> ? CommonFieldProperties & {",
+        "    type: TType;",
+        "    defaultValue?: FieldValueMap[TType];",
+        "    validation?: ValidationFor<TType>;",
+        "    config?: FieldConfigMap[TType];",
+        "    options?: readonly FieldOption[];",
+        "    dataSource?: DataSourceConfig;",
+        "    fields?: never;",
+        "} : never;"
+      ]
+    },
+    "VERSION": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/index.ts",
+      "declaration": [
+        "declare const VERSION: \"1.0.0-rc.1\";"
+      ]
+    },
+    "YearFieldConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/schema/types.ts",
+      "declaration": [
+        "export interface YearFieldConfig extends NumericFieldConfig {",
+        "    inputMode?: 'numeric' | 'select';",
+        "}"
+      ]
+    }
+  }
+}
