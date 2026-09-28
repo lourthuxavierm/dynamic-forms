@@ -26,6 +26,26 @@ describe('conditions and dependencies', () => {
     expect(() => graph.setDependencies('country', ['city'])).toThrow('Dependency cycle detected');
   });
 
+  it('processes diamond dependencies once in stable topological order', () => {
+    const graph = new DependencyGraph([
+      { field: 'billing.country', dependsOn: ['account.country'] },
+      { field: 'shipping.country', dependsOn: ['account.country'] },
+      { field: 'tax', dependsOn: ['billing.country', 'shipping.country'] },
+      { field: 'summary', dependsOn: ['tax'] },
+    ]);
+
+    expect(graph.getTransitiveDependents('account.country')).toEqual([
+      'billing.country',
+      'shipping.country',
+      'tax',
+      'summary',
+    ]);
+    expect(graph.getTransitiveDependents(['account.country', 'billing.country'])).toEqual([
+      'shipping.country',
+      'tax',
+      'summary',
+    ]);
+  });
   it('resets dependent fields and refreshes their data source after upstream changes', async () => {
     const schema: FormSchema = {
       id: 'location',

@@ -37,7 +37,7 @@ export class DependencyController<T extends FormValues = FormValues> {
     this.graph = new DependencyGraph(dependencies);
     this.watchedPaths = [...new Set(dependencies.flatMap((dependency) => dependency.dependsOn))];
     const process = (changedFields: readonly string[]) => {
-      const affected = new Set(changedFields.flatMap((field) => this.graph.getTransitiveDependents(field)));
+      const affected = this.graph.getTransitiveDependents(changedFields);
       options.onEvaluate?.([...affected]);
       for (const dependentPath of affected) {
         const dependent = this.fields.get(dependentPath)!;

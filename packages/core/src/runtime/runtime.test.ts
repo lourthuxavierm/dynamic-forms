@@ -120,7 +120,7 @@ describe('FormRuntime lifecycle', () => {
     });
 
     expect(() => runtime.setValue('count', 1)).toThrow(
-      'Lifecycle processing exceeded maxLifecycleIterations',
+      'Lifecycle processing exceeded maxLifecycleIterations at iteration 7 while processing valueChange for count.',
     );
     runtime.dispose();
   });

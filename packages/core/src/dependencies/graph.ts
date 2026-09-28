@@ -22,19 +22,44 @@ export class DependencyGraph {
     return [...this.graph].filter(([, dependencies]) => dependencies.has(field)).map(([dependent]) => dependent);
   }
 
-  getTransitiveDependents(field: string): string[] {
-    const ordered: string[] = [];
-    const visited = new Set<string>();
-    const visit = (source: string) => {
+  /**
+   * Returns all dependents of one or more changed fields in a stable topological
+   * order. A field appears once and always after every changed upstream field.
+   */
+  getTransitiveDependents(field: string | readonly string[]): string[] {
+    const roots = [...new Set(typeof field === 'string' ? [field] : field)].sort();
+    const reachable = new Set<string>(roots);
+    const pending = [...roots];
+    while (pending.length) {
+      const source = pending.shift()!;
       for (const dependent of this.getDependents(source).sort()) {
-        if (visited.has(dependent)) continue;
-        visited.add(dependent);
-        ordered.push(dependent);
-        visit(dependent);
+        if (reachable.has(dependent)) continue;
+        reachable.add(dependent);
+        pending.push(dependent);
       }
-    };
-    visit(field);
-    return ordered;
+    }
+
+    const indegree = new Map<string, number>([...reachable].map((path) => [path, 0]));
+    for (const path of reachable) {
+      for (const dependency of this.graph.get(path) ?? []) {
+        if (reachable.has(dependency)) indegree.set(path, (indegree.get(path) ?? 0) + 1);
+      }
+    }
+    const available = [...reachable].filter((path) => indegree.get(path) === 0).sort();
+    const ordered: string[] = [];
+    while (available.length) {
+      const source = available.shift()!;
+      ordered.push(source);
+      for (const dependent of this.getDependents(source).filter((path) => reachable.has(path)).sort()) {
+        const next = (indegree.get(dependent) ?? 0) - 1;
+        indegree.set(dependent, next);
+        if (next === 0) {
+          available.push(dependent);
+          available.sort();
+        }
+      }
+    }
+    return ordered.filter((path) => !roots.includes(path));
   }
 
   clear(): void { this.graph.clear(); }

@@ -38,6 +38,10 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   private pendingNotify = false;
   private pendingNotifyAll = false;
   private initialValues: T;
+  /** Increments for every mutation that changes or resets form values. */
+  private valueRevision = 0;
+  /** Invalidates a pre-reset submit completion without cancelling user code. */
+  private submissionGeneration = 0;
 
   constructor(initialValues: T = {} as T, options: FormStoreOptions = {}) {
     this.asyncRequests = new AsyncRequestManager({ onError: options.onAsyncError });
@@ -109,7 +113,13 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       ? { ...this.state.touched, [path]: true }
       : this.state.touched;
 
-    this.updateState({ values, dirty, touched });
+    this.valueRevision += 1;
+    this.updateState({
+      values,
+      dirty,
+      touched,
+      ...(this.state.validating ? { validating: false, validationError: undefined } : {}),
+    });
     this.emitEvent({ type: 'valueChange', field: path, value, previousValue, payload: { values: this.state.values } });
     this.emitEvent({ type: 'fieldChange', field: path, value, previousValue });
     this.notifyPaths([path]);
@@ -154,10 +164,12 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       return;
     }
 
+    this.valueRevision += 1;
     this.updateState({
       values: nextValues,
       dirty: nextDirty,
       touched: nextTouched,
+      ...(this.state.validating ? { validating: false, validationError: undefined } : {}),
     });
     for (const path of changedPaths) {
       this.emitEvent({ type: 'valueChange', field: path, value: getByPath(nextValues, dynamicPath(path)), previousValue: getByPath(previousValues, dynamicPath(path)), payload: { values: this.state.values } });
@@ -219,7 +231,15 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   }
 
   async validate(validator: FormValidator<T>, options: ValidateOptions = {}): Promise<boolean> {
-    const values = this.getValues();
+    return this.validateSnapshot(validator, deepFreeze(clone(this.getValues())), this.valueRevision, options);
+  }
+
+  private async validateSnapshot(
+    validator: FormValidator<T>,
+    values: Readonly<T>,
+    valueRevision: number,
+    options: ValidateOptions = {},
+  ): Promise<boolean> {
     const request = this.asyncRequests.run(
       'validation',
       (context) => validator(values, context),
@@ -231,7 +251,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
 
     try {
       const result = await request;
-      if (!result.current) return this.state.valid;
+      if (!result.current || this.valueRevision !== valueRevision) return this.state.valid;
       const errors = result.value;
       this.updateState({
         errors: { ...errors },
@@ -247,7 +267,8 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       return this.state.valid;
     } catch (error) {
       const normalized = normalizeAsyncError(error);
-      if (this.asyncRequests.getState('validation')?.requestId === requestId) {
+      if (this.asyncRequests.getState('validation')?.requestId === requestId
+        && this.valueRevision === valueRevision) {
         this.updateState({
           validating: false,
           validationError: isAbortError(normalized) ? undefined : normalized,
@@ -273,17 +294,27 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       return undefined;
     }
 
-    if (validator && !(await this.validate(validator))) {
-      return undefined;
-    }
-
+    const submissionGeneration = ++this.submissionGeneration;
+    const valueRevision = this.valueRevision;
+    const values = deepFreeze(clone(this.getValues()));
     this.setSubmitting(true);
     try {
-      const result = await onSubmit(this.getValues());
-      this.emitEvent({ type: 'submit', payload: { values: this.state.values, result } });
+      if (validator && !(await this.validateSnapshot(validator, values, valueRevision))) {
+        return undefined;
+      }
+      if (this.submissionGeneration !== submissionGeneration || this.valueRevision !== valueRevision) {
+        return undefined;
+      }
+
+      const result = await onSubmit(values);
+      if (this.submissionGeneration === submissionGeneration) {
+        this.emitEvent({ type: 'submit', payload: { values, result } });
+      }
       return result;
     } finally {
-      this.setSubmitting(false);
+      if (this.submissionGeneration === submissionGeneration) {
+        this.setSubmitting(false);
+      }
     }
   }
 
@@ -293,10 +324,12 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       return;
     }
     this.asyncRequests.cancel('validation');
+    this.submissionGeneration += 1;
     if (newInitialValues) {
       this.initialValues = clone(newInitialValues);
     }
 
+    this.valueRevision += 1;
     this.updateState({
       values: options.keepValues ? this.state.values : clone(this.initialValues),
       errors: options.keepErrors ? this.state.errors : {},
@@ -305,6 +338,8 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       valid: options.keepErrors ? this.state.valid : true,
       submitting: false,
       loading: false,
+      validating: false,
+      validationError: undefined,
     });
     this.emitEvent({ type: 'reset', payload: { values: this.state.values } });
     this.notifyAll();
@@ -314,12 +349,15 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   resetField(path: DynamicPath): void;
   resetField(path: string): void {
     const values = setByPath(this.state.values, dynamicPath(path), getByPath(this.initialValues, dynamicPath(path))) as T;
+    const valueChanged = !Object.is(this.getValue(dynamicPath(path)), getByPath(this.initialValues, dynamicPath(path)));
+    if (valueChanged) this.valueRevision += 1;
     this.updateState({
       values,
       errors: removePath(this.state.errors, path),
       touched: removePath(this.state.touched, path),
       dirty: removePath(this.state.dirty, path),
       valid: Object.keys(removePath(this.state.errors, path)).length === 0,
+      ...(valueChanged && this.state.validating ? { validating: false, validationError: undefined } : {}),
     });
     this.notifyPaths([path]);
   }
@@ -425,7 +463,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       for (const event of events) {
         if (++processed > this.maxLifecycleIterations) {
           this.batchDepth = 0;
-          throw new Error('Lifecycle processing exceeded maxLifecycleIterations.');
+          throw new Error(`Lifecycle processing exceeded maxLifecycleIterations at iteration ${processed} while processing ${event.type} for ${event.field ?? '<form>'}.`);
         }
         if ((event.type === 'valueChange' || event.type === 'fieldChange')
           && Object.is(event.previousValue, event.value)) continue;

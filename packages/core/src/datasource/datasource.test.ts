@@ -20,6 +20,28 @@ describe('DataSourceManager', () => {
     expect(fetch).toHaveBeenCalledWith('/api/states?country=IN&q=tam&page=2&limit=10', expect.objectContaining({ method: 'GET' }));
   });
 
+  it('passes the manager-generated AbortSignal to URL fetches and aborts replaced requests', async () => {
+    const signals: AbortSignal[] = [];
+    const fetch = vi.fn((_url: string, init?: RequestInit) => new Promise<Response>((_resolve, reject) => {
+      const signal = init?.signal as AbortSignal | undefined;
+      if (!signal) throw new Error('Expected an AbortSignal');
+      signals.push(signal);
+      signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+    }));
+    const manager = new DataSourceManager({ fetch: fetch as typeof globalThis.fetch });
+    const config = { type: 'url' as const, url: '/api/search' };
+
+    const first = manager.loadConfig('search', config, { values: {} });
+    const second = manager.loadConfig('search', config, { values: {} });
+
+    expect(signals).toHaveLength(2);
+    expect(signals[0].aborted).toBe(true);
+    expect(signals[1].aborted).toBe(false);
+    await expect(first).rejects.toMatchObject({ name: 'AbortError' });
+    manager.cancel('search');
+    await expect(second).rejects.toMatchObject({ name: 'AbortError' });
+    expect(manager.getState('search')).toMatchObject({ loading: false, status: 'cancelled' });
+  });
   it('exposes success and error state for configured loads', async () => {
     const manager = new DataSourceManager();
     await manager.loadConfig('success', { type: 'static', options: ['ok'] }, { values: {} });
