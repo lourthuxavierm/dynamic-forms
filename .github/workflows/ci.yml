@@ -51,5 +51,7 @@ jobs:
           cache: pnpm
       - name: Install frozen workspace
         run: pnpm install --frozen-lockfile
-      - name: Verify boundaries, lint, builds, types, and tests
+      - name: Verify boundaries, API report, lint, builds, types, and tests
         run: pnpm verify
+      - name: Verify packed Core release (exports, ESM/CJS, Node consumers)
+        run: pnpm verify:core-release

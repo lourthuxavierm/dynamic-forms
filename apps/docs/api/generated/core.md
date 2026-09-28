@@ -227,6 +227,7 @@ export interface Condition;
 
 - Kind: interface
 - Source: `packages/core/src/conditions/controller.ts`
+- Stability: Experimental (may change in a minor release)
 
 Context passed to the optional `onTransition` callback (diagnostics).
 
@@ -238,6 +239,7 @@ export interface ConditionChangeDetails;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -250,7 +252,7 @@ export interface ConditionChangeDiagnostic;
 - Kind: class
 - Source: `packages/core/src/conditions/controller.ts`
 
-Public class exported by @dynamic-form-engine/core.
+Evaluates `visibleWhen`, `disabledWhen`, `requiredWhen`, and `readOnlyWhen` for every field and applies hidden-value policies. The optional fifth constructor argument (`onTransition`) is experimental diagnostics API; see STABILITY.md.
 
 ```ts
 export class ConditionController;
@@ -260,6 +262,7 @@ export class ConditionController;
 
 - Kind: type
 - Source: `packages/core/src/conditions/controller.ts`
+- Stability: Experimental (may change in a minor release)
 
 What triggered a condition re-evaluation.
 
@@ -271,6 +274,7 @@ export type ConditionEvaluationCause;
 
 - Kind: type
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public type exported by @dynamic-form-engine/core.
 
@@ -282,6 +286,7 @@ export type ConditionExplanation;
 
 - Kind: interface
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -304,6 +309,7 @@ export interface ConditionGroup;
 
 - Kind: interface
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -326,6 +332,7 @@ export type ConditionOperator;
 
 - Kind: interface
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -370,6 +377,7 @@ export type ConditionStateSelector;
 
 - Kind: const
 - Source: `packages/core/src/performance/budgets.ts`
+- Stability: Experimental (may change in a minor release)
 
 Conservative CI guardrails, not expected averages. Benchmark output should be used for machine-specific comparisons and these limits catch major regressions.
 
@@ -392,6 +400,7 @@ export type CoreMutation;
 
 - Kind: interface
 - Source: `packages/core/src/performance/budgets.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -447,6 +456,7 @@ export type CorePluginHook;
 
 - Kind: class
 - Source: `packages/core/src/plugins/host.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public class exported by @dynamic-form-engine/core.
 
@@ -612,6 +622,7 @@ export interface DataSourceManagerOptions;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -623,6 +634,7 @@ export interface DataSourceRequestDiagnostic;
 
 - Kind: interface
 - Source: `packages/core/src/datasource/datasource.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -634,6 +646,7 @@ export interface DataSourceRequestEvent;
 
 - Kind: type
 - Source: `packages/core/src/datasource/datasource.ts`
+- Stability: Experimental (may change in a minor release)
 
 Request lifecycle reported by `DataSourceManager`. - `start`: a request began (any in-flight request for the same name is superseded) - `success` / `error`: the current request settled - `cancelled`: the request was aborted (superseded, cancelled, or externally aborted) - `stale`: the request resolved after being superseded and its data was discarded - `cache`: the result was served from cache without a request
 
@@ -734,6 +747,7 @@ export class DependencyGraph;
 
 - Kind: type
 - Source: `packages/core/src/dependencies/controller.ts`
+- Stability: Experimental (may change in a minor release)
 
 What triggered dependency processing.
 
@@ -756,6 +770,7 @@ export interface DependencyRefreshContext;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -767,6 +782,7 @@ export interface DependencyRefreshDiagnostic;
 
 - Kind: interface
 - Source: `packages/core/src/dependencies/controller.ts`
+- Stability: Experimental (may change in a minor release)
 
 Reported once per action taken on a dependent field.
 
@@ -778,6 +794,7 @@ export interface DependencyRefreshEvent;
 
 - Kind: function
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public function exported by @dynamic-form-engine/core.
 
@@ -800,6 +817,7 @@ export type DiagnosticCause;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -877,6 +895,7 @@ export declare function evaluateCondition(condition: FieldCondition, values: obj
 
 - Kind: function
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Evaluates a condition with the same semantics as `evaluateCondition` and reports how each rule contributed to the result.
 
@@ -888,6 +907,7 @@ export declare function explainCondition(condition: FieldCondition, values: obje
 
 - Kind: interface
 - Source: `packages/core/src/conditions/explain.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -910,6 +930,7 @@ export declare function explainField<TCustomValue>(compiled: CompiledFormSchema<
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -965,6 +986,7 @@ export interface FieldConfigMap;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -1009,6 +1031,7 @@ export interface FieldFileValue;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -1020,6 +1043,7 @@ export interface FieldFlagExplanation;
 
 - Kind: type
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public type exported by @dynamic-form-engine/core.
 
@@ -1075,6 +1099,7 @@ export interface FieldSchema;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -1108,6 +1133,7 @@ export interface FieldValidation;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -1384,6 +1410,9 @@ export type InferFormValues;
 
 - Kind: type
 - Source: `packages/core/src/schema/types.ts`
+- Status: Deprecated
+- Replacement: `InferFormValues`
+- Removal target: 2.0.0
 
 Public type exported by @dynamic-form-engine/core.
 
@@ -1736,6 +1765,7 @@ export interface RegistryOptions;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -1769,6 +1799,7 @@ export declare const RUNTIME_LIFECYCLE_PHASES: readonly ["mutation", "dependenci
 
 - Kind: type
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public type exported by @dynamic-form-engine/core.
 
@@ -1780,6 +1811,7 @@ export type RuntimeDiagnosticEvent;
 
 - Kind: type
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public type exported by @dynamic-form-engine/core.
 
@@ -1791,6 +1823,7 @@ export type RuntimeDiagnosticEventType;
 
 - Kind: type
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public type exported by @dynamic-form-engine/core.
 
@@ -1813,6 +1846,7 @@ export interface RuntimeDiagnostics;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -2078,6 +2112,7 @@ export declare function validateSchema(schema: FormSchema<unknown>): SchemaValid
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -2144,6 +2179,7 @@ export type ValidatorResult;
 
 - Kind: interface
 - Source: `packages/core/src/diagnostics/types.ts`
+- Stability: Experimental (may change in a minor release)
 
 Public interface exported by @dynamic-form-engine/core.
 
@@ -2167,10 +2203,10 @@ export type ValueFieldSchema;
 - Kind: const
 - Source: `packages/core/src/index.ts`
 
-Public const exported by @dynamic-form-engine/core.
+Package version of `@dynamic-form-engine/core`. Kept equal to package.json by the public API test.
 
 ```ts
-export declare const VERSION: "0.1.0";
+export declare const VERSION: "1.0.0-rc.1";
 ```
 
 ### YearFieldConfig
@@ -2183,8 +2219,4 @@ Framework-neutral configuration for year controls.
 ```ts
 export interface YearFieldConfig;
 ```
-
-## Deprecations
-
-No exported symbol currently carries a `@deprecated` tag. When one is added, this page displays its replacement and removal target.
 

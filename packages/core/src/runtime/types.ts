@@ -40,6 +40,10 @@ export interface FormRuntimeOptions<TValues extends FormValues> {
   dataSources?: DataSourceManagerOptions;
   onConditionChange?: (path: string, state: FieldConditionState) => void;
   onLifecycle?: RuntimeLifecycleListener<TValues>;
-  /** Opt-in diagnostic trace. Disabled by default; see `FormRuntime.diagnostics`. */
+  /**
+   * Opt-in diagnostic trace. Disabled by default; see `FormRuntime.diagnostics`.
+   *
+   * @experimental Diagnostics contract; see STABILITY.md.
+   */
   diagnostics?: RuntimeDiagnosticsOptions;
 }

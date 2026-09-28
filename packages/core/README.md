@@ -212,6 +212,12 @@ runtime.diagnostics.getTrace({ path: 'companyName' }); // condition changes, ref
 
 The trace is opt-in and bounded. Each entry has a sequence number, and transitions carry a `cause` that links back to the value change that triggered them. Field values are excluded from explanations and trace entries unless `includeValues` is enabled. `explainCondition` and `DataSourceManagerOptions.onRequest` expose the same information for standalone use. See the runtime diagnostics guide in the documentation site.
 
+## Stability and versioning
+
+Every export is **stable** (covered by semantic versioning) unless tagged `@experimental`; experimental APIs, currently diagnostics, performance budgets, and `CorePluginHost`, may change in a minor release. Deprecations name a replacement and a removal version and stay available until that major. The declared public API is recorded in `api-report.json` and gated in CI. See [STABILITY.md](./STABILITY.md) for exactly what semver covers.
+
+Core has no runtime dependencies and no framework, renderer, or DOM dependency. It runs in browsers, Node.js, workers, and server runtimes, and its published types resolve under `bundler`, `node16`/`nodenext` ESM, and CommonJS consumers.
+
 ## Schema normalization and versioning
 
 `FormRuntime` validates and normalizes public schemas into a deeply frozen canonical representation before constructing Core controllers. Use `normalizeSchema` for diagnostic results or `normalizeSchemaOrThrow` for fail-fast construction. `schemaVersion` tracks the numeric Core format; the existing `version` remains a consumer-defined release label. Missing schema versions default to the current format for compatibility.

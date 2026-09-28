@@ -1,4 +1,5 @@
 import { AsyncRequestManager, isAbortError, normalizeAsyncError } from '../async';
+import { dynamicPath, getByPath } from '../store';
 import type { AsyncRequestResult } from '../async';
 import type { DataSource, DataSourceConfig, DataSourceContext, DataSourceResult } from './types';
 
@@ -16,9 +17,12 @@ export interface DataSourceLoadOptions {
  * - `cancelled`: the request was aborted (superseded, cancelled, or externally aborted)
  * - `stale`: the request resolved after being superseded and its data was discarded
  * - `cache`: the result was served from cache without a request
+ *
+ * @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md.
  */
 export type DataSourceRequestPhase = 'start' | 'success' | 'error' | 'cancelled' | 'stale' | 'cache';
 
+/** @experimental Diagnostics contract (introduced in 1.0.0-rc). May change in a minor release; see STABILITY.md. */
 export interface DataSourceRequestEvent {
   readonly name: string;
   readonly requestId: number;
@@ -29,7 +33,11 @@ export interface DataSourceRequestEvent {
 export interface DataSourceManagerOptions {
   fetch?: typeof fetch;
   onError?: (error: Error, name: string, requestId: number) => void;
-  /** Observes request lifecycle transitions. Intended for diagnostics and DevTools. */
+  /**
+   * Observes request lifecycle transitions. Intended for diagnostics and DevTools.
+   *
+   * @experimental Diagnostics contract; see STABILITY.md.
+   */
   onRequest?: (event: DataSourceRequestEvent) => void;
 }
 
@@ -217,16 +225,10 @@ export class DataSourceManager {
   }
 }
 
+// `$path` parameters read form values with the same dot/bracket path rules as the store.
 function resolveValue(value: unknown, values: Record<string, unknown>): string {
   if (typeof value === 'string' && value.startsWith('$')) {
-    const path = value.slice(1).split('.');
-    const resolved = path.reduce<unknown>(
-      (current, key) => current && typeof current === 'object'
-        ? (current as Record<string, unknown>)[key]
-        : undefined,
-      values,
-    );
-    return String(resolved ?? '');
+    return String(getByPath(values, dynamicPath(value.slice(1))) ?? '');
   }
   return String(value ?? '');
 }

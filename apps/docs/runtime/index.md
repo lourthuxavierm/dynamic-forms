@@ -2,8 +2,8 @@
 
 - Status: Documented
 - Owner: Core and React maintainers
-- Last verified: 2026-08-26
-- Applies to: Core and React 0.1.0
+- Last verified: 2026-09-28
+- Applies to: `@dynamic-form-engine/core` 1.0.0-rc and React
 
 The runtime turns initial values and a schema into immutable state snapshots,
 events, subscriptions, conditional state, dependency reactions, validation, and
@@ -11,6 +11,7 @@ submission.
 
 ## Reference
 
+- [Core architecture](../concepts/core-architecture.md)
 - [Form lifecycle](./form-lifecycle.md)
 - [FormStore](./form-store.md)
 - [Form state](./form-state.md)
@@ -24,6 +25,7 @@ submission.
 - [Cancellation](./cancellation.md)
 - [Reset](./reset.md)
 - [Submission](./submission.md)
+- [Validation contract](./validation.md)
 - [Diagnostics and explainability](./diagnostics.md)
 
 ## Ownership boundary

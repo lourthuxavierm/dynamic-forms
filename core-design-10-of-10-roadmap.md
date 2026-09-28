@@ -470,37 +470,37 @@ These requirements apply across all ten areas.
 
 ## API Stability
 
-- [ ] Freeze stable Core public exports.
-- [ ] Mark experimental APIs explicitly.
-- [ ] Define deprecation policy.
-- [ ] Define semantic-versioning policy.
-- [ ] Validate packed npm exports.
-- [ ] Add public API regression tests.
+- [x] Freeze stable Core public exports.
+- [x] Mark experimental APIs explicitly.
+- [x] Define deprecation policy.
+- [x] Define semantic-versioning policy.
+- [x] Validate packed npm exports.
+- [x] Add public API regression tests.
 
 ## Testing
 
-- [ ] Unit tests for every Core subsystem.
+- [x] Unit tests for every Core subsystem.
 - [x] Integration tests across subsystems.
-- [ ] Nested object tests.
-- [ ] Nested array tests.
+- [x] Nested object tests.
+- [x] Nested array tests.
 - [x] Async race tests.
 - [x] Lifecycle-order tests.
 - [x] Batch/transaction tests.
-- [ ] Type-level tests.
+- [x] Type-level tests.
 - [x] Performance benchmarks.
-- [ ] Memory/disposal tests where applicable.
+- [x] Memory/disposal tests where applicable.
 
 ## Documentation
 
-- [ ] Core architecture.
+- [x] Core architecture.
 - [x] Runtime lifecycle.
-- [ ] Store contract.
+- [x] Store contract.
 - [x] Schema contract.
-- [ ] Conditions.
-- [ ] Dependencies.
-- [ ] Data sources.
-- [ ] Validation contract.
-- [ ] Events.
+- [x] Conditions.
+- [x] Dependencies.
+- [x] Data sources.
+- [x] Validation contract.
+- [x] Events.
 - [x] Plugins.
 - [x] Async behavior.
 - [x] Performance guidance.
@@ -532,7 +532,7 @@ These requirements apply across all ten areas.
 - [x] Diagnostics/explainability.
 - [x] Performance benchmarks and budgets.
 - [x] Small stable plugin contract.
-- [ ] Complete regression/documentation pass.
+- [x] Complete regression/documentation pass.
 
 **Target Core score: 10/10**
 
@@ -542,10 +542,10 @@ These requirements apply across all ten areas.
 
 The Core can be considered complete for a stable enterprise-quality `1.0.0` when:
 
-- [ ] Framework independent.
-- [ ] Renderer independent.
-- [ ] Strongly typed.
-- [ ] Nested-path safe.
+- [x] Framework independent.
+- [x] Renderer independent.
+- [x] Strongly typed.
+- [x] Nested-path safe.
 - [x] Deterministic.
 - [x] Transaction-safe.
 - [x] Async race-safe.
@@ -553,11 +553,31 @@ The Core can be considered complete for a stable enterprise-quality `1.0.0` when
 - [x] Fine-grained and performant.
 - [x] Schema-version aware.
 - [x] Observable and diagnosable.
-- [ ] Thoroughly tested.
+- [x] Thoroughly tested.
 - [x] Benchmarked.
-- [ ] Public API frozen/documented.
-- [ ] No unnecessary framework dependencies.
-- [ ] No unnecessary public `any` escape hatches.
+- [x] Public API frozen/documented.
+- [x] No unnecessary framework dependencies.
+- [x] No unnecessary public `any` escape hatches.
+
+---
+
+## Completion evidence (28 September 2026)
+
+All ten areas, the cross-cutting 1.0 requirements, and the Definition of 10/10 are complete. The Scope Freeze list below is intentionally left unchecked: it lists work *not* to prioritize before Core 1.0.
+
+| Requirement | Evidence |
+| --- | --- |
+| Public exports frozen, experimental APIs marked | `packages/core/api-report.json` records all 197 exports (164 stable, 33 `@experimental`) with their declarations; `pnpm check:api` runs in `pnpm verify` and CI. |
+| Semantic-versioning and deprecation policy | `packages/core/STABILITY.md` (shipped in the package); `pnpm api:update` refuses to remove or demote a stable export without prior deprecation; deprecations must name a replacement and removal version (public API test). |
+| Packed npm exports validated | `pnpm verify:core-release` (now in CI) checks every runtime export in the ESM and CommonJS builds and type-checks an import of every export from the tarball under bundler, Node ESM, and Node CommonJS resolution. This caught and fixed Core types being invisible to `nodenext` ESM consumers. |
+| Public API regression tests | `src/public-api.test.ts` compares runtime exports with the report, checks tiers, deprecation metadata, `VERSION`, and lifecycle phase order. |
+| Unit tests for every subsystem | Every runtime export has a direct test (events, async helpers, schema helpers, and plugin host added); 204 Core tests. |
+| Nested object and array tests | `store/nested-state.test.ts`, `runtime/nested.test.ts`, `runtime/nested-triggers.test.ts` (dependency triggers on ancestor/descendant paths fixed). |
+| Type-level tests | Nine `src/type-tests/*.type-test.ts` files compiled by `typecheck`, plus the packed consumer type check. |
+| Memory/disposal tests | `runtime/disposal.test.ts`: runtime, controllers (1,000 create/dispose cycles on one store), in-flight aborts, and every subscription kind. |
+| Documentation | `concepts/core-architecture.md`, `runtime/form-store.md`, `runtime/validation.md`, and updated conditions, dependencies, data-source, events, and form-state pages; `verify-runtime-docs.mjs` now runs in `docs:verify`. |
+| Framework, renderer, and DOM independence | No runtime dependencies; `check:boundaries` rejects DOM-only globals in Core source; the Core suite runs in plain Node (`src/portability.test.ts`). |
+| No public `any` | `@typescript-eslint/no-explicit-any` is an error for Core source; the API report contains no `any`. |
 
 ---
 
@@ -582,10 +602,10 @@ These can follow once the Core contract is stable.
 ## Final Target
 
 ```text
-Current Core Design       ~8.0 / 10
+Starting Core Design      ~8.0 / 10
 After Phase 1             ~9.0 / 10
 After Phase 2             ~9.5 / 10
-After Phase 3             10.0 / 10
+After Phase 3             10.0 / 10   ← reached (see Completion evidence)
 ```
 
 **Core 1.0 principle:** Stability over feature count. A smaller deterministic, typed, race-safe, benchmarked Core is more valuable than a larger Core with unstable contracts.

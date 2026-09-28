@@ -20,3 +20,20 @@ persisted values written after upgrade remain readable before downgrading. If a
 data contract changed, execute the documented reverse migration or forward fix.
 
 See [release readiness](../support/release-readiness) for the publication gate.
+
+## Core deprecations and stability
+
+`@dynamic-form-engine/core` classifies every export as stable or experimental
+(`@experimental`) and records them in `packages/core/api-report.json`. Stable
+exports change incompatibly only in a major release, after a deprecation that
+names a replacement and a removal version. Experimental exports, currently the
+runtime diagnostics, performance budgets, and `CorePluginHost`, may change in a
+minor release; pin a minor version if you depend on them.
+
+| Deprecated | Replacement | Removal |
+| --- | --- | --- |
+| `InferSchemaType<typeof schema>` | `InferFormValues<typeof schema>` | 2.0.0 |
+
+Replace deprecated APIs while still on the current major; the next major
+removes them. The full policy ships with the package as
+`@dynamic-form-engine/core/STABILITY.md`.

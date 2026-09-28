@@ -14,6 +14,7 @@ interface ActivePlugin<TValues extends FormValues> {
   cleanup?: () => void;
 }
 
+/** @experimental Advanced composition primitive used by FormRuntime. Prefer FormRuntimeOptions.plugins; see STABILITY.md. */
 export class CorePluginHost<TValues extends FormValues> {
   private readonly active: ActivePlugin<TValues>[] = [];
   private disposed = false;

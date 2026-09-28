@@ -34,7 +34,11 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
   readonly dataSources: DataSourceManager;
   readonly dependencies: DependencyController<TValues>;
   readonly conditions: ConditionController<TValues>;
-  /** Opt-in diagnostic trace for debugging and DevTools. */
+  /**
+   * Opt-in diagnostic trace for debugging and DevTools.
+   *
+   * @experimental Diagnostics contract; see STABILITY.md.
+   */
   readonly diagnostics: RuntimeDiagnostics;
 
   private readonly recorder: DiagnosticsRecorder;
@@ -164,6 +168,8 @@ export class FormRuntime<TValues extends FormValues = DynamicFormValues> {
    * Explains the field's current runtime state: why it is visible, disabled,
    * read-only, or required, which rule produced its error, its dependencies,
    * and its data-source request state. Values are redacted unless requested.
+   *
+   * @experimental Diagnostics contract; see STABILITY.md.
    */
   explainFieldState(path: string, options: ExplainFieldStateOptions = {}): FieldStateExplanation {
     this.assertActive();

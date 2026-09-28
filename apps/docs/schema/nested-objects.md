@@ -2,8 +2,8 @@
 
 - Status: Documented
 - Owner: Core and renderer maintainers
-- Last verified: 2026-08-26
-- Applies to: Core and React HTML 0.1.0
+- Last verified: 2026-09-28
+- Applies to: Core 1.0.0-rc and React HTML
 
 An object field groups child fields into a nested value. It must define at least
 one child field.
@@ -11,7 +11,7 @@ one child field.
 ## Schema and value
 
 ```ts verify
-import type { FormSchema, InferSchemaType } from '@dynamic-form-engine/core';
+import type { FormSchema, InferFormValues } from '@dynamic-form-engine/core';
 
 export const customerSchema = {
   id: 'customer',
@@ -28,7 +28,7 @@ export const customerSchema = {
   ],
 } as const satisfies FormSchema;
 
-export const customerValues: InferSchemaType<typeof customerSchema> = {
+export const customerValues: InferFormValues<typeof customerSchema> = {
   address: { street: '10 Main Street', city: 'Pune' },
 };
 ```
@@ -43,9 +43,12 @@ The form validator validates the object field and recursively validates its
 children. A non-object field that defines children is schema-invalid. Object
 values should remain plain structured-clone-compatible data.
 
-## Inference limitation
+## Value inference
 
-`InferSchemaType` provides useful object shape inference for literal schemas,
-but several leaf types intentionally resolve to broad types in the current
-implementation. Validate external values at runtime rather than relying only on
-compile-time inference.
+`InferFormValues<typeof schema>` infers the value shape of a literal schema,
+including nested objects and arrays, and supports custom field value maps.
+Validate external values at runtime rather than relying only on compile-time
+inference.
+
+`InferSchemaType` is **deprecated**: use `InferFormValues` instead. It will be
+removed in 2.0.0; see [package major versions](../migration/package-major-versions.md).
