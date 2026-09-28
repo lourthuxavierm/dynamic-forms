@@ -71,7 +71,7 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "scripts": {
-    "build": "tsup && tsc -p tsconfig.build.json",
+    "build": "tsup && tsc -p tsconfig.build.json && node ../../scripts/fix-declaration-specifiers.mjs dist",
     "test": "vitest run --passWithNoTests && node scripts/verify-styles.mjs",
     "performance": "pnpm --filter @dynamic-form-engine/react-html... build && node scripts/verify-performance.mjs",
     "typecheck": "tsc --noEmit"

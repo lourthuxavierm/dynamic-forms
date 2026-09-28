@@ -149,12 +149,12 @@ export declare function formatPercentage(value: number, locale: string, precisio
 ### HTML_ADAPTER_VERSION
 
 - Kind: const
-- Source: `packages/react-html/src/index.ts`
+- Source: `packages/react-html/src/entries/core.ts`
 
-Public const exported by @dynamic-form-engine/react-html.
+Package version of `@dynamic-form-engine/react-html`. Kept equal to package.json by the public API test.
 
 ```ts
-export declare const HTML_ADAPTER_VERSION: "0.1.0";
+export declare const HTML_ADAPTER_VERSION: "1.0.0-rc.1";
 ```
 
 ### HTML_DEFAULT_STYLESHEET
@@ -369,7 +369,7 @@ export declare const HtmlDateTimeRangeField: (props: FieldComponentProps) => imp
 ### HtmlDecimalField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -402,7 +402,7 @@ export declare function HtmlDocumentPreview(props: FieldComponentProps): import(
 ### HtmlEmailField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -583,7 +583,7 @@ export declare function HtmlFileUploadProvider({ upload, children }: { upload: H
 Renders a schema with native HTML controls and owns normal browser-form submission.
 
 ```ts
-export declare function HtmlForm({ schema: explicitSchema, registry, submitLabel, onSubmit, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled, colorScheme, density, dir, errorSummary }: HtmlFormProps): import("react").JSX.Element
+export declare function HtmlForm({ schema: explicitSchema, registry, submitLabel, onSubmit, onError, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled, colorScheme, density, dir, errorSummary }: HtmlFormProps): import("react").JSX.Element
 ```
 
 ### HtmlFormProps
@@ -633,7 +633,7 @@ export declare function HtmlInlineGroup({ node, children }: HtmlLayoutComponentP
 ### HtmlIntegerField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -743,7 +743,7 @@ export declare function HtmlMaskField(props: FieldComponentProps): import("react
 ### HtmlMonthField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -776,7 +776,7 @@ export declare function HtmlMultiSelect(props: FieldComponentProps): import("rea
 ### HtmlNumberField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -798,7 +798,7 @@ export declare const HtmlOtpField: (props: FieldComponentProps) => import("react
 ### HtmlPasswordField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -1117,7 +1117,7 @@ export declare function HtmlTextarea(props: FieldComponentProps): import("react"
 ### HtmlTextField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -1205,7 +1205,7 @@ export interface HtmlUploadRequest;
 ### HtmlUrlField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Public const exported by @dynamic-form-engine/react-html.
 
@@ -1216,7 +1216,7 @@ export declare const HtmlUrlField: (props: FieldComponentProps) => import("react
 ### HtmlYearField
 
 - Kind: const
-- Source: `packages/react-html/src/components/baseline.tsx`
+- Source: `packages/react-html/src/components/inputs.tsx`
 
 Stores a numeric Gregorian year and uses native min/max/step constraints.
 

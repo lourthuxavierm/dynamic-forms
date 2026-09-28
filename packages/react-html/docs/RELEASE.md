@@ -10,7 +10,15 @@ From the repository root, run:
 pnpm verify:react-html-release
 ```
 
-The command builds and packs both packages, verifies their published manifests and required files, rejects unresolved `workspace:` ranges or leaked source/tests/scripts, and removes its temporary tarballs.
+The command builds and packs both packages and checks:
+
+- manifests: names, the shared version, the canonical dependency pin, public access, and no unresolved `workspace:` ranges;
+- published files: every entry's ESM, CommonJS, and declaration file, the stylesheet and docs, with no source, scripts, tests, or test declarations;
+- that every export-map target exists, and that every subpath loads in ESM and CommonJS with identical exports in both packages;
+- that the canonical index matches `api-report.json` and each subpath only exports index symbols;
+- that a consumer project type-checks imports of every export and every subpath of both packages under bundler, Node ESM (`nodenext`), and Node CommonJS resolution.
+
+It runs in CI together with `pnpm --filter @dynamic-form-engine/react-html performance`.
 
 ## Publication order
 

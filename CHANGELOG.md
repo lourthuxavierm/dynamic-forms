@@ -64,3 +64,32 @@ and what counts as breaking are defined in `packages/core/STABILITY.md`.
   controls; field state is read for either array-path spelling.
 - Published declarations were unresolvable under `moduleResolution: nodenext`,
   and test declaration files were published.
+- `FormProvider.submit()` without an `onSubmit` now validates and runs
+  invalid-submit handling instead of returning immediately.
+
+### @dynamic-form-engine/react-html and @dynamic-form-engine/html
+
+**Added**
+
+- `HtmlForm` `onError` for errors thrown by `onSubmit`.
+- Public API report, and a release check covering every subpath in ESM,
+  CommonJS, and bundler/Node ESM/Node CommonJS types for both packages.
+
+**Fixed**
+
+- `HtmlForm` submission now runs through the store: no submits while disabled
+  or already submitting (including during async validation), `submitting` is
+  set so controls lock, a `submit` event is emitted, and without an `onSubmit`
+  prop it delegates to `FormProvider.submit()` instead of ignoring the
+  provider's handler.
+- Array fields subscribed to the whole form state and re-rendered on every
+  change; they now subscribe only to their item errors. Array-item conditions
+  now update when a referenced form field changes.
+- Form-level `disabled` and `readOnly` now reach object and array fieldsets and
+  array actions.
+- `controls/text` imported the temporal helpers and cost 3.4 KB gzip against a
+  2 KB budget; it is now 1.3 KB. The performance budgets now include shared
+  chunks.
+- `verify:react-html-release` could never pass (it expected `dist/index.mjs`).
+- `HTML_ADAPTER_VERSION` reported `0.1.0`.
+- Published declarations were unresolvable under `moduleResolution: nodenext`.

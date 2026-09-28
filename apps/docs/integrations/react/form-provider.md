@@ -46,7 +46,7 @@ export function ProfileForm({ locked }: { locked: boolean }) {
 | `schema`, `defaultValues` | Schema behavior and initial values |
 | `validationMode` | `onChange`, `onBlur`, `onSubmit`, or `manual`; default `onBlur` |
 | `formValidator` | Application validator composed after schema validation (receives the abort signal) |
-| `onSubmit`, `onError` | Submission; `onError` receives errors from `onSubmit` and from validators, never aborts |
+| `onSubmit`, `onError` | Submission; `onError` receives errors from `onSubmit` and from validators, never aborts. Without `onSubmit`, `submit()` still validates and runs invalid-submit handling |
 | `onChange`, `onValidate`, `onReset`, `onEvent` | Core events; `onEvent` receives every event type |
 | `onInvalidSubmit`, `focusOnInvalidSubmit` | Invalid-submit callback and focus of the first invalid control (default `true`) |
 | `disabled` | Form-level disabled, synchronized to `store.setDisabled`; disabled forms do not submit |

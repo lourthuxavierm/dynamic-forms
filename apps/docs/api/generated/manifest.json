@@ -1300,7 +1300,7 @@
         {
           "name": "HTML_ADAPTER_VERSION",
           "kind": "const",
-          "source": "packages/react-html/src/index.ts"
+          "source": "packages/react-html/src/entries/core.ts"
         },
         {
           "name": "HTML_DEFAULT_STYLESHEET",
@@ -1400,7 +1400,7 @@
         {
           "name": "HtmlDecimalField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlDensity",
@@ -1415,7 +1415,7 @@
         {
           "name": "HtmlEmailField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlFieldComponent",
@@ -1520,7 +1520,7 @@
         {
           "name": "HtmlIntegerField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlLayoutComponent",
@@ -1570,7 +1570,7 @@
         {
           "name": "HtmlMonthField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlMultiFileUpload",
@@ -1585,7 +1585,7 @@
         {
           "name": "HtmlNumberField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlOtpField",
@@ -1595,7 +1595,7 @@
         {
           "name": "HtmlPasswordField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlPercentageField",
@@ -1740,7 +1740,7 @@
         {
           "name": "HtmlTextField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlTimeField",
@@ -1780,12 +1780,12 @@
         {
           "name": "HtmlUrlField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlYearField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "LocaleNumberOptions",
@@ -1935,7 +1935,7 @@
         {
           "name": "HTML_ADAPTER_VERSION",
           "kind": "const",
-          "source": "packages/react-html/src/index.ts"
+          "source": "packages/react-html/src/entries/core.ts"
         },
         {
           "name": "HTML_DEFAULT_STYLESHEET",
@@ -2035,7 +2035,7 @@
         {
           "name": "HtmlDecimalField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlDensity",
@@ -2050,7 +2050,7 @@
         {
           "name": "HtmlEmailField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlFieldComponent",
@@ -2155,7 +2155,7 @@
         {
           "name": "HtmlIntegerField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlLayoutComponent",
@@ -2205,7 +2205,7 @@
         {
           "name": "HtmlMonthField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlMultiFileUpload",
@@ -2220,7 +2220,7 @@
         {
           "name": "HtmlNumberField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlOtpField",
@@ -2230,7 +2230,7 @@
         {
           "name": "HtmlPasswordField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlPercentageField",
@@ -2375,7 +2375,7 @@
         {
           "name": "HtmlTextField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlTimeField",
@@ -2415,12 +2415,12 @@
         {
           "name": "HtmlUrlField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlYearField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "LocaleNumberOptions",
