@@ -53,6 +53,10 @@ export interface FormContextValue<T extends FormValues = DynamicFormValues> {
   subscribeFieldValidating: (name: string, listener: () => void) => () => void;
   validateField: (name: string) => Promise<boolean>;
   validateForm: () => Promise<boolean>;
+  /**
+   * Validates and, if valid, calls `FormProviderProps.onSubmit`. Without an
+   * `onSubmit`, it validates (with invalid-submit handling) and resolves `undefined`.
+   */
   submit: <TResult = unknown>() => Promise<TResult | undefined>;
   reset: () => void;
   resetField: (name: string) => void;
@@ -228,7 +232,12 @@ export function FormProvider<T extends FormValues = DynamicFormValues>(props: Fo
 
     const submit = async <TResult,>(): Promise<TResult | undefined> => {
       const onSubmit = latest.current.onSubmit;
-      if (!onSubmit) return undefined;
+      // Without a handler, submitting still validates and runs invalid-submit handling.
+      if (!onSubmit) {
+        const { disabled, submitting } = resolvedStore.getState();
+        if (!disabled && !submitting) await validateForm();
+        return undefined;
+      }
       try {
         const result = await resolvedStore.submit(onSubmit as FormSubmitHandler<T, TResult>, resolvedFormValidator());
         if (result === undefined && !resolvedStore.getState().valid) handleInvalidSubmit(resolvedStore.getState().errors);
