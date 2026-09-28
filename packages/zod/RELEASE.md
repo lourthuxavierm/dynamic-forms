@@ -8,7 +8,10 @@ pnpm verify:zod-release
 
 The command checks boundaries, type safety, behavior tests, package builds,
 declarations, ESM and CommonJS loading, generated API drift, Zod architecture
-evidence, and the contents and metadata of the packed npm artifact. Temporary
+evidence, and the contents and metadata of the packed npm artifact. It also
+checks that the packed runtime exports match `api-report.json`, and that a
+consumer project passing real Zod schemas to both factories type-checks under
+bundler, Node ESM (`nodenext`), and Node CommonJS resolution. Temporary
 tarballs are created outside the repository and removed automatically.
 
 ## Compatibility prerequisite

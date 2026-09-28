@@ -45,7 +45,8 @@ export function ProfileForm({ locked }: { locked: boolean }) {
 | `store`, `registry` | Controlled runtime objects |
 | `schema`, `defaultValues` | Schema behavior and initial values |
 | `validationMode` | `onChange`, `onBlur`, `onSubmit`, or `manual`; default `onBlur` |
-| `formValidator` | Application validator composed after schema validation (receives the abort signal) |
+| `formValidator` | Application validator (for example Zod) composed after schema validation. It receives the abort signal, also decides field-level validation for each field, and its errors for fields hidden by `visibleWhen` are ignored |
+| `validateHiddenFields` | Keep `formValidator` errors for hidden fields; default `false` |
 | `onSubmit`, `onError` | Submission; `onError` receives errors from `onSubmit` and from validators, never aborts. Without `onSubmit`, `submit()` still validates and runs invalid-submit handling |
 | `onChange`, `onValidate`, `onReset`, `onEvent` | Core events; `onEvent` receives every event type |
 | `onInvalidSubmit`, `focusOnInvalidSubmit` | Invalid-submit callback and focus of the first invalid control (default `true`) |

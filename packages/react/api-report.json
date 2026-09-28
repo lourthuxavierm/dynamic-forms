@@ -194,6 +194,7 @@
         "    children: ReactNode;",
         "    onSubmit?: FormSubmitHandler<T>;",
         "    formValidator?: FormValidator<T>;",
+        "    validateHiddenFields?: boolean;",
         "    onError?: (error: unknown) => void;",
         "    onChange?: (event: FormEvent<unknown, T>) => void;",
         "    onValidate?: (valid: boolean) => void;",

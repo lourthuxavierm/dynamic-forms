@@ -1,18 +1,12 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react';
 import {
   dynamicPath,
-  evaluateCondition,
-  isSamePath,
   normalizePath,
   type FieldConditionState,
-  type FieldSchema,
-  type FormSchema,
   type FormState,
 } from '@dynamic-form-engine/core';
 import { useFormContext } from '../context';
-import { findFieldByPath } from '../schemaPaths';
-
-export const DEFAULT_CONDITION_STATE: Readonly<FieldConditionState> = Object.freeze({ visible: true, disabled: false, required: false, readOnly: false });
+import { DEFAULT_CONDITION_STATE, evaluateFieldConditions, readPathRecord } from '../fieldConditions';
 
 /** One consistent view of a field for rendering. */
 export interface FieldSnapshot<T = unknown> extends FieldConditionState {
@@ -21,32 +15,6 @@ export interface FieldSnapshot<T = unknown> extends FieldConditionState {
   touched: boolean;
   dirty: boolean;
   isValidating: boolean;
-}
-
-/** Reads a path-keyed state record, matching `items[0]` and `items.0` spellings. */
-export function readPathRecord<TValue>(record: Readonly<Record<string, TValue>>, path: string): TValue | undefined {
-  if (Object.prototype.hasOwnProperty.call(record, path)) return record[path];
-  for (const key in record) if (isSamePath(key, path)) return record[key];
-  return undefined;
-}
-
-/**
- * Condition state computed purely from the schema and current values. Used for
- * the first render and server rendering, before the provider's
- * `ConditionController` is mounted, so hidden fields are never rendered even
- * momentarily. Mirrors the controller: fields inside array items have no
- * per-item condition state.
- */
-export function evaluateFieldConditions(schema: FormSchema | undefined, path: string, values: object): Readonly<FieldConditionState> {
-  if (!schema) return DEFAULT_CONDITION_STATE;
-  const field: FieldSchema | undefined = findFieldByPath(schema.fields, path);
-  if (!field || /(^|\.)\d+(\.|$)/.test(normalizePath(path))) return DEFAULT_CONDITION_STATE;
-  return {
-    visible: field.visibleWhen ? evaluateCondition(field.visibleWhen, values) : true,
-    disabled: Boolean(field.disabled || (field.disabledWhen && evaluateCondition(field.disabledWhen, values))),
-    required: Boolean(field.validation?.required || (field.requiredWhen && evaluateCondition(field.requiredWhen, values))),
-    readOnly: Boolean(field.readOnly || (field.readOnlyWhen && evaluateCondition(field.readOnlyWhen, values))),
-  };
 }
 
 interface CacheEntry<T> {

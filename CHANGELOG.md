@@ -67,6 +67,35 @@ and what counts as breaking are defined in `packages/core/STABILITY.md`.
 - `FormProvider.submit()` without an `onSubmit` now validates and runs
   invalid-submit handling instead of returning immediately.
 
+### @dynamic-form-engine/zod
+
+**Added**
+
+- Public API report; the release gate type-checks consumers that use real Zod
+  schemas under bundler, Node ESM, and Node CommonJS resolution.
+- `createZodFormValidator` skips parsing for requests whose abort signal has
+  already fired.
+
+**Fixed**
+
+- Published declarations were unresolvable under `moduleResolution: nodenext`.
+
+### @dynamic-form-engine/react (validator composition)
+
+**Added**
+
+- `FormProvider` `validateHiddenFields`.
+
+**Fixed**
+
+- Errors from a composed `formValidator` (such as Zod) for fields hidden by
+  `visibleWhen` blocked submission with an error the user could not see. They
+  are now ignored, matching Core's schema validation.
+- Field-level validation (`onBlur`/`onChange`/`validate()`) ran only schema
+  rules and cleared `formValidator` errors that still applied. It now runs the
+  form validator too, aborts superseded runs, and reports validator failures to
+  `onError`.
+
 ### @dynamic-form-engine/react-html and @dynamic-form-engine/html
 
 **Added**
