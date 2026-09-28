@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// Public API report for @dynamic-form-engine/core.
+// Public API report for a published workspace package (default: core).
 //
-//   node scripts/check-core-api.mjs            verify the committed report matches the source
-//   node scripts/check-core-api.mjs --update   rewrite the report after an intentional API change
-//   ... --update --allow-breaking              also accept removal of stable, non-deprecated exports
+//   node scripts/check-core-api.mjs [--package react]            verify the committed report matches the source
+//   node scripts/check-core-api.mjs [--package react] --update   rewrite the report after an intentional API change
+//   ... --update --allow-breaking                                also accept removal of stable, non-deprecated exports
 //
 // The report records every public export with its stability tier and its
 // declaration as the compiler sees it (comments, private members and
 // implementation bodies stripped). Any difference fails the check so API
-// changes are always reviewed as a diff of packages/core/api-report.json.
+// changes are always reviewed as a diff of packages/<name>/api-report.json.
 // See packages/core/STABILITY.md for the policy this enforces.
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
@@ -16,7 +16,13 @@ import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const packageRoot = resolve(root, 'packages/core');
+const packageFlag = process.argv.indexOf('--package');
+const packageDirectory = packageFlag === -1 ? 'core' : process.argv[packageFlag + 1];
+if (!packageDirectory || !existsSync(resolve(root, 'packages', packageDirectory, 'src/index.ts'))) {
+  throw new Error(`Unknown package "${packageDirectory}". Pass --package <directory under packages/>.`);
+}
+const packageRoot = resolve(root, 'packages', packageDirectory);
+const packageName = JSON.parse(readFileSync(resolve(packageRoot, 'package.json'), 'utf8')).name;
 const entry = resolve(packageRoot, 'src/index.ts');
 const reportPath = resolve(packageRoot, 'api-report.json');
 const update = process.argv.includes('--update');
@@ -30,6 +36,10 @@ const program = ts.createProgram([entry], {
   strict: true,
   skipLibCheck: true,
   noEmit: true,
+  jsx: ts.JsxEmit.ReactJSX,
+  // Resolve sibling workspace packages from source so reports do not depend on build order.
+  baseUrl: root,
+  paths: { '@dynamic-form-engine/core': ['packages/core/src/index.ts'], '@dynamic-form-engine/react': ['packages/react/src/index.ts'] },
 });
 const checker = program.getTypeChecker();
 const printer = ts.createPrinter({ removeComments: true, newLine: ts.NewLineKind.LineFeed });
@@ -144,9 +154,9 @@ for (const exported of checker.getExportsOfModule(moduleSymbol).sort((a, b) => a
 }
 const version = JSON.parse(readFileSync(resolve(packageRoot, 'package.json'), 'utf8')).version;
 const report = {
-  package: '@dynamic-form-engine/core',
+  package: packageName,
   generatedBy: 'scripts/check-core-api.mjs',
-  note: 'Generated file. Run `pnpm api:update` after an intentional public API change. See STABILITY.md.',
+  note: 'Generated file. Run `pnpm api:update` after an intentional public API change. See packages/core/STABILITY.md.',
   summary: {
     exports: Object.keys(exportsReport).length,
     stable: Object.values(exportsReport).filter((entry) => entry.stability === 'stable').length,
@@ -188,7 +198,7 @@ const printChanges = (stream) => {
 
 if (update) {
   if (changes.breaking.length && !allowBreaking) {
-    console.error('Refusing to update the Core API report: breaking changes to stable exports.');
+    console.error(`Refusing to update the ${packageName} API report: breaking changes to stable exports.`);
     printChanges(console.error);
     console.error('\nDeprecate the export in a minor release first, or pass --allow-breaking for a major release.');
     process.exit(1);
@@ -198,10 +208,10 @@ if (update) {
   console.log(`\nWrote ${relative(root, reportPath)}: ${report.summary.exports} exports (${report.summary.stable} stable, ${report.summary.experimental} experimental, ${report.summary.deprecated} deprecated) at ${version}.`);
 } else {
   if (!previous || readFileSync(reportPath, 'utf8') !== serialized) {
-    console.error(previous ? 'Core public API differs from packages/core/api-report.json.' : 'packages/core/api-report.json is missing.');
+    console.error(previous ? `${packageName} public API differs from ${relative(root, reportPath)}.` : `${relative(root, reportPath)} is missing.`);
     printChanges(console.error);
     console.error('\nIf the change is intentional, run `pnpm api:update` and commit the report (see packages/core/STABILITY.md).');
     process.exit(1);
   }
-  console.log(`Core public API matches the report: ${report.summary.exports} exports (${report.summary.stable} stable, ${report.summary.experimental} experimental).`);
+  console.log(`${packageName} public API matches the report: ${report.summary.exports} exports (${report.summary.stable} stable, ${report.summary.experimental} experimental).`);
 }

@@ -10,8 +10,8 @@
     "dev": "turbo run dev",
     "test": "turbo run test",
     "check:boundaries": "node scripts/check-package-boundaries.mjs",
-    "check:api": "node scripts/check-core-api.mjs",
-    "api:update": "node scripts/check-core-api.mjs --update",
+    "check:api": "node scripts/check-core-api.mjs && node scripts/check-core-api.mjs --package react",
+    "api:update": "node scripts/check-core-api.mjs --update && node scripts/check-core-api.mjs --package react --update",
     "test:e2e": "playwright test",
     "lint": "eslint packages apps scripts --max-warnings=0",
     "typecheck": "turbo run typecheck",
@@ -32,7 +32,8 @@
     "verify:react-html-release": "node scripts/verify-react-html-release.mjs",
     "verify:zod-architecture": "pnpm --filter @dynamic-forms/docs zod:architecture",
     "verify:zod-release": "node scripts/verify-zod-release.mjs",
-    "verify:core-release": "node scripts/verify-core-release.mjs"
+    "verify:core-release": "node scripts/verify-core-release.mjs",
+    "verify:react-release": "node scripts/verify-react-release.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

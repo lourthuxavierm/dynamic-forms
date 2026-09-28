@@ -1,7 +1,7 @@
 {
   "package": "@dynamic-form-engine/core",
   "generatedBy": "scripts/check-core-api.mjs",
-  "note": "Generated file. Run `pnpm api:update` after an intentional public API change. See STABILITY.md.",
+  "note": "Generated file. Run `pnpm api:update` after an intentional public API change. See packages/core/STABILITY.md.",
   "summary": {
     "exports": 197,
     "stable": 164,

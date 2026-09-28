@@ -4,7 +4,10 @@ test('runtime landing page exposes all canonical runtime topics', async ({ page 
   await page.goto('/runtime/');
   await expect(page.getByRole('heading', { level: 1, name: 'Runtime behavior' })).toBeVisible();
   const reference = page.getByRole('heading', { level: 2, name: 'Reference' }).locator('xpath=following-sibling::ul[1]');
-  await expect(reference.getByRole('listitem')).toHaveCount(13);
+  await expect(reference.getByRole('listitem')).toHaveCount(16);
+  for (const topic of ['Core architecture', 'Validation contract', 'Diagnostics and explainability']) {
+    await expect(reference.getByRole('link', { name: topic, exact: true })).toBeVisible();
+  }
 });
 
 test('lifecycle page exposes value, validation, and submission sequences', async ({ page }) => {
@@ -15,10 +18,11 @@ test('lifecycle page exposes value, validation, and submission sequences', async
   await expect(page.getByText('emit valueChange')).toBeVisible();
 });
 
-test('form state reference lists all eight state properties', async ({ page }) => {
+test('form state reference lists all ten state properties', async ({ page }) => {
   await page.goto('/runtime/form-state');
   const table = page.getByRole('table');
-  await expect(table.getByRole('row')).toHaveCount(9);
+  await expect(table.getByRole('row')).toHaveCount(11);
+  await expect(table.getByRole('cell', { name: 'validating', exact: true })).toBeVisible();
   await expect(table.getByRole('cell', { name: 'submitting', exact: true })).toBeVisible();
   await expect(table.getByRole('cell', { name: 'loading', exact: true })).toBeVisible();
 });

@@ -1,0 +1,468 @@
+{
+  "package": "@dynamic-form-engine/react",
+  "generatedBy": "scripts/check-core-api.mjs",
+  "note": "Generated file. Run `pnpm api:update` after an intentional public API change. See packages/core/STABILITY.md.",
+  "summary": {
+    "exports": 40,
+    "stable": 40,
+    "experimental": 0,
+    "deprecated": 0
+  },
+  "exports": {
+    "DynamicField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/DynamicField.tsx",
+      "declaration": [
+        "export function DynamicField({ field: explicitField, name, type, render }: DynamicFieldProps): import(\"react\").JSX.Element | null;"
+      ]
+    },
+    "DynamicFieldProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/DynamicField.tsx",
+      "declaration": [
+        "export interface DynamicFieldProps {",
+        "    field?: FieldSchema;",
+        "    name?: string;",
+        "    type?: string;",
+        "    render?: (props: FieldComponentProps) => ReactNode;",
+        "}"
+      ]
+    },
+    "DynamicForm": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/DynamicForm.tsx",
+      "declaration": [
+        "export function DynamicForm({ schema: explicitSchema, children, submitLabel = 'Submit', errorSummary = true, onSubmit }: DynamicFormProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "DynamicFormProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/DynamicForm.tsx",
+      "declaration": [
+        "export interface DynamicFormProps {",
+        "    schema?: FormSchema;",
+        "    children?: ReactNode;",
+        "    submitLabel?: ReactNode;",
+        "    errorSummary?: boolean;",
+        "    onSubmit?: (event: FormEvent<HTMLFormElement>) => void;",
+        "}"
+      ]
+    },
+    "FieldAccessibilityProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/DynamicField.tsx",
+      "declaration": [
+        "export interface FieldAccessibilityProps {",
+        "    id: string;",
+        "    labelId: string;",
+        "    descriptionId: string;",
+        "    errorId: string;",
+        "    ariaInvalid: boolean;",
+        "    ariaDescribedBy?: string;",
+        "    ariaLabelledBy: string;",
+        "    dataAttributes: {",
+        "        'data-dynamic-forms-field': '';",
+        "    };",
+        "    validationMessage?: string;",
+        "    validationLiveRegion: {",
+        "        role: 'status';",
+        "        'aria-live': 'polite';",
+        "        'aria-atomic': true;",
+        "    };",
+        "}"
+      ]
+    },
+    "FieldArrayItem": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useFieldArray.ts",
+      "declaration": [
+        "export interface FieldArrayItem<T> {",
+        "    readonly id: string;",
+        "    readonly value: T;",
+        "}"
+      ]
+    },
+    "FieldComponentProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/DynamicField.tsx",
+      "declaration": [
+        "export interface FieldComponentProps<T = unknown> {",
+        "    field: FieldSchema;",
+        "    name: string;",
+        "    value: T;",
+        "    setValue: (value: T) => void;",
+        "    setError: (message: string) => void;",
+        "    clearError: () => void;",
+        "    error?: string;",
+        "    touched: boolean;",
+        "    dirty: boolean;",
+        "    isValidating: boolean;",
+        "    visible: boolean;",
+        "    disabled: boolean;",
+        "    required: boolean;",
+        "    readOnly: boolean;",
+        "    accessibility: FieldAccessibilityProps;",
+        "    setTouched: (touched?: boolean) => void;",
+        "    validate: () => Promise<boolean>;",
+        "}"
+      ]
+    },
+    "fieldId": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/FormErrorSummary.tsx",
+      "declaration": [
+        "export function fieldId(name: string): string;"
+      ]
+    },
+    "FieldPath": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export type FieldPath<TValues extends FormValues = DynamicFormValues> = Path<TValues>;"
+      ]
+    },
+    "FormContextValue": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/context/FormContext.tsx",
+      "declaration": [
+        "export interface FormContextValue<T extends FormValues = DynamicFormValues> {",
+        "    store: FormStore<T>;",
+        "    registry: FieldRegistry;",
+        "    schema?: FormSchema;",
+        "    conditionController?: ConditionController<T>;",
+        "    validationMode: ValidationMode;",
+        "    readOnly: boolean;",
+        "    disableWhileSubmitting: boolean;",
+        "    isFieldValidating: (name: string) => boolean;",
+        "    subscribeFieldValidating: (name: string, listener: () => void) => () => void;",
+        "    validateField: (name: string) => Promise<boolean>;",
+        "    validateForm: () => Promise<boolean>;",
+        "    submit: <TResult = unknown>() => Promise<TResult | undefined>;",
+        "    reset: () => void;",
+        "    resetField: (name: string) => void;",
+        "}"
+      ]
+    },
+    "FormErrorSummary": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/FormErrorSummary.tsx",
+      "declaration": [
+        "export function FormErrorSummary({ title = 'Please correct the following errors', focusOnChange = true, className }: FormErrorSummaryProps): import(\"react\").JSX.Element | null;"
+      ]
+    },
+    "FormErrorSummaryProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/FormErrorSummary.tsx",
+      "declaration": [
+        "export interface FormErrorSummaryProps {",
+        "    title?: string;",
+        "    focusOnChange?: boolean;",
+        "    className?: string;",
+        "}"
+      ]
+    },
+    "FormProvider": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/context/FormContext.tsx",
+      "declaration": [
+        "export function FormProvider<T extends FormValues = DynamicFormValues>(props: FormProviderProps<T>): import(\"react\").JSX.Element;"
+      ]
+    },
+    "FormProviderProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/context/FormContext.tsx",
+      "declaration": [
+        "export interface FormProviderProps<T extends FormValues = DynamicFormValues> {",
+        "    store?: FormStore<T>;",
+        "    registry?: FieldRegistry;",
+        "    schema?: FormSchema;",
+        "    defaultValues?: T;",
+        "    children: ReactNode;",
+        "    onSubmit?: FormSubmitHandler<T>;",
+        "    formValidator?: FormValidator<T>;",
+        "    onError?: (error: unknown) => void;",
+        "    onChange?: (event: FormEvent<unknown, T>) => void;",
+        "    onValidate?: (valid: boolean) => void;",
+        "    onReset?: (event: FormEvent<unknown, T>) => void;",
+        "    onEvent?: (event: FormEvent<unknown, T>) => void;",
+        "    validationMode?: ValidationMode;",
+        "    onInvalidSubmit?: (errors: Readonly<Record<string, string>>) => void;",
+        "    focusOnInvalidSubmit?: boolean;",
+        "    disabled?: boolean;",
+        "    readOnly?: boolean;",
+        "    disableWhileSubmitting?: boolean;",
+        "    onDataSourceRefresh?: (field: FieldSchema, dataSource: DataSourceConfig, values: Readonly<T>, context?: DependencyRefreshContext) => void | Promise<void>;",
+        "}"
+      ]
+    },
+    "LiveRegion": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/LiveRegion.tsx",
+      "declaration": [
+        "export function LiveRegion({ children, mode = 'polite', atomic = true, className }: LiveRegionProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "LiveRegionProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/LiveRegion.tsx",
+      "declaration": [
+        "export interface LiveRegionProps {",
+        "    children?: ReactNode;",
+        "    mode?: 'polite' | 'assertive';",
+        "    atomic?: boolean;",
+        "    className?: string;",
+        "}"
+      ]
+    },
+    "registerReactField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/registry.ts",
+      "declaration": [
+        "export function registerReactField<TValue = unknown>(registry: FieldRegistry<ComponentType<FieldComponentProps<TValue>>>, definition: Omit<FieldDefinition<ComponentType<FieldComponentProps<TValue>>>, 'component'> & {",
+        "    component: ComponentType<FieldComponentProps<TValue>>;",
+        "}): FieldRegistry<ComponentType<FieldComponentProps<TValue>>>;"
+      ]
+    },
+    "shallowEqual": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useFormState.ts",
+      "declaration": [
+        "export function shallowEqual<T>(previous: T, next: T): boolean;"
+      ]
+    },
+    "TypedFieldPath": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/types.ts",
+      "declaration": [
+        "export type TypedFieldPath<TValues extends FormValues> = Path<TValues> | DynamicPath;"
+      ]
+    },
+    "useDataSource": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useDataSource.ts",
+      "declaration": [
+        "export function useDataSource<T = unknown>(fieldName: string, options?: UseDataSourceOptions<T>): UseDataSourceResult<T>;"
+      ]
+    },
+    "UseDataSourceOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useDataSource.ts",
+      "declaration": [
+        "export interface UseDataSourceOptions<T> {",
+        "    config?: DataSourceConfig<T>;",
+        "    enabled?: boolean;",
+        "    initialSearch?: string;",
+        "    initialPage?: number;",
+        "    initialPageSize?: number;",
+        "    debounceMs?: number;",
+        "}"
+      ]
+    },
+    "UseDataSourceResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useDataSource.ts",
+      "declaration": [
+        "export interface UseDataSourceResult<T> extends DataSourceResult<T> {",
+        "    search: string;",
+        "    page: number;",
+        "    pageSize?: number;",
+        "    refresh: () => Promise<T[]>;",
+        "    cancel: () => void;",
+        "    setSearch: (search: string) => void;",
+        "    setPage: (page: number) => void;",
+        "    setPageSize: (pageSize: number | undefined) => void;",
+        "}"
+      ]
+    },
+    "useField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useField.ts",
+      "declaration": [
+        "export function useField<T = unknown>(name: string): { name: string; value: T; setValue: (nextValue: T) => void; error: string | undefined; touched: boolean; dirty: boolean; isValidating: boolean; visible: boolean; disabled: boolean; required: boolean; readOnly: boolean; setError: (message: string) => void; clearError: () => void; setTouched: (touched?: boolean) => void; validate: () => Promise<boolean>; };"
+      ]
+    },
+    "useFieldArray": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useFieldArray.ts",
+      "declaration": [
+        "export function useFieldArray<T = unknown>(name: string): UseFieldArrayReturn<T>;"
+      ]
+    },
+    "UseFieldArrayReturn": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useFieldArray.ts",
+      "declaration": [
+        "export interface UseFieldArrayReturn<T> {",
+        "    fields: readonly FieldArrayItem<T>[];",
+        "    append(value: T): void;",
+        "    prepend(value: T): void;",
+        "    insert(index: number, value: T): void;",
+        "    remove(index: number): void;",
+        "    move(from: number, to: number): void;",
+        "    swap(left: number, right: number): void;",
+        "    update(index: number, value: T): void;",
+        "    replace(values: readonly T[]): void;",
+        "}"
+      ]
+    },
+    "useFieldState": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useFieldState.ts",
+      "declaration": [
+        "export function useFieldState(name: string): { error: string | undefined; touched: boolean; dirty: boolean; isValidating: boolean; visible: boolean; disabled: boolean; required: boolean; readOnly: boolean; };"
+      ]
+    },
+    "useForm": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useForm.ts",
+      "declaration": [
+        "export function useForm<TValues extends FormValues = DynamicFormValues>(options?: UseFormOptions<TValues>): { store: FormStore<TValues>; registry: FieldRegistry<unknown, Record<string, unknown>, string>; };"
+      ]
+    },
+    "useFormActions": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useFormState.ts",
+      "declaration": [
+        "export function useFormActions<T extends FormValues = DynamicFormValues>(): { setValue: { <TPath extends import(\"@dynamic-form-engine/core\").Path<T>>(path: TPath, value: import(\"@dynamic-form-engine/core\").PathValue<T, TPath>, options?: import(\"@dynamic-form-engine/core\").SetValueOptions): void; (path: import(\"@dynamic-form-engine/core\").DynamicPath, value: unknown, options?: import(\"@dynamic-form-engine/core\").SetValueOptions): void; }; setValues: (values: Partial<T>, options?: import(\"@dynamic-form-engine/core\").SetValueOptions) => void; setError: { <TPath extends import(\"@dynamic-form-engine/core\").Path<T>>(path: TPath, message: string): void; (path: import(\"@dynamic-form-engine/core\").DynamicPath, message: string): void; }; clearError: { <TPath extends import(\"@dynamic-form-engine/core\").Path<T>>(path: TPath): void; (path: import(\"@dynamic-form-engine/core\").DynamicPath): void; }; validateField: (name: string) => Promise<boolean>; validateForm: () => Promise<boolean>; submit: <TResult = unknown>() => Promise<TResult | undefined>; reset: () => void; resetField: (name: string) => void; };"
+      ]
+    },
+    "useFormContext": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/context/FormContext.tsx",
+      "declaration": [
+        "export function useFormContext<T extends FormValues = DynamicFormValues>(): FormContextValue<T>;"
+      ]
+    },
+    "useFormEvent": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useFormEvent.ts",
+      "declaration": [
+        "export function useFormEvent(type: FormEventType, listener: FormEventListener): void;"
+      ]
+    },
+    "UseFormOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useForm.ts",
+      "declaration": [
+        "export interface UseFormOptions<TValues extends FormValues = DynamicFormValues> {",
+        "    defaultValues?: TValues;",
+        "    registry?: FieldRegistry;",
+        "}"
+      ]
+    },
+    "useFormState": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useFormState.ts",
+      "declaration": [
+        "export function useFormState<TSelected = FormState>(selector?: (state: FormState) => TSelected, equality?: (previous: TSelected, next: TSelected) => boolean): TSelected;"
+      ]
+    },
+    "useFormStore": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/subscriptions/useFormStore.ts",
+      "declaration": [
+        "export function useFormStore(store: FormStore): FormState;"
+      ]
+    },
+    "useSection": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useSection.ts",
+      "declaration": [
+        "export function useSection(id: string, options?: UseSectionOptions): { id: string; expanded: boolean; disabled: boolean; expand: () => void; collapse: () => void; toggle: () => void; };"
+      ]
+    },
+    "UseSectionOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useSection.ts",
+      "declaration": [
+        "export interface UseSectionOptions {",
+        "    defaultExpanded?: boolean;",
+        "    disabled?: boolean;",
+        "}"
+      ]
+    },
+    "useWatch": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useWatch.ts",
+      "declaration": [
+        "export function useWatch<T = unknown>(path: string): T;",
+        "export function useWatch<T = unknown>(paths: readonly string[]): T[];"
+      ]
+    },
+    "useWizard": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/hooks/useWizard.ts",
+      "declaration": [
+        "export function useWizard(steps: readonly WizardStep[], options?: UseWizardOptions): { steps: readonly WizardStep[]; activeIndex: number; activeStep: WizardStep; isFirst: boolean; isLast: boolean; goTo: (index: number) => void; next: () => void; previous: () => void; };"
+      ]
+    },
+    "UseWizardOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useWizard.ts",
+      "declaration": [
+        "export interface UseWizardOptions {",
+        "    initialStep?: number;",
+        "    linear?: boolean;",
+        "}"
+      ]
+    },
+    "ValidationMode": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/context/FormContext.tsx",
+      "declaration": [
+        "export type ValidationMode = 'onChange' | 'onBlur' | 'onSubmit' | 'manual';"
+      ]
+    },
+    "WizardStep": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/hooks/useWizard.ts",
+      "declaration": [
+        "export interface WizardStep {",
+        "    id: string;",
+        "    disabled?: boolean;",
+        "    optional?: boolean;",
+        "}"
+      ]
+    }
+  }
+}

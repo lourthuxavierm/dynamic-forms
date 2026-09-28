@@ -12,7 +12,7 @@ Related: [guide](../../integrations/react/) · [controls/examples](../../playgro
 
 ## Public exports
 
-This page contains 39 exports. Signatures are regenerated from the package entry point.
+This page contains 40 exports. Signatures are regenerated from the package entry point.
 
 ### DynamicField
 
@@ -30,7 +30,7 @@ export declare function DynamicField({ field: explicitField, name, type, render 
 - Kind: interface
 - Source: `packages/react/src/components/DynamicField.tsx`
 
-Public interface exported by @dynamic-form-engine/react.
+Renders one schema field through its registered component (or `render`). Hidden fields render nothing. `disabled` and `readOnly` combine the field's Core condition state with the provider's form-level `disabled`, `readOnly`, and (by default) `submitting` state.
 
 ```ts
 export interface DynamicFieldProps;
@@ -118,7 +118,7 @@ export type FieldPath;
 - Kind: interface
 - Source: `packages/react/src/context/FormContext.tsx`
 
-Public interface exported by @dynamic-form-engine/react.
+Provider context. Its identity changes only when the store, registry, schema, condition controller, or a form-level provider setting changes — never on value, error, or validation-progress updates — so consumers that only read the context do not re-render as fields change.
 
 ```ts
 export interface FormContextValue;
@@ -154,7 +154,7 @@ export interface FormErrorSummaryProps;
 Owns the React form context, store lifecycle, validation mode, and optional submission callbacks.
 
 ```ts
-export declare function FormProvider<T extends FormValues = DynamicFormValues>({ store, registry, schema, defaultValues, children, onSubmit, formValidator, onError, onChange, onValidate, validationMode, onInvalidSubmit, focusOnInvalidSubmit, onDataSourceRefresh, }: FormProviderProps<T>): import("react").JSX.Element
+export declare function FormProvider<T extends FormValues = DynamicFormValues>(props: FormProviderProps<T>): import("react").JSX.Element
 ```
 
 ### FormProviderProps
@@ -201,6 +201,17 @@ Register a React control while preserving the value type it receives.
 export declare function registerReactField<TValue = unknown>(registry: FieldRegistry<ComponentType<FieldComponentProps<TValue>>>, definition: Omit<FieldDefinition<ComponentType<FieldComponentProps<TValue>>>, "component"> & { component: ComponentType<FieldComponentProps<TValue>>; }): FieldRegistry<ComponentType<FieldComponentProps<TValue>>>
 ```
 
+### shallowEqual
+
+- Kind: function
+- Source: `packages/react/src/hooks/useFormState.ts`
+
+Shallow structural equality for objects and arrays returned by `useFormState` selectors.
+
+```ts
+export declare function shallowEqual<T>(previous: T, next: T): boolean
+```
+
 ### TypedFieldPath
 
 - Kind: type
@@ -217,7 +228,7 @@ export type TypedFieldPath;
 - Kind: function
 - Source: `packages/react/src/hooks/useDataSource.ts`
 
-Public function exported by @dynamic-form-engine/react.
+Loads a field's data source. Requests are re-run when the configuration's data (not its object identity), the field's dependency values, the search term, page, or page size change, so inline `config` objects are safe. A changed `load` function identity alone does not trigger a request; the latest function is used on the next load. Pending requests are cancelled on unmount and whenever a newer request starts.
 
 ```ts
 export declare function useDataSource<T = unknown>(fieldName: string, options?: UseDataSourceOptions<T>): UseDataSourceResult<T>
@@ -253,7 +264,7 @@ export interface UseDataSourceResult;
 Binds a field path to value, touched state, errors, and validation behavior.
 
 ```ts
-export declare function useField<T = unknown>(name: string): { name: string; value: T; setValue: (nextValue: T) => void; error: string; touched: boolean; dirty: boolean; isValidating: boolean; setError: (message: string) => void; clearError: () => void; setTouched: (touched?: boolean) => void; validate: () => Promise<boolean>; }
+export declare function useField<T = unknown>(name: string): { name: string; value: T; setValue: (nextValue: T) => void; error: string | undefined; touched: boolean; dirty: boolean; isValidating: boolean; visible: boolean; disabled: boolean; required: boolean; readOnly: boolean; setError: (message: string) => void; clearError: () => void; setTouched: (touched?: boolean) => void; validate: () => Promise<boolean>; }
 ```
 
 ### useFieldArray
@@ -283,10 +294,10 @@ export interface UseFieldArrayReturn;
 - Kind: function
 - Source: `packages/react/src/hooks/useFieldState.ts`
 
-Public function exported by @dynamic-form-engine/react.
+Error, touched, dirty, validation progress, and Core condition state (visible, disabled, required, read-only) for one field, without its value or actions. Condition state is correct on the first render and during server rendering, before the provider's condition controller mounts.
 
 ```ts
-export declare function useFieldState(name: string): { visible: boolean; disabled: boolean; required: boolean; readOnly: boolean; error: string; touched: boolean; dirty: boolean; isValidating: boolean; }
+export declare function useFieldState(name: string): { error: string | undefined; touched: boolean; dirty: boolean; isValidating: boolean; visible: boolean; disabled: boolean; required: boolean; readOnly: boolean; }
 ```
 
 ### useForm
@@ -305,7 +316,7 @@ export declare function useForm<TValues extends FormValues = DynamicFormValues>(
 - Kind: function
 - Source: `packages/react/src/hooks/useFormState.ts`
 
-Public function exported by @dynamic-form-engine/react.
+Stable mutation, validation, submission, and reset actions. Does not subscribe to state, and the returned object keeps its identity for the life of the store, even when provider callbacks such as `onSubmit` are inline.
 
 ```ts
 export declare function useFormActions<T extends FormValues = DynamicFormValues>(): { setValue: { <TPath extends import("@dynamic-form-engine/core").Path<T>>(path: TPath, value: import("@dynamic-form-engine/core").PathValue<T, TPath>, options?: import("@dynamic-form-engine/core").SetValueOptions): void; (path: import("@dynamic-form-engine/core").DynamicPath, value: unknown, options?: import("@dynamic-form-engine/core").SetValueOptions): void; }; setValues: (values: Partial<T>, options?: import("@dynamic-form-engine/core").SetValueOptions) => void; setError: { <TPath extends import("@dynamic-form-engine/core").Path<T>>(path: TPath, message: string): void; (path: import("@dynamic-form-engine/core").DynamicPath, message: string): void; }; clearError: { <TPath extends import("@dynamic-form-engine/core").Path<T>>(path: TPath): void; (path: import("@dynamic-form-engine/core").DynamicPath): void; }; validateField: (name: string) => Promise<boolean>; validateForm: () => Promise<boolean>; submit: <TResult = unknown>() => Promise<TResult | undefined>; reset: () => void; resetField: (name: string) => void; }
@@ -327,7 +338,7 @@ export declare function useFormContext<T extends FormValues = DynamicFormValues>
 - Kind: function
 - Source: `packages/react/src/hooks/useFormEvent.ts`
 
-Subscribe to a Core form event; cleanup is handled with the component lifecycle.
+Subscribe to a Core form event for the component's lifetime. The listener may be an inline function: the subscription is created once per store and event type and always calls the latest listener.
 
 ```ts
 export declare function useFormEvent(type: FormEventType, listener: FormEventListener): void
@@ -352,7 +363,7 @@ export interface UseFormOptions;
 Subscribes to a selected form-state slice through React external-store semantics.
 
 ```ts
-export declare function useFormState<TSelected = FormState<DynamicFormValues>>(selector?: (state: FormState) => TSelected): TSelected
+export declare function useFormState<TSelected = FormState<DynamicFormValues>>(selector?: (state: FormState) => TSelected, equality?: (previous: TSelected, next: TSelected) => boolean): TSelected
 ```
 
 ### useFormStore

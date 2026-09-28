@@ -67,6 +67,8 @@ jobs:
         run: pnpm install --lockfile=false
       - name: Build workspace dependencies
         run: pnpm --filter @dynamic-form-engine/react... build
+      - name: React adapter against the matrix React version
+        run: pnpm --filter @dynamic-form-engine/react typecheck && pnpm --filter @dynamic-form-engine/react test
       - run: pnpm --filter @dynamic-form-engine/rhf typecheck
       - run: pnpm --filter @dynamic-form-engine/rhf test
       - run: pnpm --filter @dynamic-form-engine/rhf build

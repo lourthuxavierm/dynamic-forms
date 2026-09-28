@@ -1118,6 +1118,11 @@
           "source": "packages/react/src/registry.ts"
         },
         {
+          "name": "shallowEqual",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFormState.ts"
+        },
+        {
           "name": "TypedFieldPath",
           "kind": "type",
           "source": "packages/react/src/types.ts"
