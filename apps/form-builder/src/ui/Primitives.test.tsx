@@ -1,4 +1,4 @@
-﻿import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { Badge, Button, PanelHeader, Switch, Tabs } from './Primitives';
 

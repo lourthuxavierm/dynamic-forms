@@ -8,14 +8,16 @@ import { PersistencePanel } from './persistence/PersistencePanel';
 import { createField, palette } from './schema/catalogue';
 import { parseSchema, validateBuilderSchema } from './schema/builderValidation';
 import { FieldInspector } from './builder/inspector/FieldInspector';
-import { FormCanvas } from './builder/canvas/FormCanvas';
+import { FormCanvas, type CanvasViewport } from './builder/canvas/FormCanvas';
+import { setFormMeta } from './builder/formMeta';
 import { WizardDesigner } from './builder/wizard/WizardDesigner';
 import { setWizardConfig, wizardConfig } from './builder/wizard';
 import { FieldPalette } from './builder/palette/FieldPalette';
 import { Preview } from './preview/Preview';
 import { RulesView } from './builder/rules/RulesView';
-import { NavigationRail, TopBar } from './app/Shell';
-import { Tabs } from './ui/Primitives';
+import { Maximize, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { NavigationRail, TopBar, type RailSection } from './app/Shell';
+import { IconButton, Tabs } from './ui/Primitives';
 import { duplicateField, fieldsAt, findField, insertField, moveField, moveToParent, removeField, uniqueName } from './schema/operations';
 
 const loaded = loadDraft();
@@ -30,6 +32,9 @@ export default function App() {
   const [activeStep, setActiveStep] = useState('step-1');
   const [manageOpen, setManageOpen] = useState(false);
   const [layoutOpen, setLayoutOpen] = useState(false);
+  const [canvasViewport, setCanvasViewport] = useState<CanvasViewport>('desktop');
+  const [savedAt, setSavedAt] = useState(() => Date.now());
+  const [toastVisible, setToastVisible] = useState(false);
   const [scheme, setScheme] = useState<'light' | 'dark' | 'auto'>('light');
   const uploadRef = useRef<HTMLInputElement>(null);
   const wizard = wizardConfig(state.schema);
@@ -38,9 +43,15 @@ export default function App() {
   const selected = state.selectedPath ? findField(state.schema, state.selectedPath)?.field : undefined;
   const commit = (schema: FormSchema, selectedPath?: string, message?: string) => dispatch({ type: 'commit', schema, selectedPath, message });
 
-  useEffect(() => { const timer = window.setTimeout(() => { saveDraft(state.schema, state.selectedPath); dispatch({ type: 'saved' }); }, 350); return () => window.clearTimeout(timer); }, [state.schema, state.selectedPath]);
+  useEffect(() => { const timer = window.setTimeout(() => { saveDraft(state.schema, state.selectedPath); dispatch({ type: 'saved' }); setSavedAt(Date.now()); }, 350); return () => window.clearTimeout(timer); }, [state.schema, state.selectedPath]);
   useEffect(() => {
-    const handler = (event: KeyboardEvent) => {
+    if (!state.message) return;
+    setToastVisible(true);
+    const timer = window.setTimeout(() => setToastVisible(false), 4000);
+    return () => window.clearTimeout(timer);
+  }, [state.message]);
+  useEffect(() => {
+    const handler =(event: KeyboardEvent) => {
       const editing = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement;
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); dispatch({ type: event.shiftKey ? 'redo' : 'undo' }); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') { event.preventDefault(); dispatch({ type: 'redo' }); }
@@ -72,6 +83,13 @@ export default function App() {
   const importFile = async (event: ChangeEvent<HTMLInputElement>) => { const file = event.target.files?.[0]; if (!file) return; const text = await file.text(); const result = parseSchema(text); if (!result.schema || result.errors.length) { dispatch({ type: 'message', message: result.errors.map((error) => error.message).join(', ') }); return; } if (!state.saved && !confirm('Replace the current unsaved form?')) return; commit(result.schema, result.schema.fields[0]?.name, 'Schema imported'); event.target.value = ''; };
   const loadSchema = (schema: FormSchema) => commit(schema, schema.fields[0]?.name, 'Form loaded');
   const newForm = () => { if (!state.saved && !confirm('Discard the current unsaved form?')) return; const schema = { ...starterSchema, id: `untitled-form-${Date.now()}`, fields: [] }; saveDraft(schema); commit(schema, undefined, 'New form created'); };
+  const railSection: RailSection = manageOpen ? 'Data' : state.view === 'rules' ? 'Logic' : 'Design';
+  const navigate = (section: RailSection) => {
+    if (section === 'Design') { setManageOpen(false); chooseView('design'); }
+    else if (section === 'Data') setManageOpen(true);
+    else if (section === 'Logic') { setManageOpen(false); chooseView('rules'); }
+    else dispatch({ type: 'message', message: `${section} are coming soon` });
+  };
   const publishForm = () => { if (errors.length) { dispatch({ type: 'message', message: 'Resolve blocking issues before publishing' }); return; } const storedLayout = localStorage.getItem(`dynamic-forms:builder:layout:${state.schema.id}`); const release = publish(state.schema, storedLayout ? JSON.parse(storedLayout) : undefined); dispatch({ type: 'saved' }); dispatch({ type: 'message', message: `Published ${release.id} at ${release.url}` }); };
 
   return <div className="app"><a className="skip-link" href="#builder-content">Skip to builder content</a>
@@ -79,6 +97,7 @@ export default function App() {
       schema={state.schema}
       issueCount={errors.length}
       saved={state.saved}
+      savedAt={savedAt}
       canUndo={Boolean(state.past.length)}
       canRedo={Boolean(state.future.length)}
       uploadRef={uploadRef}
@@ -89,35 +108,47 @@ export default function App() {
       onImport={(event) => void importFile(event)}
       onExport={download}
       onCopy={() => void copy()}
-      onSave={() => { saveDraft(state.schema, state.selectedPath); dispatch({ type: 'saved' }); dispatch({ type: 'message', message: 'Draft saved' }); }}
+      onSave={() => { saveDraft(state.schema, state.selectedPath); dispatch({ type: 'saved' }); setSavedAt(Date.now()); dispatch({ type: 'message', message: 'Draft saved' }); }}
       onPublish={publishForm}
       onManage={() => setManageOpen(true)}
       onPreview={() => chooseView('preview')}
+      onSettings={() => dispatch({ type: 'message', message: 'Settings are coming soon' })}
     />
     <div className="app-body">
-      <NavigationRail onNavigate={(label) => { if (label === 'Layout') setLayoutOpen((open) => !open); else if (label === 'Rules') chooseView('rules'); else if (label !== 'Builder') dispatch({ type: 'message', message: label + ' is planned for a later phase' }); }} />
-      <div className="app-content" id="builder-content" tabIndex={-1}>
-    <Tabs items={['design','preview','json','rules'] as const} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
+      <NavigationRail active={railSection} onNavigate={navigate} />
+      <div className={`app-content app-content--${state.view}`} id="builder-content" tabIndex={-1}>
     {state.view === 'design' ? <div className="workspace">
       <FieldPalette onAdd={add} />
       <div className="builder-center">
+        <div className="view-bar">
+          <Tabs items={['design','preview','json','rules'] as const} labels={viewLabels} value={state.view} onChange={chooseView} ariaLabel="Builder view" />
+          <div className="canvas-viewport" aria-label="Canvas viewport">
+            {([['desktop', Monitor], ['tablet', Tablet], ['mobile', Smartphone]] as const).map(([item, Icon]) => <IconButton key={item} aria-label={`${item} canvas`} aria-pressed={canvasViewport === item} className={canvasViewport === item ? 'active' : ''} onClick={() => setCanvasViewport(item)}><Icon size={20} /></IconButton>)}
+            <IconButton aria-label="Fullscreen canvas" onClick={() => void document.querySelector<HTMLElement>('.builder-center')?.requestFullscreen?.()}><Maximize size={19} /></IconButton>
+          </div>
+        </div>
         {layoutOpen || wizard.mode === 'wizard' ? <WizardDesigner schema={state.schema} config={wizard} activeId={currentStep.id} onActive={setActiveStep} onChange={(next) => commit(setWizardConfig(state.schema, next), state.selectedPath, 'Form flow updated')} /> : null}
-        <FormCanvas schema={state.schema} visiblePaths={wizard.mode === 'wizard' && !currentStep.review ? currentStep.fieldPaths : undefined} selectedPath={state.selectedPath} errors={errors}
+        <FormCanvas schema={state.schema} viewport={canvasViewport} visiblePaths={wizard.mode === 'wizard' && !currentStep.review ? currentStep.fieldPaths : undefined} selectedPath={state.selectedPath} errors={errors}
+          flowOpen={layoutOpen} onToggleFlow={() => setLayoutOpen((open) => !open)}
+          onMetaChange={(patch) => commit(setFormMeta(state.schema, patch), state.selectedPath)}
           onSelect={(path) => dispatch({ type: 'select', path })}
           onAdd={add} onDrop={onDrop} onMove={reorder} onReparent={reparent}
           onDuplicate={duplicate} onRemove={remove} />
       </div>
-      <FieldInspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)} />
-    </div> : null}
+      <FieldInspector schema={state.schema} path={state.selectedPath} field={selected} errors={errors.filter((error) => error.path === state.selectedPath)} onPatch={patchSelected} onReparent={(parent) => state.selectedPath && reparent(state.selectedPath, parent)}
+        onDuplicate={() => state.selectedPath && duplicate(state.selectedPath)} onRemove={() => state.selectedPath && remove(state.selectedPath)} />
+    </div> : <div className="view-bar view-bar--standalone"><Tabs items={['design','preview','json','rules'] as const} labels={viewLabels} value={state.view} onChange={chooseView} ariaLabel="Builder view" /></div>}
     {state.view === 'preview' ? <Preview schema={state.schema} wizard={wizard} errors={errors} submitted={submitted} onSubmitted={setSubmitted} viewport={viewport} setViewport={setViewport} density={density} setDensity={setDensity} scheme={scheme} setScheme={setScheme} /> : null}
     {state.view === 'rules' ? <RulesView schema={state.schema} issues={errors} onJump={(path) => { dispatch({ type: 'select', path }); dispatch({ type: 'view', view: 'design' }); window.setTimeout(() => { const node = document.querySelector<HTMLElement>('[data-field-path="' + path + '"]'); node?.scrollIntoView({ block: 'center' }); node?.focus(); }, 0); }} /> : null}
     {state.view === 'json' ? <main className="json-view"><div className="view-heading"><div><p className="eyebrow">Portable schema</p><h1>JSON editor</h1></div><div><button onClick={() => { setJsonText(JSON.stringify(state.schema, null, 2)); setJsonErrors([]); }}>Discard edits</button><button className="primary" onClick={applyJson}>Apply JSON</button></div></div>{jsonErrors.length ? <div className="json-errors" role="alert">{jsonErrors.map((error) => <p key={error}>{error}</p>)}</div> : null}<textarea aria-label="Schema JSON" spellCheck={false} value={jsonText} onChange={(event) => setJsonText(event.target.value)} /></main> : null}
       </div>
     </div>
     {manageOpen ? <PersistencePanel schema={state.schema} onLoad={(schema) => { loadSchema(schema); setManageOpen(false); }} onClose={() => setManageOpen(false)} /> : null}
-    <div className="live-region" aria-live="polite">{state.message}</div>
+    <div className={toastVisible && state.message ? 'live-region visible' : 'live-region'} role="status" aria-live="polite">{state.message}</div>
   </div>;
 }
+
+const viewLabels = { design: 'Design', preview: 'Preview', json: 'JSON', rules: 'Rules' } as const;
 
 function safeName(value: string) { return value.replace(/[^a-zA-Z0-9]+(.)?/g, (_, char: string | undefined) => char?.toUpperCase() ?? '').replace(/^[A-Z]/, (char) => char.toLowerCase()); }
 function humanize(value: string) { return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form'; }

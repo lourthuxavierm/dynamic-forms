@@ -56,6 +56,22 @@ type NestedArrayValues = InferFormValues<typeof nestedArraySchema>;
 type _ArrayObject = Expect<Equal<NestedArrayValues['orders'][number], { product: string; quantity: number | null }>>;
 type _PrimitiveArray = Expect<Equal<NestedArrayValues['scores'][number], number | null>>;
 
+const deepArraySchema = defineFormSchema({ schemaVersion: 1, id: 'deep-arrays', fields: [
+  { name: 'orders', type: 'array', fields: [
+    { name: 'shipping', type: 'object', fields: [
+      { name: 'address', type: 'object', fields: [{ name: 'city', type: 'text' }] },
+    ] },
+    { name: 'lines', type: 'array', fields: [
+      { name: 'sku', type: 'text' },
+      { name: 'tags', type: 'multi-select' },
+    ] },
+  ] },
+] } as const);
+type DeepArrayValues = InferFormValues<typeof deepArraySchema>;
+type _ArrayNestedObject = Expect<Equal<DeepArrayValues['orders'][number]['shipping']['address']['city'], string>>;
+type _ArrayNestedArray = Expect<Equal<DeepArrayValues['orders'][number]['lines'][number]['sku'], string>>;
+type _ArrayNestedMultiSelect = Expect<Equal<DeepArrayValues['orders'][number]['lines'][number]['tags'], Array<string | number | boolean>>>;
+
 interface Renderer { render(): void }
 interface Metadata extends Record<string, unknown> { category: 'input' | 'display' }
 type CustomFieldType = 'text' | 'color';

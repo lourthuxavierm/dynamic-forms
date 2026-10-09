@@ -1,10 +1,10 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createField, palette, paletteGroups } from './catalogue';
 
 describe('builder field catalogue', () => {
   it('contains unique field types with visual metadata', () => {
     expect(new Set(palette.map((item) => item.type)).size).toBe(palette.length);
-    expect(palette.every((item) => item.label && item.icon && item.accent)).toBe(true);
+    expect(palette.every((item) => item.label && item.accent && item.icon !== undefined)).toBe(true);
   });
 
   it('uses the reference category order and retains layout utilities', () => {

@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useReducer, useRef, useState, type CSSProperties, type DragEvent } from 'react';
-import type { FieldSchema, FieldType, FormSchema } from '@dynamic-form-engine/core';
-import { Button, IconButton } from '../../ui/Primitives';
+import type { FieldType, FormSchema } from '@dynamic-form-engine/core';
+import { ArrowLeft, ArrowRight, Check, EllipsisVertical, Pencil, Plus, Redo2, Trash2, TriangleAlert, Undo2, User, Users, Workflow } from 'lucide-react';
+import { Button, IconButton, Menu } from '../../ui/Primitives';
 import { allPaths } from '../../schema/operations';
 import { FieldNode } from '../BuilderParts';
-import { addSection, initialLayoutHistory, layoutReducer, movePlacement, normalizeLayout, removeSection, setPlacementSpan, updateSection, type BuilderLayout, type LayoutColumns, type LayoutSpan } from '../layout';
+import { formDescription, formTitle } from '../formMeta';
+import { addSection, initialLayoutHistory, layoutReducer, movePlacement, normalizeLayout, removeSection, setPlacementSpan, shiftPlacement, updateSection, type BuilderLayout, type LayoutColumns, type LayoutSpan } from '../layout';
 
 const LAYOUT_KEY = 'dynamic-forms:builder:layout';
 
@@ -16,11 +18,17 @@ function loadLayout(schema: FormSchema): BuilderLayout {
   }
 }
 
+export type CanvasViewport = 'desktop' | 'tablet' | 'mobile';
+
 interface FormCanvasProps {
   schema: FormSchema;
+  viewport: CanvasViewport;
   visiblePaths?: readonly string[];
   selectedPath?: string;
   errors: readonly { path: string; message: string }[];
+  flowOpen: boolean;
+  onToggleFlow: () => void;
+  onMetaChange: (patch: { title?: string; description?: string }) => void;
   onSelect: (path: string) => void;
   onAdd: (type: FieldType, parentPath?: string) => void;
   onDrop: (event: DragEvent, parentPath: string) => void;
@@ -32,84 +40,99 @@ interface FormCanvasProps {
 
 export function FormCanvas(props: FormCanvasProps) {
   const [history, dispatch] = useReducer(layoutReducer, props.schema, (schema) => initialLayoutHistory(loadLayout(schema)));
-  const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
-  const canvasRef = useRef<HTMLElement>(null);
+  const [activeId, setActiveId] = useState(history.present.sections[0]?.id);
+  const [editingMeta, setEditingMeta] = useState(false);
   const fieldSignature = props.schema.fields.map((field) => field.name).join('|');
   const currentLayout = useRef(history.present);
   currentLayout.current = history.present;
+  const sections = history.present.sections;
+  const activeIndex = Math.max(0, sections.findIndex((section) => section.id === activeId));
+  const active = sections[activeIndex];
+  const activeRef = useRef(active?.id);
+  activeRef.current = active?.id;
 
   useEffect(() => {
-    dispatch({ type: 'replace', layout: normalizeLayout(props.schema, currentLayout.current) });
+    dispatch({ type: 'replace', layout: normalizeLayout(props.schema, currentLayout.current, activeRef.current) });
   }, [fieldSignature, props.schema]);
   useEffect(() => {
-    localStorage.setItem(`${LAYOUT_KEY}:${props.schema.id}`, JSON.stringify(history.present));
+    try { localStorage.setItem(`${LAYOUT_KEY}:${props.schema.id}`, JSON.stringify(history.present)); } catch { /* storage unavailable */ }
   }, [history.present, props.schema.id]);
+  // Follow the selection (e.g. from the Rules view) into the section that holds it.
+  useEffect(() => {
+    const root = props.selectedPath?.split('.')[0];
+    const owner = root ? currentLayout.current.sections.find((section) => section.placements.some((placement) => placement.fieldPath === root)) : undefined;
+    if (owner) setActiveId(owner.id);
+  }, [props.selectedPath]);
 
   const fields = useMemo(() => new Map(props.schema.fields.map((field) => [field.name, field])), [props.schema.fields]);
   const commit = (layout: BuilderLayout) => dispatch({ type: 'commit', layout });
+  const fieldCount = allPaths(props.schema).length;
+  const title = formTitle(props.schema);
+  const description = formDescription(props.schema);
+  const move = (path: string, direction: -1 | 1) => { if (!path.includes('.')) commit(shiftPlacement(history.present, path, direction)); props.onMove(path, direction); };
+  const createSection = () => { const next = addSection(history.present); commit(next); setActiveId(next.sections.at(-1)!.id); };
 
-  return <main ref={canvasRef} className={`canvas visual-canvas visual-canvas--${viewport}`}>
-    <div className="canvas-toolbar"><span className="layout-label">Form Layout</span>
-      <div className="canvas-heading"><div><p className="eyebrow">Form canvas</p><h1>{humanize(props.schema.id)}</h1><p>Collect and manage customer information</p></div><span>{allPaths(props.schema).length} fields</span></div>
-      <div className="canvas-viewport" aria-label="Canvas viewport">
-        {(['desktop','tablet','mobile'] as const).map((item) => <Button key={item} size="small" variant="ghost" aria-label={`${item} canvas`} aria-pressed={viewport === item} className={viewport === item ? 'active' : ''} onClick={() => setViewport(item)}>{item === 'desktop' ? '▱' : item === 'tablet' ? '▯' : '▯'}</Button>)}
-        <IconButton size="small" aria-label="Fullscreen canvas" onClick={() => void canvasRef.current?.requestFullscreen?.()}>⛶</IconButton>
-      </div>
-    </div>
-    {props.errors.length ? <details className="error-list"><summary>{props.errors.length} schema issues</summary><ul>{props.errors.map((error, index) => <li key={index}><button onClick={() => props.onSelect(error.path)}>{error.path}</button>: {error.message}</li>)}</ul></details> : null}
-    <div className="layout-history">
-      <Button size="small" variant="ghost" disabled={!history.past.length} onClick={() => dispatch({ type: 'undo' })}>Undo layout</Button>
-      <Button size="small" variant="ghost" disabled={!history.future.length} onClick={() => dispatch({ type: 'redo' })}>Redo layout</Button>
-      <Button size="small" onClick={() => commit(addSection(history.present))}>＋ Add section</Button>
-    </div>
+  return <main className={`canvas visual-canvas visual-canvas--${props.viewport}`}>
     <div className="form-surface">
-      <div className="form-surface-header"><span aria-hidden="true">👥</span><div><h2>{humanize(props.schema.id)}</h2><p>Collect and manage customer information</p></div><div className="surface-badges"><b>{props.schema.fields.length} fields</b>{props.errors.length ? <strong>{props.errors.length} issue</strong> : null}<i>⋮</i></div></div>
-      <div className="form-steps" aria-label="Form steps">
-        <div className="form-step active"><b>1</b><span><strong>Personal Details</strong><small>Basic information</small></span></div>
-        <div className="form-step"><b>2</b><span><strong>Contact &amp; Preferences</strong><small>How to reach you</small></span></div>
-        <div className="form-step"><b>3</b><span><strong>Additional Info</strong><small>Optional details</small></span></div>
+      <header className="form-header-card">
+        <span className="form-header-icon" aria-hidden="true"><Users size={30} /></span>
+        {editingMeta ? <div className="form-header-copy editing">
+          <input aria-label="Form title" autoFocus value={title} onChange={(event) => props.onMetaChange({ title: event.target.value })} onKeyDown={(event) => { if (event.key === 'Enter') setEditingMeta(false); }} />
+          <input aria-label="Form description" value={description} placeholder="Add a form description" onChange={(event) => props.onMetaChange({ description: event.target.value })} onKeyDown={(event) => { if (event.key === 'Enter') setEditingMeta(false); }} />
+        </div> : <div className="form-header-copy"><h1>{title}</h1><p>{description || 'Add a form description'}</p></div>}
+        <div className="form-header-actions">
+          <span className="count-pill">{fieldCount} {fieldCount === 1 ? 'field' : 'fields'}</span>
+          <IconButton aria-label={editingMeta ? 'Finish editing form details' : 'Edit form details'} onClick={() => setEditingMeta((value) => !value)}>{editingMeta ? <Check size={19} /> : <Pencil size={19} />}</IconButton>
+          <Menu label="Form layout options" trigger={<EllipsisVertical size={19} />} triggerClassName="ui-icon-button" items={[
+            { label: 'Add section', icon: <Plus size={16} />, onSelect: createSection },
+            { label: props.flowOpen ? 'Hide form flow' : 'Form flow & wizard', icon: <Workflow size={16} />, onSelect: props.onToggleFlow },
+            { label: 'Undo layout', icon: <Undo2 size={16} />, disabled: !history.past.length, onSelect: () => dispatch({ type: 'undo' }) },
+            { label: 'Redo layout', icon: <Redo2 size={16} />, disabled: !history.future.length, onSelect: () => dispatch({ type: 'redo' }) },
+          ]} />
+        </div>
+      </header>
+      {props.errors.length ? <button type="button" className="surface-issue" onClick={() => props.onSelect(props.errors[0].path)}>
+        <TriangleAlert size={17} aria-hidden="true" /><span>{props.errors.length} schema {props.errors.length === 1 ? 'issue' : 'issues'} found: {props.errors[0].message}</span><strong>View details <ArrowRight size={15} aria-hidden="true" /></strong>
+      </button> : null}
+      <div className="form-steps" role="tablist" aria-label="Form sections">
+        {sections.map((section, index) => <button type="button" role="tab" key={section.id} aria-selected={section.id === active.id} className={section.id === active.id ? 'form-step active' : 'form-step'} onClick={() => setActiveId(section.id)}>
+          <b>{index + 1}</b><span><strong>{section.title}</strong><small>{section.description || `${section.placements.length} ${section.placements.length === 1 ? 'field' : 'fields'}`}</small></span>
+        </button>)}
+        <IconButton className="add-step" aria-label="Add section" title="Add section" onClick={createSection}><Plus size={18} /></IconButton>
       </div>
-      {props.errors.length ? <button className="surface-issue" onClick={() => props.onSelect(props.errors[0].path)}><span>&#9888;&nbsp;&nbsp; {props.errors.length} schema issue found</span><strong>View details&nbsp;&nbsp; &#8594;</strong></button> : null}      {history.present.sections.map((section) => <section className="form-section" key={section.id} aria-label={section.title}>
+      {active ? <section className="form-section" key={active.id} aria-label={active.title}>
         <header className="form-section-header">
-          <span className="section-icon" aria-hidden="true">♟</span>
+          <span className="section-icon" aria-hidden="true"><User size={22} /></span>
           <div className="section-copy">
-            <input aria-label={`${section.title} section title`} value={section.title} onChange={(event) => commit(updateSection(history.present, section.id, { title: event.target.value }))} />
-            <input aria-label={`${section.title} section description`} value={section.description ?? ''} placeholder="Section description" onChange={(event) => commit(updateSection(history.present, section.id, { description: event.target.value || undefined }))} />
+            <input aria-label={`${active.title} section title`} value={active.title} onChange={(event) => commit(updateSection(history.present, active.id, { title: event.target.value }))} />
+            <input aria-label={`${active.title} section description`} value={active.description ?? ''} placeholder="Section description" onChange={(event) => commit(updateSection(history.present, active.id, { description: event.target.value || undefined }))} />
           </div>
-          <span className="section-count">{section.placements.length} fields</span><label className="section-columns"><span>Columns</span><select aria-label={`${section.title} columns`} value={section.columns} onChange={(event) => commit(updateSection(history.present, section.id, { columns: Number(event.target.value) as LayoutColumns }))}>{[1,2,3,4].map((count) => <option key={count} value={count}>{count}</option>)}</select></label>
-          <IconButton size="small" aria-label={`Delete ${section.title} section`} disabled={history.present.sections.length === 1} onClick={() => commit(removeSection(history.present, section.id))}>⌫</IconButton>
+          <label className="section-columns"><span>Columns</span><select aria-label={`${active.title} columns`} value={active.columns} onChange={(event) => commit(updateSection(history.present, active.id, { columns: Number(event.target.value) as LayoutColumns }))}>{[1, 2, 3, 4].map((count) => <option key={count} value={count}>{count}</option>)}</select></label>
+          <IconButton size="small" className="danger" aria-label={`Delete ${active.title} section`} title="Delete section" disabled={sections.length === 1} onClick={() => { commit(removeSection(history.present, active.id)); setActiveId(sections[0].id === active.id ? sections[1]?.id : sections[0].id); }}><Trash2 size={17} /></IconButton>
         </header>
-        <div className="section-grid" role="tree" aria-label="Form fields" style={{ '--section-columns': section.columns } as CSSProperties}>
-          {section.placements.map((placement) => {
+        <div className="section-grid" role="tree" aria-label="Form fields" style={{ '--section-columns': active.columns } as CSSProperties}>
+          {active.placements.map((placement) => {
             const field = fields.get(placement.fieldPath);
             if (!field || (props.visiblePaths && !props.visiblePaths.includes(placement.fieldPath))) return null;
+            const label = field.label ?? field.name;
+            const footer = props.selectedPath === field.name && (active.columns > 1 || sections.length > 1) ? <div className="field-layout-actions" onClick={(event) => event.stopPropagation()}>
+              {active.columns > 1 ? <label>Width <select aria-label={`${label} column span`} value={placement.columnSpan} onChange={(event) => commit(setPlacementSpan(history.present, field.name, Number(event.target.value) as LayoutSpan))}>{Array.from({ length: active.columns }, (_, index) => index + 1).map((span) => <option key={span} value={span}>{span} of {active.columns}</option>)}</select></label> : null}
+              {sections.length > 1 ? <label>Section <select aria-label={`Move ${label} to section`} value={active.id} onChange={(event) => commit(movePlacement(history.present, field.name, event.target.value))}>{sections.map((target) => <option key={target.id} value={target.id}>{target.title}</option>)}</select></label> : null}
+            </div> : undefined;
             return <div className="visual-field" key={placement.fieldPath} style={{ '--field-span': placement.columnSpan } as CSSProperties}>
-              <FieldPreview field={field} />
-              <FieldNode field={field} path={field.name} selectedPath={props.selectedPath} onSelect={props.onSelect} onAdd={props.onAdd} onDrop={props.onDrop} onMove={props.onMove} onReparent={props.onReparent} onDuplicate={props.onDuplicate} onRemove={props.onRemove} />
-              <div className="field-layout-actions">
-                <label>Span <select aria-label={`${field.label ?? field.name} column span`} value={placement.columnSpan} onChange={(event) => commit(setPlacementSpan(history.present, field.name, Number(event.target.value) as LayoutSpan))}>{Array.from({ length: section.columns }, (_, index) => index + 1).map((span) => <option key={span}>{span}</option>)}</select></label>
-                {history.present.sections.length > 1 ? <label>Section <select aria-label={`Move ${field.label ?? field.name} to section`} value={section.id} onChange={(event) => commit(movePlacement(history.present, field.name, event.target.value))}>{history.present.sections.map((target) => <option key={target.id} value={target.id}>{target.title}</option>)}</select></label> : null}
-              </div>
+              <FieldNode field={field} path={field.name} footer={footer} selectedPath={props.selectedPath} onSelect={props.onSelect} onAdd={props.onAdd} onDrop={props.onDrop} onMove={move} onReparent={props.onReparent} onDuplicate={props.onDuplicate} onRemove={props.onRemove} />
             </div>;
           })}
-          <button className="section-drop-zone" onClick={() => props.onAdd('text')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => props.onDrop(event, '')}>＋ Drag fields here or click to add</button>
+          <button type="button" className="section-drop-zone" onClick={() => props.onAdd('text')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => props.onDrop(event, '')}>
+            <span className="drop-icon" aria-hidden="true"><Plus size={20} /></span>
+            <span><strong>Drag fields here or click to add</strong><small>Drop fields from the left panel to build your form</small></span>
+          </button>
         </div>
-      </section>)}
+      </section> : null}
+      <footer className="step-footer">
+        <Button className="step-previous" disabled={activeIndex === 0} onClick={() => setActiveId(sections[activeIndex - 1]?.id)}><ArrowLeft size={17} aria-hidden="true" />Previous</Button>
+        <Button variant="primary" className="step-next" disabled={activeIndex >= sections.length - 1} onClick={() => setActiveId(sections[activeIndex + 1]?.id)}>Next<ArrowRight size={17} aria-hidden="true" /></Button>
+      </footer>
     </div>
   </main>;
 }
-
-function FieldPreview({ field }: { field: FieldSchema }) {
-  if (field.type === 'textarea') return <textarea tabIndex={-1} aria-hidden="true" placeholder={field.placeholder ?? 'Enter additional details…'} readOnly />;
-  if (['select','multi-select','autocomplete','async-autocomplete','tree-select'].includes(field.type)) return <div className="field-preview-control">{field.placeholder ?? 'Select an option'}<span>⌄</span></div>;
-  if (['checkbox','switch','toggle-button'].includes(field.type)) return <div className="field-preview-choice"><span className="preview-switch" /> Enabled</div>;
-  if (['radio','radio-group','checkbox-group'].includes(field.type)) return <div className="field-preview-choice"><span>○ Option one</span><span>○ Option two</span></div>;
-  return <div className="field-preview-control"><span aria-hidden="true">{field.type === 'email' ? '✉' : field.type === 'phone' ? '☎' : field.type === 'number' ? '#' : '●'}</span>{field.placeholder ?? `Enter ${(field.label ?? field.name).toLowerCase()}`}</div>;
-}
-
-function humanize(value: string) {
-  return value.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (char) => char.toUpperCase()) || 'Untitled form';
-}
-
-
-

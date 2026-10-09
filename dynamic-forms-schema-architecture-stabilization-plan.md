@@ -149,12 +149,12 @@ Schema version 4 is not supported by this version of
 
 ## 3.4 Acceptance criteria
 
-- [ ] `schemaVersion` exists on public persisted schemas
-- [ ] Current version is exported
-- [ ] Unsupported versions fail deterministically
-- [ ] Error contains a stable diagnostic code
-- [ ] Version behavior is documented
-- [ ] Version tests exist
+- [x] `schemaVersion` exists on public persisted schemas
+- [x] Current version is exported
+- [x] Unsupported versions fail deterministically
+- [x] Error contains a stable diagnostic code
+- [x] Version behavior is documented
+- [x] Version tests exist
 
 ---
 
@@ -335,11 +335,11 @@ export interface SchemaValidationResult {
 
 ## 6.5 Acceptance criteria
 
-- [ ] Every validation failure has a stable code
-- [ ] Errors and warnings are distinguishable
-- [ ] Diagnostics identify schema path
-- [ ] Related field/reference can be reported
-- [ ] Builder/DevTools can consume diagnostics without parsing text
+- [x] Every validation failure has a stable code
+- [x] Errors and warnings are distinguishable
+- [x] Diagnostics identify schema path
+- [x] Related field/reference can be reported
+- [x] Builder/DevTools can consume diagnostics without parsing text
 
 ---
 
@@ -482,12 +482,12 @@ Do not keep multiple internal path formats.
 
 ## 8.3 Acceptance criteria
 
-- [ ] One canonical internal syntax
-- [ ] Store and schema use same semantics
-- [ ] Nested object paths tested
-- [ ] Nested array paths tested
-- [ ] Mixed object/array paths tested
-- [ ] Invalid paths produce diagnostics
+- [x] One canonical internal syntax
+- [x] Store and schema use same semantics
+- [x] Nested object paths tested
+- [x] Nested array paths tested
+- [x] Mixed object/array paths tested
+- [x] Invalid paths produce diagnostics
 
 ---
 
@@ -1048,13 +1048,13 @@ country → state → city → country
 
 ## 17.2 Test
 
-- [ ] direct self-cycle
-- [ ] two-node cycle
-- [ ] three-node cycle
-- [ ] deeply nested cycle
-- [ ] valid chain
-- [ ] diamond graph
-- [ ] disconnected graphs
+- [x] direct self-cycle
+- [x] two-node cycle
+- [x] three-node cycle
+- [x] deeply nested cycle
+- [x] valid chain
+- [x] diamond graph
+- [x] disconnected graphs
 
 ---
 
@@ -1516,22 +1516,22 @@ Add tests using `expectTypeOf`, `tsd`, or equivalent.
 
 Test:
 
-- [ ] text value
-- [ ] number value
-- [ ] boolean value
-- [ ] select value
-- [ ] multi-select value
-- [ ] object
-- [ ] array
-- [ ] nested object
-- [ ] array of objects
-- [ ] object containing arrays
-- [ ] arrays containing nested objects
-- [ ] path inference
-- [ ] path-value inference
-- [ ] invalid field configuration
-- [ ] invalid validation rules
-- [ ] invalid structural field
+- [x] text value
+- [x] number value
+- [x] boolean value
+- [x] select value
+- [x] multi-select value
+- [x] object
+- [x] array
+- [x] nested object
+- [x] array of objects
+- [x] object containing arrays
+- [x] arrays containing nested objects
+- [x] path inference
+- [x] path-value inference
+- [x] invalid field configuration
+- [x] invalid validation rules
+- [x] invalid structural field
 
 ---
 
@@ -1881,89 +1881,89 @@ Create comprehensive tests.
 
 ## Basic
 
-- [ ] empty schema
-- [ ] one field
-- [ ] many fields
-- [ ] duplicate field
-- [ ] invalid name
-- [ ] unsupported type
+- [x] empty schema
+- [x] one field
+- [x] many fields
+- [x] duplicate field
+- [x] invalid name
+- [x] unsupported type
 
 ## Objects
 
-- [ ] object with fields
-- [ ] empty object
-- [ ] nested object
-- [ ] duplicate nested field
-- [ ] deep object
+- [x] object with fields
+- [x] empty object
+- [x] nested object
+- [x] duplicate nested field
+- [x] deep object
 
 ## Arrays
 
-- [ ] primitive array
-- [ ] object array
-- [ ] nested arrays if supported
-- [ ] array defaults
-- [ ] array validation
-- [ ] array paths
+- [x] primitive array
+- [x] object array
+- [x] nested arrays if supported
+- [x] array defaults
+- [x] array validation
+- [x] array paths
 
 ## Conditions
 
-- [ ] valid reference
-- [ ] missing reference
-- [ ] AND
-- [ ] OR
-- [ ] NOT
-- [ ] nested condition
-- [ ] null
-- [ ] undefined
-- [ ] false
-- [ ] zero
-- [ ] empty string
-- [ ] empty array
+- [x] valid reference
+- [x] missing reference
+- [x] AND
+- [x] OR
+- [x] NOT
+- [x] nested condition
+- [x] null
+- [x] undefined
+- [x] false
+- [x] zero
+- [x] empty string
+- [x] empty array
 
 ## Dependencies
 
-- [ ] valid dependency
-- [ ] missing dependency
-- [ ] self-cycle
-- [ ] 2-node cycle
-- [ ] multi-node cycle
-- [ ] long valid chain
+- [x] valid dependency
+- [x] missing dependency
+- [x] self-cycle
+- [x] 2-node cycle
+- [x] multi-node cycle
+- [x] long valid chain
 
 ## DataSources
 
-- [ ] static
-- [ ] API
-- [ ] function if supported
-- [ ] search
-- [ ] pagination
-- [ ] dependent parameter
-- [ ] missing reference
-- [ ] invalid configuration
+- [x] static
+- [x] API
+- [x] function if supported
+- [x] search
+- [x] pagination
+- [x] dependent parameter
+- [x] missing reference
+- [x] invalid configuration
 
 ## Validation
 
-- [ ] required
-- [ ] min/max
-- [ ] minLength/maxLength
-- [ ] invalid regex
-- [ ] multipleOf
-- [ ] minItems/maxItems
-- [ ] nested validation
+- [x] required
+- [x] min/max
+- [x] minLength/maxLength
+- [x] invalid regex
+- [x] multipleOf
+- [x] minItems/maxItems
+- [x] nested validation
 
 ## Versioning
 
-- [ ] current version
-- [ ] missing version
-- [ ] unsupported old version
-- [ ] unsupported future version
-- [ ] migration
+- [x] current version
+- [x] missing version
+- [x] unsupported old version
+- [x] unsupported future version
+- [x] migration
 
 ## Immutability
 
-- [ ] validation doesn't mutate
-- [ ] normalization doesn't mutate
-- [ ] compilation doesn't mutate
-- [ ] runtime doesn't mutate public schema
+- [x] validation doesn't mutate
+- [x] normalization doesn't mutate
+- [x] compilation doesn't mutate
+- [x] runtime doesn't mutate public schema
 
 ---
 
@@ -2336,19 +2336,19 @@ Goal: establish the stable schema boundary.
 
 Tasks:
 
-- [ ] Add `schemaVersion`
-- [ ] Export `CURRENT_SCHEMA_VERSION`
-- [ ] Define supported version behavior
-- [ ] Define `SchemaDiagnostic`
-- [ ] Define diagnostic codes
-- [ ] Define errors vs warnings
-- [ ] Freeze canonical field path rules
-- [ ] Freeze object semantics
-- [ ] Freeze array semantics
-- [ ] Freeze default value precedence
-- [ ] Freeze condition semantics
-- [ ] Freeze dependency semantics
-- [ ] Freeze datasource schema boundary
+- [x] Add `schemaVersion`
+- [x] Export `CURRENT_SCHEMA_VERSION`
+- [x] Define supported version behavior
+- [x] Define `SchemaDiagnostic`
+- [x] Define diagnostic codes
+- [x] Define errors vs warnings
+- [x] Freeze canonical field path rules
+- [x] Freeze object semantics
+- [x] Freeze array semantics
+- [x] Freeze default value precedence
+- [x] Freeze condition semantics
+- [x] Freeze dependency semantics
+- [x] Freeze datasource schema boundary
 - [ ] Identify stable/experimental/internal exports
 
 Exit criteria:
@@ -2364,19 +2364,19 @@ would intentionally require semver consideration.
 
 Tasks:
 
-- [ ] Create `NormalizedFormSchema`
-- [ ] Create `NormalizedField`
-- [ ] Implement `normalizeSchema()`
-- [ ] Normalize paths
-- [ ] Normalize defaults
-- [ ] Normalize validation
-- [ ] Normalize conditions
-- [ ] Normalize dependencies
-- [ ] Normalize datasource configuration
-- [ ] Normalize options
-- [ ] Normalize structural fields
-- [ ] Guarantee no input mutation
-- [ ] Add idempotence tests
+- [x] Create `NormalizedFormSchema`
+- [x] Create `NormalizedField`
+- [x] Implement `normalizeSchema()`
+- [x] Normalize paths
+- [x] Normalize defaults
+- [x] Normalize validation
+- [x] Normalize conditions
+- [x] Normalize dependencies
+- [x] Normalize datasource configuration
+- [x] Normalize options
+- [x] Normalize structural fields
+- [x] Guarantee no input mutation
+- [x] Add idempotence tests
 
 Exit criteria:
 
@@ -2391,17 +2391,17 @@ multiple equivalent public schema shapes.
 
 Tasks:
 
-- [ ] Implement `compileSchema()`
-- [ ] Build `fieldsByPath`
-- [ ] Compile conditions
-- [ ] Compile dependency graph
-- [ ] Compile datasource references
-- [ ] Compile validation metadata
-- [ ] Resolve all cross-field references
-- [ ] Detect dependency cycles
-- [ ] Produce compile diagnostics
-- [ ] Return `CompiledFormSchema`
-- [ ] Freeze/protect compiled representation
+- [x] Implement `compileSchema()`
+- [x] Build `fieldsByPath`
+- [x] Compile conditions
+- [x] Compile dependency graph
+- [x] Compile datasource references
+- [x] Compile validation metadata
+- [x] Resolve all cross-field references
+- [x] Detect dependency cycles
+- [x] Produce compile diagnostics
+- [x] Return `CompiledFormSchema`
+- [x] Freeze/protect compiled representation
 
 Exit criteria:
 
@@ -2416,14 +2416,14 @@ or transformed into a valid runtime-ready representation.
 
 Tasks:
 
-- [ ] Make FormRuntime consume normalized/compiled schema
-- [ ] Remove repeated raw schema scans
-- [ ] Use field index
-- [ ] Use dependency graph
-- [ ] Use condition indexes
+- [x] Make FormRuntime consume normalized/compiled schema
+- [x] Remove repeated raw schema scans
+- [x] Use field index
+- [x] Use dependency graph
+- [x] Use condition indexes
 - [ ] Use datasource indexes
-- [ ] Preserve existing public behavior
-- [ ] Add lifecycle integration tests
+- [x] Preserve existing public behavior
+- [x] Add lifecycle integration tests
 
 Exit criteria:
 
@@ -2438,21 +2438,21 @@ schema during ordinary field updates.
 
 Tasks:
 
-- [ ] Nested objects
-- [ ] Deep objects
-- [ ] arrays
-- [ ] arrays of objects
-- [ ] object containing arrays
-- [ ] nested array policy
-- [ ] nested default values
-- [ ] nested validation
-- [ ] nested conditions
-- [ ] nested dependencies
-- [ ] nested datasource parameters
-- [ ] reset nested values
-- [ ] remove array items
-- [ ] add array items
-- [ ] path stability
+- [x] Nested objects
+- [x] Deep objects
+- [x] arrays
+- [x] arrays of objects
+- [x] object containing arrays
+- [x] nested array policy
+- [x] nested default values
+- [x] nested validation
+- [x] nested conditions
+- [x] nested dependencies
+- [x] nested datasource parameters
+- [x] reset nested values
+- [x] remove array items
+- [x] add array items
+- [x] path stability
 
 Exit criteria:
 
@@ -2466,15 +2466,15 @@ Object/array behavior is deterministic and documented.
 
 Tasks:
 
-- [ ] Discriminated field unions
-- [ ] Type-specific defaults
-- [ ] Type-specific validation
-- [ ] `InferFormValues`
-- [ ] nested object inference
-- [ ] array inference
-- [ ] typed paths
-- [ ] typed path values
-- [ ] compile-time invalid-schema tests
+- [x] Discriminated field unions
+- [x] Type-specific defaults
+- [x] Type-specific validation
+- [x] `InferFormValues`
+- [x] nested object inference
+- [x] array inference
+- [x] typed paths
+- [x] typed path values
+- [x] compile-time invalid-schema tests
 
 Exit criteria:
 
@@ -2489,15 +2489,15 @@ before runtime whenever practical.
 
 Tasks:
 
-- [ ] Stable diagnostic codes
-- [ ] related paths
-- [ ] warnings
-- [ ] deprecated-property warnings
-- [ ] reference lookup information
-- [ ] dependency explanations
-- [ ] condition explanations
-- [ ] builder-friendly diagnostics
-- [ ] prepare runtime `explainField()`
+- [x] Stable diagnostic codes
+- [x] related paths
+- [x] warnings
+- [x] deprecated-property warnings
+- [x] reference lookup information
+- [x] dependency explanations
+- [x] condition explanations
+- [x] builder-friendly diagnostics
+- [x] prepare runtime `explainField()`
 
 Exit criteria:
 
@@ -2512,17 +2512,17 @@ debugging Core internals.
 
 Tasks:
 
-- [ ] Benchmark 100 fields
-- [ ] Benchmark 500 fields
-- [ ] Benchmark 1,000 fields
-- [ ] Benchmark 5,000 fields
-- [ ] Benchmark nested forms
-- [ ] Benchmark condition-heavy forms
-- [ ] Benchmark dependency-heavy forms
-- [ ] Benchmark compile time
-- [ ] Benchmark runtime lookup
-- [ ] Benchmark memory
-- [ ] Compare raw scanning vs compiled indexes
+- [x] Benchmark 100 fields
+- [x] Benchmark 500 fields
+- [x] Benchmark 1,000 fields
+- [x] Benchmark 5,000 fields
+- [x] Benchmark nested forms
+- [x] Benchmark condition-heavy forms
+- [x] Benchmark dependency-heavy forms
+- [x] Benchmark compile time
+- [x] Benchmark runtime lookup
+- [x] Benchmark memory
+- [x] Compare raw scanning vs compiled indexes
 
 Exit criteria:
 
@@ -2536,12 +2536,12 @@ Performance claims are backed by repeatable benchmarks.
 
 Tasks:
 
-- [ ] Migration interface
-- [ ] migration runner
-- [ ] unsupported-version behavior
-- [ ] deprecated property policy
-- [ ] compatibility documentation
-- [ ] migration tests
+- [x] Migration interface
+- [x] migration runner
+- [x] unsupported-version behavior
+- [x] deprecated property policy
+- [x] compatibility documentation
+- [x] migration tests
 
 Exit criteria:
 
@@ -2559,23 +2559,23 @@ will survive future schema versions.
 - [ ] Public schema API reviewed
 - [ ] Explicit exports
 - [ ] No accidental compiler internals exported
-- [ ] Type-level tests pass
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] nested data tests pass
-- [ ] cycle tests pass
-- [ ] datasource reference tests pass
-- [ ] immutability tests pass
-- [ ] performance baseline recorded
-- [ ] schema documentation complete
+- [x] Type-level tests pass
+- [x] Unit tests pass
+- [x] Integration tests pass
+- [x] nested data tests pass
+- [x] cycle tests pass
+- [x] datasource reference tests pass
+- [x] immutability tests pass
+- [x] performance baseline recorded
+- [x] schema documentation complete
 - [ ] examples complete
-- [ ] migration policy documented
+- [x] migration policy documented
 - [ ] semver policy documented
-- [ ] `npm pack --dry-run` verified
-- [ ] packed tarball tested outside monorepo
-- [ ] React integration tested
-- [ ] Angular integration tested
-- [ ] Native HTML integration tested
+- [x] `npm pack --dry-run` verified
+- [x] packed tarball tested outside monorepo
+- [x] React integration tested
+- [x] Angular integration tested
+- [x] Native HTML integration tested
 - [ ] RC published and field-tested before stable 1.0
 
 ---
@@ -2802,75 +2802,75 @@ Stabilize the foundation first.
 
 ## Contract
 
-- [ ] `schemaVersion`
-- [ ] stable field union
-- [ ] stable option model
-- [ ] stable validation model
-- [ ] stable condition model
-- [ ] stable dependency model
-- [ ] stable datasource model
-- [ ] stable path semantics
-- [ ] stable object semantics
-- [ ] stable array semantics
+- [x] `schemaVersion`
+- [x] stable field union
+- [x] stable option model
+- [x] stable validation model
+- [x] stable condition model
+- [x] stable dependency model
+- [x] stable datasource model
+- [x] stable path semantics
+- [x] stable object semantics
+- [x] stable array semantics
 
 ## Compiler
 
-- [ ] validation
-- [ ] normalization
-- [ ] field indexing
-- [ ] reference resolution
-- [ ] dependency graph
-- [ ] cycle detection
-- [ ] condition indexing
-- [ ] datasource indexing
-- [ ] validation indexing
-- [ ] deterministic diagnostics
+- [x] validation
+- [x] normalization
+- [x] field indexing
+- [x] reference resolution
+- [x] dependency graph
+- [x] cycle detection
+- [x] condition indexing
+- [x] datasource indexing
+- [x] validation indexing
+- [x] deterministic diagnostics
 
 ## Correctness
 
-- [ ] no schema mutation
-- [ ] duplicate detection
-- [ ] missing reference detection
-- [ ] invalid validation detection
-- [ ] invalid datasource detection
-- [ ] nested object support
-- [ ] array support
-- [ ] reset/default semantics
-- [ ] edge-condition semantics
+- [x] no schema mutation
+- [x] duplicate detection
+- [x] missing reference detection
+- [x] invalid validation detection
+- [x] invalid datasource detection
+- [x] nested object support
+- [x] array support
+- [x] reset/default semantics
+- [x] edge-condition semantics
 
 ## Type Safety
 
-- [ ] discriminated fields
-- [ ] typed defaults
-- [ ] typed validation
-- [ ] inferred values
-- [ ] nested inference
-- [ ] array inference
-- [ ] typed paths
-- [ ] typed path values
+- [x] discriminated fields
+- [x] typed defaults
+- [x] typed validation
+- [x] inferred values
+- [x] nested inference
+- [x] array inference
+- [x] typed paths
+- [x] typed path values
 
 ## Compatibility
 
-- [ ] JSON-safe portable contract
-- [ ] migration policy
-- [ ] deprecation policy
+- [x] JSON-safe portable contract
+- [x] migration policy
+- [x] deprecation policy
 - [ ] semver policy
-- [ ] extension policy
-- [ ] renderer independence
+- [x] extension policy
+- [x] renderer independence
 
 ## Production Proof
 
-- [ ] benchmark suite
-- [ ] memory checks
-- [ ] unit tests
-- [ ] integration tests
-- [ ] type tests
-- [ ] documentation
+- [x] benchmark suite
+- [x] memory checks
+- [x] unit tests
+- [x] integration tests
+- [x] type tests
+- [x] documentation
 - [ ] examples
-- [ ] npm tarball test
-- [ ] React consumer test
-- [ ] Angular consumer test
-- [ ] native HTML consumer test
+- [x] npm tarball test
+- [x] React consumer test
+- [x] Angular consumer test
+- [x] native HTML consumer test
 - [ ] release candidate validation
 
 ---

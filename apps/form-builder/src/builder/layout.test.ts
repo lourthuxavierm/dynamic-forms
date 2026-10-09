@@ -1,5 +1,5 @@
-﻿import { describe, expect, it } from 'vitest';
-import { addSection, defaultLayout, initialLayoutHistory, layoutReducer, movePlacement, normalizeLayout, removeSection, setPlacementSpan, updateSection } from './layout';
+import { describe, expect, it } from 'vitest';
+import { addSection, defaultLayout, initialLayoutHistory, layoutReducer, movePlacement, normalizeLayout, removeSection, setPlacementSpan, shiftPlacement, updateSection, type BuilderLayout } from './layout';
 
 const schema = { id: 'test', fields: [{ name: 'name', type: 'text' }, { name: 'email', type: 'email' }] };
 
@@ -27,3 +27,11 @@ describe('builder layout', () => {
   });
 });
 
+
+describe('placement order', () => {
+  it('shifts a placement within its section and ignores out-of-range moves', () => {
+    const layout: BuilderLayout = { version: 1, sections: [{ id: 's', title: 'S', columns: 1, placements: [{ fieldPath: 'a', columnSpan: 1 }, { fieldPath: 'b', columnSpan: 1 }] }] };
+    expect(shiftPlacement(layout, 'b', -1).sections[0].placements.map((item) => item.fieldPath)).toEqual(['b', 'a']);
+    expect(shiftPlacement(layout, 'a', -1)).toEqual(layout);
+  });
+});

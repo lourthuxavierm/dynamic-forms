@@ -1,7 +1,82 @@
-import type { ChangeEvent, RefObject } from 'react';
+import { useEffect, useState, type ChangeEvent, type RefObject } from 'react';
 import type { FormSchema } from '@dynamic-form-engine/core';
-import { Badge, Button } from '../ui/Primitives';
-interface TopBarProps { schema:FormSchema;issueCount:number;saved:boolean;canUndo:boolean;canRedo:boolean;uploadRef:RefObject<HTMLInputElement|null>;onSchemaChange:(schema:FormSchema)=>void;onUndo:()=>void;onRedo:()=>void;onNew:()=>void;onImport:(event:ChangeEvent<HTMLInputElement>)=>void;onExport:()=>void;onCopy:()=>void;onSave:()=>void;onPublish:()=>void;onManage:()=>void;onPreview:()=>void }
-export function TopBar(p:TopBarProps){const status=p.issueCount?`${p.issueCount} issue${p.issueCount===1?'':'s'}`:p.saved?'Saved':'Saving...';return <header className="topbar"><div className="brand"><span>DF</span><div><strong>Dynamic Forms</strong><small>Schema Builder</small></div></div><div className="form-context" aria-label="Form context"><span className="breadcrumb">Forms <b>&gt;</b> Customer <b>&gt;</b></span><label className="document-field"><span className="sr-only">Form ID</span><input aria-label="Form ID" value={p.schema.id} onChange={e=>p.onSchemaChange({...p.schema,id:e.target.value})}/></label><label className="version-field"><span className="sr-only">Version</span><select aria-label="Version" value={p.schema.version??''} onChange={e=>p.onSchemaChange({...p.schema,version:e.target.value||undefined})}><option>1.0.0</option></select></label><Button className="save-action" onClick={p.onSave}>{p.saved ? 'Saved' : 'Save'}</Button><Badge tone="danger" className="schema-status invalid" hidden={!p.issueCount}>{status}</Badge></div><div className="header-actions"><Button className="toolbar-action quiet" onClick={p.onUndo} disabled={!p.canUndo} aria-label="Undo">&#8630;</Button><Button className="toolbar-action quiet" onClick={p.onRedo} disabled={!p.canRedo} aria-label="Redo">&#8631;</Button><Button className="toolbar-action preview-action" onClick={p.onPreview}>&#9673; Preview</Button><Button className="toolbar-action" onClick={()=>p.uploadRef.current?.click()} aria-label="Import">&#8681; Import</Button><input ref={p.uploadRef} hidden type="file" accept=".json,application/json" onChange={p.onImport}/><Button className="toolbar-action" onClick={p.onExport} aria-label="Export">&#8679; Export</Button><Button className="publish-action" aria-label="Publish" disabled={p.issueCount>0} onClick={p.onPublish}>Publish <span>&#8964;</span></Button><Button className="icon-action" aria-label="Manage form repository" onClick={p.onManage}>&#9881;</Button><Button className="icon-action" aria-label="Help">?</Button><Button className="profile-action" aria-label="User profile">XM</Button></div></header>}
-const navigation=[['Builder','&#9702;'],['Layout','&#9635;'],['Themes','&#9684;'],['Data','&#9649;'],['Rules','&#8984;'],['Settings','&#9881;']] as const;
-export function NavigationRail({onNavigate}:{onNavigate:(label:string)=>void}){return <nav className="navigation-rail" aria-label="Primary navigation"><div className="navigation-items">{navigation.map(([label,icon])=><Button key={label} className={label==='Builder'?'active':''} aria-current={label==='Builder'?'page':undefined} onClick={()=>onNavigate(label)}><span className="navigation-icon" aria-hidden="true" dangerouslySetInnerHTML={{__html:icon}}/><span>{label}</span></Button>)}</div><aside className="plan-card" aria-label="Plan usage"><strong><span>&#9819;</span> Pro Plan</strong><span>10 / 50 forms</span><div className="plan-meter"><span/></div><Button onClick={()=>onNavigate('Upgrade plan')}>Upgrade &#8594;</Button></aside></nav>}
+import {
+  ChevronDown, ChevronRight, CircleAlert, CircleCheck, CircleHelp, ClipboardCopy, Database, Eye, FileDown, FilePlus2, FileUp,
+  History, House, LoaderCircle, Palette, PencilRuler, Redo2, Rocket, Save, Settings, Undo2, Workflow,
+} from 'lucide-react';
+import { Button, IconButton, Menu } from '../ui/Primitives';
+
+interface TopBarProps {
+  schema: FormSchema; issueCount: number; saved: boolean; savedAt?: number; canUndo: boolean; canRedo: boolean;
+  uploadRef: RefObject<HTMLInputElement | null>;
+  onSchemaChange: (schema: FormSchema) => void; onUndo: () => void; onRedo: () => void; onNew: () => void;
+  onImport: (event: ChangeEvent<HTMLInputElement>) => void; onExport: () => void; onCopy: () => void;
+  onSave: () => void; onPublish: () => void; onManage: () => void; onPreview: () => void; onSettings: () => void;
+}
+
+export function TopBar(p: TopBarProps) {
+  return <header className="topbar">
+    <div className="brand"><span className="brand-mark" aria-hidden="true">DF</span><div><strong>Dynamic Forms</strong><small>Form Builder Studio</small></div></div>
+    <nav className="breadcrumbs" aria-label="Breadcrumb">
+      <House size={18} aria-hidden="true" />
+      <span>Forms</span><ChevronRight size={16} aria-hidden="true" />
+      <span>Customers</span><ChevronRight size={16} aria-hidden="true" />
+      <input className="breadcrumb-current" aria-label="Form ID" value={p.schema.id} size={Math.max(8, p.schema.id.length)} onChange={(event) => p.onSchemaChange({ ...p.schema, id: event.target.value })} />
+    </nav>
+    <SaveStatus issueCount={p.issueCount} saved={p.saved} savedAt={p.savedAt} onSave={p.onSave} />
+    <div className="header-actions">
+      <IconButton aria-label="Undo" title="Undo (Ctrl+Z)" disabled={!p.canUndo} onClick={p.onUndo}><Undo2 size={20} /></IconButton>
+      <IconButton aria-label="Redo" title="Redo (Ctrl+Y)" disabled={!p.canRedo} onClick={p.onRedo}><Redo2 size={20} /></IconButton>
+      <Button className="preview-action" aria-label="Preview" onClick={p.onPreview}><Eye size={17} aria-hidden="true" /><span className="button-label">Preview</span></Button>
+      <input ref={p.uploadRef} hidden type="file" accept=".json,application/json" onChange={p.onImport} />
+      <Menu label="Export options" variant="secondary" triggerClassName="export-action" trigger={<><FileDown size={17} aria-hidden="true" /><span className="button-label">Export</span><ChevronDown size={16} aria-hidden="true" /></>} items={[
+        { label: 'Download JSON', icon: <FileDown size={16} />, onSelect: p.onExport },
+        { label: 'Copy JSON', icon: <ClipboardCopy size={16} />, onSelect: p.onCopy },
+        { label: 'Import JSON', icon: <FileUp size={16} />, onSelect: () => p.uploadRef.current?.click() },
+        { label: 'New form', icon: <FilePlus2 size={16} />, onSelect: p.onNew },
+      ]} />
+      <div className="publish-split">
+        <Button variant="primary" className="publish-action" aria-label="Publish" disabled={p.issueCount > 0} title={p.issueCount ? 'Resolve blocking issues before publishing' : undefined} onClick={p.onPublish}><Rocket size={17} aria-hidden="true" /><span className="button-label">Publish</span></Button>
+        <Menu label="More publish options" variant="primary" triggerClassName="publish-more" trigger={<ChevronDown size={18} />} items={[
+          { label: 'Save draft', icon: <Save size={16} />, onSelect: p.onSave },
+          { label: 'Versions & releases', icon: <History size={16} />, onSelect: p.onManage },
+        ]} />
+      </div>
+      <span className="header-divider" aria-hidden="true" />
+      <IconButton aria-label="Settings" onClick={p.onSettings}><Settings size={20} /></IconButton>
+      <IconButton aria-label="Help" onClick={() => window.open('https://github.com/lourthuxavierm/dynamic-forms#readme', '_blank', 'noopener')}><CircleHelp size={20} /></IconButton>
+      <button type="button" className="profile-action" aria-label="User profile">XM</button>
+    </div>
+  </header>;
+}
+
+function SaveStatus({ issueCount, saved, savedAt, onSave }: { issueCount: number; saved: boolean; savedAt?: number; onSave: () => void }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 30_000); return () => window.clearInterval(timer); }, []);
+  if (issueCount) return <div className="save-status"><span className="status-pill status-pill--danger schema-status"><CircleAlert size={16} aria-hidden="true" />{issueCount} issue{issueCount === 1 ? '' : 's'}</span></div>;
+  return <div className="save-status">
+    <button type="button" className={`status-pill ${saved ? 'status-pill--success' : 'status-pill--pending'}`} onClick={onSave} title="Save draft now">
+      {saved ? <CircleCheck size={16} aria-hidden="true" /> : <LoaderCircle size={16} className="spin" aria-hidden="true" />}{saved ? 'Saved' : 'Saving...'}
+    </button>
+    {saved && savedAt ? <small>Last saved {relativeTime(now - savedAt)}</small> : null}
+  </div>;
+}
+
+function relativeTime(elapsed: number) {
+  const minutes = Math.floor(Math.max(0, elapsed) / 60_000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  const hours = Math.floor(minutes / 60);
+  return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+}
+
+export type RailSection = 'Design' | 'Data' | 'Logic' | 'Themes' | 'Settings';
+const navigation: ReadonlyArray<readonly [RailSection, typeof PencilRuler]> = [['Design', PencilRuler], ['Data', Database], ['Logic', Workflow], ['Themes', Palette], ['Settings', Settings]];
+
+export function NavigationRail({ active, onNavigate }: { active: RailSection; onNavigate: (section: RailSection) => void }) {
+  return <nav className="navigation-rail" aria-label="Primary navigation">
+    {navigation.map(([label, Icon]) => <button type="button" key={label} className={label === active ? 'active' : ''} aria-current={label === active ? 'page' : undefined} onClick={() => onNavigate(label)}>
+      <Icon size={22} aria-hidden="true" /><span>{label}</span>
+    </button>)}
+  </nav>;
+}

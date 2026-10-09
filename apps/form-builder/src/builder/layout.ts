@@ -18,7 +18,8 @@ export const defaultLayout = (schema: FormSchema): BuilderLayout => {
   ] : [{ id: 'personal-details', title: 'Personal Details', description: 'Basic information about the customer', columns: 2, placements: schema.fields.map((field) => ({ fieldPath: field.name, columnSpan: 1 })) }] };
 };
 
-export function normalizeLayout(schema: FormSchema, layout?: BuilderLayout): BuilderLayout {
+/** Drops unknown placements and appends unplaced fields to `targetSectionId`, or the first section. */
+export function normalizeLayout(schema: FormSchema, layout?: BuilderLayout, targetSectionId?: string): BuilderLayout {
   const paths = schema.fields.map((field) => field.name);
   const valid = new Set(paths);
   const seen = new Set<string>();
@@ -28,7 +29,8 @@ export function normalizeLayout(schema: FormSchema, layout?: BuilderLayout): Bui
     placements: section.placements.filter((placement) => valid.has(placement.fieldPath) && !seen.has(placement.fieldPath) && seen.add(placement.fieldPath)).map((placement) => ({ ...placement, columnSpan: Math.min(section.columns, Math.max(1, placement.columnSpan)) as LayoutSpan })),
   }));
   const missing = paths.filter((path) => !seen.has(path)).map((fieldPath) => ({ fieldPath, columnSpan: 1 as LayoutSpan }));
-  if (missing.length) sections[0] = { ...sections[0], placements: [...sections[0].placements, ...missing] };
+  const target = Math.max(0, sections.findIndex((section) => section.id === targetSectionId));
+  if (missing.length) sections[target] = { ...sections[target], placements: [...sections[target].placements, ...missing] };
   return { version: 1, sections };
 }
 
@@ -53,6 +55,17 @@ export function removeSection(layout: BuilderLayout, sectionId: string): Builder
 export function movePlacement(layout: BuilderLayout, fieldPath: string, sectionId: string): BuilderLayout {
   const placement = layout.sections.flatMap((section) => section.placements).find((item) => item.fieldPath === fieldPath) ?? { fieldPath, columnSpan: 1 as LayoutSpan };
   return { ...layout, sections: layout.sections.map((section) => ({ ...section, placements: section.id === sectionId ? [...section.placements.filter((item) => item.fieldPath !== fieldPath), placement] : section.placements.filter((item) => item.fieldPath !== fieldPath) })) };
+}
+
+export function shiftPlacement(layout: BuilderLayout, fieldPath: string, direction: -1 | 1): BuilderLayout {
+  return { ...layout, sections: layout.sections.map((section) => {
+    const index = section.placements.findIndex((item) => item.fieldPath === fieldPath);
+    const target = index + direction;
+    if (index < 0 || target < 0 || target >= section.placements.length) return section;
+    const placements = [...section.placements];
+    [placements[index], placements[target]] = [placements[target], placements[index]];
+    return { ...section, placements };
+  }) };
 }
 
 export function setPlacementSpan(layout: BuilderLayout, fieldPath: string, span: LayoutSpan): BuilderLayout {

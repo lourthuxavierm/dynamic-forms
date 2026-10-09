@@ -126,12 +126,35 @@ Requirements:
 - Node.js compatible with the installed toolchain
 - pnpm 10.15.0
 
+Install dependencies and build the workspace packages once. The apps consume the local `@dynamic-form-engine/*` packages, so rebuild after changing a package if an app cannot resolve it.
+
 ```bash
 pnpm install
 pnpm build
-pnpm test
-pnpm typecheck
-pnpm --filter @dynamic-forms/react-html-playground dev
+```
+
+### Running the apps
+
+Each app starts a Vite dev server and prints its local URL (usually `http://localhost:5173`).
+
+| App | Command |
+| --- | --- |
+| Form builder | `pnpm --filter @dynamic-forms/form-builder dev` |
+| React HTML playground | `pnpm --filter @dynamic-forms/react-html-playground dev` |
+| Angular HTML playground | `pnpm --filter @dynamic-forms/angular-html-playground dev` |
+| React Hook Form playground | `pnpm --filter @dynamic-forms/rhf-playground dev` |
+| Documentation site | `pnpm docs:dev` |
+
+`pnpm dev` starts every app and package watcher together through Turborepo.
+
+### Checks
+
+```bash
+pnpm test            # unit tests
+pnpm typecheck       # TypeScript across the workspace
+pnpm lint            # ESLint
+pnpm builder:e2e     # form builder Playwright suite
+pnpm verify          # boundaries, lint, build, typecheck, and tests
 ```
 
 ## Documentation
