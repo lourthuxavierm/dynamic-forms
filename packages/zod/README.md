@@ -4,12 +4,13 @@ Zod validation adapter foundation for Dynamic Forms.
 
 ## Current maturity
 
-This package is **Release-ready** for the documented 0.1.x contract. It provides
-form-level and field-level validation, structural types, deterministic issue
-mapping, a pinned dual-major matrix, and an automated publish-artifact gate.
-
-The package remains pre-1.0, so review migration guidance before upgrades and
-keep authoritative server validation in place.
+This package is **Release-ready** at `1.0.0-rc`. It provides form-level and
+field-level validation, structural types, deterministic issue mapping, a pinned
+four-version Zod matrix (3.25.5, 3.25.76, 4.0.0, 4.5.1), and an automated
+publish-artifact gate. Its public API is recorded in `api-report.json` under
+Core's stability policy (`@dynamic-form-engine/core/STABILITY.md`), and its
+types resolve for bundler, Node ESM, and Node CommonJS consumers. Keep
+authoritative server validation in place.
 
 ## Architecture
 
@@ -17,7 +18,7 @@ keep authoritative server validation in place.
 - Keeps Zod out of Core and renderer packages.
 - Supports peer ranges `^3.25.5 || ^4.0.0` through a pinned four-cell CI matrix.
 - Uses a structural asynchronous schema contract in declarations.
-- Will validate without silently applying parsed/transformed output to FormStore.
+- Validates without applying parsed or transformed output to FormStore.
 
 ## Available Phase 2 utilities
 
@@ -45,7 +46,14 @@ const validate = createZodFormValidator<Values>(
 ```
 
 The validator always awaits `safeParseAsync`. Successful parsed or transformed
-output is discarded; validation never mutates or replaces FormStore values.
+output is discarded; validation never mutates or replaces FormStore values. If
+the request's abort signal has already fired (a newer validation superseded it),
+the validator rejects with the abort reason without parsing.
+
+With React, pass it as `FormProvider formValidator`. The provider also runs it
+for field-level validation (`onBlur`/`onChange`/`validate()`), so a field's Zod
+error is not cleared while it still applies. It ignores errors for fields
+hidden by `visibleWhen`, unless `validateHiddenFields` is set.
 
 ## Field validation
 

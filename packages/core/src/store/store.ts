@@ -16,7 +16,7 @@ import type {
 } from './types';
 import { AsyncRequestManager, isAbortError, normalizeAsyncError } from '../async';
 import { FormEventEmitter, type FormEvent, type FormEventListener, type FormEventType } from '../events';
-import { deleteByPath, dynamicPath, getByPath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
+import { dynamicPath, getByPath, isAncestorPath, isSamePath, normalizePath, setByPath, type DynamicPath, type Path, type PathValue } from './paths';
 
 interface SelectorSubscription<T extends FormValues> {
   selector: FormSelector<T, unknown>;
@@ -27,6 +27,7 @@ interface SelectorSubscription<T extends FormValues> {
 export class FormStore<T extends FormValues = DynamicFormValues> {
   private state: FormState<T>;
   private readonly listeners = new Set<FormListener<T>>();
+  /** Field listeners keyed by canonical path (`items[0].x` and `items.0.x` share a key). */
   private readonly fieldListeners = new Map<string, Set<FormListener<T>>>();
   private readonly selectorSubscriptions = new Set<SelectorSubscription<T>>();
   private readonly events = new FormEventEmitter<unknown, T>();
@@ -110,7 +111,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
       options.shouldDirty,
     );
     const touched = options.shouldTouch
-      ? { ...this.state.touched, [path]: true }
+      ? setPathKey(this.state.touched, path, true)
       : this.state.touched;
 
     this.valueRevision += 1;
@@ -155,7 +156,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
         options.shouldDirty,
       );
       if (options.shouldTouch) {
-        nextTouched = { ...nextTouched, [path]: true };
+        nextTouched = setPathKey(nextTouched, path, true);
       }
       changedPaths.push(path);
     }
@@ -182,7 +183,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   setError(path: DynamicPath, message: string): void;
   setError(path: string, message: string): void {
     this.updateState({
-      errors: { ...this.state.errors, [path]: message },
+      errors: setPathKey(this.state.errors, path, message),
       valid: false,
     });
     this.notifyPaths([path]);
@@ -191,12 +192,11 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   clearError<TPath extends Path<T>>(path: TPath): void;
   clearError(path: DynamicPath): void;
   clearError(path: string): void {
-    if (!(path in this.state.errors)) {
+    if (findPathKey(this.state.errors, path) === undefined) {
       return;
     }
 
-    const errors = { ...this.state.errors };
-    delete errors[path];
+    const errors = removePath(this.state.errors, path);
     this.updateState({ errors, valid: Object.keys(errors).length === 0 });
     this.notifyPaths([path]);
   }
@@ -204,11 +204,11 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   setTouched<TPath extends Path<T>>(path: TPath, touched?: boolean): void;
   setTouched(path: DynamicPath, touched?: boolean): void;
   setTouched(path: string, touched = true): void {
-    if (this.state.touched[path] === touched) {
+    if (readPathKey(this.state.touched, path) === touched) {
       return;
     }
 
-    this.updateState({ touched: { ...this.state.touched, [path]: touched } });
+    this.updateState({ touched: setPathKey(this.state.touched, path, touched) });
     this.notifyPaths([path]);
   }
 
@@ -353,7 +353,7 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     if (valueChanged) this.valueRevision += 1;
     this.updateState({
       values,
-      errors: removePath(this.state.errors, path),
+      errors,
       touched: removePath(this.state.touched, path),
       dirty: removePath(this.state.dirty, path),
       valid: Object.keys(removePath(this.state.errors, path)).length === 0,
@@ -403,34 +403,35 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
   subscribeToError<TPath extends Path<T>>(path: TPath, listener: SelectorListener<string | undefined>): () => void;
   subscribeToError(path: DynamicPath, listener: SelectorListener<string | undefined>): () => void;
   subscribeToError(path: string, listener: SelectorListener<string | undefined>): () => void {
-    return this.subscribeSelector((state) => state.errors[path], listener);
+    return this.subscribeSelector((state) => readPathKey(state.errors, path), listener);
   }
 
   subscribeToTouched<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;
   subscribeToTouched(path: DynamicPath, listener: SelectorListener<boolean>): () => void;
   subscribeToTouched(path: string, listener: SelectorListener<boolean>): () => void {
-    return this.subscribeSelector((state) => state.touched[path] ?? false, listener);
+    return this.subscribeSelector((state) => (readPathKey(state.touched, path) ?? false), listener);
   }
 
   subscribeToDirty<TPath extends Path<T>>(path: TPath, listener: SelectorListener<boolean>): () => void;
   subscribeToDirty(path: DynamicPath, listener: SelectorListener<boolean>): () => void;
   subscribeToDirty(path: string, listener: SelectorListener<boolean>): () => void {
-    return this.subscribeSelector((state) => state.dirty[path] ?? false, listener);
+    return this.subscribeSelector((state) => (readPathKey(state.dirty, path) ?? false), listener);
   }
 
   subscribeToField<TPath extends Path<T>>(path: TPath, listener: FormListener<T>): () => void;
   subscribeToField(path: DynamicPath, listener: FormListener<T>): () => void;
   subscribeToField(path: string, listener: FormListener<T>): () => void {
-    let listeners = this.fieldListeners.get(path);
+    const key = normalizePath(path);
+    let listeners = this.fieldListeners.get(key);
     if (!listeners) {
       listeners = new Set();
-      this.fieldListeners.set(path, listeners);
+      this.fieldListeners.set(key, listeners);
     }
     listeners.add(listener);
 
     return () => {
       listeners?.delete(listener);
-      if (listeners?.size === 0) this.fieldListeners.delete(path);
+      if (listeners?.size === 0 && this.fieldListeners.get(key) === listeners) this.fieldListeners.delete(key);
     };
   }
 
@@ -514,11 +515,20 @@ export class FormStore<T extends FormValues = DynamicFormValues> {
     this.notifyFieldsNow(paths);
   }
 
+  // A change at a path affects subscribers of that path, of its ancestors (their
+  // value contains it), and of its descendants (their value may have been
+  // replaced with it).
   private notifyFieldsNow(paths: readonly string[]): void {
+    if (this.fieldListeners.size === 0) return;
     const notified = new Set<FormListener<T>>();
     for (const path of paths) {
-      for (const affectedPath of getAffectedPaths(path)) {
+      const changed = normalizePath(path);
+      for (const affectedPath of getAncestorPaths(changed)) {
         for (const listener of this.fieldListeners.get(affectedPath) ?? []) notified.add(listener);
+      }
+      const prefix = `${changed}.`;
+      for (const [key, listeners] of this.fieldListeners) {
+        if (key.startsWith(prefix)) for (const listener of listeners) notified.add(listener);
       }
     }
     for (const listener of notified) listener(this.state);
@@ -567,22 +577,55 @@ function updateDirtyState(
 ): Record<string, boolean> {
   if (shouldDirty === false) return dirty;
   if (Object.is(value, initialValue)) return removePath(dirty, path);
-  return { ...dirty, [path]: true };
+  return setPathKey(dirty, path, true);
 }
 
+// Field state maps (dirty, touched, errors) are flat records keyed by the full
+// path string. Different spellings of one path (`items[0].name`, `items.0.name`)
+// must resolve to the same entry, so lookups compare normalized paths.
+function findPathKey(values: Record<string, unknown>, path: string): string | undefined {
+  if (Object.prototype.hasOwnProperty.call(values, path)) return path;
+  return Object.keys(values).find((key) => isSamePath(key, path));
+}
+
+function readPathKey<TValue>(values: Record<string, TValue>, path: string): TValue | undefined {
+  const key = findPathKey(values, path);
+  return key === undefined ? undefined : values[key];
+}
+
+function setPathKey<TValue>(values: Record<string, TValue>, path: string, value: TValue): Record<string, TValue> {
+  const next: Record<string, TValue> = {};
+  for (const [key, existing] of Object.entries(values)) {
+    if (!isSamePath(key, path)) next[key] = existing;
+  }
+  next[path] = value;
+  return next;
+}
+
+// Removes the entry for `path` (any spelling) and every descendant entry,
+// e.g. resetting `items` also clears `items[0].name`.
 function removePath<TValue>(values: Record<string, TValue>, path: string): Record<string, TValue> {
-  return deleteByPath(values, dynamicPath(path)) as Record<string, TValue>;
+  let changed = false;
+  const next: Record<string, TValue> = {};
+  for (const [key, existing] of Object.entries(values)) {
+    if (isSamePath(key, path) || isAncestorPath(path, key)) {
+      changed = true;
+      continue;
+    }
+    next[key] = existing;
+  }
+  return changed ? next : values;
 }
 
-function getAffectedPaths(path: string): string[] {
-  const normalized = path.replace(/\[(\d+)\]/g, '.$1');
-  const parts = normalized.split('.').filter(Boolean);
-  const affectedPaths = new Set([path, normalized]);
+/** The canonical path itself followed by each of its ancestors. */
+function getAncestorPaths(canonical: string): string[] {
+  const parts = canonical.split('.').filter(Boolean);
+  const paths = [canonical];
   while (parts.length > 1) {
     parts.pop();
-    affectedPaths.add(parts.join('.'));
+    paths.push(parts.join('.'));
   }
-  return [...affectedPaths];
+  return paths;
 }
 
 function clone<TValue>(value: TValue): TValue {

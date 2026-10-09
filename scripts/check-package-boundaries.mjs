@@ -101,6 +101,23 @@ for (const application of ['react-html-playground']) {
   }
 }
 
+// Core must run unchanged in browsers, Node.js, workers, and server runtimes. Universal web
+// platform APIs (fetch, URL, AbortController, structuredClone, queueMicrotask) are allowed;
+// DOM-, window-, and renderer-only globals are not. Test files are exempt.
+const coreForbiddenGlobals = ['document', 'window', 'navigator', 'localStorage', 'sessionStorage', 'location', 'history', 'HTMLElement', 'Element', 'Node', 'getComputedStyle', 'requestAnimationFrame', 'cancelAnimationFrame', 'MutationObserver', 'ResizeObserver', 'IntersectionObserver'];
+const coreForbiddenPattern = new RegExp(`(?<![\\w.$'"\\-])(?:globalThis\\.)?(${coreForbiddenGlobals.join('|')})\\s*(?:\\.|\\(|\\[|\\binstanceof\\b)|\\binstanceof\\s+(${coreForbiddenGlobals.join('|')})\\b|\\btypeof\\s+(${coreForbiddenGlobals.join('|')})\\b`, 'g');
+const withoutCommentsAndStrings = (text) => text
+  .replace(/\/\*[\s\S]*?\*\//g, ' ')
+  .replace(/\/\/[^\n]*/g, ' ')
+  .replace(/(['"`])(?:\\.|(?!\1)[^\\\n])*\1/g, "''");
+for (const file of await collect(path.join(root, 'packages', 'core', 'src'))) {
+  if (/\.(?:test|spec)\.tsx?$|[\\/]type-tests[\\/]/.test(file)) continue;
+  const code = withoutCommentsAndStrings(await readFile(file, 'utf8'));
+  for (const match of code.matchAll(coreForbiddenPattern)) {
+    errors.push(`${path.relative(root, file)}: Core must stay DOM-independent; found ${match[1] ?? match[2] ?? match[3]}`);
+  }
+}
+
 if (errors.length) {
   console.error('Package boundary violations:\n');
   for (const error of errors) console.error('- ' + error);

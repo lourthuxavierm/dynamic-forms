@@ -12,6 +12,13 @@ export interface HtmlFormProps {
   schema?: FormSchema;
   registry?: HtmlFieldRegistryOverrides;
   submitLabel?: ReactNode;
+  /**
+   * Called with the current values after provider validation succeeds. Runs
+   * through `FormStore.submit`, so it is skipped while the form is disabled or
+   * already submitting, sets `submitting` while pending, and emits `submit`.
+   * When omitted, submission is delegated to `FormProvider.submit()` and its
+   * `onSubmit`.
+   */
   onSubmit?: (values: Readonly<Record<string, unknown>>) => void | Promise<void>;
   onSubmitError?: (error: unknown) => void;
   children?: ReactNode;
@@ -37,6 +44,8 @@ export function HtmlForm({ schema: explicitSchema, registry, submitLabel = 'Subm
   const resolvedRegistry = useMemo(() => createDefaultHtmlRegistry(registry), [registry]);
   const resolvedLayoutRegistry = useMemo(() => createHtmlLayoutRegistry(layoutRegistry), [layoutRegistry]);
 
+  // Guards the async validation window, before the store reports `submitting`.
+  const inFlight = useRef(false);
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pendingSubmit.current || store.getState().submitting || store.getState().disabled) return;

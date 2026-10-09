@@ -42,8 +42,20 @@ while `main` and `exports.require` target the CommonJS files. The public
 `./package.json` subpath is metadata-only and is not treated as a JavaScript
 runtime entry point by compatibility checks.
 
-## Deprecation policy
+## Stability, versioning, and deprecation
 
-Add `@deprecated` to the exported declaration with a replacement and removal
-target. Generated entries display that metadata. A declaration without the tag
-is not presented as deprecated, and documentation must not invent a lifecycle.
+Core exports are **stable** by default and **experimental** when tagged
+`@experimental`; experimental APIs may change in a minor release. Generated
+entries show both tags. `packages/core/api-report.json` records every Core
+export with its tier and declaration, and `pnpm check:api` fails CI when the
+declared API changes without an updated report. The full policy, including what
+semantic versioning covers, ships with the package as
+`@dynamic-form-engine/core/STABILITY.md`.
+
+To deprecate an export, add `@deprecated` to the declaration with a
+replacement and a removal target, for example
+`@deprecated Use InferFormValues. Removal: 2.0.0.` Generated entries display
+that metadata, and Core's public API test rejects deprecations missing either
+part. A deprecated export stays available for at least one minor release and
+until the stated major. A declaration without the tag is not presented as
+deprecated, and documentation must not invent a lifecycle.

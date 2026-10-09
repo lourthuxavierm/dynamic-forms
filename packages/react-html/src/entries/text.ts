@@ -1,1 +1,1 @@
-export { HtmlTextField } from '../components/baseline';
+export { HtmlTextField } from '../components/inputs';

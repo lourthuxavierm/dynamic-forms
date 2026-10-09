@@ -2,8 +2,8 @@
 
 - Status: Release-ready adapter; renderer maturity varies below
 - Owner: Core and adapter maintainers
-- Last verified: 2026-08-29
-- Applies to: `@dynamic-form-engine/zod` 0.1.0, Zod `^3.25.5 || ^4.0.0`
+- Last verified: 2026-09-28
+- Applies to: `@dynamic-form-engine/zod` 1.0.0-rc, Zod `^3.25.5 || ^4.0.0`
 
 Use one Zod schema with the framework-independent `FormStore`, then share that
 store with React HTML or Angular HTML. The adapter reports validation errors; it
@@ -67,8 +67,21 @@ invalid form never calls the application service. Root schema issues appear at
   <template #react-html>
 
 Pass `profileStore` and `validateProfile` to `FormProvider`. The provider
-composes Zod validation after schema validation for manual validation and
-submission. The same store error state drives React HTML summaries and controls.
+composes Zod validation after schema validation for `validateForm()`,
+submission, and field-level validation. The same store error state drives
+React HTML summaries and controls.
+
+- **Field-level validation** (`validationMode` `onBlur`/`onChange`, or
+  `useField().validate()`) also runs the Zod form validator and uses its error
+  for that field. A blur never clears a Zod error that still applies, and
+  cross-field refinements report on the field they target. A superseded run's
+  abort signal fires, and the adapter skips parsing for requests that are
+  already aborted.
+- **Hidden fields.** Errors for fields hidden by `visibleWhen` (or inside a
+  hidden object or array) are ignored, matching Core's schema validation, so a
+  Zod rule on a field the user cannot see never blocks submission. Set
+  `validateHiddenFields` on `FormProvider` to keep them. Root errors (`_form`)
+  are always kept.
 
 ```tsx
 <FormProvider store={profileStore} schema={uiSchema} formValidator={validateProfile}>

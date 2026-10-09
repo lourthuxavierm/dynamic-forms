@@ -2,8 +2,8 @@
 
 - Status: Documented
 - Owner: Core, React, and React HTML maintainers
-- Last verified: 2026-08-26
-- Applies to: Core, React, and React HTML 0.1.0
+- Last verified: 2026-09-28
+- Applies to: Core, React, and React HTML 1.0.0-rc
 
 ## Core submission
 
@@ -30,13 +30,18 @@ updates errors and emits `validate`; it does not emit `submit`.
 ## React provider submission
 
 `FormProvider.submit()` uses `FormProvider.onSubmit`, schema validation, invalid
-submit handling, focus coordination, and optional error callback.
+submit handling, focus coordination, and optional error callback. Without an
+`onSubmit`, it still validates and runs invalid-submit handling, then resolves
+`undefined`.
 
 ## React HTML submission
 
-Normal `<HtmlForm>` submission prevents browser navigation, calls provider
-`validateForm`, and then invokes `HtmlForm.onSubmit` with current readonly values.
-It does not call `FormProvider.submit()` in the current implementation.
+Normal `<HtmlForm>` submission prevents browser navigation and ignores the event
+while the form is disabled or already submitting. With `HtmlForm.onSubmit`, it
+calls provider `validateForm` and then runs the handler through
+`FormStore.submit`, so `submitting`, the `submit` event, and duplicate-submit
+protection apply. It does not call `FormProvider.submit()` in that case. Without
+`HtmlForm.onSubmit`, it delegates to `FormProvider.submit()`.
 
 ## Enterprise boundary
 

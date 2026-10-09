@@ -1,5 +1,5 @@
-import type { ChangeEvent, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
-import type { DateTimeFieldConfig, FieldComponentProps, FieldOption, NumericFieldConfig } from './types-internal';
+import type { SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import type { FieldComponentProps, FieldOption } from './types-internal';
 import { HtmlFieldShell } from './HtmlFieldShell';
 
 type InputKind = 'text' | 'password' | 'email' | 'url' | 'number' | 'date' | 'time' | 'datetime-local' | 'month';

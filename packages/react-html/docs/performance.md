@@ -1,6 +1,8 @@
 # Performance verification
 
-Run `pnpm --filter @dynamic-form-engine/react-html performance` on a production build. The command fails when the `core` entry reaches 10 KB gzip, the independently importable text control reaches 2 KB gzip, or synthetic keystroke work reaches 16 ms.
+Run `pnpm --filter @dynamic-form-engine/react-html performance` (also run in CI). It builds the package and fails when the `core` entry reaches 10 KB gzip or the independently importable `controls/text` entry reaches 2 KB gzip. Each entry is measured together with every chunk it statically imports; lazy `import()` targets are excluded. The command prints the size of every entry and the stylesheet.
+
+Before 1.0.0-rc, the command measured only each entry's stub file and did not count shared chunks, so `controls/text` actually cost 3.4 KB: it pulled in the temporal helpers through `baseline`. The plain input controls now live in their own module, and the entry costs about 1.3 KB.
 
 The root entry remains a compatibility convenience containing the complete default registry. Production applications should import registry primitives from `@dynamic-form-engine/react-html/core` and controls from the `controls/*` entry points. Heavy controls can be code-split by merging `createLazyHtmlRegistry()` into the application registry; `HtmlFieldRenderer` supplies the Suspense boundary.
 

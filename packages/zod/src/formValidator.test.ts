@@ -111,4 +111,19 @@ describe('createZodFormValidator', () => {
     expect(invalid).toEqual({ value: 'Value is invalid' });
     expect(valid).toEqual({});
   });
+
+  it('skips parsing for a request whose signal has already aborted', async () => {
+    let parsed = 0;
+    const schema: ZodSchemaLike<Record<string, unknown>> = {
+      safeParseAsync: async (value) => { parsed += 1; return { success: true, data: value }; },
+    };
+    const validator = createZodFormValidator(schema);
+    const controller = new AbortController();
+    controller.abort(Object.assign(new Error('superseded'), { name: 'AbortError' }));
+
+    await expect(validator({}, { signal: controller.signal, requestId: 1 })).rejects.toThrow('superseded');
+    expect(parsed).toBe(0);
+    await expect(validator({}, { signal: new AbortController().signal, requestId: 2 })).resolves.toEqual({});
+    expect(parsed).toBe(1);
+  });
 });

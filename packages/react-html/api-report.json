@@ -1,0 +1,1152 @@
+{
+  "package": "@dynamic-form-engine/react-html",
+  "generatedBy": "scripts/check-core-api.mjs",
+  "note": "Generated file. Run `pnpm api:update` after an intentional public API change. See packages/core/STABILITY.md.",
+  "summary": {
+    "exports": 126,
+    "stable": 126,
+    "experimental": 0,
+    "deprecated": 0
+  },
+  "exports": {
+    "applyMask": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function applyMask(value: string, mask: string): string;"
+      ]
+    },
+    "createDefaultHtmlRegistry": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/registry/defaultRegistry.ts",
+      "declaration": [
+        "export function createDefaultHtmlRegistry(overrides?: HtmlFieldRegistryOverrides): HtmlFieldRegistry;"
+      ]
+    },
+    "createHtmlLayoutRegistry": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function createHtmlLayoutRegistry(overrides?: HtmlLayoutRegistryOverrides): HtmlLayoutRegistry;"
+      ]
+    },
+    "createHtmlRegistry": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/registry/registry.ts",
+      "declaration": [
+        "export function createHtmlRegistry(initial?: HtmlFieldRegistryOverrides | readonly HtmlFieldRegistration[]): HtmlFieldRegistry;"
+      ]
+    },
+    "createHtmlTemporalField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "export function createHtmlTemporalField(kind: TemporalKind, enhance?: HtmlTemporalEnhancer): (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "createLazyHtmlRegistry": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/registry/lazyRegistry.ts",
+      "declaration": [
+        "export function createLazyHtmlRegistry(): HtmlFieldRegistryOverrides;"
+      ]
+    },
+    "createSafeFileSnapshot": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function createSafeFileSnapshot(files: readonly File[]): Readonly<{",
+        "    count: number;",
+        "    files: readonly {",
+        "        type: string;",
+        "        size: number;",
+        "    }[];",
+        "}>;"
+      ]
+    },
+    "EXPERIMENTAL_HTML_FIELD_TYPES": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/registry/v1.ts",
+      "declaration": [
+        "declare const EXPERIMENTAL_HTML_FIELD_TYPES: readonly [\"searchable-select\", \"tree-checkbox\"];"
+      ]
+    },
+    "ExperimentalHtmlFieldType": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/registry/v1.ts",
+      "declaration": [
+        "export type ExperimentalHtmlFieldType = (typeof EXPERIMENTAL_HTML_FIELD_TYPES)[number];"
+      ]
+    },
+    "extractMaskValue": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function extractMaskValue(input: string, mask: string): string;"
+      ]
+    },
+    "formatCurrency": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/numericFormat.ts",
+      "declaration": [
+        "export function formatCurrency(value: number, locale: string, currency: string, precision?: number): string;"
+      ]
+    },
+    "formatPercentage": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/numericFormat.ts",
+      "declaration": [
+        "export function formatPercentage(value: number, locale: string, precision?: number): string;"
+      ]
+    },
+    "HTML_ADAPTER_VERSION": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/entries/core.ts",
+      "declaration": [
+        "declare const HTML_ADAPTER_VERSION: \"1.0.0-rc.1\";"
+      ]
+    },
+    "HTML_DEFAULT_STYLESHEET": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/styles/index.ts",
+      "declaration": [
+        "declare const HTML_DEFAULT_STYLESHEET: \"@dynamic-form-engine/react-html/styles.css\";"
+      ]
+    },
+    "HTML_TOKEN_PREFIX": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/styles/index.ts",
+      "declaration": [
+        "declare const HTML_TOKEN_PREFIX: \"--df-\";"
+      ]
+    },
+    "HtmlAccessibilityAttributes": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/accessibility/index.ts",
+      "declaration": [
+        "export interface HtmlAccessibilityAttributes {",
+        "    id: string;",
+        "    'aria-invalid'?: true;",
+        "    'aria-describedby'?: string;",
+        "    'aria-labelledby'?: string;",
+        "}"
+      ]
+    },
+    "HtmlAccordion": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlAccordion({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlArrayItemsRenderer": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/structural.tsx",
+      "declaration": [
+        "export type HtmlArrayItemsRenderer = (props: HtmlArrayItemsRendererProps) => ReactNode;"
+      ]
+    },
+    "HtmlArrayItemsRendererProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/structural.tsx",
+      "declaration": [
+        "export interface HtmlArrayItemsRendererProps {",
+        "    field: FieldSchema;",
+        "    name: string;",
+        "    items: readonly HtmlArrayRenderItem[];",
+        "}"
+      ]
+    },
+    "HtmlArrayRenderItem": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/structural.tsx",
+      "declaration": [
+        "export interface HtmlArrayRenderItem {",
+        "    id: string;",
+        "    index: number;",
+        "    content: ReactNode;",
+        "}"
+      ]
+    },
+    "HtmlAsyncAutocomplete": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "declare const HtmlAsyncAutocomplete: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlAutocomplete": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "declare const HtmlAutocomplete: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlCameraCapture": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "declare const HtmlCameraCapture: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlCardSection": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlCardSection({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlCheckbox": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlCheckbox(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlCheckboxGroup": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "export function HtmlCheckboxGroup(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlColorScheme": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/styles/index.ts",
+      "declaration": [
+        "export type HtmlColorScheme = 'light' | 'dark' | 'auto';"
+      ]
+    },
+    "HtmlCurrencyField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "declare const HtmlCurrencyField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlDateField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "declare const HtmlDateField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlDateRangeField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "declare const HtmlDateRangeField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlDateTimeField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "declare const HtmlDateTimeField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlDateTimeRangeField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "declare const HtmlDateTimeRangeField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlDecimalField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlDecimalField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlDensity": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/styles/index.ts",
+      "declaration": [
+        "export type HtmlDensity = 'compact' | 'standard' | 'comfortable';"
+      ]
+    },
+    "HtmlDocumentPreview": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function HtmlDocumentPreview(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlEmailField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlEmailField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlFieldComponent": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/index.ts",
+      "declaration": [
+        "export type HtmlFieldComponent = ComponentType<any>;"
+      ]
+    },
+    "HtmlFieldErrorBoundary": {
+      "kind": "class",
+      "stability": "stable",
+      "source": "src/components/HtmlFieldErrorBoundary.tsx",
+      "declaration": [
+        "export class HtmlFieldErrorBoundary extends Component<HtmlFieldErrorBoundaryProps, State> {",
+        "    state: State;",
+        "    static getDerivedStateFromError(error: Error): State;",
+        "    componentDidCatch(error: Error, info: ErrorInfo): void;",
+        "    componentDidUpdate(previous: HtmlFieldErrorBoundaryProps): void;",
+        "    render(): ReactNode;",
+        "}"
+      ]
+    },
+    "HtmlFieldErrorBoundaryProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/HtmlFieldErrorBoundary.tsx",
+      "declaration": [
+        "export interface HtmlFieldErrorBoundaryProps {",
+        "    fieldName: string;",
+        "    children: ReactNode;",
+        "    fallback?: ReactNode | ((error: Error, fieldName: string) => ReactNode);",
+        "    onError?: (error: Error, info: ErrorInfo, fieldName: string) => void;",
+        "}"
+      ]
+    },
+    "HtmlFieldRegistration": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/registry/types.ts",
+      "declaration": [
+        "export interface HtmlFieldRegistration<T = unknown> {",
+        "    type: string;",
+        "    component: TypedHtmlFieldComponent<T>;",
+        "}"
+      ]
+    },
+    "HtmlFieldRegistry": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/registry/types.ts",
+      "declaration": [
+        "export type HtmlFieldRegistry = Readonly<Record<string, HtmlFieldComponent>>;"
+      ]
+    },
+    "HtmlFieldRegistryOverrides": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/registry/types.ts",
+      "declaration": [
+        "export type HtmlFieldRegistryOverrides = Readonly<Record<string, HtmlFieldComponent | undefined>>;"
+      ]
+    },
+    "HtmlFieldRenderer": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/renderer/HtmlFieldRenderer.tsx",
+      "declaration": [
+        "declare const HtmlFieldRenderer: import(\"react\").MemoExoticComponent<({ field, registry, arrayItemsRenderer, fallback, onError }: HtmlFieldRendererProps) => import(\"react\").JSX.Element>;"
+      ]
+    },
+    "HtmlFieldRendererProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/renderer/HtmlFieldRenderer.tsx",
+      "declaration": [
+        "export interface HtmlFieldRendererProps {",
+        "    field: FieldSchema;",
+        "    registry: HtmlFieldRegistry;",
+        "    arrayItemsRenderer?: HtmlArrayItemsRenderer;",
+        "    fallback?: ReactNode | ((error: Error, fieldName: string) => ReactNode);",
+        "    onError?: (error: Error, info: ErrorInfo, fieldName: string) => void;",
+        "}"
+      ]
+    },
+    "HtmlFieldsetLayout": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlFieldsetLayout({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlFieldShell": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/HtmlFieldShell.tsx",
+      "declaration": [
+        "export function HtmlFieldShell({ props, children, hideLabel = false }: HtmlFieldShellProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlFieldShellProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/HtmlFieldShell.tsx",
+      "declaration": [
+        "export interface HtmlFieldShellProps {",
+        "    props: FieldComponentProps;",
+        "    children: ReactNode;",
+        "    hideLabel?: boolean;",
+        "}"
+      ]
+    },
+    "HtmlFileControlConfig": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export interface HtmlFileControlConfig {",
+        "    accept?: string;",
+        "    maxFileSize?: number;",
+        "    maxFiles?: number;",
+        "    imagePreview?: boolean;",
+        "    rejectDuplicates?: boolean;",
+        "}"
+      ]
+    },
+    "HtmlFileField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlFileField(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlFileUpload": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "declare const HtmlFileUpload: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlFileUploadProvider": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function HtmlFileUploadProvider({ upload, children }: {",
+        "    upload: HtmlUploadHandler;",
+        "    children: ReactNode;",
+        "}): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlForm": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/HtmlForm.tsx",
+      "declaration": [
+        "export function HtmlForm({ schema: explicitSchema, registry, submitLabel = 'Submit', onSubmit, onError, children, className, arrayItemsRenderer, layout, layoutRegistry, tabsRenderer, unstyled = false, colorScheme = 'auto', density = 'standard', dir, errorSummary = true }: HtmlFormProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlFormProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/HtmlForm.tsx",
+      "declaration": [
+        "export interface HtmlFormProps {",
+        "    schema?: FormSchema;",
+        "    registry?: HtmlFieldRegistryOverrides;",
+        "    submitLabel?: ReactNode;",
+        "    onSubmit?: (values: Readonly<Record<string, unknown>>) => void | Promise<void>;",
+        "    onError?: (error: unknown) => void;",
+        "    children?: ReactNode;",
+        "    className?: string;",
+        "    arrayItemsRenderer?: HtmlArrayItemsRenderer;",
+        "    layout?: readonly HtmlLayoutNode[];",
+        "    layoutRegistry?: HtmlLayoutRegistryOverrides;",
+        "    tabsRenderer?: HtmlTabsRenderer;",
+        "    unstyled?: boolean;",
+        "    colorScheme?: HtmlColorScheme;",
+        "    density?: HtmlDensity;",
+        "    dir?: 'ltr' | 'rtl' | 'auto';",
+        "    errorSummary?: boolean;",
+        "}"
+      ]
+    },
+    "HtmlGrid": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlGrid({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlHiddenField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlHiddenField(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlInlineGroup": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlInlineGroup({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlIntegerField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlIntegerField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlLayoutComponent": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export type HtmlLayoutComponent = ComponentType<HtmlLayoutComponentProps>;"
+      ]
+    },
+    "HtmlLayoutComponentProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export interface HtmlLayoutComponentProps {",
+        "    node: HtmlLayoutNode;",
+        "    children?: ReactNode;",
+        "}"
+      ]
+    },
+    "HtmlLayoutNode": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export interface HtmlLayoutNode {",
+        "    type: HtmlLayoutType;",
+        "    id?: string;",
+        "    title?: ReactNode;",
+        "    description?: ReactNode;",
+        "    fields?: readonly string[];",
+        "    children?: readonly HtmlLayoutNode[];",
+        "    className?: string;",
+        "    props?: Readonly<Record<string, unknown>>;",
+        "}"
+      ]
+    },
+    "HtmlLayoutRegistry": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export type HtmlLayoutRegistry = Readonly<Record<string, HtmlLayoutComponent>>;"
+      ]
+    },
+    "HtmlLayoutRegistryOverrides": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export type HtmlLayoutRegistryOverrides = Readonly<Record<string, HtmlLayoutComponent | undefined>>;"
+      ]
+    },
+    "HtmlLayoutRendererProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/renderer/HtmlLayoutRenderer.tsx",
+      "declaration": [
+        "export interface HtmlLayoutRendererProps {",
+        "    layout: readonly HtmlLayoutNode[];",
+        "    fields: readonly FieldSchema[];",
+        "    registry: HtmlLayoutRegistry;",
+        "    renderField: (field: FieldSchema) => ReactNode;",
+        "    submitAction: ReactNode;",
+        "    tabsRenderer?: HtmlTabsRenderer;",
+        "}"
+      ]
+    },
+    "HtmlLayoutRenderResult": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/renderer/HtmlLayoutRenderer.tsx",
+      "declaration": [
+        "export interface HtmlLayoutRenderResult {",
+        "    content: ReactNode;",
+        "    referencedFields: ReadonlySet<string>;",
+        "    rendersActions: boolean;",
+        "}"
+      ]
+    },
+    "HtmlLayoutType": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export type HtmlLayoutType = 'section' | 'fieldset' | 'grid' | 'stack' | 'inline' | 'card' | 'accordion' | 'tabs' | 'actions' | 'summary' | (string & {});"
+      ]
+    },
+    "HtmlMaskField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function HtmlMaskField(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlMonthField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlMonthField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlMultiFileUpload": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "declare const HtmlMultiFileUpload: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlMultiSelect": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlMultiSelect(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlNumberField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlNumberField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlOtpField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "declare const HtmlOtpField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlPasswordField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlPasswordField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlPercentageField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "declare const HtmlPercentageField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlPhoneField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function HtmlPhoneField(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlPinField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "declare const HtmlPinField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlRadio": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlRadio(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlRadioGroup": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "declare const HtmlRadioGroup: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlRangeSlider": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function HtmlRangeSlider(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlRating": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function HtmlRating(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlReadOnlySummary": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlReadOnlySummary({ node }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlSearchableSelect": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "declare const HtmlSearchableSelect: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlSection": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlSection({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlSelect": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlSelect(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlSignatureField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function HtmlSignatureField(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlSignatureProvider": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function HtmlSignatureProvider({ renderSignature, children }: {",
+        "    renderSignature: HtmlSignatureRenderer;",
+        "    children: ReactNode;",
+        "}): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlSignatureRenderer": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export type HtmlSignatureRenderer = (props: HtmlSignatureRendererProps) => ReactNode;"
+      ]
+    },
+    "HtmlSignatureRendererProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export interface HtmlSignatureRendererProps {",
+        "    field: FieldComponentProps;",
+        "    onChange: (value: unknown) => void;",
+        "}"
+      ]
+    },
+    "HtmlSlider": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/specialized.tsx",
+      "declaration": [
+        "export function HtmlSlider(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlStack": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlStack({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlStickyActions": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlStickyActions({ node, children }: HtmlLayoutComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlStructuralField": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/structural.tsx",
+      "declaration": [
+        "export function HtmlStructuralField(props: HtmlStructuralFieldProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlStructuralFieldProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/structural.tsx",
+      "declaration": [
+        "export interface HtmlStructuralFieldProps {",
+        "    field: FieldSchema;",
+        "    name: string;",
+        "    registry: HtmlFieldRegistry;",
+        "    arrayItemsRenderer?: HtmlArrayItemsRenderer;",
+        "    renderLeaf: (field: FieldSchema) => ReactNode;",
+        "}"
+      ]
+    },
+    "HtmlSwitch": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "export function HtmlSwitch(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTabDescriptor": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export interface HtmlTabDescriptor {",
+        "    id: string;",
+        "    label: ReactNode;",
+        "    panel: ReactNode;",
+        "}"
+      ]
+    },
+    "HtmlTabs": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export function HtmlTabs({ node, children, renderer }: HtmlLayoutComponentProps & {",
+        "    renderer?: HtmlTabsRenderer;",
+        "}): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTabsRenderer": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export type HtmlTabsRenderer = (props: HtmlTabsRendererProps) => ReactNode;"
+      ]
+    },
+    "HtmlTabsRendererProps": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/layout.tsx",
+      "declaration": [
+        "export interface HtmlTabsRendererProps {",
+        "    tabs: readonly HtmlTabDescriptor[];",
+        "    selectedIndex: number;",
+        "    onSelect: (index: number) => void;",
+        "    labelledBy?: string;",
+        "}"
+      ]
+    },
+    "HtmlTemporalEnhancementContext": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "export interface HtmlTemporalEnhancementContext {",
+        "    kind: TemporalKind;",
+        "    props: FieldComponentProps;",
+        "    inputProps: InputHTMLAttributes<HTMLInputElement>;",
+        "}"
+      ]
+    },
+    "HtmlTemporalEnhancer": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "export type HtmlTemporalEnhancer = (context: HtmlTemporalEnhancementContext) => ReactNode;"
+      ]
+    },
+    "HtmlTextarea": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/baseline.tsx",
+      "declaration": [
+        "export function HtmlTextarea(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTextField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlTextField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTimeField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "declare const HtmlTimeField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTimeRangeField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/temporal.tsx",
+      "declaration": [
+        "declare const HtmlTimeRangeField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlToggleButtonGroup": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "export function HtmlToggleButtonGroup(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTreeCheckbox": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "export function HtmlTreeCheckbox(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlTreeSelect": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/composites.tsx",
+      "declaration": [
+        "export function HtmlTreeSelect(props: FieldComponentProps): import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlUploadHandler": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export type HtmlUploadHandler = (request: HtmlUploadRequest) => Promise<unknown>;"
+      ]
+    },
+    "HtmlUploadRequest": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export interface HtmlUploadRequest {",
+        "    file: File;",
+        "    fieldName: string;",
+        "    index: number;",
+        "    signal: AbortSignal;",
+        "    onProgress: (percentage: number) => void;",
+        "}"
+      ]
+    },
+    "HtmlUrlField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlUrlField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "HtmlYearField": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/components/inputs.tsx",
+      "declaration": [
+        "declare const HtmlYearField: (props: FieldComponentProps) => import(\"react\").JSX.Element;"
+      ]
+    },
+    "LocaleNumberOptions": {
+      "kind": "interface",
+      "stability": "stable",
+      "source": "src/components/numericFormat.ts",
+      "declaration": [
+        "export interface LocaleNumberOptions {",
+        "    locale?: string;",
+        "    minimum?: number;",
+        "    maximum?: number;",
+        "    step?: number;",
+        "    precision?: number;",
+        "}"
+      ]
+    },
+    "mergeHtmlRegistries": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/registry/registry.ts",
+      "declaration": [
+        "export function mergeHtmlRegistries(...registries: readonly HtmlFieldRegistryOverrides[]): HtmlFieldRegistry;"
+      ]
+    },
+    "normalizeDateOnly": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/temporalValues.ts",
+      "declaration": [
+        "export function normalizeDateOnly(value: string | Date | undefined | null): string | undefined;"
+      ]
+    },
+    "normalizeLocalDateTime": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/temporalValues.ts",
+      "declaration": [
+        "export function normalizeLocalDateTime(value: string | Date | undefined | null): string | undefined;"
+      ]
+    },
+    "normalizeNumericValue": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/numericFormat.ts",
+      "declaration": [
+        "export function normalizeNumericValue(value: number, options?: LocaleNumberOptions): number;"
+      ]
+    },
+    "normalizeTemporalValue": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/temporalValues.ts",
+      "declaration": [
+        "export function normalizeTemporalValue(kind: TemporalKind, value: string | Date | undefined | null): string | undefined;"
+      ]
+    },
+    "normalizeTimeOnly": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/temporalValues.ts",
+      "declaration": [
+        "export function normalizeTimeOnly(value: string | undefined | null): string | undefined;"
+      ]
+    },
+    "parseLocalDateTime": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/temporalValues.ts",
+      "declaration": [
+        "export function parseLocalDateTime(value: string): Date | undefined;"
+      ]
+    },
+    "parseLocaleNumber": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/numericFormat.ts",
+      "declaration": [
+        "export function parseLocaleNumber(input: string, locale?: string): number | undefined;"
+      ]
+    },
+    "renderHtmlLayout": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/renderer/HtmlLayoutRenderer.tsx",
+      "declaration": [
+        "export function renderHtmlLayout({ layout, fields, registry, renderField, submitAction, tabsRenderer }: HtmlLayoutRendererProps): HtmlLayoutRenderResult;"
+      ]
+    },
+    "TemporalKind": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/temporalValues.ts",
+      "declaration": [
+        "export type TemporalKind = 'date' | 'time' | 'datetime-local';"
+      ]
+    },
+    "TypedHtmlFieldComponent": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/components/index.ts",
+      "declaration": [
+        "export type TypedHtmlFieldComponent<T = unknown> = ComponentType<FieldComponentProps<T>>;"
+      ]
+    },
+    "useObjectUrl": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function useObjectUrl(file: File | undefined): string | undefined;"
+      ]
+    },
+    "V1_HTML_FIELD_TYPES": {
+      "kind": "const",
+      "stability": "stable",
+      "source": "src/registry/v1.ts",
+      "declaration": [
+        "declare const V1_HTML_FIELD_TYPES: readonly [\"text\", \"textarea\", \"password\", \"email\", \"url\", \"number\", \"integer\", \"decimal\", \"hidden\", \"select\", \"multi-select\", \"autocomplete\", \"async-autocomplete\", \"checkbox\", \"checkbox-group\", \"radio\", \"radio-group\", \"switch\", \"toggle-button-group\", \"tree-select\", \"date\", \"time\", \"datetime\", \"date-range\", \"time-range\", \"datetime-range\", \"month\", \"year\", \"currency\", \"percentage\", \"slider\", \"range-slider\", \"rating\", \"phone\", \"otp\", \"pin\", \"mask\", \"file\", \"multi-file\", \"camera\", \"signature\", \"document-preview\"];"
+      ]
+    },
+    "V1HtmlFieldType": {
+      "kind": "type",
+      "stability": "stable",
+      "source": "src/registry/v1.ts",
+      "declaration": [
+        "export type V1HtmlFieldType = (typeof V1_HTML_FIELD_TYPES)[number];"
+      ]
+    },
+    "validateSelectedFiles": {
+      "kind": "function",
+      "stability": "stable",
+      "source": "src/components/fileMedia.tsx",
+      "declaration": [
+        "export function validateSelectedFiles(files: readonly File[], config?: HtmlFileControlConfig): string | undefined;"
+      ]
+    }
+  }
+}

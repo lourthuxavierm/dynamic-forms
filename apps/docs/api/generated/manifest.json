@@ -100,9 +100,39 @@
           "source": "packages/core/src/conditions/types.ts"
         },
         {
+          "name": "ConditionChangeDetails",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/controller.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "ConditionChangeDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "ConditionController",
           "kind": "class",
           "source": "packages/core/src/conditions/controller.ts"
+        },
+        {
+          "name": "ConditionEvaluationCause",
+          "kind": "type",
+          "source": "packages/core/src/conditions/controller.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "ConditionExplanation",
+          "kind": "type",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "ConditionExplanationResult",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionGroup",
@@ -110,9 +140,21 @@
           "source": "packages/core/src/conditions/types.ts"
         },
         {
+          "name": "ConditionGroupExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "ConditionOperator",
           "kind": "type",
           "source": "packages/core/src/conditions/types.ts"
+        },
+        {
+          "name": "ConditionRuleExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
         },
         {
           "name": "ConditionStateEquality",
@@ -132,7 +174,8 @@
         {
           "name": "CORE_PERFORMANCE_BUDGETS",
           "kind": "const",
-          "source": "packages/core/src/performance/budgets.ts"
+          "source": "packages/core/src/performance/budgets.ts",
+          "stability": "experimental"
         },
         {
           "name": "CoreMutation",
@@ -142,7 +185,8 @@
         {
           "name": "CorePerformanceBudgets",
           "kind": "interface",
-          "source": "packages/core/src/performance/budgets.ts"
+          "source": "packages/core/src/performance/budgets.ts",
+          "stability": "experimental"
         },
         {
           "name": "CorePlugin",
@@ -167,7 +211,8 @@
         {
           "name": "CorePluginHost",
           "kind": "class",
-          "source": "packages/core/src/plugins/host.ts"
+          "source": "packages/core/src/plugins/host.ts",
+          "stability": "experimental"
         },
         {
           "name": "createArrayItemValue",
@@ -240,6 +285,24 @@
           "source": "packages/core/src/datasource/datasource.ts"
         },
         {
+          "name": "DataSourceRequestDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "DataSourceRequestEvent",
+          "kind": "interface",
+          "source": "packages/core/src/datasource/datasource.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "DataSourceRequestPhase",
+          "kind": "type",
+          "source": "packages/core/src/datasource/datasource.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "DataSourceResult",
           "kind": "interface",
           "source": "packages/core/src/datasource/types.ts"
@@ -280,9 +343,49 @@
           "source": "packages/core/src/dependencies/graph.ts"
         },
         {
+          "name": "DependencyRefreshCause",
+          "kind": "type",
+          "source": "packages/core/src/dependencies/controller.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "DependencyRefreshContext",
           "kind": "interface",
           "source": "packages/core/src/dependencies/controller.ts"
+        },
+        {
+          "name": "DependencyRefreshDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "DependencyRefreshEvent",
+          "kind": "interface",
+          "source": "packages/core/src/dependencies/controller.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "describeValueType",
+          "kind": "function",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "DiagnosticCause",
+          "kind": "type",
+          "source": "packages/core/src/diagnostics/types.ts"
+        },
+        {
+          "name": "DiagnosticTraceFilter",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "DiagnosticValueType",
+          "kind": "type",
+          "source": "packages/core/src/conditions/explain.ts"
         },
         {
           "name": "DynamicFormValues",
@@ -310,9 +413,27 @@
           "source": "packages/core/src/conditions/evaluate.ts"
         },
         {
+          "name": "explainCondition",
+          "kind": "function",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "ExplainConditionOptions",
+          "kind": "interface",
+          "source": "packages/core/src/conditions/explain.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "explainField",
           "kind": "function",
           "source": "packages/core/src/schema/compilation.ts"
+        },
+        {
+          "name": "ExplainFieldStateOptions",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldCondition",
@@ -335,6 +456,12 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "FieldDataSourceExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "FieldDefinition",
           "kind": "interface",
           "source": "packages/core/src/registry/types.ts"
@@ -348,6 +475,18 @@
           "name": "FieldFileValue",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldFlagExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "FieldFlagReason",
+          "kind": "type",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldOption",
@@ -370,6 +509,12 @@
           "source": "packages/core/src/schema/types.ts"
         },
         {
+          "name": "FieldStateExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "FieldType",
           "kind": "type",
           "source": "packages/core/src/schema/types.ts"
@@ -378,6 +523,12 @@
           "name": "FieldValidation",
           "kind": "interface",
           "source": "packages/core/src/schema/types.ts"
+        },
+        {
+          "name": "FieldValidationExplanation",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "FieldValidationOverrides",
@@ -504,8 +655,9 @@
           "kind": "type",
           "source": "packages/core/src/schema/types.ts",
           "deprecated": {
-            "message": "Use InferFormValues.",
-            "replacement": "InferFormValues."
+            "message": "Use InferFormValues. Removal: 2.0.0.",
+            "replacement": "InferFormValues",
+            "removal": "2.0.0"
           }
         },
         {
@@ -664,6 +816,12 @@
           "source": "packages/core/src/registry/types.ts"
         },
         {
+          "name": "ResetDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "ResetOptions",
           "kind": "interface",
           "source": "packages/core/src/store/types.ts"
@@ -672,6 +830,35 @@
           "name": "RUNTIME_LIFECYCLE_PHASES",
           "kind": "const",
           "source": "packages/core/src/runtime/types.ts"
+        },
+        {
+          "name": "RuntimeDiagnosticEvent",
+          "kind": "type",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "RuntimeDiagnosticEventType",
+          "kind": "type",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "RuntimeDiagnosticListener",
+          "kind": "type",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
+          "name": "RuntimeDiagnostics",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts"
+        },
+        {
+          "name": "RuntimeDiagnosticsOptions",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "RuntimeLifecycleEvent",
@@ -789,6 +976,12 @@
           "source": "packages/core/src/schema/validation.ts"
         },
         {
+          "name": "ValidationDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
+        },
+        {
           "name": "ValidationError",
           "kind": "interface",
           "source": "packages/core/src/validation/types.ts"
@@ -812,6 +1005,12 @@
           "name": "ValidatorResult",
           "kind": "type",
           "source": "packages/core/src/validation/types.ts"
+        },
+        {
+          "name": "ValueChangeDiagnostic",
+          "kind": "interface",
+          "source": "packages/core/src/diagnostics/types.ts",
+          "stability": "experimental"
         },
         {
           "name": "ValueFieldSchema",
@@ -917,6 +1116,11 @@
           "name": "registerReactField",
           "kind": "function",
           "source": "packages/react/src/registry.ts"
+        },
+        {
+          "name": "shallowEqual",
+          "kind": "function",
+          "source": "packages/react/src/hooks/useFormState.ts"
         },
         {
           "name": "TypedFieldPath",
@@ -1096,7 +1300,7 @@
         {
           "name": "HTML_ADAPTER_VERSION",
           "kind": "const",
-          "source": "packages/react-html/src/index.ts"
+          "source": "packages/react-html/src/entries/core.ts"
         },
         {
           "name": "HTML_DEFAULT_STYLESHEET",
@@ -1196,7 +1400,7 @@
         {
           "name": "HtmlDecimalField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlDensity",
@@ -1211,7 +1415,7 @@
         {
           "name": "HtmlEmailField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlFieldComponent",
@@ -1316,7 +1520,7 @@
         {
           "name": "HtmlIntegerField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlLayoutComponent",
@@ -1366,7 +1570,7 @@
         {
           "name": "HtmlMonthField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlMultiFileUpload",
@@ -1381,7 +1585,7 @@
         {
           "name": "HtmlNumberField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlOtpField",
@@ -1391,7 +1595,7 @@
         {
           "name": "HtmlPasswordField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlPercentageField",
@@ -1536,7 +1740,7 @@
         {
           "name": "HtmlTextField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlTimeField",
@@ -1576,12 +1780,12 @@
         {
           "name": "HtmlUrlField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlYearField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "LocaleNumberOptions",
@@ -1731,7 +1935,7 @@
         {
           "name": "HTML_ADAPTER_VERSION",
           "kind": "const",
-          "source": "packages/react-html/src/index.ts"
+          "source": "packages/react-html/src/entries/core.ts"
         },
         {
           "name": "HTML_DEFAULT_STYLESHEET",
@@ -1831,7 +2035,7 @@
         {
           "name": "HtmlDecimalField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlDensity",
@@ -1846,7 +2050,7 @@
         {
           "name": "HtmlEmailField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlFieldComponent",
@@ -1951,7 +2155,7 @@
         {
           "name": "HtmlIntegerField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlLayoutComponent",
@@ -2001,7 +2205,7 @@
         {
           "name": "HtmlMonthField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlMultiFileUpload",
@@ -2016,7 +2220,7 @@
         {
           "name": "HtmlNumberField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlOtpField",
@@ -2026,7 +2230,7 @@
         {
           "name": "HtmlPasswordField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlPercentageField",
@@ -2171,7 +2375,7 @@
         {
           "name": "HtmlTextField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlTimeField",
@@ -2211,12 +2415,12 @@
         {
           "name": "HtmlUrlField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "HtmlYearField",
           "kind": "const",
-          "source": "packages/react-html/src/components/baseline.tsx"
+          "source": "packages/react-html/src/components/inputs.tsx"
         },
         {
           "name": "LocaleNumberOptions",

@@ -17,7 +17,8 @@ test('React hooks page exposes focused subscription guidance', async ({ page }) 
 test('HtmlForm page states the provider submission boundary', async ({ page }) => {
   await page.goto('/integrations/react-html/html-form');
   await expect(page.getByRole('heading', { level: 1, name: 'HtmlForm' })).toBeVisible();
-  await expect(page.getByText('does not call FormProvider.submit()')).toBeVisible();
+  await expect(page.getByText('It does not call FormProvider.submit()')).toBeVisible();
+  await expect(page.getByText('delegates to FormProvider.submit()')).toBeVisible();
   await expect(page.getByRole('cell', { name: 'registry, arrayItemsRenderer' })).toBeVisible();
 });
 
@@ -32,5 +33,6 @@ test('deep-reference catalogue exposes every package-local document', async ({ p
 test('performance page exposes enforced budgets', async ({ page }) => {
   await page.goto('/integrations/react-html/performance');
   await expect(page.getByText('below 10 KB for the core entry')).toBeVisible();
-  await expect(page.getByText('16-millisecond synthetic keystroke budget')).toBeVisible();
+  await expect(page.getByText('with every chunk it statically')).toBeVisible();
+  await expect(page.getByText('editing one control re-renders only that control')).toBeVisible();
 });

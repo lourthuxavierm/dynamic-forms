@@ -30,11 +30,19 @@ export function HtmlStructuralField(props: HtmlStructuralFieldProps) {
   return props.field.type === 'array' ? <HtmlArrayField {...props} /> : <HtmlObjectField {...props} />;
 }
 
+/** Form-level lock from the provider: `disabled`, plus `submitting` unless `disableWhileSubmitting` is false. */
+function useFormLock(): { disabled: boolean; readOnly: boolean } {
+  const { readOnly, disableWhileSubmitting } = useFormContext();
+  const disabled = useFormState((state) => state.disabled || (disableWhileSubmitting && state.submitting));
+  return { disabled, readOnly };
+}
+
 function HtmlObjectField({ field, name, registry, arrayItemsRenderer, renderLeaf }: HtmlStructuralFieldProps) {
   const state = useFieldState(name);
+  const lock = useFormLock();
   if (!state.visible) return null;
   return (
-    <fieldset className="df-structural df-object" disabled={state.disabled || field.disabled} data-df-field={name}>
+    <fieldset className="df-structural df-object" disabled={state.disabled || Boolean(field.disabled) || lock.disabled} data-df-field={name}>
       <legend>{field.label ?? humanize(field.name)}</legend>
       {field.description ? <p>{field.description}</p> : null}
       {field.fields?.map((child) => (
@@ -48,16 +56,16 @@ function HtmlObjectField({ field, name, registry, arrayItemsRenderer, renderLeaf
 function HtmlArrayField({ field, name, registry, arrayItemsRenderer, renderLeaf }: HtmlStructuralFieldProps) {
   const array = useFieldArray<unknown>(name);
   const state = useFieldState(name);
-  const { store } = useFormContext();
-  const storeState = useSyncExternalStore(store.subscribe.bind(store), store.getState.bind(store), store.getState.bind(store));
+  const lock = useFormLock();
+  // Subscribe only to this array's item-level errors, not to the whole form state.
+  const itemErrors = useFormState((formState) => selectItemErrors(formState, name), shallowEqual);
   if (!state.visible) return null;
   const minimum = field.validation?.minItems ?? 0;
   const maximum = field.validation?.maxItems ?? Number.POSITIVE_INFINITY;
   const config = field.config as ArrayFieldConfig | undefined;
   const primitive = isPrimitiveArray(field);
-  const disabled = state.disabled || Boolean(field.disabled);
-  const immutable = disabled || state.readOnly || Boolean(field.readOnly);
-  const itemErrors = Object.entries(storeState.errors).filter(([path]) => path.startsWith(`${name}[`));
+  const disabled = state.disabled || Boolean(field.disabled) || lock.disabled;
+  const immutable = disabled || state.readOnly || Boolean(field.readOnly) || lock.readOnly;
   const items: HtmlArrayRenderItem[] = array.fields.map((item, index) => ({
     id: item.id,
     index,
@@ -69,7 +77,7 @@ function HtmlArrayField({ field, name, registry, arrayItemsRenderer, renderLeaf 
           : field.fields?.map((child) => (
             <ConditionalArrayNode key={child.id ?? child.name} field={child} name={`${name}[${index}].${child.name}`} itemValue={item.value} registry={registry} arrayItemsRenderer={arrayItemsRenderer} renderLeaf={renderLeaf} />
           ))}
-        {itemErrors.filter(([path]) => path === `${name}[${index}]`).map(([path, message]) => <p role="alert" key={path}>{message}</p>)}
+        {itemErrors[index] ? <p role="alert">{itemErrors[index]}</p> : null}
         <div role="group" aria-label={`Actions for item ${index + 1}`}>
           <button type="button" disabled={immutable || array.fields.length <= minimum} onClick={() => array.remove(index)}>Remove</button>
           <button type="button" disabled={immutable || config?.allowDuplicate === false || array.fields.length >= maximum} onClick={() => array.insert(index + 1, cloneValue(item.value))}>Duplicate</button>
@@ -101,6 +109,8 @@ function StructuralNode(props: HtmlStructuralFieldProps) {
 
 function ConditionalArrayNode({ field, name, itemValue, ...rest }: HtmlStructuralFieldProps & { itemValue: unknown }) {
   const { store } = useFormContext();
+  // Re-render when any form path a condition references changes, not only when the item changes.
+  useWatch<unknown>(conditionReferences(field));
   const values = { ...store.getValues(), ...(isRecord(itemValue) ? itemValue : {}) };
   if (field.visibleWhen && !evaluateCondition(field.visibleWhen, values)) return null;
   const resolved: FieldSchema = {
@@ -117,6 +127,37 @@ function ConditionalArrayNode({ field, name, itemValue, ...rest }: HtmlStructura
   return resolved.type === 'object' || resolved.type === 'array'
     ? <HtmlStructuralField {...rest} field={resolved} name={name} />
     : <>{rest.renderLeaf(resolved)}</>;
+}
+
+/** Item-level errors (`rows[2]` / `rows.2`) keyed by index, for one array. */
+function selectItemErrors(state: FormState, name: string): Record<number, string> {
+  const prefix = `${normalizePath(name)}.`;
+  const errors: Record<number, string> = {};
+  for (const [path, message] of Object.entries(state.errors)) {
+    const canonical = normalizePath(path);
+    if (!canonical.startsWith(prefix)) continue;
+    const rest = canonical.slice(prefix.length);
+    if (/^\d+$/.test(rest)) errors[Number(rest)] = message;
+  }
+  return errors;
+}
+
+const conditionReferenceCache = new WeakMap<FieldSchema, readonly string[]>();
+function conditionReferences(field: FieldSchema): readonly string[] {
+  const cached = conditionReferenceCache.get(field);
+  if (cached) return cached;
+  const references = new Set<string>();
+  const visit = (condition: FieldCondition | undefined): void => {
+    if (!condition) return;
+    if ('field' in condition) { references.add(condition.field); return; }
+    condition.and?.forEach(visit);
+    condition.or?.forEach(visit);
+    visit(condition.not);
+  };
+  for (const condition of [field.visibleWhen, field.disabledWhen, field.readOnlyWhen, field.requiredWhen]) visit(condition);
+  const result = [...references];
+  conditionReferenceCache.set(field, result);
+  return result;
 }
 
 function renderPrimitive(field: FieldSchema, name: string, index: number, renderLeaf: (field: FieldSchema) => ReactNode): ReactNode {

@@ -1,7 +1,7 @@
 import { type ComponentType, type ReactNode, useEffect, useRef } from 'react';
 import type { FieldSchema } from '@dynamic-form-engine/core';
 import { useField } from '../hooks/useField';
-import { useFieldState } from '../hooks/useFieldState';
+import { useFormState } from '../hooks/useFormState';
 import { useFormContext } from '../context';
 import { warnInDevelopment } from '../development';
 import { fieldId } from './FormErrorSummary';
@@ -41,6 +41,12 @@ export interface FieldComponentProps<T = unknown> {
   validate: () => Promise<boolean>;
 }
 
+/**
+ * Renders one schema field through its registered component (or `render`).
+ * Hidden fields render nothing. `disabled` and `readOnly` combine the field's
+ * Core condition state with the provider's form-level `disabled`, `readOnly`,
+ * and (by default) `submitting` state.
+ */
 export interface DynamicFieldProps {
   field?: FieldSchema;
   name?: string;
@@ -49,7 +55,7 @@ export interface DynamicFieldProps {
 }
 
 export function DynamicField({ field: explicitField, name, type, render }: DynamicFieldProps) {
-  const { registry, schema } = useFormContext();
+  const { registry, schema, readOnly: formReadOnly, disableWhileSubmitting } = useFormContext();
   const field = explicitField ?? (schema ? findFieldByPath(schema.fields, name ?? '') : undefined);
   if (!field) {
     warnInDevelopment(name ? `Unknown field path "${name}".` : 'DynamicField was rendered without a field or provider schema.');
@@ -57,8 +63,9 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
   }
   if (type && type !== field.type) throw new Error(`DynamicField type "${type}" does not match schema type "${field.type}"`);
 
-  const fieldValue = useField(field.name);
-  const fieldState = useFieldState(field.name);
+  const fieldState = useField(field.name);
+  // Form-level lock: re-renders fields only when the boolean flips.
+  const formDisabled = useFormState((state) => state.disabled || (disableWhileSubmitting && state.submitting));
   const id = fieldId(field.name);
   const wasFocused = useRef(false);
   useEffect(() => {
@@ -83,18 +90,18 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
   const props: FieldComponentProps = {
     field,
     name: field.name,
-    value: fieldValue.value,
-    setValue: fieldValue.setValue,
-    setError: fieldValue.setError,
-    clearError: fieldValue.clearError,
+    value: fieldState.value,
+    setValue: fieldState.setValue,
+    setError: fieldState.setError,
+    clearError: fieldState.clearError,
     error: fieldState.error,
     touched: fieldState.touched,
     dirty: fieldState.dirty,
     isValidating: fieldState.isValidating,
     visible: fieldState.visible,
-    disabled: fieldState.disabled || Boolean(field.disabled),
+    disabled: fieldState.disabled || formDisabled || Boolean(field.disabled),
     required: fieldState.required || Boolean(field.validation?.required),
-    readOnly: fieldState.readOnly || Boolean(field.readOnly),
+    readOnly: fieldState.readOnly || formReadOnly || Boolean(field.readOnly),
     accessibility: {
       id,
       labelId,
@@ -107,8 +114,8 @@ export function DynamicField({ field: explicitField, name, type, render }: Dynam
       validationMessage: fieldState.error ?? (fieldState.isValidating ? 'Validating' : undefined),
       validationLiveRegion: { role: 'status', 'aria-live': 'polite', 'aria-atomic': true },
     },
-    setTouched: fieldValue.setTouched,
-    validate: fieldValue.validate,
+    setTouched: fieldState.setTouched,
+    validate: fieldState.validate,
   };
 
   if (render) return <>{render(props)}</>;

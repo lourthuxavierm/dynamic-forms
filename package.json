@@ -10,10 +10,12 @@
     "dev": "turbo run dev",
     "test": "turbo run test",
     "check:boundaries": "node scripts/check-package-boundaries.mjs",
+    "check:api": "node scripts/check-core-api.mjs && node scripts/check-core-api.mjs --package react && node scripts/check-core-api.mjs --package react-html && node scripts/check-core-api.mjs --package zod",
+    "api:update": "node scripts/check-core-api.mjs --update && node scripts/check-core-api.mjs --package react --update && node scripts/check-core-api.mjs --package react-html --update && node scripts/check-core-api.mjs --package zod --update",
     "test:e2e": "playwright test",
     "lint": "eslint packages apps scripts --max-warnings=0",
     "typecheck": "turbo run typecheck",
-    "verify": "pnpm check:boundaries && pnpm lint && pnpm build && pnpm typecheck && pnpm test",
+    "verify": "pnpm check:boundaries && pnpm check:api && pnpm lint && pnpm build && pnpm typecheck && pnpm test",
     "docs:dev": "pnpm --filter @dynamic-forms/docs dev",
     "docs:build": "pnpm --filter @dynamic-forms/docs build",
     "docs:preview": "pnpm --filter @dynamic-forms/docs preview",
@@ -30,7 +32,8 @@
     "verify:react-html-release": "node scripts/verify-react-html-release.mjs",
     "verify:zod-architecture": "pnpm --filter @dynamic-forms/docs zod:architecture",
     "verify:zod-release": "node scripts/verify-zod-release.mjs",
-    "verify:core-release": "node scripts/verify-core-release.mjs"
+    "verify:core-release": "node scripts/verify-core-release.mjs",
+    "verify:react-release": "node scripts/verify-react-release.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

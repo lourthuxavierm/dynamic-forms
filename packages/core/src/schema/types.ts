@@ -409,7 +409,7 @@ export type InferFormValues<
     ? InferFieldsType<T, TCustomValues>
     : never;
 
-/** @deprecated Use InferFormValues. */
+/** @deprecated Use InferFormValues. Removal: 2.0.0. */
 export type InferSchemaType<
   T extends FormSchema<unknown> | readonly FieldSchema<unknown>[],
   TCustomValues extends Record<string, unknown> = Record<never, never>,

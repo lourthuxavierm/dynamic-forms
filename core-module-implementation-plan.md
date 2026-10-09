@@ -15,7 +15,7 @@ Bring `@dynamic-form-engine/core` to a stable, testable baseline that can suppor
 - [x] Replace the invalid `FormField` import in `src/validation/schemaValidators.ts` with `FieldSchema`.
 - [x] Make `FormSchema`, `FieldSchema`, and inference helpers accept readonly schemas created with `as const`.
 - [x] Verify `InferSchemaType` produces meaningful types instead of `never`.
-- [ ] Run `pnpm typecheck`, `pnpm build`, and `pnpm test` successfully.
+- [x] Run `pnpm typecheck`, `pnpm build`, and `pnpm test` successfully.
 
 ## Phase 1 — Stabilize FormStore
 
@@ -80,7 +80,9 @@ Bring `@dynamic-form-engine/core` to a stable, testable baseline that can suppor
 
 ## Verification Note
 
-Core verification is complete: its typecheck, build, and 51-test suite pass. At the time of this plan, repository-wide verification remained blocked outside `@dynamic-form-engine/core` by application TypeScript errors and placeholder adapter packages with no test files.
+All phases are complete. Repository-wide verification passes from the root: on 28 September 2026, `pnpm verify` (package boundaries, lint, build, typecheck, and tests across every workspace) succeeded on `main`, with 157 passing Core tests.
+
+The earlier blockers — application TypeScript errors and placeholder adapter packages without test files — are resolved. Nested-path consistency for dirty, touched, and error state was hardened in #8, and runtime diagnostics were added in #9 (see `core-design-10-of-10-roadmap.md` for the remaining 1.0 hardening work).
 
 ## Definition of Done
 

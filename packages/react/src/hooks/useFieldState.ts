@@ -1,36 +1,22 @@
-import { useCallback, useRef, useSyncExternalStore } from 'react';
-import { dynamicPath, type FieldConditionState, type FormState } from '@dynamic-form-engine/core';
-import { useFormContext } from '../context';
+import { useMemo } from 'react';
+import { useFieldSnapshot } from './fieldSnapshot';
 
-const defaultConditionState: FieldConditionState = { visible: true, disabled: false, required: false, readOnly: false };
-
-interface FieldStateSnapshot {
-  storeState: FormState;
-  conditionVersion: number;
-}
-
+/**
+ * Error, touched, dirty, validation progress, and Core condition state
+ * (visible, disabled, required, read-only) for one field, without its value
+ * or actions. Condition state is correct on the first render and during
+ * server rendering, before the provider's condition controller mounts.
+ */
 export function useFieldState(name: string) {
-  const { store, conditionController, isFieldValidating } = useFormContext();
-  const cache = useRef<FieldStateSnapshot | undefined>(undefined);
-  const subscribe = useCallback((listener: () => void) => {
-    const unsubscribeField = store.subscribeToField(dynamicPath(name), listener);
-    const unsubscribeConditions = conditionController?.subscribe(name, listener);
-    return () => { unsubscribeField(); unsubscribeConditions?.(); };
-  }, [conditionController, name, store]);
-  const getSnapshot = useCallback(() => {
-    const storeState = store.getState();
-    const conditionVersion = conditionController?.getVersion(name) ?? 0;
-    if (cache.current?.storeState === storeState && cache.current.conditionVersion === conditionVersion) return cache.current;
-    cache.current = { storeState, conditionVersion };
-    return cache.current;
-  }, [conditionController, name, store]);
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
-  const conditions = conditionController?.getState(name) ?? defaultConditionState;
-  return {
-    error: snapshot.storeState.errors[name],
-    touched: snapshot.storeState.touched[name] ?? false,
-    dirty: snapshot.storeState.dirty[name] ?? false,
-    isValidating: isFieldValidating(name),
-    ...conditions,
-  };
+  const snapshot = useFieldSnapshot(name);
+  return useMemo(() => ({
+    error: snapshot.error,
+    touched: snapshot.touched,
+    dirty: snapshot.dirty,
+    isValidating: snapshot.isValidating,
+    visible: snapshot.visible,
+    disabled: snapshot.disabled,
+    required: snapshot.required,
+    readOnly: snapshot.readOnly,
+  }), [snapshot]);
 }
